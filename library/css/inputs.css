@@ -1,0 +1,475 @@
+/*
+**	Default markup for input, select
+**	and checkboxes and textarea's.
+*/
+
+div.languages
+{
+	height: 1px;
+	
+	position: relative;
+	
+	margin: 1px 0px 20px 10px;
+	padding: 0px 10px 10px 10px;
+	display: table;
+	
+	background-color: #f9f9f9;
+	
+	border: 1px dashed #ddd;
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+}
+
+	div.languages.no-margin
+	{
+		margin: 1px 0px 0px 10px;
+	}
+
+	div.languages span.fa
+	{
+		position: absolute;
+		top: -5px;
+		left: -5px;
+		
+		font-size: 15px;
+		color: #d00000;
+		
+		-ms-transform: rotate(320deg);
+		-webkit-transform: rotate(320deg);
+		transform: rotate(320deg);
+	}
+
+	div.languages fieldset
+	{
+		width: calc(100% - 20px);
+		
+		margin: 10px 0px 0px 0px;
+		padding: 5px 10px 10px 10px;
+		
+		background-color: #f7f7f7;
+		
+		border: 1px solid #ddd;
+		
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;
+		border-radius: 5px;
+	}
+	
+	div.languages fieldset:first-child
+	{
+		margin: 0px;
+	}
+	
+		div.languages fieldset legend
+		{
+			padding: 3px;
+			
+			font-family: 'Raleway','Tahoma';
+			font-size: 11px;
+			color: #666;
+		}
+
+select
+{
+	padding: 10px;
+	
+	background-color: #fff;
+	
+	border: 1px solid #ddd;
+	
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-khtml-border-radius: 7px;
+	border-radius: 7px;
+	
+	font-family: 'Raleway', 'Tahoma';
+	font-size: 12px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"],
+textarea
+{
+	padding: 10px;
+	
+	border: 1px solid #ddd;
+	
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-khtml-border-radius: 7px;
+	border-radius: 7px;
+	
+	font-family: 'Raleway', 'Tahoma';
+	font-size: 12px;
+	
+	resize: none;
+}
+
+textarea
+{
+	height: 150px;
+}
+
+input[type="button"],
+input[type="submit"]
+{
+	padding: 10px;
+	
+	background-color: #f9f9f9;
+	
+	border: 1px solid #ddd;
+	
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-khtml-border-radius: 7px;
+	border-radius: 7px;
+	
+	font-family: 'Raleway', 'Tahoma';
+	font-size: 12px;
+}
+
+	input[type="button"].red,
+	input[type="submit"].red
+	{
+		background-color: #d00000;
+		
+		color: #fff;
+	}
+	
+	input[type="button"].white,
+	input[type="submit"].white
+	{
+		background-color: #fff;
+		
+		color: #000;
+	}
+
+
+
+/*
+**	Give a certain width using a
+**	classname. This works on every
+**	form element.
+*/
+
+input.margin,
+select.margin,
+textarea.margin
+{
+	margin: 0px 0px 8px 0px;
+}
+
+div.checkbox-holder.margin
+{
+	margin: 0px 0px 10px 0px;
+}
+
+input.double-margin,
+select.double-margin,
+textarea.double-margin
+{
+	margin: 0px 0px 20px 0px;
+}
+
+div.checkbox-holder.double-margin
+{
+	margin: 0px 0px 22px 0px;
+}
+
+
+
+/*
+**	Give a certain with using a
+**	classname. This works on every
+**	form element.
+*/
+
+input.width-100-percent,
+textarea.width-100-percent
+{
+	width: calc(100% - 22px);
+}
+
+	input[type="button"].width-100-percent,
+	input[type="submit"].width-100-percent,
+	select.width-100-percent,
+	div.languages.width-100-percent
+	{
+		width: 100%;
+		
+	}
+
+input.width-50-percent,
+textarea.width-50-percent
+{
+	width: 50%;
+}
+
+	input[type="button"].width-50-percent,
+	input[type="submit"].width-50-percent,
+	select.width-50-percent,
+	div.languages.width-50-percent
+	{
+		width: 50%;
+		
+	}
+
+input.width-50,
+textarea.width-50
+{
+	width: 28px;
+}
+
+	input[type="button"].width-50,
+	input[type="submit"].width-50,
+	select.width-50,
+	div.languages.width-50
+	{
+		width: 50px;
+		
+	}
+
+input.width-100,
+textarea.width-100
+{
+	width: 78px;
+}
+
+	input[type="button"].width-100,
+	input[type="submit"].width-100,
+	select.width-100,
+	div.languages.width-100
+	{
+		width: 100px;
+		
+	}
+
+input.width-140,
+textarea.width-140
+{
+	width: 128px;
+}
+	
+	input[type="button"].width-140,
+	input[type="submit"].width-140,
+	select.width-140,
+	div.languages.width-140
+	{
+		width: 140px;
+		
+	}
+
+input.width-150,
+textarea.width-150
+{
+	width: 128px;
+}
+	
+	input[type="button"].width-150,
+	input[type="submit"].width-150,
+	select.width-150,
+	div.languages.width-150
+	{
+		width: 150px;
+		
+	}
+
+input.width-200,
+textarea.width-200
+{
+	width: 178px;
+}
+
+	input[type="button"].width-200,
+	input[type="submit"].width-200,
+	select.width-200,
+	div.languages.width-200
+	{
+		width: 200px;
+		
+	}
+	
+input.width-250,
+textarea.width-250
+{
+	width: 228px;
+}
+
+	input[type="button"].width-250,
+	input[type="submit"].width-250,
+	select.width-250,
+	div.languages.width-250
+	{
+		width: 250px;
+		
+	}
+
+input.width-300,
+textarea.width-300
+{
+	width: 278px;
+}
+
+	input[type="button"].width-300,
+	input[type="submit"].width-300,
+	select.width-300,
+	div.languages.width-300
+	{
+		width: 300px;
+		
+	}
+	
+input.width-400,
+textarea.width-400
+{
+	width: 378px;
+}
+
+	input[type="button"].width-400,
+	input[type="submit"].width-400,
+	select.width-400,
+	div.languages.width-400
+	{
+		width: 400px;
+		
+	}
+	
+ 
+ 	
+/*
+**	The markup for input holders, icon holders
+**	and other input addons.
+*/
+
+span.input-holder
+{
+	margin: 0px 0px 5px 0px;
+	display: block;
+	
+	font-family: 'Raleway', 'Tahoma';
+	font-size: 11px;
+	text-transform: uppercase;
+	color: #666666;
+}
+
+	span.input-holder span
+	{
+		margin: 0px 0px 0px 6px;
+		
+		font-family: 'Raleway', 'Tahoma';
+		font-size: 11px;
+		color: #999999;
+		text-transform: none;
+	}
+	
+div.icon-input-holder
+{
+	position: relative;
+}
+
+	div.icon-input-holder input
+	{
+		padding-left: 28px;
+	}
+	
+		div.icon-input-holder.large-padding input
+		{
+			padding-left: 32px;
+		}
+
+	div.icon-input-holder span.icon,
+	div.icon-input-holder img
+	{
+		position: absolute;
+		top: 12px;
+		left: 10px;
+		
+		font-size: 12px !important;
+		color: #788195;
+	}
+	
+	div.icon-input-holder img
+	{
+		top: 10px;
+	}
+	
+div.checkbox-holder
+{
+	width: 50px;
+	height: 24px;
+	
+	position: relative;
+	
+	background-color: #dd0000;
+	border: 1px solid #cccccc;
+	
+	cursor: pointer;
+	
+	-moz-border-radius: 24px;
+	-webkit-border-radius: 24px;
+	-khtml-border-radius: 24px;
+	border-radius: 24px;
+}
+	
+	div.checkbox-holder.active
+	{
+		background-color: rgb(100, 189, 99);
+	}
+
+	div.checkbox-holder div.slider
+	{
+		width: 24px;
+		height: 24px;
+		
+		background: #ffffff;
+		
+		-moz-border-radius: 24px;
+		-webkit-border-radius: 24px;
+		-khtml-border-radius: 24px;
+		border-radius: 24px;
+	}
+	
+		div.checkbox-holder div.slider.left
+		{
+			float: left;
+		}
+		
+		div.checkbox-holder div.slider.right
+		{
+			float: right;
+		}
+		
+	div.checkbox-holder div.text
+	{
+		width: 50px;
+		height: 14px;
+		
+		position: absolute;
+		top: 6px;
+		right: -58px;
+		
+		text-align: left;
+	}
+	
+	
+/*
+**	The find- and found product inputs
+**	are used inside tables for searching
+**	data-connection products.
+*/
+
+input[name="find-product"]
+{
+	float: left;
+}
+
+input[name="found-product"]
+{
+	margin: 0px 0px 0px 5px;
+	float: left;
+}

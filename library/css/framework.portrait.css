@@ -1,0 +1,64 @@
+/*
+**	Framework markup including the menu structure, header,
+**	content en all of the extra's. The content usually has
+**	a different CSS file.
+*/
+
+@media only screen 
+	and (min-width : 750px) 
+	and (max-width : 1050px)
+{
+	.hide-mobile
+	{
+		display: none;
+	}
+	
+	.show-mobile
+	{
+		display: block !important;
+	}
+	
+	
+	body div.menu
+	{
+		left: -200px;
+	}
+	
+		body div.menu div.menu-header span.fa-bars
+		{
+			width: 30px;
+			height: 30px;
+			
+			position: absolute;
+			top: 17px;
+			right: 24px;
+			
+			font-size: 30px;
+			color: #788195;
+		}
+	
+	body div.top
+	{
+		left: 80px;
+	}
+	
+	body div.content
+	{
+		left: 80px !important;
+		
+		padding: 10px;
+	}
+	
+	body div.content div.simple-form div.form-header h1
+	{
+		width: 100%;
+		
+		margin: 0px 0px 5px 0px;
+	}
+	
+	body div.content div.simple-form div.form-header input
+	{
+		margin: 7px 5px 0px 0px !important;
+		float: left !important;
+	}
+}

@@ -1,0 +1,44 @@
+/*
+**	Markup for the login page.
+**
+**	The first block is for screens smaller then
+**	the system can handle.
+*/
+
+@media only screen 
+	and (min-width : 1px) 
+	and (max-width : 280px)
+{
+	body
+	{
+		display: none;
+	}
+}
+
+@media only screen 
+	and (min-width : 100px) 
+	and (max-width : 750px)
+{
+	body img.paper,
+	body img.specs
+	{
+		display: none;
+	}
+	
+	body img.supplies
+	{
+		height: 150px;
+		
+		left: 10px !important;
+	}
+	
+	body img.coffee
+	{
+		width: 160px;
+		
+		top: 20px !important;
+		right: 20px;
+		bottom: 0px;
+		left: auto;
+	}	
+}

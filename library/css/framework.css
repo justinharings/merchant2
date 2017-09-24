@@ -1,0 +1,739 @@
+/*
+**	Framework markup including the menu structure, header,
+**	content en all of the extra's. The content usually has
+**	a different CSS file.
+*/
+
+.show-mobile
+{
+	display: none;
+}
+
+img.profile
+{
+	width: 80px;
+	height: 80px;
+		
+	-moz-border-radius: 80px;
+	-webkit-border-radius: 80px;
+	-khtml-border-radius: 80px;
+	border-radius: 80px;
+}
+
+img.product
+{
+	width: 150px;
+}
+
+.fa.large
+{
+	font-size: 150%;
+}
+
+.fa.red
+{
+	color: #d00000;
+}
+
+.fa.green
+{
+	color: #89d000;
+}
+
+.fa.blue
+{
+	color: #0084d0;
+}
+
+body div.loader
+{
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: 999;
+	
+	background-color: #f9f9f9;
+}
+
+	body div.loader span
+	{
+		width: 50px;
+		height: 50px;
+		
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		
+		margin: -25px 0px 0px -25px;
+		
+		font-size: 50px;
+		color: #ddd;
+	}
+
+body div.menu
+{
+	width: 280px;
+	
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: 990;
+	
+	background-color: #2b303c;
+}
+
+	body div.menu div.menu-header
+	{
+		width: 100%;
+		height: 60px;
+		
+		position: relative;
+		
+		background-color: #272b36;
+		
+		border-bottom: 1px solid #232731;
+	}
+	
+		body div.menu div.menu-header img.logo
+		{
+			height: 20px;
+			
+			position: absolute;
+			top: 20px;
+			left: 20px;
+		}
+		
+		body div.menu div.menu-header img.profile
+		{
+			width: 40px;
+			height: 40px;
+			
+			position: absolute;
+			top: 11px;
+			right: 20px;
+			
+			-moz-border-radius: 40px;
+			-webkit-border-radius: 40px;
+			-khtml-border-radius: 40px;
+			border-radius: 40px;
+		}
+	
+	body div.menu div.menu-items-holder
+	{
+		position: absolute;
+		top: 60px;
+		right: 0px;
+		bottom: 0px;
+		left: 0px;
+		
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+	}
+		
+		body div.menu div.menu-items-holder ul.menu
+		{
+			width: 100%;
+			height: 10px;
+			
+			margin: 30px 0px 0px 0px;
+			padding: 0px;
+			display: table;
+		}
+		
+			body div.menu div.menu-items-holder ul.menu li.menu-item
+			{
+				width: calc(100% - 40px);
+				height: 40px;
+				
+				position: relative;
+				
+				margin: 0px 0px 10px 20px;
+				padding: 0px;
+				
+				cursor: pointer;
+				list-style-type: none;
+			}
+			
+				body div.menu div.menu-items-holder ul.menu li.menu-item div.icon,
+				body div.menu div.menu-items-holder ul.menu li.submenu ul li div.icon
+				{
+					width: 40px;
+					height: 40px;
+					
+					position: absolute;
+					right: 0px;
+					
+					background-color: #272b36;
+				} /*----------*/
+				body div.menu div.menu-items-holder ul.menu li.menu-item div.icon.active,
+				body div.menu div.menu-items-holder ul.menu li.menu-item div.icon.active span
+				{
+					background-color: #d00000;
+					
+					color: #fff !important;
+				}
+				
+					body div.menu div.menu-items-holder ul.menu li.menu-item div.icon span.counter
+					{
+						width: 15px;
+						height: 14px;
+						
+						margin: -2px -5px 0px 0px;
+						padding: 1px 0px 0px 0px;
+						display: block;
+						float: right;
+						
+						-moz-border-radius: 15px;
+						-webkit-border-radius: 15px;
+						-khtml-border-radius: 15px;
+						border-radius: 15px;
+						
+						background-color: #d00000;
+						
+						font-family: 'Raleway', 'Tahoma';
+						font-size: 10px;
+						color: #fff;
+						text-align: center;
+					}
+				
+					body div.menu div.menu-items-holder ul.menu li.menu-item div.icon span.fa
+					{
+						width: 100%;
+						
+						margin: 10px 0px 0px 0px;
+						
+						font-size: 20px;
+						color: #788195;
+						text-align: center;
+					} /*----------*/
+					body div.menu div.menu-items-holder ul.menu li.menu-item div.icon span.fa.correction
+					{
+						font-size: 22px;
+					}
+					body div.menu div.menu-items-holder ul.menu li.menu-item:hover div.icon span.fa
+					{
+						color: #ffffff;
+					}
+					
+					body div.menu div.menu-items-holder ul.menu li.menu-item div.icon span.textual
+					{
+						width: 100%;
+						
+						margin: 15px 0px 0px 0px;
+						display: table;
+						
+						font-size: 12px;
+						color: #788195;
+						text-align: center;
+					} /*----------*/
+					body div.menu div.menu-items-holder ul.menu li.menu-item:hover div.icon span.textual
+					{
+						color: #fff;
+					}
+					
+			body div.menu div.menu-items-holder ul.menu li.submenu
+			{
+				width: 100%;
+				height: 10px;
+				
+				margin: 10px 0px;
+				padding: 10px 0px 0px 0px;
+				display: table;
+				
+				background-color: #232731;
+			}
+					
+				body div.menu div.menu-items-holder ul.menu li.menu-item div.text,
+				body div.menu div.menu-items-holder ul.menu li.menu-item div.sub,
+				body div.menu div.menu-items-holder ul.menu li.submenu ul li div.text
+				{
+					width: 100%;
+					
+					float: left;
+					
+					font-family: 'Raleway', 'Tahoma';
+					font-size: 12px;
+					color: #788195;
+				} /*----------*/
+				body div.menu div.menu-items-holder ul.menu li.menu-item:hover div.text,
+				body div.menu div.menu-items-holder ul.menu li.submenu ul li:hover div.text,
+				body div.menu div.menu-items-holder ul.menu li.menu-item div.text.active,
+				body div.menu div.menu-items-holder ul.menu li.submenu ul li div.text.active
+				{
+					color: #fff;
+				}
+				
+				body div.menu div.menu-items-holder ul.menu li.submenu ul li div.text
+				{
+					margin: 15px 0px 0px -25px;
+					
+					font-size: 11px;
+				}
+				
+				body div.menu div.menu-items-holder ul.menu li.menu-item div.text
+				{
+					margin: 7px 0px 0px 0px;
+				}
+				
+				body div.menu div.menu-items-holder ul.menu li.menu-item div.sub
+				{
+					font-size: 10px;
+					color: #4a5160;
+				}
+				
+				
+				
+body div.top
+{
+	height: 60px;
+	
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	left: 280px;
+	
+	background-color: #fff;
+	
+	border-bottom: 1px solid #ddd;
+}
+
+	body div.top span.logout-button
+	{
+		width: 25px;
+		height: 25px;
+		
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		
+		font-size: 25px;
+		color: #d00000;
+	}
+	
+	body div.top span.previous-button
+	{
+		width: 25px;
+		height: 25px;
+		
+		position: absolute;
+		top: 20px;
+		right: 55px;
+		
+		visibility: hidden;
+		
+		font-size: 25px;
+		color: #272b36;
+	}
+	
+	
+	
+body div.content
+{
+	position: absolute;
+	top: 61px;
+	right: 0px;
+	bottom: 0px;
+	left: 280px;
+	
+	padding: 20px;
+	
+	background-color: #f1f1f1;
+	
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+	body div.content ul.breadcrumbs
+	{
+		margin: 0px;
+		padding: 0px;
+	}
+	
+		body div.content ul.breadcrumbs li
+		{
+			margin: 0px 10px 0px 0px;
+			float: left;
+			
+			font-family: 'Raleway', 'Tahoma';
+			font-size: 12px;
+			color: #aaa;
+			
+			list-style-type: none;
+		} /*----------*/
+		body div.content ul.breadcrumbs li:last-child
+		{
+			color: #d00000;
+		}
+		
+			body div.content ul.breadcrumbs li span.fa
+			{
+				margin: 0px 10px 0px 0px;
+				
+				color: #aaa;
+			}
+	
+	body div.content div.view-options
+	{
+		width: 100%;
+		height: 1px;
+		
+		margin: 20px 0px 0px 0px;
+		float: left;
+		display: table;
+	}
+	
+		body div.content div.view-options input[type="text"]
+		{
+			float: left;
+		}
+		
+		body div.content div.view-options div.button
+		{
+			width: 34px;
+			height: 25px;
+			
+			padding-top: 9px;
+			float: right;
+			
+			background-color: #d00000;
+			
+			border: 1px solid #9e0101;
+			
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			-khtml-border-radius: 5px;
+			border-radius: 5px;
+			
+			font-size: 17px;
+			color: #fff;
+			text-align: center;
+			
+			cursor: pointer;
+		}
+			
+	body div.content div.table-holder
+	{
+		width: calc(100% - 20px);
+		height: 1px;
+		
+		margin: 20px 0px 0px 0px;
+		padding: 10px;
+		display: table;
+		float: left;
+		
+		background-color: #fff;
+		
+		border: 1px solid #eee;
+		
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;
+		border-radius: 10px;
+	}
+	
+		body div.content div.table-holder table
+		{
+			width: 100%;
+		}
+		
+			body div.content div.table-holder table thead tr td
+			{
+				padding: 10px 0px 10px 0px;
+				
+				font-family: 'Raleway', 'Tahoma';
+				font-size: 14px;
+				color: #bbb;
+			} /*----------*/
+			body div.content div.table-holder table thead tr td:first-child
+			{
+				padding: 10px 0px 10px 10px;
+			}
+			
+			body div.content div.table-holder table tbody tr td
+			{
+				padding: 12px 0px;
+				
+				border-top: 1px solid #eee;
+				
+				font-family: 'Raleway', 'Tahoma';
+				font-size: 14px;
+				color: #333;
+			} /*----------*/
+			body div.content div.table-holder table tbody tr td:first-child
+			{
+				padding: 12px 0px 12px 10px;
+			} /*----------*/
+			body div.content div.table-holder table.hoverable tbody tr:hover td
+			{
+				background-color: #f9f9f9;
+				
+				cursor: pointer;
+			} /*----------*/
+			body div.content div.table-holder table tbody tr td.red
+			{
+				color: #d00000;
+			}
+			body div.content div.table-holder table tbody tr td.yellow
+			{
+				color: #d0a600;
+			}
+			
+	body div.content div.simple-form
+	{
+		width: 100%;
+		height: 10px;
+		
+		display: table;
+	}
+	
+		body div.content div.simple-form div.form-header
+		{
+			width: 100%;
+			height: 10px;
+			
+			margin: 20px 0px;
+			padding: 0px 0px 20px 0px;
+			display: table;
+			
+			border-bottom: 1px solid #ddd;
+		}
+		
+			body div.content div.simple-form div.form-header h1
+			{
+				float: left;
+				
+				font-family: 'Raleway', 'Tahoma';
+				font-size: 20px;
+				color: #333;
+			}
+			
+			body div.content div.simple-form div.form-header input
+			{
+				margin: 7px 0px 0px 5px;
+				float: right;
+			}
+			
+		body div.content div.simple-form div.form-tabs
+		{
+			width: 100%;
+			height: 10px;
+			
+			margin: 0px 0px 20px 0px;
+			float: left;
+			display: table;
+		}
+		
+			body div.content div.simple-form div.form-tabs div
+			{
+				width: 50px;
+				height: 37px;
+				
+				margin: 0px 10px 0px 0px;
+				padding: 13px 0px 0px 0px;
+				float: left;
+				
+				background-color: #ddd;
+				
+				-moz-border-radius: 50px;
+				-webkit-border-radius: 50px;
+				-khtml-border-radius: 50px;
+				border-radius: 50px;
+				
+				font-size: 25px;
+				color: #666;
+				text-align: center;
+			}
+			
+				body div.content div.simple-form div.form-tabs div.smaller
+				{
+					font-size: 22px;
+				}
+			
+				body div.content div.simple-form div.form-tabs div.active,
+				body div.content div.simple-form div.form-tabs div:hover
+				{
+					background-color: #d00000;
+					
+					color: #fff;
+					
+					cursor: pointer;
+				}
+				
+				body div.content div.simple-form div.form-tabs div:first-child
+				{
+					background-color: #fff;
+					border: 1px solid #ddd;
+				}
+				
+				body div.content div.simple-form div.form-tabs div:first-child:hover
+				{
+					background-color: #fff;
+					border: 1px solid #ddd;
+					
+					color: #666;
+					
+					cursor: default;
+				}
+			
+		body div.content div.simple-form div.form-content
+		{
+			width: calc(100% - 42px);
+			height: 10px;
+			
+			margin: 20px 0px 0px 0px;
+			padding: 10px 20px 20px 20px;
+			display: table;
+			
+			background-color: #fff;
+			
+			border: 1px solid #f1f1f1;
+			
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			-khtml-border-radius: 10px;
+			border-radius: 10px;
+			
+			font-family: 'Raleway', 'Tahoma';
+			font-size: 13px;
+		}
+		
+		body div.content div.simple-form div.form-content.blue
+		{
+			width: calc(100% - 52px);
+			
+			background-color: #f1f7ff;
+			
+			border-color: #cae2ff !important;
+			border-left: 10px solid #cae2ff !important;
+			
+			-moz-border-radius: 0px;
+			-webkit-border-radius: 0px;
+			-khtml-border-radius: 0px;
+			border-radius: 0px;
+		}
+		
+		body div.content div.simple-form div.form-content.gray
+		{
+			width: calc(100% - 52px);
+			
+			background-color: #f1f1f1;
+			
+			border-color: #ddd !important;
+			border-left: 10px solid #ddd !important;
+			
+			-moz-border-radius: 0px;
+			-webkit-border-radius: 0px;
+			-khtml-border-radius: 0px;
+			border-radius: 0px;
+		}
+		
+		body div.content div.simple-form div.form-content:first-child
+		{
+			margin: 0px;
+		}
+		
+			body div.content div.simple-form div.form-content div.content-header
+			{
+				width: auto;
+				height: 1px;
+				
+				margin: 0px 0px 20px 0px;
+				padding: 0px 30px 5px 0px;
+				display: table;
+				
+				border-bottom: 1px solid #ddd;
+				
+				font-family: 'Raleway', 'Tahoma';
+				font-size: 14px;
+				color: #333;
+			}
+			
+				body div.content div.simple-form div.form-content div.content-header strong
+				{
+					margin: 0px 0px 5px 0px;
+					float: left;
+				}
+				
+				body div.content div.simple-form div.form-content div.content-header a
+				{
+					color: #d00000;
+					text-decoration: none;
+				}
+				
+					body div.content div.simple-form div.form-content div.content-header a:hover
+					{
+						text-decoration: underline;
+					}
+				
+				body div.content div.simple-form div.form-content div.content-header span.fa
+				{
+					margin: 2px 5px 0px 0px;
+					float: left;
+				}
+				
+			body div.content div.simple-form div.form-content a
+			{
+				color: #d00000;
+			}
+			
+				body div.content div.simple-form div.form-content a:hover
+				{
+					text-decoration: none;
+				}
+				
+			body div.content div.simple-form div.form-content table.form-table
+			{
+				width: 100%;
+			}
+			
+				body div.content div.simple-form div.form-content table.form-table thead tr td
+				{
+					padding: 0px 0px 10px 0px;
+					
+					border-bottom: 1px solid #ddd;
+					
+					font-family: 'Raleway', 'Tahoma';
+					font-size: 14px;
+					color: #333;
+				}
+				
+					body div.content div.simple-form div.form-content table.form-table thead tr td span.add-row
+					{
+						font-size: 20px;
+					}
+					body div.content div.simple-form div.form-content table.form-table thead tr td span.add-row:hover
+					{
+						color: #d00000;
+						
+						cursor: pointer;
+					}
+				
+				body div.content div.simple-form div.form-content table.form-table tbody tr td
+				{
+					padding: 10px 0px;
+					
+					border-bottom: 1px solid #ddd;
+					
+					font-family: 'Raleway', 'Tahoma';
+					font-size: 14px;
+					color: #333;
+				}
+				
+					body div.content div.simple-form div.form-content table.form-table tbody tr td span.remove-row
+					{
+						font-size: 20px;
+					}
+					body div.content div.simple-form div.form-content table.form-table tbody tr td span.remove-row:hover
+					{
+						color: #d00000;
+						
+						cursor: pointer;
+					}
+				
+				body div.content div.simple-form div.form-content table.form-table tbody tr.new-row
+				{
+					display: none;
+				}

@@ -1,0 +1,42 @@
+div.error-image
+{
+	width: 404px;
+	height: 332px;
+	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	
+	margin: -220px 0px 0px -202px;
+}
+
+	div.error-image	div.error-title
+	{
+		width: 404px;
+		height: 24px;
+		
+		position: absolute;
+		bottom: -44px;
+		
+		font-family: tahoma;
+		font-size: 20px;
+		text-align: center;
+	}
+	
+	div.error-image	div.error-text
+	{
+		width: 404px;
+		height: 49px;
+		
+		position: absolute;
+		bottom: -95px;
+		
+		font-family: tahoma;
+		font-size: 13px;
+		text-align: center;
+	}
+	
+		div.error-image	div.error-text a
+		{
+			color: #d00000;
+		}

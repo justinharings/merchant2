@@ -1,0 +1,56 @@
+/*
+**	@import external CSS files. Such as fonts,
+**	jQuery library and icon packs. Minifier
+**	is keeping these URL's as they are.
+*/
+
+@import url("//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css");
+
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url("//cdn.linearicons.com/free/1.0.0/icon-font.min.css");
+@import url("//fonts.googleapis.com/css?family=Raleway:400");
+
+
+
+/*
+** 	@import local CSS files. Start with the
+**	normalizer, this file is keeping the CSS
+**	more cross-browser. After that include
+**	the CSS files that are used for the website.
+*/
+
+@import url("normalize.css");
+
+@import url("inputs.css");
+@import url("errors.css");
+@import url("multiselect.css");
+
+@import url("login.css");
+@import url("login.landscape.css");
+@import url("login.portrait.css");
+@import url("login.mobile.css");
+
+@import url("framework.css");
+@import url("framework.landscape.css");
+@import url("framework.portrait.css");
+@import url("framework.mobile.css");
+
+
+
+/*
+**	General part of the stylesheet. Body and
+**	overall containers. No dept in the file here.
+*/
+
+body
+{
+	background-color: #f9f9f9;
+	
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+img.orientation
+{
+	display: none;
+}

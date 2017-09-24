@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language_pack>
+	<info>
+		<full_name>Nederlands</full_name>
+	</info>
+	
+	<html_head>
+	    <default_title>Merchant</default_title>
+	</html_head>
+	
+	<menu>
+		<dashboard>Dashboard</dashboard>
+		<dashboard-eg>Statistieken en overzichten</dashboard-eg>
+		
+		<search-bots>Search bots index</search-bots>
+		<search-bots-eg>Overzicht van website crawlers</search-bots-eg>
+		
+		<mailserver>E-mail server</mailserver>
+		<mailserver-eg>Verzonden en wachtende e-mails</mailserver-eg>
+		
+		<sales>Verkoop beheer</sales>
+		<sales-eg>Bestellingen en betalingen</sales-eg>
+		
+		<open-orders>Openstaande bestellingen</open-orders>
+		<open-orders-abbr>OB</open-orders-abbr>
+		<closed-orders>Afgeronde bestellingen</closed-orders>
+		<closed-orders-abbr>AB</closed-orders-abbr>
+		<canceled-orders>Retour / Geweigerd</canceled-orders>
+		<canceled-orders-abbr>RG</canceled-orders-abbr>
+		<archived-orders>Order archief doorzoeken</archived-orders>
+		<archived-orders-abbr>OA</archived-orders-abbr>
+		<debi-credi>Debiteuren / Crediteuren</debi-credi>
+		<debi-credi-abbr>DC</debi-credi-abbr>
+		<paylink>Betaallink genereren</paylink>
+		<paylink-abbr>BG</paylink-abbr>
+		
+		<catalog>Catalogus beheer</catalog>
+		<catalog-eg>Producten, categorieën en groepen</catalog-eg>
+		
+		<webshop-categories>Webwinkel categorieën</webshop-categories>
+		<webshop-categories-abbr>WC</webshop-categories-abbr>
+		<article-management>Artikelen beheren</article-management>
+		<article-management-abbr>AB</article-management-abbr>
+		<reviews-management>Reviews beheren</reviews-management>
+		<reviews-management-abbr>RB</reviews-management-abbr>
+		<sold-out>Uitverkochte artikelen</sold-out>
+		<sold-out-abbr>UA</sold-out-abbr>
+		
+		<stock>Voorraad beheer</stock>
+		<stock-eg>Voorraad mutaties en leveringen</stock-eg>
+		
+		<stock-mutations>Voorraad mutaties</stock-mutations>
+		<stock-mutations-abbr>VM</stock-mutations-abbr>
+		<bulk-mutations>Bulk mutaties</bulk-mutations>
+		<bulk-mutations-abbr>BM</bulk-mutations-abbr>
+		<manage-locations>Locaties beheren</manage-locations>
+		<manage-locations-abbr>LB</manage-locations-abbr>
+		<low-stock>Lage voorraden</low-stock>
+		<low-stock-abbr>LV</low-stock-abbr>
+		<reserved-articles>Gereserveerde artikelen</reserved-articles>
+		<reserved-articles-abbr>GA</reserved-articles-abbr>
+		
+		<dropshipping-accounts>Dropshipping accounts</dropshipping-accounts>
+		<dropshipping-accounts-eg>Accounts voor dropshippers</dropshipping-accounts-eg>
+		
+		<promotions>Promoties en kortingen</promotions>
+		<promotions-eg>Kortingen, acties en codes</promotions-eg>
+		
+		<catalog-discounts>Catalogus kortingen</catalog-discounts>
+		<catalog-discounts-abbr>CK</catalog-discounts-abbr>
+		<cart-discounts>Winkelwagen kortingen</cart-discounts>
+		<cart-discounts-abbr>WK</cart-discounts-abbr>
+		
+		<customers>Klanten bestand</customers>
+		<customers-eg>Klanten, adressen en meer</customers-eg>
+		
+		<cms>Teksten en pagina beheer</cms>
+		<cms-eg>Teksten, banners, e-mails en facturen</cms-eg>
+		
+		<page-content>Pagina teksten beheren</page-content>
+		<page-content-abbr>PT</page-content-abbr>
+		<manage-banners>Banners beheren</manage-banners>
+		<manage-banners-abbr>BB</manage-banners-abbr>
+		<image-gallery>Fotoalbum beheren</image-gallery>
+		<image-gallery-abbr>FB</image-gallery-abbr>
+		<email-templates>E-mail sjablonen beheren</email-templates>
+		<email-templates-abbr>ES</email-templates-abbr>
+		<sms-templates>SMS sjablonen beheren</sms-templates>
+		<sms-templates-abbr>SS</sms-templates-abbr>
+		<invoice-content>Facturen en kassabonnen</invoice-content>
+		<invoice-content-abbr>FK</invoice-content-abbr>
+		
+		<pos>Point of sale beheer</pos>
+		<pos-eg>Kassa instellingen en beheer</pos-eg>
+		
+		<pos-employees>Kassa medewerkers</pos-employees>
+		<pos-employees-abbr>KM</pos-employees-abbr>
+		<pos-settings>Kassa instellingen</pos-settings>
+		<pos-settings-abbr>KI</pos-settings-abbr>
+		<pos-printers>Printer instellingen</pos-printers>
+		<pos-printers-abbr>PI</pos-printers-abbr>
+		
+		<workorders>Werkorders instellingen</workorders>
+		<workorders-eg>Instellingen voor werkorders</workorders-eg>
+		
+		<reports>Rapporten en statistieken</reports>
+		<reports-eg>Omzet, verkoopaantallen en meer</reports-eg>
+		
+		<pos-printers>Printer instellingen</pos-printers>
+		<pos-printers-abbr>PI</pos-printers-abbr>
+		<report-shipments>Artikelen per verzendmethode</report-shipments>
+		<report-shipments-abbr>AV</report-shipments-abbr>
+		<articles-groups>Aantallen per omzetgroep</articles-groups>
+		<articles-groups-abbr>AO</articles-groups-abbr>
+		<articles-brands>Aantallen per merk/leverancier</articles-brands>
+		<articles-brands-abbr>AM</articles-brands-abbr>
+		<payment-book>Grootboek uitdraaien</payment-book>
+		<payment-book-abbr>GU</payment-book-abbr>
+		<calculate-stock>Voorraad berekenen</calculate-stock>
+		<calculate-stock-abbr>VB</calculate-stock-abbr>
+		
+		<settings>Overige instellingen</settings>
+		<settings-eg>Gebruikers, verzending en meer</settings-eg>
+		
+		<manage-users>Gebruikers beheren</manage-users>
+		<manage-users-abbr>GB</manage-users-abbr>
+		<order-statuses>Bestelstatussen beheren</order-statuses>
+		<order-statuses-abbr>BB</order-statuses-abbr>
+		<payment-methods>Betalingsmethoden beheren</payment-methods>
+		<payment-methods-abbr>BB</payment-methods-abbr>
+		<shipping-methods>Verzendmethoden beheren</shipping-methods>
+		<shipping-methods-abbr>VB</shipping-methods-abbr>
+		<manage-groups>Verkoopgroepen beheren</manage-groups>
+		<manage-groups-abbr>VB</manage-groups-abbr>
+		<manage-brands>Merken/leveranciers beheren</manage-brands>
+		<manage-brands-abbr>MB</manage-brands-abbr>
+		<manage-taxes>Belasting percentages</manage-taxes>
+		<manage-taxes-abbr>BP</manage-taxes-abbr>
+		
+		<release-notes>Release notes</release-notes>
+		<release-notes-eg>Release informatie</release-notes-eg>
+	</menu>
+	
+	<table-headers>
+		<name>Naam</name>
+		<updated>Bewerkt</updated>
+		<added>Toegevoegd</added>
+		<percentage>Percentage</percentage>
+		<courier>Koerier</courier>
+		<module>Module</module>
+		<pos>Point of sale</pos>
+		<default>Standaard</default>
+		<email>E-mail adres</email>
+		<type>Type</type>
+		<tags>Tags</tags>
+		<count-pictures>Aantal foto's</count-pictures>
+			<count-pictures-inline>foto('s)</count-pictures-inline>
+		<url>URL</url>
+		<seo_url>SEO URL</seo_url>
+		<company>Bedrijf</company>
+		<city>Stad</city>
+		<phone>Telefoon</phone>
+		<email_address>E-mail</email_address>
+		<stock-type>Voorraadwijze</stock-type>
+		<visible>Zichtbaar</visible>
+		<status>Status</status>
+		<count-products>Aantal producten</count-products>
+			<count-products-inline>product(en)</count-products-inline>
+		<ac>AC</ac>
+		<sc>SC</sc>
+		<product>Product</product>
+		<price>Prijs</price>
+		<stock>Voorraad</stock>
+			<count-stock-inline>stuk(s)</count-stock-inline>
+			<count-economic-inline>economisch</count-economic-inline>
+		<writer>Schrijver</writer>
+		<stars>Sterren</stars>
+		<products>Producten</products>
+			<products-inline>stuk(s)</products-inline>
+		<date-from>Vanaf datum</date-from>
+		<date-to>T/m datum</date-to>
+		
+		<no-results>Geen resultaten voor dit overzicht.</no-results>
+		<search-required>U dient te zoeken om resultaten te krijgen.</search-required>
+		<orderid>Order #</orderid>
+		<date>Datum</date>
+		<customer>Klant</customer>
+		<grand_total>Totaal</grand_total>
+		<payed>Betaald</payed>
+	</table-headers>
+	
+	<forms>
+		<add>Toevoegen</add>
+		<edit>%s bewerken</edit>
+		
+		<add-new-title>Nieuwe toevoegen</add-new-title>
+		
+		<button-save>Opslaan</button-save>
+		<button-cancel>Annuleren en terug</button-cancel>
+		<button-delete>Verwijderen</button-delete>
+		
+		<legend-general>Algemene gegevens</legend-general>
+		<legend-options>Opties in- en uitschakelen</legend-options>
+		<legend-personal-information>Persoonsgegevens</legend-personal-information>
+		<legend-address-information>Adresgegevens</legend-address-information>
+		<legend-contact-information>Contactgegevens</legend-contact-information>
+		<legend-autorisations>Autorisaties</legend-autorisations>
+		<legend-payment-module>Eventuele betalingsmodule</legend-payment-module>
+		<legend-prices-taxes>Prijzen en belastingen</legend-prices-taxes>
+		<legend-manage-content>Content bewerken</legend-manage-content>
+		<legend-employees>Medewerkers beheren</legend-employees>
+		<legend-google-cloud-print>Google Cloud Print instellingen</legend-google-cloud-print>
+		<legend-standard-data>Standaard waarden</legend-standard-data>
+		<legend-invoice-text>Bedrijfsinformatie factuur</legend-invoice-text>
+		<legend-receipt-text>Bedrijfsinformatie kassabon</legend-receipt-text>
+		<legend-invoice-extra>Extra factuur tekst</legend-invoice-extra>
+		<legend-pictures>Foto('s) beheren</legend-pictures>
+		<legend-seo>SEO Instellingen</legend-seo>
+		<legend-notes>Notities</legend-notes>
+		<legend-placed-orders>Geplaatste bestellingen</legend-placed-orders>
+		<legend-workorder-history>Reparatie geschiedenis</legend-workorder-history>
+		<legend-new-email>Nieuwe e-mail versturen</legend-new-email>
+		<legend-customer-card>Klantenkaart barcode</legend-customer-card>
+		<legend-google-map>Google maps view</legend-google-map>
+		<legend-numbers>Nummers</legend-numbers>
+		<legend-shipment-and-weights>Verzending en gewichten</legend-shipment-and-weights>
+		<legend-others>Overige instellingen</legend-others>
+		<legend-prizes>Prijzen en belasting</legend-prizes>
+		<legend-stocks>Voorraden</legend-stocks>
+			<legend-stocks-inline>stuk(s)</legend-stocks-inline>
+		<legend-stock-settings>Voorraad instellingen</legend-stock-settings>
+		<legend-stock-mutation>Voorraad mutatie</legend-stock-mutation>
+		<legend-products>Producten</legend-products>
+		<legend-order-information>Order informatie</legend-order-information>
+		<legend-order-status>Status en omboeken</legend-order-status>
+		<legend-customer-information>Klantgegevens</legend-customer-information>
+		<legend-shipment-track>Verzending(en) volgen</legend-shipment-track>
+		
+		<!-- Orders > Form -->
+		<form-orders-orderid>Ordernummer</form-orders-orderid>
+		<form-orders-orderdate>Order datum</form-orders-orderdate>
+		<form-orders-products>Producten</form-orders-products>
+		<form-orders-products-inline>artikel(en)</form-orders-products-inline>
+		<form-orders-grand_total>Totaalbedrag</form-orders-grand_total>
+		<form-orders-payed>Betaald</form-orders-payed>
+		<form-orders-open>Openstaand</form-orders-open>
+		<form-orders-status>Status aanpassen</form-orders-status>
+		<form-orders-omboeken>Naar vandaag</form-orders-omboeken>
+		
+		<!-- Promotions > Form -->
+		<form-promotions-name>Omschrijving</form-promotions-name>
+		<form-promotions-name-eg>Alleen voor de backoffice.</form-promotions-name-eg>
+		<form-promotions-date-from>Vanaf datum</form-promotions-date-from>
+		<form-promotions-date-to>Tot en met</form-promotions-date-to>
+		<form-promotions-table-product>Product</form-promotions-table-product>
+		<form-promotions-table-price>Stam prijs</form-promotions-table-price>
+		<form-promotions-table-type>Type korting</form-promotions-table-type>
+		<form-promotions-table-dicount>Korting</form-promotions-table-dicount>
+		<form-promotions-inline-percentage>Percentage korting</form-promotions-inline-percentage>
+		<form-promotions-inline-fixed>Vast bedrag</form-promotions-inline-fixed>
+		
+		<!-- Manage catalog > Products > Form -->
+		<form-products-ac>Artikelcode</form-products-ac>
+		<form-products-sc>Leverancier code</form-products-sc>
+		<form-products-barcode>Barcode</form-products-barcode>
+		<form-products-name>Product naam</form-products-name>
+		<form-products-description>Omschrijving</form-products-description>
+		<form-products-description-eg>Geen HTML. Vertaling wordt gedaan door Google Translate.</form-products-description-eg>
+		<form-products-shipment>Standaard verzendmethode</form-products-shipment>
+		<form-products-weight>Gewicht</form-products-weight>
+		<form-products-weight-eg>In grammen.</form-products-weight-eg>
+		<form-products-maximum>Max. te bestellen</form-products-maximum>
+		<form-products-brand>Merk/leverancier</form-products-brand>
+		<form-products-group>Verkoopgroep</form-products-group>
+		<form-products-visibility>Zichtbaarheid</form-products-visibility>
+		<form-products-bookmark>Snelkiezen in POS</form-products-bookmark>
+		<form-products-price>Verkoopprijs</form-products-price>
+		<form-products-price-eg>Inclusief BTW.</form-products-price-eg>
+		<form-products-price-adviced>Adviesprijs</form-products-price-adviced>
+		<form-products-price-purchase>Inkoopsprijs</form-products-price-purchase>
+		<form-products-taxes>Belastingpercentage</form-products-taxes>
+		<form-products-categories>Categorie</form-products-categories>
+		<form-products-images>Afbeelding</form-products-images>
+		<form-products-images-thumb>Thumb</form-products-images-thumb>
+		<form-products-properties-language>Taal</form-products-properties-language>
+		<form-products-properties-key>Sleutel</form-products-properties-key>
+		<form-products-properties-value>Waarde</form-products-properties-value>
+		<form-products-filters-language>Taal</form-products-filters-language>
+		<form-products-filters-key>Filter</form-products-filters-key>
+		<form-products-filters-value>Waarde</form-products-filters-value>
+		<form-products-status>Product status</form-products-status>
+		<form-products-delivery-days>Leverdagen leverancier</form-products-delivery-days>
+		<form-products-mutation>Doorvoeren</form-products-mutation>
+		<form-products-mutation-eg>Gebruik 'min' (-) voor aftrekken.</form-products-mutation-eg>
+		<form-products-chained-product>Gekoppeld product</form-products-chained-product>
+		<form-products-chained-product-stock>Voorraad</form-products-chained-product-stock>
+		<form-products-chained-product-price>Prijs</form-products-chained-product-price>
+		
+		<!-- Manage catalog > Categories > Form -->
+		<form-categories-name>Naam</form-categories-name>
+		<form-categories-name-eg>Ook voor de klant zichtbaar.</form-categories-name-eg>
+		<form-categories-parent>Behoord tot bovenliggende</form-categories-parent>
+		<form-categories-stock-type>Voorraadnotatie</form-categories-stock-type>
+		<form-categories-active>Categorie actief</form-categories-active>
+		<form-categories-filters-name>Filter omschrijving</form-categories-filters-name>
+		<form-categories-filters-multiple>Multiple-choice</form-categories-filters-multiple>
+		
+		<!-- Manage catalog > Reviews > Form -->
+		<form-reviews-name>Klant naam</form-reviews-name>
+		<form-reviews-name-eg>Ingevuld door de gebruiker.</form-reviews-name-eg>
+		<form-reviews-active>Zichtbaar</form-reviews-active>
+		<form-reviews-stars>Aantal sterren</form-reviews-stars>
+		<form-reviews-description>Omschrijving</form-reviews-description>
+		
+		<!-- Manage stock > Locations > Form -->
+		<form-locations-name>Locatie</form-locations-name>
+		<form-locations-name-eg>Ook gebruik in uw point of sale.</form-locations-name-eg>
+		
+		<!-- CMS > Customers -->
+		<form-customers-name>Naam van de klant</form-customers-name>
+		<form-customers-company>Bedrijfsnaam</form-customers-company>
+		<form-customers-company-eg>Optioneel.</form-customers-company-eg>
+		<form-customers-address>Adres</form-customers-address>
+		<form-customers-address-eg>Straat en huisnummer.</form-customers-address-eg>
+		<form-customers-zipcode>Postcode</form-customers-zipcode>
+		<form-customers-city>Woonplaats</form-customers-city>
+		<form-customers-country>Land</form-customers-country>
+		<form-customers-phone>Telefoonnummer</form-customers-phone>
+		<form-customers-mobile-phone>Mobiele nummer</form-customers-mobile-phone>
+		<form-customers-email>E-mail adres</form-customers-email>
+		<form-customers-note>Nieuwe notitie</form-customers-note>
+		<form-customers-button-save-note>Nieuwe notitie opslaan</form-customers-button-save-note>
+		<form-customers-button-send-email>E-mail versturen</form-customers-button-send-email>
+		<form-customers-email-subject>Onderwerp</form-customers-email-subject>
+		<form-customers-email-content>Inhoud e-mail bericht</form-customers-email-content>
+		<form-customers-email-content-eg>U kunt [replace-tags] gebruiken. HTML toegestaan.</form-customers-email-content-eg>
+		<form-customers-email-sender>Afzender</form-customers-email-sender>
+		
+		
+		<!-- CMS > Content > Form -->
+		<form-content-name>Omschrijving</form-content-name>
+		<form-content-name-eg>Tevens de pagina titel.</form-content-name-eg>
+		<form-content-language>Taalkeuze</form-content-language>
+		<form-content-language-eg>Voor een specifieke taal.</form-content-language-eg>
+		<form-content-seo-url>SEO URL</form-content-seo-url>
+		<form-content-seo-url-eg>Opgegeven door de webbouwer.</form-content-seo-url-eg>
+		<form-content-seo-keywords>SEO Sleutelwoorden</form-content-seo-keywords>
+		<form-content-seo-keywords-eg>Komma gescheiden.</form-content-seo-keywords-eg>
+		<form-content-seo-description>SEO Omschrijving</form-content-seo-description>
+		<form-content-seo-description-eg>Maximaal 250 tekens.</form-content-seo-description-eg>
+		<form-content-content>Pagina inhoud</form-content-content>
+		<form-content-content-eg>HTML toegestaan.</form-content-content-eg>
+		
+		<!-- CMS > Banners > Form -->
+		<form-banners-name>Banner omschrijving</form-banners-name>
+		<form-banners-name-eg>Alleen voor de backoffice.</form-banners-name-eg>
+		<form-banners-tag>Banner TAG</form-banners-tag>
+		<form-banners-tag-eg>Opgegeven door de webbouwer.</form-banners-tag-eg>
+		<form-banners-url>Pagina URL</form-banners-url>
+		<form-banners-url-eg>Mag ook leeg zijn.</form-banners-url-eg>
+		<form-banners-image>Afbeeldingen</form-banners-image>
+		<form-banners-image-eg>Alleen PNG extensies.</form-banners-image-eg>
+		<form-banners-language>Taalkeuze</form-banners-language>
+		<form-banners-language-eg>Voor een specifieke taal.</form-banners-language-eg>
+		
+		<!-- CMS > Albums > Form -->
+		<form-albums-name>Naam album</form-albums-name>
+		<form-albums-tags>Tags</form-albums-tags>
+		<form-albums-tags-eg>Komma gescheiden.</form-albums-tags-eg>
+		<form-albums-description>Album omschrijving</form-albums-description>
+		<form-albums-description-eg>HTML toegestaan.</form-albums-description-eg>
+		<form-albums-table-image>Afbeelding</form-albums-table-image>
+		<form-albums-table-thumb>Thumb</form-albums-table-thumb>
+		<form-albums-table-tags>Tags</form-albums-table-tags>
+
+		<!-- CMS > Email Templates > Form -->
+		<form-email-name>Omschrijving</form-email-name>
+		<form-email-name-eg>Alleen voor de backoffice.</form-email-name-eg>
+		<form-email-type>E-mail type</form-email-type>
+		<form-email-sender>E-mail afzender</form-email-sender>
+		<form-email-receiver>E-mail ontvanger</form-email-receiver>
+		<form-email-subject>E-mail onderwerp</form-email-subject>
+		<form-email-subject-eg>Zoals meegestuurd.</form-email-subject-eg>
+		<form-email-content>Inhoud</form-email-content>
+		<form-email-content-eg>U kunt [replace-tags] gebruiken. HTML toegestaan.</form-email-content-eg>
+		<form-email-language>Taalkeuze</form-email-language>
+		<form-email-language-eg>Voor een specifieke taal.</form-email-language-eg>
+		
+		<!-- CMS > SMS Templates > Form -->
+		<form-sms-name>Omschrijving</form-sms-name>
+		<form-sms-name-eg>Alleen voor de backoffice.</form-sms-name-eg>
+		<form-sms-type>SMS Type</form-sms-type>
+		<form-sms-content>Inhoud</form-sms-content>
+		<form-sms-content-eg>U kunt [replace-tags] gebruiken. Max. 160 karakters.</form-sms-content-eg>
+		<form-sms-language>Taalkeuze</form-sms-language>
+		<form-sms-language-eg>Voor een specifieke taal.</form-sms-language-eg>
+		
+		<!-- CMS > Invoice texts -->
+		<form-cms-invoices-invoice>Factuur tekst</form-cms-invoices-invoice>
+		<form-cms-invoices-invoice-eg>Rechts bovenin het factuur.</form-cms-invoices-invoice-eg>
+		<form-cms-invoices-receipt>Kassabon tekst</form-cms-invoices-receipt>
+		<form-cms-invoices-invoice-extra>Extra factuur tekst</form-cms-invoices-invoice-extra>
+		<form-cms-invoices-invoice-extra-eg>Grote tekst middenin het factuur.</form-cms-invoices-invoice-extra-eg>
+		
+		<!-- Point of Sale > Employees -->
+		<form-pos-employees-image>Afbeelding (400x400px)</form-pos-employees-image>
+		<form-pos-employees-employee>Medewerker</form-pos-employees-employee>
+		<form-pos-employees-location>Locatie</form-pos-employees-location>
+		<form-pos-employees-added>Toegevoegd op</form-pos-employees-added>
+		<form-pos-employees-latest>Laatste bestelling</form-pos-employees-latest>
+		
+		<!-- Point of Sale > Settings -->
+		<form-pos-settings-shipment>Standaard verzendmethode</form-pos-settings-shipment>
+		<form-pos-settings-orderstatus>Standaard bestelstatus</form-pos-settings-orderstatus>
+		<form-pos-settings-shipment-required>Verzendmethode verplicht</form-pos-settings-shipment-required>
+		
+		<!-- Point of Sale > Printer settings -->
+		<form-pos-printer-google-api>Google Cloud Print API key</form-pos-printer-google-api>
+		<form-pos-printer-google-secret>Google Cloud Print secret key</form-pos-printer-google-secret>
+		<form-pos-printer-google-id>Google Cloud Print printer ID</form-pos-printer-google-id>
+		<form-pos-printer-auto-receipt>Auto. kassabon printen</form-pos-printer-auto-receipt>
+		<form-pos-printer-auto-invoice>Auto. factuur printen</form-pos-printer-auto-invoice>
+		<form-pos-printer-auto-picklist>Auto. pakbon printen</form-pos-printer-auto-picklist>
+		
+		<!-- Workorders -->
+		<form-workorders-receipt-content>Tekst afhaalbewijs</form-workorders-receipt-content>
+		<form-workorders-receipt-content-eg>U kunt [replace-tags] gebruiken.</form-workorders-receipt-content-eg>
+		<form-workorders-radio>Radio beschikbaar</form-workorders-radio>
+		<form-workorders-unique-identifier>Uniek sleutelnummer</form-workorders-unique-identifier>
+		
+		<!-- Settings -> Users -> Form -->
+		<form-users-name>Voornaam</form-users-name>
+		<form-users-name-eg>Gebruikt door het hele systeem.</form-users-name-eg>
+		<form-users-email>E-mail adres</form-users-email>
+		<form-users-email-eg>E-mail meldingen vanuit Merchant.</form-users-email-eg>
+		<form-users-picture>Profielfoto</form-users-picture>
+		<form-language-pack>Vertaalpakket</form-language-pack>
+		<form-users-picture-eg>Max. 400 x 400 pixels.</form-users-picture-eg>
+		<form-users-admin>Admin</form-users-admin>
+		<form-users-admin-eg>Optie tot autorisaties.</form-users-admin-eg>
+		<form-users-password>Wachtwoord</form-users-password>
+		<form-users-password-repeat>Herhaal wachtwoord</form-users-password-repeat>
+		<form-users-startpage>Startpagina</form-users-startpage>
+		<form-users-authorisations>Autorisaties</form-users-authorisations>
+		<form-users-authorisations-eg>Rechts staat op actief.</form-users-authorisations-eg>
+		
+		<!-- Settings -> Order statuses -> Form -->
+		<form-status-name>Omschrijving</form-status-name>
+		<form-status-name-eg>Ook voor de klant zichtbaar.</form-status-name-eg>
+		<form-status-default>Standaard status</form-status-default>
+		<form-status-finished>Afgerond</form-status-finished>
+		<form-status-finished-eg>Bestelling afronden.</form-status-finished-eg>
+		<form-status-declined>Retour</form-status-declined>
+		<form-status-declined-eg>Bestelling retour.</form-status-declined-eg>
+		<form-status-email>Verzend e-mail sturen</form-status-email>
+		
+		<!-- Settings -> Payment Methods -> Form -->
+		<form-payments-name>Omschrijving</form-payments-name>
+		<form-payments-name-eg>Ook voor de klant zichtbaar.</form-payments-name-eg>
+		<form-payments-maximum-amount>Maximaal bestelbedrag</form-payments-maximum-amount>
+		<form-payments-webshop>Webshop</form-payments-webshop>
+		<form-payments-pos>Point of sale</form-payments-pos>
+		<form-payments-module>Betalingsmodule</form-payments-module>
+		<form-payments-module-eg>Optioneel.</form-payments-module-eg>
+		<form-payments-api-key-1>API Sleutel 1</form-payments-api-key-1>
+		<form-payments-api-key-2>API Sleutel 2</form-payments-api-key-2>
+		
+		<!-- Settings -> Shipment Methods -> Form -->
+		<form-shipment-name>Omschrijving</form-shipment-name>
+		<form-shipment-name-eg>Ook voor de klant zichtbaar.</form-shipment-name-eg>
+		<form-shipment-courier>Transportbedrijf</form-shipment-courier>
+		<form-shipment-max>Maximaal openstaand</form-shipment-max>
+		<form-shipment-taxes>Belastingpercentage</form-shipment-taxes>
+		<form-shipment-price>Prijs</form-shipment-price>
+		<form-shipment-free-choice>Vrije kiesbaar</form-shipment-free-choice>
+		<form-shipment-combine>Wordt samengevoegd</form-shipment-combine>
+		<form-shipment-pay>Eenmalig afrekenen</form-shipment-pay>
+		
+		<!-- Settings -> Groups -> Form -->
+		<form-group-name>Groepsnaam</form-group-name>
+		
+		<!-- Settings -> Supplier -> Form -->
+		<form-supplier-name>Merk/leverancier</form-supplier-name>
+		<form-supplier-name-eg>Ook voor de klant zichtbaar.</form-supplier-name-eg>
+		
+		<!-- Settings -> Taxes -> Form -->
+		<form-taxes-name>Omschrijving</form-taxes-name>
+		<form-taxes-name-eg>Alleen voor de backoffice.</form-taxes-name-eg>
+		<form-taxes-percentage>Percentage</form-taxes-percentage>
+	</forms>
+	
+	<buttons>
+		<login>Inloggen</login>
+	</buttons>
+	
+	<stock-types>
+		<type-1>Actuele voorraad weergeven</type-1>
+		<type-2>Actuele voorraad + 0 = Voorraad leverancier</type-2>
+		<type-3>Stoplicht voorraad weergeven</type-3>
+		<type-4>Stoplicht voorraad + R = Voorraad leverancier</type-4>
+		<type-5>Altijd (beperkte) voorraad</type-5>
+		<type-6>Altijd (beperkte) voorraad + G = Voorraad leverancier</type-6>
+		<type-7>Producten zijn altijd op voorraad</type-7>
+	</stock-types>
+</language_pack>

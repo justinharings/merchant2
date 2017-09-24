@@ -1,0 +1,25 @@
+/*
+**	Markup for the login page.
+*/
+
+@media only screen 
+	and (min-width : 750px) 
+	and (max-width : 1050px)
+{
+	body img.paper
+	{
+		width: 240px !important;
+	}
+	
+	body img.supplies
+	{
+		left: 30px !important;
+	}
+	
+	body img.coffee
+	{
+		top: 20px !important;
+		bottom: 0px;
+		left: 10px !important;
+	}
+}
