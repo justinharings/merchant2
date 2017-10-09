@@ -32,7 +32,7 @@ if($_reset == true)
 **	PHP exception for the developer.
 */
 
-define("_DEVELOPMENT_ENVIRONMENT", true);
+define("_DEVELOPMENT_ENVIRONMENT", false);
 $_SESSION['_DEVELOPMENT_ENVIRONMENT'] = _DEVELOPMENT_ENVIRONMENT;
 
 
