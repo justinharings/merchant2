@@ -58,7 +58,7 @@ class stock extends motherboard
 		$query = sprintf(
 			"	SELECT		locations.*,
 							(
-								SELECT		COUNT(products_stock.productID)
+								SELECT		SUM(products_stock.stock)
 								FROM		products_stock
 								WHERE		products_stock.locationID = locations.locationID
 							) AS stock
@@ -88,14 +88,29 @@ class stock extends motherboard
 			return $this->deleteLocation($data);
 		}
 		
+		if($data[1]['webshop'] == 1)
+		{
+			$query = sprintf(
+				"	UPDATE		locations
+					SET			locations.webshop = 0
+					WHERE		locations.merchantID = %d",
+				$data[0]
+			);
+			parent::query($query);
+		}
+		
 		if(isset($data[1]['locationID']) && $data[1]['locationID'] != 0)
 		{
 			$query = sprintf(
 				"	UPDATE		locations
 					SET			locations.name = '%s',
+								locations.pos_card = %d,
+								locations.webshop = %d,
 								locations.date_update = NOW()
 					WHERE		locations.locationID = %d",
 				parent::real_escape_string($data[1]['name']),
+				intval($data[1]['pos_card']),
+				intval($data[1]['webshop']),
 				$data[1]['locationID']
 			);
 			parent::query($query);
@@ -105,9 +120,13 @@ class stock extends motherboard
 			$query = sprintf(
 				"	INSERT INTO		locations
 					SET				locations.merchantID = %d,
+									locations.pos_card = %d,
+									locations.webshop = %d,
 									locations.name = '%s',
 									locations.date_added = NOW()",
 				$data[0],
+				intval($data[1]['pos_card']),
+				intval($data[1]['webshop']),
 				parent::real_escape_string($data[1]['name'])
 			);
 			parent::query($query);
@@ -128,7 +147,7 @@ class stock extends motherboard
 		parent::_checkInputValues($data, 2);
 		
 		$query = sprintf(
-			"	SELECT		COUNT(products_stock.productID) AS counter
+			"	SELECT		SUM(products_stock.stock) AS counter
 				FROM		products_stock
 				WHERE		products_stock.locationID = %d",
 			$data[1]['locationID']
@@ -191,6 +210,47 @@ class stock extends motherboard
 	
 	
 	/*
+	** data[0] =	merchantID;
+	** data[1] =	productID;
+	** data[2] =	locationID
+	*/
+	
+	public function getReserved($data)
+	{
+		parent::_checkInputValues($data, 3);
+		
+		$webshopLocation = $this->webshopLocation(array($data[0]));
+		
+		$query = sprintf(
+			"	SELECT		SUM(orders_product.quantity) AS cnt
+				FROM		orders_product
+				INNER JOIN	orders ON orders.orderID = orders_product.orderID
+				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				LEFT JOIN	pos_employees ON pos_employees.employeeID = orders.employeeID
+				WHERE		order_statuses.finished = 0
+					AND		order_statuses.declined = 0
+					AND		(
+								pos_employees.locationID = %d
+						OR		(
+									pos_employees.locationID IS NULL
+							AND		%d = %d
+								)
+							)
+					AND		orders_product.productID = %d",
+			intval($data[2]),
+			intval($data[2]),
+			intval($webshopLocation),
+			intval($data[1])
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return ($row['cnt'] > 0 ? $row['cnt'] : 0);
+	}
+	
+	
+	
+	/*
 	**	Update stock levels in a BULK way. Use a foreach
 	**	to loop trough them and then use the normal update
 	**	function to change to stock values.
@@ -227,6 +287,11 @@ class stock extends motherboard
 	public function updateStock($data)
 	{
 		parent::_checkInputValues($data, 3);
+		
+		if($data[1] == 0)
+		{
+			die("No location provided. Unable to update stock.");
+		}
 		
 		$query = sprintf(
 			"	SELECT		products_stock.stock
@@ -331,6 +396,29 @@ class stock extends motherboard
 				return parent::_translateReturn("stock-types", "type-7");
 			break;
 		}
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function webshopLocation($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		locations.locationID
+				FROM		locations
+				WHERE		locations.webshop = 1
+					AND		locations.merchantID = %d",
+			$data
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return $row['locationID'];
 	}
 }
 ?>

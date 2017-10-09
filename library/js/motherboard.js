@@ -1,6 +1,13 @@
 $(document).ready(
 	function()
 	{
+		$.getScript("/library/js/datepicker.minified.js", 
+			function()
+			{
+				console.log("Datepicker.minified.js file loaded.");
+			}
+		);	
+		
 		$.getScript("/library/js/input.minified.js", 
 			function()
 			{
@@ -25,7 +32,7 @@ $(document).ready(
 		$.getScript("/library/js/notes.minified.js", 
 			function()
 			{
-				console.log("Multiselect.minified.js file loaded.");
+				console.log("Notes.minified.js file loaded.");
 			}
 		);
 		
@@ -36,10 +43,10 @@ $(document).ready(
 			}
 		);
 		
-		$.getScript("/library/js/datepicker.minified.js", 
+		$.getScript("/library/js/sms.minified.js", 
 			function()
 			{
-				console.log("Datepicker.minified.js file loaded.");
+				console.log("Sms.minified.js file loaded.");
 			}
 		);
 	}

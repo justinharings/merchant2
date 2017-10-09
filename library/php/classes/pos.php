@@ -2,6 +2,38 @@
 class pos extends motherboard
 {
 	/*
+	**	Create a view of the brands.
+	**	data[0]	=	MerchantID;
+	**	data[1]	=	Search value;
+	**	data[2]	=	Order by value;
+	**	data[3]	=	Maximum rows viewed.
+	*/
+	
+	public function viewParking($data)
+	{
+		parent::_checkInputValues($data, 4);
+		
+		$query = sprintf(
+			"	SELECT		pos_parked.*,
+							DATE_FORMAT(pos_parked.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added
+				FROM		pos_parked
+				WHERE		pos_parked.merchantID = %d
+					%s
+				ORDER BY	%s
+				LIMIT		%s",
+			$data[0],
+			$search,
+			$data[2],
+			$data[3]
+		);
+		$result = parent::query($query);
+		
+		return $result;
+	}
+	
+	
+	
+	/*
 	**	Load the POS printer settings.
 	**	data[0]	=	MerchantID;
 	*/
@@ -81,6 +113,81 @@ class pos extends motherboard
 		}
 		
 		return array();
+	}
+	
+	
+	
+	/*
+	**	Load the POS general settings.
+	**	data[0]	=	employeeID;
+	*/
+	
+	public function loadEmployee($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		pos_employees.*
+				FROM		pos_employees
+				WHERE		pos_employees.employeeID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_assoc($result);
+	}
+	
+	
+	
+	/*
+	**	Load the POS general settings.
+	**	data[0]	=	parkingID;
+	**	data[1] =	remove?
+	*/
+	
+	public function loadParked($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	SELECT		pos_parked.*
+				FROM		pos_parked
+				WHERE		pos_parked.parkingID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		if($data[1] == true)
+		{
+			$query = sprintf(
+				"	DELETE FROM		pos_parked
+					WHERE			pos_parked.parkingID = %d",
+				$data[0]
+			);
+			parent::query($query);
+		}
+		
+		return parent::fetch_assoc($result);
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function loadPaymentMethods($data)
+	{
+		$query = sprintf(
+			"	SELECT		payment_methods.*
+				FROM		payment_methods
+				WHERE		payment_methods.merchantID = %d
+					AND		payment_methods.pos = 1",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return $result;
 	}
 	
 	
@@ -257,6 +364,30 @@ class pos extends motherboard
 				parent::_uploadFile($data[2]['profile_image'][$key], $path, $options);
 			}
 		}
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**	data[0]	=	merchantID;
+	**	data[1]	=	sessions;	
+	*/
+	
+	public function saveParking($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	INSERT INTO		pos_parked
+				SET				pos_parked.merchantID = %d,
+								pos_parked.sessions = '%s',
+								pos_parked.date_added = NOW()",
+			$data[0],
+			$data[1]
+		);
+		parent::query($query);
 		
 		return true;
 	}

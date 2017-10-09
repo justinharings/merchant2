@@ -159,8 +159,11 @@ class categories extends motherboard
 	public function returnProductBasedOnID($data)
 	{
 		$query = sprintf(
-			"	SELECT		products.*
+			"	SELECT		products.*,
+							LPAD(products.article_code, 5, 0) AS article_code,
+							taxes.percentage AS taxrate
 				FROM		products
+				INNER JOIN	taxes ON taxes.taxesID = products.taxesID
 				WHERE		products.productID = %d
 					AND		products.merchantID = %d",
 			$data[1]['productID'],
@@ -182,11 +185,40 @@ class categories extends motherboard
 	public function returnProductBasedOnArticleCode($data)
 	{
 		$query = sprintf(
-			"	SELECT		products.*
+			"	SELECT		products.*,
+							LPAD(products.article_code, 5, 0) AS article_code,
+							taxes.percentage AS taxrate
 				FROM		products
+				INNER JOIN	taxes ON taxes.taxesID = products.taxesID
 				WHERE		products.article_code = '%s'
 					AND		products.merchantID = %d",
 			$data[1]['article_code'],
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_assoc($result);
+	}
+	
+	
+	
+	/*
+	**	Return information about a product based on a article_code.
+	**	data[0] = merchantID;
+	**	data[1] = Post values.
+	*/
+	
+	public function returnProductBasedOnBarcode($data)
+	{
+		$query = sprintf(
+			"	SELECT		products.*,
+							LPAD(products.article_code, 5, 0) AS article_code,
+							taxes.percentage AS taxrate
+				FROM		products
+				INNER JOIN	taxes ON taxes.taxesID = products.taxesID
+				WHERE		products.barcode = '%s'
+					AND		products.merchantID = %d",
+			$data[1]['barcode'],
 			$data[0]
 		);
 		$result = parent::query($query);

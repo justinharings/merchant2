@@ -16,7 +16,7 @@ $form = "/form-mutatie/";
 	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
 </div>
 
-<table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">
+<table class="view <?= count($data) ? "hoverable" : "" ?>">
 	<thead>
 		<tr>
 			<td><?= $mb->_translateReturn("table-headers", "ac") ?></td>
@@ -30,7 +30,7 @@ $form = "/form-mutatie/";
 	
 	<tbody>
 		<?php
-		if($mb->num_rows($data))
+		if(count($data))
 		{
 			foreach($data AS $value)
 			{
@@ -48,7 +48,7 @@ $form = "/form-mutatie/";
 				<?php
 			}
 		}
-		else if(!isset($_GET['search']))
+		else if(!isset($_GET['search_string']))
 		{
 			?>
 			<tr>
@@ -57,7 +57,7 @@ $form = "/form-mutatie/";
 			<?php
 		}
 		else
-			{
+		{
 			?>
 			<tr>
 				<td colspan="6" align="center"><?= $mb->_translateReturn("table-headers", "no-results") ?></td>

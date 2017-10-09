@@ -2,6 +2,23 @@
 class merchant extends motherboard
 {
 	/*
+	**
+	*/
+	
+	public function view()
+	{
+		$query = sprintf(
+			"	SELECT		merchant.*
+				FROM		merchant"
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_array($result);
+	}
+	
+	
+	
+	/*
 	**	Load a merchant from the database.
 	**	data[0]	=	merchantID.
 	*/

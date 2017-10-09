@@ -2,6 +2,97 @@
 class workorders extends motherboard
 {
 	/*
+	**
+	*/
+	
+	public function view($data)
+	{
+		parent::_checkInputValues($data, 4);
+		
+		$search = "";
+		
+		if($data[1] != "")
+		{
+			$search = sprintf(
+				"	AND		(
+								workorders.workorderID = %d
+						OR		workorders.key_number = %d
+							)",
+				parent::real_escape_string($data[1]),
+				parent::real_escape_string($data[1])
+			);
+		}
+		
+		$query = sprintf(
+			"	SELECT		workorders.*,
+							DATE_FORMAT(workorders.expiration_date, '%%d-%%m-%%Y') AS expiration_date,
+							LPAD(workorders.key_number, 3, 0) AS key_number,
+							customers.name AS customer_name
+				FROM		workorders
+				LEFT JOIN	customers ON customers.customerID = workorders.customerID
+				WHERE		workorders.merchantID = %d
+					AND		workorders.removed = 0
+					%s
+				ORDER BY	%s
+				LIMIT		%s",
+			$data[0],
+			$search,
+			$data[2],
+			$data[3]
+		);
+		$result = parent::query($query);
+		
+		return $result;
+	}
+	
+	
+	
+	/*
+	**	
+	*/
+	
+	public function viewDocumentation($data)
+	{
+		parent::_checkInputValues($data, 4);
+		
+		$search = "";
+		
+		if($data[1] != "")
+		{
+			$search = sprintf(
+				"	AND		(
+								documentation.documentID = %d
+						OR		documentation.name LIKE  ('%%%s%%')
+							)",
+				parent::real_escape_string($data[1]),
+				parent::real_escape_string($data[1])
+			);
+		}
+		
+		$query = sprintf(
+			"	SELECT		documentation.*,
+							DATE_FORMAT(documentation.date_added, '%%d-%%m-%%Y') AS date_added,
+							DATE_FORMAT(documentation.date_update, '%%d-%%m-%%Y') AS date_update,
+							pos_employees.name AS employee_name
+				FROM		documentation
+				INNER JOIN	pos_employees ON pos_employees.employeeID = documentation.employeeID
+				WHERE		documentation.merchantID = %d
+					%s
+				ORDER BY	%s
+				LIMIT		%s",
+			$data[0],
+			$search,
+			$data[2],
+			$data[3]
+		);
+		$result = parent::query($query);
+		
+		return $result;
+	}
+	
+	
+	
+	/*
 	**	Create a view of the brands.
 	**	data[0]	=	MerchantID;
 	*/
@@ -24,6 +115,70 @@ class workorders extends motherboard
 		}
 		
 		return array();
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function loadDocumentation($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		documentation.*
+				FROM		documentation
+				WHERE		documentation.documentID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_assoc($result);
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function loadWorkorderCard($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		workorders_card.*
+				FROM		workorders_card
+				WHERE		workorders_card.workorderID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_array($result);
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function loadWorkorder($data)
+	{
+		$query = sprintf(
+			"	SELECT		workorders.*,
+							DATE_FORMAT(workorders.expiration_date, '%%d-%%m-%%Y') AS expiration_date,
+							pos_employees.name AS mechanic
+				FROM		workorders
+				LEFT JOIN	pos_employees ON pos_employees.employeeID = workorders.employeeID
+				WHERE		workorders.workorderID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_assoc($result);
 	}
 	
 	
@@ -78,6 +233,309 @@ class workorders extends motherboard
 		}
 		
 		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveWorkorderNote($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	UPDATE		workorders
+				SET			workorders.note = '%s'
+				WHERE		workorders.workorderID = %d",
+			$data[1]['note'],
+			$data[1]['workorderID']
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveWorkorderStatus($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	UPDATE		workorders
+				SET			workorders.status = %d
+				WHERE		workorders.workorderID = %d",
+			$data[1]['status'],
+			$data[1]['workorderID']
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveWorkorderCard($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	DELETE FROM		workorders_card
+				WHERE			workorders_card.workorderID = %d",
+			$data[1]['workorderID']
+		);
+		parent::query($query);
+		
+		$grand_total = 0;
+		
+		for($i = 1; $i <= 10; $i++)
+		{
+			if($data[1]['value_' . $i] != "")
+			{
+				$query = sprintf(
+					"	INSERT INTO		workorders_card
+						SET				workorders_card.workorderID = %d,
+										workorders_card.description = '%s',
+										workorders_card.price = '%.2f'",
+					$data[1]['workorderID'],
+					$data[1]['value_' . $i],
+					parent::floatvalue($data[1]['price_' . $i])
+				);
+				parent::query($query);
+				
+				$grand_total += parent::floatvalue($data[1]['price_' . $i]);
+			}
+		}
+		
+		$query = sprintf(
+			"	UPDATE		workorders
+				SET			workorders.grand_total = '%.2f',
+							workorders.card_saved = 1
+				WHERE		workorders.workorderID = %d",
+			$grand_total,
+			$data[1]['workorderID']
+		);
+		parent::query($query);
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveDocumentation($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		if(isset($data[1]['documentID']) && $data[1]['documentID'] > 0)
+		{
+			$query = sprintf(
+				"	UPDATE		documentation
+					SET			documentation.name = '%s',
+								documentation.content = '%s',
+								documentation.date_update = NOW()
+					WHERE		documentation.documentID = %d",
+				parent::real_escape_string($data[1]['name']),
+				parent::real_escape_string($data[1]['content']),
+				$data[1]['documentID']
+			);
+			parent::query($query);
+		}
+		else
+		{
+			$query = sprintf(
+				"	INSERT INTO		documentation
+					SET				documentation.merchantID = %d,
+									documentation.employeeID = %d,
+									documentation.name = '%s',
+									documentation.content = '%s',
+									documentation.date_added = NOW()",
+				$data[0],
+				$data[1]['employeeID'],
+				parent::real_escape_string($data[1]['name']),
+				parent::real_escape_string($data[1]['content']),
+				$data[1]['documentID']
+			);
+			parent::query($query);
+		}
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveWorkorder($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		if(isset($data[1]['workorderID']) && $data[1]['workorderID'] > 0)
+		{
+			$query = sprintf(
+				"	UPDATE		workorders
+					SET			workorders.customerID = %d,
+								workorders.status = %d,
+								workorders.priority = %d,
+								workorders.removed = 0,
+								workorders.expiration_date = '%s',
+								workorders.key_number = %d,
+								workorders.phone_number = '%s',
+								workorders.workorder = '%s',
+								workorders.note = '%s'
+					WHERE		workorders.workorderID = %d",
+				$data[1]['customerID'],
+				$data[1]['status'],
+				$data[1]['priority'],
+				parent::datevalue($data[1]['expiration_date']),
+				$data[1]['key_number'],
+				parent::real_escape_string($data[1]['phone_number']),
+				parent::real_escape_string($data[1]['workorder']),
+				parent::real_escape_string($data[1]['note']),
+				$data[1]['workorderID']
+			);
+			parent::query($query);
+		}
+		else
+		{
+			$query = sprintf(
+				"	INSERT INTO		workorders
+					SET				workorders.merchantID = %d,
+									workorders.customerID = %d,
+									workorders.status = %d,
+									workorders.priority = %d,
+									workorders.removed = 0,
+									workorders.expiration_date = '%s',
+									workorders.key_number = %d,
+									workorders.phone_number = '%s',
+									workorders.workorder = '%s',
+									workorders.note = '%s'",
+				$data[0],
+				$data[1]['customerID'],
+				$data[1]['status'],
+				$data[1]['priority'],
+				parent::datevalue($data[1]['expiration_date']),
+				$data[1]['key_number'],
+				parent::real_escape_string($data[1]['phone_number']),
+				parent::real_escape_string($data[1]['workorder']),
+				parent::real_escape_string($data[1]['note'])
+			);
+			parent::query($query);
+		}
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function delete($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		if($data[1] > 0)
+		{
+			$query = sprintf(
+				"	UPDATE		workorders
+					SET			workorders.removed = 1
+					WHERE		workorders.workorderID = %d",
+				$data[0]
+			);
+			parent::query($query);
+		}
+		else
+		{
+			$query = sprintf(
+				"	DELETE FROM		workorders
+					WHERE			workorders.workorderID = %d",
+				$data[0]
+			);
+			parent::query($query);
+		}
+		
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function checkKeyNumber($data)
+	{
+		if($data[1]['current'] == $data[1]['check'])
+		{
+			return 0;
+		}
+		
+		$query = sprintf(
+			"	SELECT		COUNT(workorders.workorderID) AS cnt
+				FROM		workorders
+				WHERE		workorders.key_number = %d
+					AND		workorders.removed = 0",
+			$data[1]['check']
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return ($row['cnt'] > 0 ? 1 : 0);
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function defaultProductCodes($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$return = array();
+		
+		$query = sprintf(
+			"	SELECT		products.productID
+				FROM		products
+				WHERE		products.workorders_products = 1
+					AND		products.merchantID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$return['products'] = $row['productID'];
+		
+		$query = sprintf(
+			"	SELECT		products.productID
+				FROM		products
+				WHERE		products.workorders_manhours = 1
+					AND		products.merchantID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$return['manhours'] = $row['productID'];
+		
+		return $return;
 	}
 }
 ?>

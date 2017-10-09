@@ -19,13 +19,15 @@ class customers extends motherboard
 		{
 			$search = sprintf(
 				"	AND		(
-								customers.name LIKE ('%%%s%%')
+								customers.customerID = %d
+						OR		customers.name LIKE ('%%%s%%')
 						OR		customers.city LIKE ('%%%s%%')
 						OR		customers.zip_code LIKE ('%%%s%%')
 						OR		customers.address LIKE ('%%%s%%')
 						OR		customers.email_address LIKE ('%%%s%%')
 						OR		customers.customer_code LIKE ('%%%s%%')
 							)",
+				parent::real_escape_string($data[1]),
 				parent::real_escape_string($data[1]),
 				parent::real_escape_string($data[1]),
 				parent::real_escape_string($data[1]),
@@ -43,10 +45,12 @@ class customers extends motherboard
 			"	SELECT		customers.customerID,
 							customers.name,
 							customers.company,
+							customers.zip_code,
 							customers.city,
 							customers.country,
 							customers.phone,
-							customers.email_address
+							customers.email_address,
+							customers.customer_code
 				FROM		customers
 				WHERE		customers.merchantID = %d
 					%s
@@ -176,7 +180,9 @@ class customers extends motherboard
 							DATE_FORMAT(mailserver.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added
 				FROM		mailserver
 				WHERE		mailserver.customerID = %d
-				ORDER BY	mailserver.date_added DESC",
+					AND		mailserver.subject != 'SMS Melding'
+				ORDER BY	mailserver.date_added DESC
+				LIMIT		0,25",
 			intval($data[1]['customerID'])
 		);
 		$result = parent::query($query);
@@ -195,6 +201,78 @@ class customers extends motherboard
 		}
 		
 		return $return;
+	}
+	
+	
+	
+	/*
+	**	Load all notes from a customer.
+	**	data[0]	=	Post value (customerID).
+	*/
+	
+	public function loadSms($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	SELECT		mailserver.*,
+							DATE_FORMAT(mailserver.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added
+				FROM		mailserver
+				WHERE		mailserver.customerID = %d
+					AND		mailserver.subject = 'SMS Melding'
+				ORDER BY	mailserver.date_added DESC
+				LIMIT		0,25",
+			intval($data[1]['customerID'])
+		);
+		$result = parent::query($query);
+		
+		$return = array();
+		$num = 0;
+		
+		while($row = parent::fetch_assoc($result))
+		{
+			$return[$num]['receiver'] = $row['receiver'];
+			$return[$num]['subject'] = $row['subject'];
+			$return[$num]['content'] = $row['content'];
+			$return[$num]['date_added'] = $row['date_added'];
+			
+			$num++;
+		}
+		
+		return $return;
+	}
+	
+	
+	
+	/*
+	**	
+	*/
+	
+	public function searchByCard($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		customers.*
+				FROM		customers
+				WHERE		customers.customer_code = '%s'",
+			$data[0]['search']
+		);
+		$result = parent::query($query);
+		
+		if(parent::num_rows($result) == 0)
+		{
+			$query = sprintf(
+				"	SELECT		customers.*
+					FROM		customers
+					WHERE		CONCAT(customers.zip_code, ExtractNumber(customers.address)) = '%s'
+					LIMIT		0,1",
+				$data[0]['search']
+			);
+			$result = parent::query($query);
+		}
+		
+		return parent::fetch_assoc($result);
 	}
 	
 	
@@ -304,6 +382,27 @@ class customers extends motherboard
 		parent::query($query);
 		
 		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveCustomerCard($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	UPDATE		customers
+				SET			customers.customer_code = %d,
+							customers.date_update = NOW()
+				WHERE		customers.customerID = %d",
+			intval($data[1]['customer_code']),
+			intval($data[1]['customerID'])
+		);
+		parent::query($query);
 	}
 	
 	

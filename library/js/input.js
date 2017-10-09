@@ -44,6 +44,53 @@ $(document).ready(
 		
 		
 		/*
+		**
+		*/
+		
+		$(document).on("keyup", ".calc-main-price, .calc-main-quantity",
+			function(e) 
+			{
+				var unique_id = $(this).closest("tr").attr("id");
+				
+				var quantity = $("input#quantity_" + unique_id);
+				var price = $("input#price_" + unique_id);
+				
+				var total = $("input#total_" + unique_id);
+				var price_ex = $("input#excl_" + unique_id);
+				
+				var taxrate = $("input#taxrate_" + unique_id);
+				
+				
+				var val = $(this).val();
+				
+				if(val == "")
+				{
+					$(this).val(1);
+				}
+				else
+				{
+					val = val.replace(",", ".");
+					$(this).val(val);
+				}
+				
+				
+				var calced = (quantity.val()*price.val());
+				calced = calced.toFixed(2)
+				
+				total.val(calced);
+				
+				
+				calced = (taxrate.val() / 100) + 1;
+				calced = (price.val() / calced);
+				calced = calced.toFixed(2)
+				
+				price_ex.val(calced);
+			}
+		);
+		
+		
+		
+		/*
 		**	Enable toggle on multiselect for authorization fields.
 		**	It must be possible to enable and disable the auths there.
 		*/
@@ -157,6 +204,30 @@ $(document).ready(
 				$(this).closest("form").find("input, select, textarea").css("border", "").each(
 					function()
 					{
+						if($(this).attr("id") == "workorder_unique_code" && $(this).val() == 1)
+						{
+							var check = $("#key_number").val();
+							var current = $("#key_number_current").val();
+							
+							$.post(
+								"/library/php/posts/werkorders/unique_code.php",
+								{
+									check: check,
+									current: current
+								}
+							).done(
+								function(data) 
+								{
+									if(data > 0)
+									{
+										$("#key_number").css("border-color", "#d00000");
+										valid = false;
+									}
+								}
+							);
+						}
+						
+						
 						/*
 						**	When the validation type is a INT but it's not required
 						**	fill in a zero (0) soo the validation succeed.
@@ -606,6 +677,12 @@ function systemChanges(elm)
 	setTimeout(
 		function()
 		{
+			$(".datepicker").datepicker(
+				{
+					dateFormat: "dd-mm-yy"
+				}
+			);
+			
 			if(elm.find("option[activate]").length > 0)
 			{
 				elm.bind("change",

@@ -216,7 +216,23 @@ if(isset($_GET['dataID']))
 						<input type="hidden" name="email_customerID" id="email_customerID" value="<?= $_GET['dataID'] ?>" />
 						<input type="hidden" name="email_receiver" id="email_receiver" value="<?= $data['email_address'] ?>" />
 						
-						<input type="text" name="email_sender" id="email_sender" value="<?= $merchant['email_address'] ?>" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-customers-email-sender") ?>" />
+						<input type="text" name="email_sender" id="email_sender" value="" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-customers-email-sender") ?>" />
+						
+						<select name="email_template" id="email_template" class="width-300 double-margin email-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-email-template") ?>">
+							<option value=""></option>
+							
+							<?php
+							$email_templates = $mb->_runFunction("cms", "viewEmail", array($_SESSION['merchantID'], "", "template_email.name", "0,50", 6));
+							
+							foreach($email_templates AS $template)
+							{
+								?>
+								<option value="<?= $template['emailID'] ?>"><?= $template['name'] ?></option>
+								<?php
+							}
+							?>
+						</select>
+						
 						<input type="text" name="email_subject" id="email_subject" value="" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-customers-email-subject") ?>" />
 						<textarea name="email_content" id="email_content" class="width-100-percent margin" holder="<?= $mb->_translateReturn("forms", "form-customers-email-content") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-customers-email-content-eg") ?>"></textarea>
 						

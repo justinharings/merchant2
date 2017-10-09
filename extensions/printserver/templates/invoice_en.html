@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="nl">
+	<head>
+		<title>Invoice template</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Language" content="nl" />
+		<meta http-equiv="X-Frame-Options" content="deny" />
+		<meta name="robots" content="noindex, nofollow" />
+
+		<style type="text/css">
+			[[css]]
+		</style>
+	</head>
+
+	<body>
+		<table>
+			<tr>
+				<td width="705">
+					<table>
+						<tr>
+							<td width="505" style="border-right: 1px solid #000; border-bottom: 1px solid #000;">
+								<table>
+									<tr>
+										<td width="320">
+											<h1><strong>Invoice</strong></h1>
+										</td>
+										
+										<td width="175" valign="center" style="text-align: right; padding: 0px 10px 0px 0px;">
+											<br/><br/>
+											This invoice is made on:<br/>
+											[[orderDate]]<br/>
+											<small style="margin-top: 5px;">Terms of payment: 14 days.</small>
+										</td>
+									</tr>
+									
+									<tr>
+										<td style="border-bottom: 1px solid #000;">&nbsp;</td>
+										<td style="border-bottom: 1px solid #000;">&nbsp;</td>
+									</tr>
+									
+									<tr>
+										<td height="20">&nbsp;</td>
+									</tr>
+									
+									<tr>
+										<td height="55" colspan="2">
+											<table>
+												<tr>
+													<td width="160">
+														Order ID:<br/>
+														# [[orderID]]
+													</td>
+													
+													<td width="160">
+														Product(s):<br/>
+														[[total_articles]] product(s)
+													</td>
+													
+													<td width="175" style="text-align: right; padding: 0px 10px 0px 0px;">
+														[[barcode]]
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+							
+							<td width="170" style="padding: 10px 0px 10px 10px; border-bottom: 1px solid #000;">
+								<h2>[[store_name]]</h2>
+								[[invoice_company_info]]
+							</td>
+						</tr>
+						
+						<tr>
+							<td width="505" style="padding: 20px 0px 10px 0px; border-right: 1px solid #000; border-bottom: 1px solid #000;">
+								<strong>Comments and conditions:</strong><br/>
+								[[invoice_comments]]
+							</td>
+							
+							<td width="170" style="padding: 10px 0px 10px 10px; border-bottom: 1px solid #000;">
+								<br/>
+								Invoice for:<br/>
+								<strong>[[customer_name]]</strong><br/>
+								<small>[[second_name]]</small><br/>
+								[[customer_address]]<br/>
+								[[customer_postcode]]&nbsp;&nbsp;[[customer_city]]<br/>
+								[[customer_phone]]
+							</td>
+						</tr>
+					</table>
+					
+					<table style="border-collapse: collapse;">
+						<tr>
+							<td width="363" style="padding: 10px 0px 10px 10px; background-color: #000; color: #fff;">Product</td>
+							<td width="125" style="padding: 10px 0px; background-color: #000; color: #fff;">Quantity</td>
+							<td width="135" style="padding: 10px 0px; background-color: #000; color: #fff;">Price</td>
+							<td width="75" style="padding: 10px 0px; background-color: #000; color: #fff;">Subtotal</td>
+						</tr>
+						
+						[[products_rows]]
+						
+						<tr>
+							<td colspan="4" style="padding: 5px 0px;">&nbsp;</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" style="padding: 5px 0px;"></td>
+							<td>SUBTOTAL:</td>
+							<td>&euro;&nbsp;[[subtotal]]</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" style="padding: 5px 0px;"></td>
+							<td>SHIPMENT COSTS:</td>
+							<td>&euro;&nbsp;[[shipping_costs]]</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" style="padding: 5px 0px;"></td>
+							<td><strong>GRAND TOTAL:</strong></td>
+							<td><strong>&euro;&nbsp;[[total]]</strong></td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" style="padding: 5px 0px;">&nbsp;</td>
+							<td><small>TOTAAL VAT:</small></td>
+							<td><small>&euro;&nbsp;[[total_taxes]]</small></td>
+						</tr>
+					</table>
+					
+					[[extra_invoice_data]]
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>	

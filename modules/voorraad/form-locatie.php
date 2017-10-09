@@ -25,7 +25,7 @@ if(isset($_GET['dataID']))
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			
 			<?php
-			if(isset($_GET['dataID']) && $data['stock'] == 0)
+			if(isset($_GET['dataID']) && $data['stock'] == 0 && $data['webshop'] == 0)
 			{
 				?>
 				<input type="button" name="delete-item" id="delete-item" value="<?= $mb->_translateReturn("forms", "button-delete") ?>" class="white show-load" />
@@ -42,7 +42,10 @@ if(isset($_GET['dataID']))
 				<?= $mb->_translateReturn("forms", "legend-general") ?>
 			</div>
 			
-			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300" holder="<?= $mb->_translateReturn("forms", "form-locations-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-locations-name-eg") ?>" validation-required="true" validation-type="text" />
+			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-locations-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-locations-name-eg") ?>" validation-required="true" validation-type="text" />
+			<input type="text" name="pos_card" id="pos_card" value="<?= isset($_GET['dataID']) ? $data['pos_card'] : "" ?>" class="width-150 double-margin" icon="fa-barcode" holder="<?= $mb->_translateReturn("forms", "form-locations-code") ?>" validation-required="true" validation-type="int" />
+			
+			<input type="checkbox" <?= isset($_GET['dataID']) && $data['webshop'] == 1 ? "checked=\"checked\"" : "" ?> name="webshop" id="webshop" value="1" holder="<?= $mb->_translateReturn("forms", "form-locations-webshop") ?>" />
 		</div>
 	</div>
 </form>

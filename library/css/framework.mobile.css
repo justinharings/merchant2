@@ -12,12 +12,12 @@
 	and (max-width : 380px)
 {
 	
-	body *
+	body:not(.popup) *
 	{
 		display: none;
 	}
 	
-	body img.orientation
+	body:not(.popup) img.orientation
 	{
 		width: 225px;
 		height: 225px;

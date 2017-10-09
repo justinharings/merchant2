@@ -13,7 +13,10 @@ $form = "/form-order/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
+	
+	<!--
 	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	-->
 </div>
 
 <table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">
@@ -33,9 +36,20 @@ $form = "/form-order/";
 		{
 			foreach($data AS $value)
 			{
+				$color = "";
+				$icon = "hashtag";
+				
+				if($value['employeeID'] == 0)
+				{
+					$color = "blue";
+					$icon = "internet-explorer";
+				}
 				?>
 				<tr click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form . $value['orderID'] ?>">
-					<td><?= $value['order_reference'] ?></td>
+					<td class="<?= $color ?>">
+						<span class="order-ref fa fa-<?= $icon ?>"></span>
+						<?= $value['order_reference'] ?>
+					</td>
 					<td><?= $value['date_added'] ?></td>
 					<td><?= $value['customer_name'] ?></td>
 					<td>&euro;&nbsp;<?= _frontend_float($value['grand_total']) ?></td>

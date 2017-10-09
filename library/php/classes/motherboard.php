@@ -32,6 +32,11 @@ class motherboard extends database
 			}
 		}
 		
+		if(!isset($_SERVER['REQUEST_URI']))
+		{
+			$_SERVER['REQUEST_URI'] = "php/posts";
+		}
+		
 		if(strpos($_SERVER['REQUEST_URI'], "php/posts") === false)
 		{
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/library/languages/" . strtolower(_LANGUAGE_PACK) . ".xml"))

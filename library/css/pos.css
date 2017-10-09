@@ -1,0 +1,889 @@
+*
+{
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+body.popup h1
+{
+	width: 100%;
+	
+	margin: 0px 0px 15px 0px;
+	padding: 0px;
+	
+	font-size: 18px;
+	text-align: center;
+}
+
+.payment-method,
+.order-finished
+{
+	width: calc(50% - 27px);
+	
+	margin: 10px 0px 0px 10px;
+	padding: 20px 10px;
+	float: left;
+	
+	font-size: 16px;
+	color: #333;
+	text-align: center;
+	
+	border: 1px solid #ddd;
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+}
+.order-finished
+{
+	width: calc(50% - 35px);
+}
+.payment-method.first
+{
+	margin: 10px 0px 0px 0px;
+}
+.payment-method.inactive
+{
+	border-color: #eee;
+	color: #eee;
+}
+
+	.order-finished span
+	{
+		font-size: 30px;
+	}
+
+.status-block
+{
+	margin: 0px 5px 0px 0px;
+	padding: 6px 10px;
+	float: left;
+	
+	font-size: 12px;
+	color: #fff;
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+}
+.status-block.red
+{
+	background-color: #d00000;
+}
+.status-block.orange
+{
+	background-color: #d08900;
+}
+.status-block.green
+{
+	background-color: #4aa01b;
+}
+.status-block.blue
+{
+	background-color: #1b76a0;
+}
+
+span.popup-loader
+{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	
+	margin: -25px 0px 0px -25px;
+	
+	font-size: 50px;
+}
+
+body div.popup-overlay
+{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: 999;
+	
+	display: none;
+	
+	background-color: #d00000;
+	
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=70);
+	-moz-opacity: 0.7;
+	-khtml-opacity: 0.7;
+	opacity: 0.7;
+}
+
+body div.popup-container
+{
+	width: 800px;
+	height: 600px;
+	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 999;
+	
+	margin: -300px 0px 0px -400px;
+	padding: 10px;
+	display: none;
+	
+	background-color: #fff;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px;
+}
+
+	body div.popup-container div.closer
+	{
+		width: 30px;
+		height: 30px;
+		
+		position: absolute;
+		top: -15px;
+		right: -15px;
+		
+		background-color: #000;
+		border: 4px solid #fff;
+		
+		-moz-border-radius: 30px;
+		-webkit-border-radius: 30px;
+		-khtml-border-radius: 30px;
+		border-radius: 30px;
+	}
+		body div.popup-container div.closer span
+		{
+			width: 100%;
+			
+			margin: 6px 0px 0px 0px;
+			
+			font-size: 15px;
+			color: #fff;
+			text-align: center;
+		}
+
+	body div.popup-container iframe
+	{
+		width: 100%;
+		height: 100%;
+		
+		border: none;
+	}
+	
+body div.popup-keyboard
+{
+	width: 75px;
+	height: 70px;
+	
+	margin: 0px 0px 5px 5px;
+	float: left;
+}
+body div.popup-keyboard.first
+{
+	margin-left: 0px;
+}
+body div.popup-keyboard.full-width
+{
+	width: calc(100% - 2px);
+}
+	body div.popup-keyboard div.pos-button
+	{
+		height: calc(100% - 19px);
+		
+		padding: 19px 0px 0px 0px;
+	}
+	body div.popup-keyboard div.pos-button.fa
+	{
+		height: calc(100% - 21px);
+		
+		padding: 21px 0px 0px 0px;
+	}
+	body div.popup-keyboard div.pos-button.red
+	{
+		background-color: #d00000;
+		
+		color: #fff;
+	}
+	body div.popup-keyboard div.pos-button.red-text
+	{
+		color: #d00000;
+	}
+	body div.popup-keyboard div.pos-button.gray-text
+	{
+		color: #ddd;
+	}
+
+body div.additional
+{
+	height: 28px;
+	
+	margin: 0px 5px 0px 0px;
+	padding: 12px 10px 0px 10px;
+	float: left;
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
+}
+body div.additional.blue
+{
+	background-color: #0069d4;
+}
+body div.additional.red
+{
+	background-color: #d00000;
+}
+body div.additional.green
+{
+	background-color: #4aa01b;
+}
+
+	body div.additional span
+	{
+		margin: 0px 5px 0px 0px;
+		float: left;
+		
+		font-size: 12px;
+		color: #fff;
+	}
+	body div.additional span.fa-plane
+	{
+		margin-top: 1px;
+		
+		font-size: 19px !important;
+	}
+	body div.additional span.content
+	{
+		margin: 2px 0px 0px 0px;
+		
+		font-family: 'Raleway', 'Tahoma';
+	}
+	body div.additional span:first-child
+	{
+		margin: 0px 7px 0px 0px;
+		
+		font-size: 16px;
+	}
+	body div.additional span.fa-times
+	{
+		height: calc(100% - 7px);
+		
+		margin: -6px 0px 0px 10px;
+		padding: 7px 0px 0px 6px;
+		
+		border-left: 1px solid #000;
+	}
+	body div.additional.blue span.fa-times
+	{
+		color: #004a96;
+		border-color: #004a96;
+	}
+	body div.additional.red span.fa-times
+	{
+		color: #a80202;
+		border-color: #a80201;
+	}
+	body div.additional.green span.fa-times
+	{
+		color: #2f700b;
+		border-color: #2f700b;
+	}
+
+body div.menu
+{
+	left: -200px !important;
+}
+
+body div.top
+{
+	left: 80px !important;
+}
+
+body div.content
+{
+	left: 80px !important;
+	
+	padding: 10px;
+}
+
+div.pos-login-box
+{
+	width: 450px;
+	height: 190px;
+	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	
+	margin: -150px 0px 0px -225px;
+	
+	background-color: #ffffff;
+	border: 1px solid rgba(230,230,230,0.7);
+}
+
+	div.pos-login-box div.image
+	{
+		width: 400px;
+		height: 93px;
+		
+		margin: 20px auto;
+	}
+	
+		div.pos-login-box div.image img
+		{
+			width: 100%;
+		}
+	
+	div.pos-login-box div.input
+	{
+		width: 400px;
+		height: 93px;
+		
+		margin: 20px auto;
+	}
+	
+div.option-item-page
+{
+	width: 90px;
+	height: 110px;
+	
+	position: relative;
+	
+	margin: 0px 10px 20px 0px;
+	padding: 20px;
+	float: left;
+	
+	background-color: #ffffff;
+	
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-khtml-border-radius: 20px;
+	border-radius: 20px;
+	
+	cursor: pointer;
+}
+
+	div.option-item-page div.image img
+	{
+		width: 90px;
+		height: 90px;
+		
+		-moz-border-radius: 90px;
+		-webkit-border-radius: 90px;
+		-khtml-border-radius: 90px;
+		border-radius: 90px;
+	}
+	
+	div.option-item-page div.title
+	{
+		width: 90px;
+		
+		margin: 0px 0px 0px -45px;
+		
+		position: absolute;
+		bottom: 12px;
+		left: 50%;
+		
+		font-size: 15px;
+		color: #cccccc;
+		text-align: center;
+		text-transform: uppercase;
+	}
+	
+div.content
+{
+	padding: 20px !important;
+}
+	
+div.register-screen
+{
+	width: 100%;
+	height: 100%;
+	
+	position: relative;
+	
+	background-color: #fff;
+	border: 1px solid #eee;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px;
+}
+div.register-screen.small
+{
+	height: calc(100% - 240px);
+	
+	margin: 0px 0px 10px 0px;
+	
+	background-color: transparent !important;
+	border: none !important;
+}
+div.register-screen.table-grid
+{
+	height: calc(100% - 40px) !important;
+	
+	position: relative;
+	
+	background-color: transparent !important;
+	border: none !important;
+	
+	overflow: hidden;
+}
+
+	div.table-options
+	{
+		height: 40px;
+		
+		position: absolute;
+		right: 20px;
+		bottom: 10px;
+		left: 20px;
+	}
+	
+		div.table-options input
+		{
+			width: auto !important;
+			
+			margin: 0px 5px 0px 0px;
+			float: left;
+		}
+		
+		div.table-options div.spacer
+		{
+			width: 1px;
+			height: 40px;
+			
+			margin: 0px 20px 0px 15px;
+			float: left;
+			
+			background-color: #ccc;
+		}
+
+	div.register-screen.table-grid div.table-holder,
+	div.register-screen.small div.table-holder
+	{
+		height: auto !important;
+		
+		position: absolute;
+		top: 60px;
+		right: 0px;
+		bottom: 0px;
+		left: 0px;
+		
+		margin-top: 0px !important;
+		padding-top: 0px !important;
+		display: block !important;
+		
+		overflow: scroll;
+	}
+	
+	div.register-screen.small div.table-holder
+	{
+		top: 60px;
+	}
+	
+		div.register-screen div.table-control
+		{
+			width: 40px;
+			height: 40px;
+			
+			position: absolute;
+			top: 0px;
+			right: 45px;
+			z-index: 995;
+			
+			background-color: #d00000;
+			
+			-moz-border-radius: 40px;
+			-webkit-border-radius: 40px;
+			-khtml-border-radius: 40px;
+			border-radius: 40px;
+			
+			text-align: center;
+		}
+		
+		div.select-control
+		{
+			width: calc(50% - 2px);
+			height: 40px;
+			
+			margin: 5px 2px 20px 0px;
+			float: left;
+			
+			background-color: #eee;
+			
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			-khtml-border-radius: 10px;
+			border-radius: 10px;
+			
+			text-align: center;
+		}
+		
+			div.register-screen div.table-control span,
+			div.select-control span
+			{
+				margin: 2px 0px 0px 0px;
+				
+				font-size: 30px;
+				color: #fff;
+			}
+			div.select-control span
+			{
+				color: #788195;
+			}
+			
+		div.register-screen div.table-control.down
+		{
+			right: 0px;
+		}
+		
+		div.select-control.down
+		{
+			margin: 5px 0px 0px 2px;
+		}
+		
+			div.register-screen div.table-control.down span,
+			div.select-control.down span
+			{
+				margin: 4px 0px 0px 0px;
+			}
+	
+	div.register-screen img
+	{
+		width: 300px;
+		height: 66px;
+		
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		
+		margin: -33px 0px 0px -150px;
+	}
+	
+div.pos-button
+{
+	width: 100%;
+	height: 100%;
+	
+	background-color: #fff;
+
+	border: 1px solid #eee;
+	
+	font-size: 30px;
+	color: #788195;
+	text-align: center;
+	
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	-khtml-border-radius: 7px;
+	border-radius: 7px;
+}
+	
+div.register-keyboard
+{
+	width: 100%;
+	height: 230px;
+}
+
+	div.register-keyboard div.line-1
+	{
+		width: 25%;
+		height: 100%;
+		
+		float: left;
+	}
+	
+		div.register-keyboard div.line-1 input[type="text"]
+		{
+			text-align: right;
+		}
+	
+		div.register-keyboard div.line-1 div.button
+		{
+			width: calc(33% - 4px);
+			height: 56px;
+			
+			margin: 10px 0px 0px 6px;
+			float: left;
+		}		
+		div.register-keyboard div.line-1 div.button.first
+		{
+			margin: 10px 0px 0px 0px;
+		}
+			
+			div.register-keyboard div.line-1 div.button div.pos-button
+			{
+				padding: 27px 0px 0px 0px;
+			}
+			div.register-keyboard div.line-1 div.button div.pos-button.correction
+			{
+				font-size: 34px;
+			}
+	
+	div.register-keyboard div.line-2
+	{
+		width: 70%;
+		height: 100%;
+		
+		float: right;
+	}
+	
+		div.register-keyboard div.line-2 div.spacer
+		{
+			width: 2%;
+			height: 100%;
+			
+			float: left;
+		}
+	
+		div.register-keyboard div.line-2 div.line-2-1
+		{
+			width: 15%;
+			height: 100%;
+		
+			float: left;
+		}
+		
+			div.register-keyboard div.line-2 div.line-2-1 div.button
+			{
+				width: calc(100% - 2px);
+				height: calc(25% - 4px);
+				
+				margin: 5px 0px 0px 0px;
+			}		
+			div.register-keyboard div.line-2 div.line-2-1 div.button.first
+			{
+				margin: 0px;
+			}
+				
+				div.register-keyboard div.line-2 div.line-2-1 div.button div.pos-button
+				{
+					height: calc(100% - 12px);
+					padding: 12px 0px 0px 0px;
+				}
+				div.register-keyboard div.line-2 div.line-2-1 div.button div.pos-button.correction
+				{
+					font-size: 34px;
+				}
+		
+		div.register-keyboard div.line-2 div.line-2-2
+		{
+			width: 56%;
+			height: 100%;
+			
+			float: left;
+		}
+		
+			div.register-keyboard div.line-2 div.line-2-2 div.button
+			{
+				width: calc(33% - 3px);
+				height: calc(25% - 4px);
+				
+				margin: 0px 0px 5px 5px;
+				float: left;
+			}		
+			div.register-keyboard div.line-2 div.line-2-2 div.button.first
+			{
+				margin: 0px 0px 5px 0px;
+			}
+			
+				div.register-keyboard div.line-2 div.line-2-2 div.button div.pos-button
+				{
+					height: calc(100% - 12px);
+					padding: 12px 0px 0px 0px;
+				}
+				div.register-keyboard div.line-2 div.line-2-2 div.button div.pos-button.correction
+				{
+					font-size: 34px;
+				}
+		
+		div.register-keyboard div.line-2 div.line-2-3
+		{
+			width: 25%;
+			height: 100%;
+			
+			float: left;
+		}
+		
+			div.register-keyboard div.line-2 div.line-2-3 input[type="button"]
+			{
+				height: 55px;
+			}
+			
+			div.register-keyboard div.line-2 div.line-2-3 div.button
+			{
+				width: calc(50% - 4px);
+				height: calc(25% - 4px);
+				
+				margin: 3px 0px 4px 5px;
+				float: left;
+			}		
+			div.register-keyboard div.line-2 div.line-2-3 div.button.first
+			{
+				margin: 3px 0px 4px 0px;
+			}
+			
+				div.register-keyboard div.line-2 div.line-2-3 div.button div.pos-button
+				{
+					height: calc(100% - 12px);
+					padding: 12px 0px 0px 0px;
+				}
+				div.register-keyboard div.line-2 div.line-2-3 div.button div.pos-button.correction
+				{
+					font-size: 34px;
+				}
+				
+			div.register-keyboard div.line-2 div.line-2-3 div.button-large
+			{
+				width: 100%;
+				height: 90px;
+				
+				padding: 23px 0px 0px 0px;
+				clear: both;
+				
+				background-color: #fff;
+				border: 1px solid #eee;
+				
+				text-align: center;
+				
+				-moz-border-radius: 7px;
+				-webkit-border-radius: 7px;
+				-khtml-border-radius: 7px;
+				border-radius: 7px;
+			}
+			
+				div.register-keyboard div.line-2 div.line-2-3 div.button-large span
+				{
+					font-size: 70px;
+					color: #d00000;
+				}
+				
+				
+				
+table.view tr.active
+{
+	background-color: #eee !important;
+}
+
+
+.no-workorders
+	{
+		width: 200px;
+		height: 200px;
+		
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		
+		margin: -100px 0px 0px -100px;
+		
+		font-size: 90px;
+		text-align: center;
+	}
+	
+	div.workorder-item
+	{
+		width: calc(100% - 40px);
+		height: 10px;
+		
+		margin: 0px 0px 20px 0px;
+		padding: 20px;
+		display: table;
+		
+		border-radius: 5px;
+		
+		background-color: #f9f9f9;
+		border: 1px solid #dddddd;
+	}
+	
+		div.workorder-item div.numbers
+		{
+			width: 100px;
+			height: 10px;
+			
+			position: relative;
+			
+			display: table;
+			float: left;
+		}
+		
+			div.workorder-item div.numbers div.label
+			{
+				width: auto;
+				
+				padding: 5px;
+				margin: 10px 0px 0px -20px;
+				float: left;
+				
+				color: #ffffff;
+			}
+			
+				div.workorder-item div.numbers div.label.red
+				{
+					background-color: #d00000;
+				}
+				
+				div.workorder-item div.numbers div.label.orange
+				{
+					background-color: #d08900;
+				}
+				
+				div.workorder-item div.numbers div.label.green
+				{
+					background-color: #4aa01b;
+				}
+				
+		div.workorder-item div.summary
+		{
+			width: 100%;
+			height: 50px;
+			
+			margin: 20px 0px 0px 0px;
+			float: left;
+			display: table;
+			
+			border-radius: 5px;
+			
+			background-color: #f1f1f1;
+			
+			border: 1px solid #dddddd;
+		}
+		
+			div.workorder-item div.summary table
+			{
+				height: 100%;
+			}
+		
+				div.workorder-item div.summary table tr td
+				{
+					height: calc(100% - 5px);
+					
+					margin: 0px;
+					padding: 5px 0px 0px 0px;
+					
+					border-right: 1px solid #dddddd;
+				}
+			
+					div.workorder-item div.summary table tr td span
+					{
+						width: 100%;
+						
+						font-size: 25px;
+						text-align: center;
+					}
+					
+					div.workorder-item div.summary table tr td.info-block
+					{
+						height: calc(100% - 1px);
+						
+						padding: 1px 20px 0px 20px;
+					}

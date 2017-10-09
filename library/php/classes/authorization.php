@@ -17,6 +17,16 @@ class authorization extends motherboard
 		return false;
 	}
 	
+	public function validateLoginPOS()
+	{
+		if(isset($_SESSION['auth_token_pos']))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
 	
 	
 	/*
@@ -50,6 +60,46 @@ class authorization extends motherboard
 			$return['administrator'] = $row['admin'];
 			$return['language_pack'] = $row['language_pack'];
 			$return['auth_token'] = md5(base64_encode("The horse love is gone") . $row['email_address']);
+			
+			return $return;
+		}
+		
+		return false;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function validateDataPos($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		merchant.*
+				FROM		merchant
+				INNER JOIN	locations ON locations.merchantID = merchant.merchantID
+					AND		locations.pos_card = '%s'",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$return = array();
+
+		if($row['merchantID'] > 0)
+		{
+			$return['merchantID'] = $row['merchantID'];
+			$return['company_name'] = $row['company_name'];
+			$return['address'] = $row['address'];
+			$return['zip_code'] = $row['zip_code'];
+			$return['city'] = $row['city'];
+			$return['website_url'] = $row['website_url'];
+			$return['email_address'] = $row['email_address'];
+			$return['pos_card'] = $row['pos_card'];
+			$return['auth_token_pos'] = md5(base64_encode("The horse love is gone") . $row['company_name']);
 			
 			return $return;
 		}

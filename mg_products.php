@@ -284,7 +284,7 @@ while($row = $db_old->fetchAssoc($result))
 		$db_new->real_escape_string($row_content['name']),
 		$row['plu'],
 		$row['sku'],
-		$row['barcode'],
+		($row['barcode'] == 0 ? "" : $row['barcode']),
 		$db_new->real_escape_string($row_content['description']),
 		$row['price'],
 		$row['price_adviced'],

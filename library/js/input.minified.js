@@ -4,7 +4,13 @@ $(document).ready(function()
 {var msg="Are you sure mate?";if(confirm(msg))
 {var input='<input type="hidden" name="delete" id="delete" value="1" />';elm.closest("form").append(input);elm.closest("form").submit()}
 else{setTimeout(function()
-{elm.val(elm.attr("original")).removeClass("no-action")},100)}},500)});$("select#authorization").find("option").on("click",function(e)
+{elm.val(elm.attr("original")).removeClass("no-action")},100)}},500)});$(document).on("keyup",".calc-main-price, .calc-main-quantity",function(e)
+{var unique_id=$(this).closest("tr").attr("id");var quantity=$("input#quantity_"+unique_id);var price=$("input#price_"+unique_id);var total=$("input#total_"+unique_id);var price_ex=$("input#excl_"+unique_id);var taxrate=$("input#taxrate_"+unique_id);var val=$(this).val();if(val=="")
+{$(this).val(1)}
+else{val=val.replace(",",".");$(this).val(val)}
+var calced=(quantity.val()*price.val());calced=calced.toFixed(2)
+total.val(calced);calced=(taxrate.val()/100)+1;calced=(price.val()/calced);calced=calced.toFixed(2)
+price_ex.val(calced)});$("select#authorization").find("option").on("click",function(e)
 {if($(this).attr("selected")=="selected")
 {$(this).removeAttr("selected")}
 else{$(this).attr("selected","selected")}
@@ -21,7 +27,11 @@ systemChanges($(this))});checkboxHandler();$(".show-load").on("click",function()
 return!1}
 $(".validate-form").on("click",function(event)
 {event.preventDefault();var valid=!0;$(this).closest("form").find("input, select, textarea").css("border","").each(function()
-{if($(this).attr("validation-type")=="int"&&$.parseJSON($(this).attr("validation-required"))==!1&&$(this).val()=="")
+{if($(this).attr("id")=="workorder_unique_code"&&$(this).val()==1)
+{var check=$("#key_number").val();var current=$("#key_number_current").val();$.post("/library/php/posts/werkorders/unique_code.php",{check:check,current:current}).done(function(data)
+{if(data>0)
+{$("#key_number").css("border-color","#d00000");valid=!1}})}
+if($(this).attr("validation-type")=="int"&&$.parseJSON($(this).attr("validation-required"))==!1&&$(this).val()=="")
 {$(this).val(0)}
 if($(this).parents('tr.new-row').length)
 {return}
@@ -114,7 +124,7 @@ if(elm.hasClass("select-option"))
 {elm.hide();if(elm.prev().hasClass("input-holder"))
 {elm.prev().hide()}}
 setTimeout(function()
-{if(elm.find("option[activate]").length>0)
+{$(".datepicker").datepicker({dateFormat:"dd-mm-yy"});if(elm.find("option[activate]").length>0)
 {elm.bind("change",function()
 {$(".select-option").each(function()
 {$(this).hide();if($(this).prev().hasClass("input-holder"))

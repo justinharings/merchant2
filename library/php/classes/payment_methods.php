@@ -74,6 +74,30 @@ class payment_methods extends motherboard
 	
 	
 	/*
+	**
+	*/
+	
+	public function loadCashID($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		payment_methods.paymentID
+				FROM		payment_methods
+				WHERE		payment_methods.cash = 1
+					AND		payment_methods.merchantID = %d
+				LIMIT		0,1",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return ($row['paymentID'] ? $row['paymentID'] : 0);
+	}
+	
+	
+	
+	/*
 	**	Save or update a payment method. If 'delete' is set
 	**	in the post values, continue to the delete function.
 	**	data[0]	=	merchantID;
@@ -100,6 +124,7 @@ class payment_methods extends motherboard
 								payment_methods.maximum_amount = %d,
 								payment_methods.webshop = %d,
 								payment_methods.pos = %d,
+								payment_methods.cash = %d,
 								payment_methods.date_update = NOW()
 					WHERE		payment_methods.paymentID = %d",
 				parent::real_escape_string($data[1]['name']),
@@ -109,6 +134,7 @@ class payment_methods extends motherboard
 				intval($data[1]['maximum_amount']),
 				intval($data[1]['webshop']),
 				intval($data[1]['pos']),
+				intval($data[1]['cash']),
 				intval($data[1]['paymentID'])
 			);
 			parent::query($query);
@@ -125,6 +151,7 @@ class payment_methods extends motherboard
 									payment_methods.maximum_amount = %d,
 									payment_methods.webshop = %d,
 									payment_methods.pos = %d,
+									payment_methods.cash = %d,
 									payment_methods.date_added = NOW()",
 				$data[0],
 				parent::real_escape_string($data[1]['name']),
@@ -133,7 +160,8 @@ class payment_methods extends motherboard
 				parent::real_escape_string($data[1]['api_key_2']),
 				intval($data[1]['maximum_amount']),
 				intval($data[1]['webshop']),
-				intval($data[1]['pos'])
+				intval($data[1]['pos']),
+				intval($data[1]['cash'])
 			);
 			parent::query($query);
 		}

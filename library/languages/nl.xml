@@ -15,7 +15,7 @@
 		<search-bots>Search bots index</search-bots>
 		<search-bots-eg>Overzicht van website crawlers</search-bots-eg>
 		
-		<mailserver>E-mail server</mailserver>
+		<mailserver>Communicatie server</mailserver>
 		<mailserver-eg>Verzonden en wachtende e-mails</mailserver-eg>
 		
 		<sales>Verkoop beheer</sales>
@@ -139,6 +139,9 @@
 		
 		<release-notes>Release notes</release-notes>
 		<release-notes-eg>Release informatie</release-notes-eg>
+		
+		<bug-report>Fout rapporteren</bug-report>
+		<bug-report-eg>Geef online bugs door</bug-report-eg>
 	</menu>
 	
 	<table-headers>
@@ -168,8 +171,13 @@
 			<count-products-inline>product(en)</count-products-inline>
 		<ac>AC</ac>
 		<sc>SC</sc>
+		<barcode>Barcode</barcode>
 		<product>Product</product>
 		<price>Prijs</price>
+		<quantity>Aantal</quantity>
+			<quantity-inline>stuk(s)</quantity-inline>
+		<tax_percentage>Belasting</tax_percentage>
+		<price_ex_tax>Prijs excl. BTW</price_ex_tax>
 		<stock>Voorraad</stock>
 			<count-stock-inline>stuk(s)</count-stock-inline>
 			<count-economic-inline>economisch</count-economic-inline>
@@ -187,6 +195,24 @@
 		<customer>Klant</customer>
 		<grand_total>Totaal</grand_total>
 		<payed>Betaald</payed>
+		<shipment-method>Verzendmethode</shipment-method>
+		<track-trace-code>Barcode</track-trace-code>
+		<normal-price>Stamkosten</normal-price>
+		<shipment-label>Verzendlabel</shipment-label>
+		<payment-method>Betalingsmethode</payment-method>
+		<title>Titel</title>
+		<content>Inhoud</content>
+		<amount>Bedrag</amount>
+		<description>Omschrijving</description>
+		<paylink>Betaallink</paylink>
+		<sender>Afzender</sender>
+		<receiver>Ontvanger</receiver>
+		<subject>Onderwerp</subject>
+		<employee>Medewerker</employee>
+		<zipcode>Postcode</zipcode>
+		<customer_code>Klantenkaart</customer_code>
+		<expiration_date>Verloopdatum</expiration_date>
+		<number>Sleutel</number>
 	</table-headers>
 	
 	<forms>
@@ -198,6 +224,11 @@
 		<button-save>Opslaan</button-save>
 		<button-cancel>Annuleren en terug</button-cancel>
 		<button-delete>Verwijderen</button-delete>
+		<button-print>Afdrukken</button-print>
+		<button-generate-paylink>Betaallink genereren</button-generate-paylink>
+		<button-invoice>Factuur</button-invoice>
+		<button-tender>Offerte</button-tender>
+		<button-picklist>Pakbon</button-picklist>
 		
 		<legend-general>Algemene gegevens</legend-general>
 		<legend-options>Opties in- en uitschakelen</legend-options>
@@ -206,6 +237,7 @@
 		<legend-contact-information>Contactgegevens</legend-contact-information>
 		<legend-autorisations>Autorisaties</legend-autorisations>
 		<legend-payment-module>Eventuele betalingsmodule</legend-payment-module>
+		<legend-payment-module-required>Betalingsmodule</legend-payment-module-required>
 		<legend-prices-taxes>Prijzen en belastingen</legend-prices-taxes>
 		<legend-manage-content>Content bewerken</legend-manage-content>
 		<legend-employees>Medewerkers beheren</legend-employees>
@@ -220,6 +252,7 @@
 		<legend-placed-orders>Geplaatste bestellingen</legend-placed-orders>
 		<legend-workorder-history>Reparatie geschiedenis</legend-workorder-history>
 		<legend-new-email>Nieuwe e-mail versturen</legend-new-email>
+		<legend-new-sms>Nieuwe SMS versturen</legend-new-sms>
 		<legend-customer-card>Klantenkaart barcode</legend-customer-card>
 		<legend-google-map>Google maps view</legend-google-map>
 		<legend-numbers>Nummers</legend-numbers>
@@ -235,6 +268,29 @@
 		<legend-order-status>Status en omboeken</legend-order-status>
 		<legend-customer-information>Klantgegevens</legend-customer-information>
 		<legend-shipment-track>Verzending(en) volgen</legend-shipment-track>
+		<legend-report-settings>Rapportage instellingen</legend-report-settings>
+		<legend-results>Resultaten</legend-results>
+		
+		<!-- Reports > Form -->
+		<form-repports-month>Boekingsmaand</form-repports-month>
+		<form-repports-year>Boekingsjaar</form-repports-year>
+		<form-reports-table-group>Omzetgroep</form-reports-table-group>
+		<form-reports-table-grand_total>Totaalbedrag</form-reports-table-grand_total>
+		<form-reports-table-quantity>Aantallen</form-reports-table-quantity>
+		<form-reports-table-quantity-inline>stuk(s)</form-reports-table-quantity-inline>
+		<form-reports-table-customer>Evt. klant</form-reports-table-customer>
+		<form-reports-table-payment_method>Betalingsmethode</form-reports-table-payment_method>
+		<form-reports-table-amount>Bedrag</form-reports-table-amount>
+		<form-reports-table-date>Datum</form-reports-table-date>
+		<form-reports-table-stock>Voorraad</form-reports-table-stock>
+		
+		<!-- Orders > Paylink > Form -->
+		<form-paylink-description>Omschrijving</form-paylink-description>
+		<form-paylink-description-eg>Ook voor de klant zichtbaar.</form-paylink-description-eg>
+		<form-paylink-orderid>Order #</form-paylink-orderid>
+		<form-paylink-orderid-eg>Zonder voorloop jaartal</form-paylink-orderid-eg>
+		<form-paylink-payment-method>Betalingsmodule</form-paylink-payment-method>
+		<form-paylink-amount>Bedrag</form-paylink-amount>
 		
 		<!-- Orders > Form -->
 		<form-orders-orderid>Ordernummer</form-orders-orderid>
@@ -274,6 +330,8 @@
 		<form-products-group>Verkoopgroep</form-products-group>
 		<form-products-visibility>Zichtbaarheid</form-products-visibility>
 		<form-products-bookmark>Snelkiezen in POS</form-products-bookmark>
+		<form-products-parts>Werkorders producten</form-products-parts>
+		<form-products-manhours>Werkorders manuren</form-products-manhours>
 		<form-products-price>Verkoopprijs</form-products-price>
 		<form-products-price-eg>Inclusief BTW.</form-products-price-eg>
 		<form-products-price-adviced>Adviesprijs</form-products-price-adviced>
@@ -315,6 +373,8 @@
 		<!-- Manage stock > Locations > Form -->
 		<form-locations-name>Locatie</form-locations-name>
 		<form-locations-name-eg>Ook gebruik in uw point of sale.</form-locations-name-eg>
+		<form-locations-code>Merchant kaart</form-locations-code>
+		<form-locations-webshop>Webshop</form-locations-webshop>
 		
 		<!-- CMS > Customers -->
 		<form-customers-name>Naam van de klant</form-customers-name>
@@ -331,10 +391,15 @@
 		<form-customers-note>Nieuwe notitie</form-customers-note>
 		<form-customers-button-save-note>Nieuwe notitie opslaan</form-customers-button-save-note>
 		<form-customers-button-send-email>E-mail versturen</form-customers-button-send-email>
+		<form-customers-button-send-sms>SMS Bericht versturen</form-customers-button-send-sms>
 		<form-customers-email-subject>Onderwerp</form-customers-email-subject>
 		<form-customers-email-content>Inhoud e-mail bericht</form-customers-email-content>
 		<form-customers-email-content-eg>U kunt [replace-tags] gebruiken. HTML toegestaan.</form-customers-email-content-eg>
 		<form-customers-email-sender>Afzender</form-customers-email-sender>
+		<form-customers-email-template>E-mail sjabloon</form-customers-email-template>
+		<form-customers-sms-template>SMS sjabloon</form-customers-sms-template>
+		<form-customers-sms-content>Inhoud SMS bericht</form-customers-sms-content>
+		<form-customers-sms-content-eg>U kunt [replace-tags] gebruiken. Max. 160 karakters.</form-customers-sms-content-eg>
 		
 		
 		<!-- CMS > Content > Form -->
@@ -460,6 +525,7 @@
 		<form-payments-maximum-amount>Maximaal bestelbedrag</form-payments-maximum-amount>
 		<form-payments-webshop>Webshop</form-payments-webshop>
 		<form-payments-pos>Point of sale</form-payments-pos>
+		<form-payments-cash>Contant</form-payments-cash>
 		<form-payments-module>Betalingsmodule</form-payments-module>
 		<form-payments-module-eg>Optioneel.</form-payments-module-eg>
 		<form-payments-api-key-1>API Sleutel 1</form-payments-api-key-1>

@@ -32,6 +32,7 @@ if(isset($_GET['dataID']))
 		foreach($data_locations AS $location)
 		{
 			$stock = $mb->_runFunction("stock", "getStock", array($_GET['dataID'], $location['locationID']));
+			$reserved = $mb->_runFunction("stock", "getReserved", array($_SESSION['merchantID'], $_GET['dataID'], $location['locationID']));
 			?>
 			
 			<div class="form-content">
@@ -48,12 +49,12 @@ if(isset($_GET['dataID']))
 					
 					<tr>
 						<td>Economisch:</td>
-						<td>0 <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
+						<td><?= $stock['stock'] - $reserved ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
 					</tr>
 					
 					<tr>
 						<td><strong>Gereserveerd:</strong></td>
-						<td>1 <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
+						<td><?= $reserved ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
 					</tr>
 				</table>
 			</div>
@@ -65,7 +66,7 @@ if(isset($_GET['dataID']))
 				</div>
 				
 				<input type="hidden" name="stock_location[]" id="stock_location_<?= $location['locationID'] ?>" value="<?= $location['locationID'] ?>" />
-				<input type="text" name="stock_mutation[]" id="stock_mutation_<?= $location['locationID'] ?>" class="width-250" value="" holder="<?= $mb->_translateReturn("forms", "form-products-mutation") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-products-mutation-eg") ?>" validation-required="true" validation-type="int" />
+				<input type="text" name="stock_mutation[]" id="stock_mutation_<?= $location['locationID'] ?>" class="width-250" value="1" holder="<?= $mb->_translateReturn("forms", "form-products-mutation") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-products-mutation-eg") ?>" validation-required="true" validation-type="int" />
 			</div>
 			<?php
 		}

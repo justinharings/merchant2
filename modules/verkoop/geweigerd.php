@@ -2,7 +2,7 @@
 $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "TPB_BB", 1));
 
 $data = $mb->_runFunction("orders", "view", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "orders.date_added DESC", "0,50", 3));
-$form = "/form-banner/";
+$form = "/form-order/";
 ?>
 
 <ul class="breadcrumbs">
@@ -13,7 +13,6 @@ $form = "/form-banner/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
-	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
 </div>
 
 <table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">
@@ -34,7 +33,7 @@ $form = "/form-banner/";
 			foreach($data AS $value)
 			{
 				?>
-				<tr click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form . $value['bannerID'] ?>">
+				<tr click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form . $value['orderID'] ?>">
 					<td><?= $value['order_reference'] ?></td>
 					<td><?= $value['date_added'] ?></td>
 					<td><?= $value['customer_name'] ?></td>

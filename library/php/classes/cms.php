@@ -6,7 +6,8 @@ class cms extends motherboard
 	**	data[0]	=	MerchantID;
 	**	data[1]	=	Search value;
 	**	data[2]	=	Order by value;
-	**	data[3]	=	Maximum rows viewed.
+	**	data[3]	=	Maximum rows viewed;
+	**	data[4] =	Type of template.
 	*/
 	
 	public function viewSms($data)
@@ -18,6 +19,14 @@ class cms extends motherboard
 			$search = sprintf(
 				"	AND		template_sms.name LIKE ('%%%s%%')",
 				parent::real_escape_string($data[1])
+			);
+		}
+		
+		if($data[4] > 0)
+		{
+			$search .= sprintf(
+				"	AND		template_sms.typeID = %s",
+				$data[4]
 			);
 		}
 		
@@ -56,6 +65,7 @@ class cms extends motherboard
 	**	data[1]	=	Search value;
 	**	data[2]	=	Order by value;
 	**	data[3]	=	Maximum rows viewed.
+	**	data[4] =	Type of template.
 	*/
 	
 	public function viewEmail($data)
@@ -67,6 +77,14 @@ class cms extends motherboard
 			$search = sprintf(
 				"	AND		template_email.name LIKE ('%%%s%%')",
 				parent::real_escape_string($data[1])
+			);
+		}
+		
+		if($data[4] > 0)
+		{
+			$search .= sprintf(
+				"	AND		template_email.typeID = %s",
+				$data[4]
 			);
 		}
 		
@@ -367,6 +385,48 @@ class cms extends motherboard
 		}
 		
 		return array();
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function loadEmailTemplate($templateID)
+	{
+		$templateID = $templateID[0];
+		
+		$query = sprintf(
+			"	SELECT		template_email.*
+				FROM		template_email
+				WHERE		template_email.emailID = %d",
+			$templateID
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_assoc($result);
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function loadSmsTemplate($templateID)
+	{
+		$templateID = $templateID[0];
+		
+		$query = sprintf(
+			"	SELECT		template_sms.*
+				FROM		template_sms
+				WHERE		template_sms.smsId = %d",
+			$templateID
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_assoc($result);
 	}
 	
 	

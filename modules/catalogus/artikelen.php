@@ -24,7 +24,7 @@ $form = "/form-artikel/";
 			<td><?= $mb->_translateReturn("table-headers", "product") ?></td>
 			<td class="hide-mobile"><?= $mb->_translateReturn("table-headers", "visible") ?></td>
 			<td><?= $mb->_translateReturn("table-headers", "price") ?></td>
-			<td class="hide-mobile"><?= $mb->_translateReturn("table-headers", "updated") ?></td>
+			<td class="hide-mobile"><?= $mb->_translateReturn("table-headers", "added") ?></td>
 		</tr>
 	</thead>
 	

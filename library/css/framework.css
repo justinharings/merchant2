@@ -300,7 +300,9 @@ body div.top
 	border-bottom: 1px solid #ddd;
 }
 
-	body div.top span.logout-button
+	body div.top span.logout-button,
+	body div.top span.logout-button-pos,
+	body div.top span.logout-button-workshop
 	{
 		width: 25px;
 		height: 25px;
@@ -311,6 +313,8 @@ body div.top
 		
 		font-size: 25px;
 		color: #d00000;
+		
+		cursor: pointer;
 	}
 	
 	body div.top span.previous-button
@@ -480,6 +484,15 @@ body div.content
 			{
 				color: #d0a600;
 			}
+			body div.content div.table-holder table tbody tr td.blue
+			{
+				color: #0075d0;
+			}
+			
+				body div.content div.table-holder table tbody tr td span.order-ref
+				{
+					font-size: 11px;
+				}
 			
 	body div.content div.simple-form
 	{
@@ -500,6 +513,45 @@ body div.content
 			
 			border-bottom: 1px solid #ddd;
 		}
+		
+			body div.content div.simple-form div.form-header div.pulldown
+			{
+				position: fixed;
+				z-index: 999;
+			
+				padding: 4px 20px;
+				display: none;
+				
+				background-color: #f9f9f9;
+				border: 1px solid #ddd;
+				
+				-moz-border-radius: 7px;
+				-webkit-border-radius: 7px;
+				-khtml-border-radius: 7px;
+				border-radius: 7px;
+			}
+			
+				body div.content div.simple-form div.form-header div.pulldown div.item
+				{
+					width: 100%;
+					
+					padding: 5px 0px;
+					
+					border-top: 1px solid #ddd;
+					
+					font-family: 'Raleway','Tahoma';
+					font-size: 12px;
+				}
+				body div.content div.simple-form div.form-header div.pulldown div.item:first-child
+				{
+					border: none;
+				}
+				body div.content div.simple-form div.form-header div.pulldown div.item:hover
+				{
+					cursor: pointer;
+					
+					text-decoration: underline;
+				}
 		
 			body div.content div.simple-form div.form-header h1
 			{

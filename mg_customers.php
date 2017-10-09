@@ -81,6 +81,9 @@ while($row = $db_old->fetchAssoc($result))
 		$row['name'] = substr($row['name'], 0, 1) . "." . substr($row['name'], 1, strlen($row['name']));
 	}
 	
+	$row['country'] = str_replace("_", " ", $row['country']);
+	$row['country'] = ucwords($row['country']);
+	
 	$query = sprintf(
 		"	INSERT INTO		customers
 			SET				customers.customerID = %d,

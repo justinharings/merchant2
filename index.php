@@ -145,6 +145,13 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 	$minifier->add($sourcePath);
 	$minifier->minify($savePath);
 	
+	$sourcePath = $_SERVER['DOCUMENT_ROOT'] . '/library/js/sms.js';
+	$savePath = $_SERVER['DOCUMENT_ROOT'] . '/library/js/sms.minified.js';
+	
+	$minifier = new Minify\JS();
+	$minifier->add($sourcePath);
+	$minifier->minify($savePath);
+	
 	$sourcePath = $_SERVER['DOCUMENT_ROOT'] . '/library/js/datepicker.js';
 	$savePath = $_SERVER['DOCUMENT_ROOT'] . '/library/js/datepicker.minified.js';
 	
@@ -226,7 +233,7 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 						if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "EMS", 0)))
 						{
 							?>
-							<li class="menu-item" rel="/email-server/view/">
+							<li class="menu-item" rel="/mailserver/mailserver/">
 								<div class="text"><?= $mb->_translateReturn("menu", "mailserver") ?></div>
 								<div class="sub"><?= $mb->_translateReturn("menu", "mailserver-eg") ?></div>
 								
@@ -713,19 +720,6 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 							<li class="submenu">
 								<ul>
 									<?php
-									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP_AV", 0)))
-									{
-										?>
-										<li class="menu-item" rel="/rapportages/verzendmethoden/">
-											<div class="text"><?= $mb->_translateReturn("menu", "report-shipments") ?></div>
-											
-											<div class="icon">
-												<span class="textual"><?= $mb->_translateReturn("menu", "report-shipments-abbr") ?></span>
-											</div>
-										</li>
-										<?php
-									}
-									
 									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP_AO", 0)))
 									{
 										?>
@@ -895,14 +889,27 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 						}
 						?>
 						
-						<li class="menu-item" rel="/releases/view/">
-							<div class="text"><?= $mb->_translateReturn("menu", "release-notes") ?></div>
-							<div class="sub"><?= $mb->_translateReturn("menu", "release-notes-eg") ?></div>
-							
-							<div class="icon">
-								<span class="fa fa-leaf"></span>
-							</div>
-						</li>
+						<a href="https://github.com/justinharings/merchant2/releases" target="_blank">
+							<li class="menu-item">
+								<div class="text"><?= $mb->_translateReturn("menu", "release-notes") ?></div>
+								<div class="sub"><?= $mb->_translateReturn("menu", "release-notes-eg") ?></div>
+								
+								<div class="icon">
+									<span class="fa fa-leaf"></span>
+								</div>
+							</li>
+						</a>
+						
+						<a href="https://github.com/justinharings/merchant2/issues/new" target="_blank">
+							<li class="menu-item">
+								<div class="text"><?= $mb->_translateReturn("menu", "bug-report") ?></div>
+								<div class="sub"><?= $mb->_translateReturn("menu", "bug-report-eg") ?></div>
+								
+								<div class="icon">
+									<span class="fa fa-bug"></span>
+								</div>
+							</li>
+						</a>
 					</ul>
 				</div>
 			</div>
@@ -914,21 +921,32 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 			
 			<div class="content">
 				<?php
-				if	(
-						isset($_GET['form']) && file_exists($_SERVER['DOCUMENT_ROOT'] . "/modules/" . $_GET['module'] . "/" . str_replace("/", "", $_GET['form']) . ".php")
-					)
+				if(!isset($_GET['module']) && $_SESSION['start_page'] != "")
 				{
-					require_once($_SERVER['DOCUMENT_ROOT'] . "/modules/" . $_GET['module'] . "/" . str_replace("/", "", $_GET['form']) . ".php");
+					?>
+					<script type="text/javascript">
+						document.location.href = '/<?= $_GET['language_pack'] . "/modules" . $_SESSION['start_page'] ?>';
+					</script>
+					<?php
 				}
 				else
-				{
-					if(!isset($_GET['form']) && file_exists($_SERVER['DOCUMENT_ROOT'] . "/modules/" . $_GET['module'] . "/" . str_replace("/", "", $_GET['file']) . ".php"))
+				{	
+					if	(
+							isset($_GET['form']) && file_exists($_SERVER['DOCUMENT_ROOT'] . "/modules/" . $_GET['module'] . "/" . str_replace("/", "", $_GET['form']) . ".php")
+						)
 					{
-						require_once($_SERVER['DOCUMENT_ROOT'] . "/modules/" . $_GET['module'] . "/" . str_replace("/", "", $_GET['file']) . ".php");
+						require_once($_SERVER['DOCUMENT_ROOT'] . "/modules/" . $_GET['module'] . "/" . str_replace("/", "", $_GET['form']) . ".php");
 					}
 					else
 					{
-						require_once($_SERVER['DOCUMENT_ROOT'] . "/modules/errors/404.php");
+						if(!isset($_GET['form']) && file_exists($_SERVER['DOCUMENT_ROOT'] . "/modules/" . $_GET['module'] . "/" . str_replace("/", "", $_GET['file']) . ".php"))
+						{
+							require_once($_SERVER['DOCUMENT_ROOT'] . "/modules/" . $_GET['module'] . "/" . str_replace("/", "", $_GET['file']) . ".php");
+						}
+						else
+						{
+							require_once($_SERVER['DOCUMENT_ROOT'] . "/modules/errors/404.php");
+						}
 					}
 				}
 				?>

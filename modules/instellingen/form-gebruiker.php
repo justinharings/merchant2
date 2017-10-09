@@ -146,7 +146,6 @@ if(isset($_GET['dataID']))
 						"POS_PI" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "pos-printers"),
 						"WOR" => $mb->_translateReturn("menu", "workorders"),
 						"RAP" => $mb->_translateReturn("menu", "reports"),
-						"RAP_AV" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "report-shipments"),
 						"RAP_AO" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "articles-groups"),
 						"RAP_AM" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "articles-brands"),
 						"RAP_GU" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "payment-book"),

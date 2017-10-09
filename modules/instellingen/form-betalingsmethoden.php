@@ -47,7 +47,8 @@ if(isset($_GET['dataID']))
 			<input type="text" name="maximum_amount" id="maximum_amount" value="<?= isset($_GET['dataID']) ? $data['maximum_amount'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-payments-maximum-amount") ?>" validation-required="false" validation-type="int" icon="fa-euro" />
 			
 			<input type="checkbox" <?= isset($_GET['dataID']) && $data['webshop'] == 1 ? "checked=\"checked\"" : "" ?> name="webshop" id="webshop" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-payments-webshop") ?>" />
-			<input type="checkbox" <?= isset($_GET['dataID']) && $data['pos'] == 1 ? "checked=\"checked\"" : "" ?> name="pos" id="pos" value="1" holder="<?= $mb->_translateReturn("forms", "form-payments-pos") ?>" />
+			<input type="checkbox" <?= isset($_GET['dataID']) && $data['pos'] == 1 ? "checked=\"checked\"" : "" ?> name="pos" id="pos" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-payments-pos") ?>" />
+			<input type="checkbox" <?= isset($_GET['dataID']) && $data['cash'] == 1 ? "checked=\"checked\"" : "" ?> name="cash" id="cash" value="1" holder="<?= $mb->_translateReturn("forms", "form-payments-cash") ?>" />
 		</div>	
 			
 		<div class="form-content">

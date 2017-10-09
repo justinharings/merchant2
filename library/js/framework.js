@@ -7,6 +7,15 @@ $(document).ready(
 	function()
 	{
 		/*
+		**
+		*/
+		
+		$("input.focus").focus();
+		
+		
+		
+		
+		/*
 		**	Remove loader when everything is done loading.
 		*/
 		
@@ -28,6 +37,13 @@ $(document).ready(
 				if (code == 13) 
 				{
 					e.preventDefault();
+					
+					if($(":focus").attr("id") == "login_code")
+					{
+						
+						$(this).submit();
+					}
+					
 					return false;
 				}
 			}
@@ -55,6 +71,14 @@ $(document).ready(
 					
 					$("div.simple-form").find("div.tab").hide();
 					$("div.simple-form").find("div.tab-" + index).show();
+				}
+			);
+			
+			$(".activate-tab").on("click",
+				function()
+				{
+					var tab = parseInt($(this).attr("tab")) + 1;
+					$("div.simple-form").find("div.form-tabs").find("div:nth-child(" + tab + ")").trigger("click");
 				}
 			);
 		}
@@ -87,6 +111,55 @@ $(document).ready(
 		}
 		
 		
+		/*
+		**
+		*/
+		
+		$("input.pulldown").on("click",
+			function(e)
+			{
+				e.preventDefault();
+				
+				var menu = $(this).attr("menu");
+				
+				var top = ($(this).offset().top + 38) + "px";
+				var left = ($(this).offset().left + 10) + "px";
+				
+				$("div.pulldown." + menu)
+					.css("top", top)
+					.css("left", left)
+					.show();
+				
+				setTimeout(
+					function()
+					{
+						$("div.pulldown." + menu).hide();
+					}, 5000
+				);
+			}
+		);
+		
+		
+		
+		/*
+		**
+		*/
+		
+		$("div.pulldown").find("div.item").on("click",
+			function()
+			{
+				if($(this).attr("window") != "")
+				{
+					window.open($(this).attr("window"));
+				}
+				else if($(this).attr("browse") != "")
+				{
+					document.location.href = $(this).attr("browse");
+				}
+			}
+		);
+		
+		
 		
 		/*
 		**	When clicked on the logout button, show the loader
@@ -107,6 +180,32 @@ $(document).ready(
 						}
 					}
 				);
+			}
+		);
+		
+		$("span.logout-button-pos").on("click",	
+			function()
+			{
+				$(this).removeClass("fa-power-button").addClass("fa-spinner").addClass("fa-spin");
+				
+				$.post("/library/php/posts/authorization/logout.php").done(
+					function(data)
+					{
+						if(data == 1)
+						{
+							document.location.href = "/pos/";
+						}
+					}
+				);
+			}
+		);
+		
+		$("span.logout-button-workshop").on("click",	
+			function()
+			{
+				$(this).removeClass("fa-power-button").addClass("fa-spinner").addClass("fa-spin");
+				
+				document.location.href = '/pos/modules/workorders/';
 			}
 		);
 		
@@ -237,7 +336,18 @@ $(document).ready(
 					$(this).bind("click",
 						function()
 						{
-							document.location.href = "/" + $("input#_language_pack").val() + "/modules" + $(this).attr("rel");
+							var prefix = $("input#_language_pack").val();
+							
+							if($(this).hasClass("pos"))
+							{
+								prefix = "pos";
+							}
+							else if($(this).hasClass("workshop"))
+							{
+								prefix = "workshop";
+							}
+							
+							document.location.href = "/" + prefix + "/modules" + $(this).attr("rel");
 						}
 					);
 				}
@@ -342,6 +452,8 @@ $(document).ready(
 							var replaced = str.replace("_+", "_" + cnt)
 							$(this).attr("id", replaced);
 						}
+						
+						$(this).removeClass("hasDatepicker");
 					}
 				);
 				
@@ -403,7 +515,10 @@ $(document).ready(
 				{
 					e.preventDefault();
 					
-					elm.prev("span.fa").removeClass("fa-search").addClass("fa-circle-o-notch").addClass("fa-spin");
+					elm.prev("span.fa")
+						.removeClass("fa-search")
+						.addClass("fa-circle-o-notch")
+						.addClass("fa-spin");
 					
 					$.post(
 						"/library/php/posts/catalogus/return_product.php",
@@ -429,12 +544,45 @@ $(document).ready(
 								productID = '<input type="hidden" name="productID[]" id="productID" value="'+productID+'" />';
 								
 								tr.find("td.searched-p-name").html(data['name']);
+								tr.find("td.searched-p-barcode").html(data['barcode']);
+								tr.find("td.searched-p-article-code").html(data['article_code']);
 								tr.find("td.searched-p-price").html("&euro;&nbsp;" + data['price']);
 								tr.find("td.searched-p-productID").html(productID);
+								
+								tr.find("input.searched-p-price").val(data['price']);
+								tr.find("input.searched-p-name").val(data['name']);
+								tr.find("input.searched-p-taxrate").val(data['taxrate']);
 							}
 						}
 					);
 				}
+			}
+		);
+
+		$(document).on("change", 'select.shipment-search',
+			function (e) 
+			{
+				var elm = $(this);
+				
+				$.post(
+					"/library/php/posts/catalogus/return_shipment.php",
+					{
+						shipmentID: elm.val()
+					}
+				).done(
+					function(data) 
+					{
+						data = $.parseJSON(data);
+						
+						var tr = elm.parent().parent().parent();
+						
+						tr.find("td.searched-s-price").html(data['price']);
+						tr.find("td.searched-s-courier").html(data['courier']);
+						
+						tr.find("input.searched-s-price").val(data['price']);
+						tr.find("input.searched-s-courier").val(data['courier']);
+					}
+				);
 			}
 		);
 	}

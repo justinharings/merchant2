@@ -17,28 +17,37 @@ class products extends motherboard
 		
 		if($data[1] != "")
 		{
-			if($data[1] != " ")
+			if($data[1] != " " && $data[1] != "bookmarks")
 			{
-				if(intval($data[1]) == 0)
+				$split = explode(" ", $data[1]);
+				
+				foreach($split AS $string)
 				{
-					$search = sprintf(
-						"	AND		products.name LIKE ('%%%s%%')",
-						parent::real_escape_string($data[1])
-					);
+					if(intval($string) == 0)
+					{
+						$search .= sprintf(
+							"	AND		products.name LIKE ('%%%s%%')",
+							parent::real_escape_string($string)
+						);
+					}
+					else
+					{
+						$search .= sprintf(
+							"	AND		(
+											products.article_code = %d
+									OR		products.supplier_code = %d
+									OR		products.barcode = %d
+										)",
+							$string,
+							$string,
+							$string
+						);
+					}
 				}
-				else
-				{
-					$search = sprintf(
-						"	AND		(
-										products.article_code = %d
-								OR		products.supplier_code = %d
-								OR		products.barcode = %d
-									)",
-						$data[1],
-						$data[1],
-						$data[1]
-					);
-				}
+			}
+			else if($data[1] == "bookmarks")
+			{
+				$search = " AND products.bookmarks = 1";
 			}
 		}
 		else
@@ -50,6 +59,7 @@ class products extends motherboard
 			"	SELECT		products.productID,
 							LPAD(products.article_code, 5, 0) AS article_code,
 							products.supplier_code,
+							products.barcode,
 							products.name,
 							products.price,
 							products.visibility,
@@ -150,8 +160,11 @@ class products extends motherboard
 		
 		$query = sprintf(
 			"	SELECT		%s
-							products.*
+							products.*,
+							LPAD(products.article_code, 5, 0) AS article_code_long,
+							taxes.percentage AS taxrate
 				FROM		products
+				INNER JOIN	taxes ON taxes.taxesID = products.taxesID
 				WHERE		products.productID = %d",
 			$languages,
 			$data[0]
@@ -308,6 +321,24 @@ class products extends motherboard
 			return $this->delete($data);
 		}
 		
+		if($data[1]['workorders_manhours'] == 1)
+		{
+			$query = sprintf(
+				"	UPDATE		products
+					SET			products.workorders_manhours = 0"
+			);
+			parent::query($query);
+		}
+		
+		if($data[1]['workorders_products'] == 1)
+		{
+			$query = sprintf(
+				"	UPDATE		products
+					SET			products.workorders_products = 0"
+			);
+			parent::query($query);
+		}
+		
 		if(isset($data[1]['productID']) && $data[1]['productID'] != 0)
 		{
 			$query = sprintf(
@@ -318,6 +349,8 @@ class products extends motherboard
 								products.brandID = %d,
 								products.externalStockID = %d,
 								products.deleted = 0,
+								products.workorders_products = %d,
+								products.workorders_manhours = %d,
 								products.bookmarks = %d,
 								products.delivery_days = %d,
 								products.status = %d,
@@ -332,12 +365,15 @@ class products extends motherboard
 								products.price_adviced = '%.2f',
 								products.price_purchase = '%.2f',
 								products.weight = '%.2f',
-								products.date_update = NOW()",
+								products.date_update = NOW()
+					WHERE		products.productID = %d",
 				$data[1]['shipmentID'],
 				$data[1]['taxesID'],
 				$data[1]['groupID'],
 				$data[1]['brandID'],
 				$data[1]['externalStockID'],
+				$data[1]['workorders_products'],
+				$data[1]['workorders_manhours'],
 				$data[1]['bookmark'],
 				$data[1]['delivery_days'],
 				$data[1]['status'],
@@ -351,7 +387,8 @@ class products extends motherboard
 				parent::floatvalue($data[1]['price']),
 				parent::floatvalue($data[1]['price_adviced']),
 				parent::floatvalue($data[1]['price_purchase']),
-				parent::floatvalue($data[1]['weight'])
+				parent::floatvalue($data[1]['weight']),
+				intval($data[1]['productID'])
 			);
 			parent::query($query);
 			
@@ -380,6 +417,8 @@ class products extends motherboard
 									products.brandID = %d,
 									products.externalStockID = %d,
 									products.deleted = 0,
+									products.workorders_products = %d,
+									products.workorders_manhours = %d,
 									products.bookmarks = %d,
 									products.delivery_days = %d,
 									products.status = %d,
@@ -401,6 +440,8 @@ class products extends motherboard
 				$data[1]['groupID'],
 				$data[1]['brandID'],
 				$data[1]['externalStockID'],
+				$data[1]['workorders_products'],
+				$data[1]['workorders_manhours'],
 				$data[1]['bookmark'],
 				$data[1]['delivery_days'],
 				$data[1]['status'],
@@ -596,6 +637,28 @@ class products extends motherboard
 		}
 		
 		return $data[1]['productID'];
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveBarcode($data)
+	{
+		parent::_checkInputValues($data, 3);
+		
+		$query = sprintf(
+			"	UPDATE		products
+				SET			products.barcode = '%s'
+				WHERE		products.article_code = %d",
+			($data[2] > 0 ? $data[2] : ""),
+			$data[1]
+		);
+		parent::query($query);
+		
+		return true;
 	}
 	
 	

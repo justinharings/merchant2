@@ -50,10 +50,13 @@ $query = sprintf(
 						orders_status.statusID
 		FROM			orders
 		INNER JOIN		orders_status ON orders_status.orderID = orders.orderID
-		WHERE			orders.merchantID = %d",
+		WHERE			orders.merchantID = %d
+		ORDER BY		orders.date_time DESC",
 	$merchantID
 );
 $result = $db_old->query($query);
+
+$cnt = 0;
 
 while($row = $db_old->fetchAssoc($result))
 {
@@ -89,6 +92,25 @@ while($row = $db_old->fetchAssoc($result))
 		
 		case 16:
 			$row['statusID'] = 7;
+		break;
+	}
+	
+	switch($row['userID'])
+	{
+		case 1:
+			$row['userID'] = 4;
+		break;
+		
+		case 3:
+			$row['userID'] = 1;
+		break;
+		
+		case 4:
+			$row['userID'] = 2;
+		break;
+		
+		case 100020:
+			$row['userID'] = 3;
 		break;
 	}
 	
@@ -231,6 +253,7 @@ while($row = $db_old->fetchAssoc($result))
 							orders.merchantID = %d,
 							orders.customerID = %d,
 							orders.statusID = %d,
+							orders.employeeID = %d,
 							orders.grand_total = '%.2f',
 							orders.vat_total = '%.2f',
 							orders.payed = '%.2f',
@@ -239,13 +262,16 @@ while($row = $db_old->fetchAssoc($result))
 		$row['merchantID'],
 		$row['customerID'],
 		$row['statusID'],
+		$row['userID'],
 		$row['grand_total'],
 		$row['taxes_total'],
 		$total_payed,
 		$row['date_time']
 	);
 	$db_new->query($query);
+	
+	$cnt++;
 }
 ?>
 
-Done.
+Done <?= $cnt ?>.

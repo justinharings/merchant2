@@ -148,6 +148,21 @@ input[type="submit"]
 		
 		color: #000;
 	}
+	
+	input[type="text"].text-center
+	{
+		text-align: center;
+	}
+	
+	input[type="text"].datepicker
+	{
+		text-align: center;
+	}
+	
+	input[type="text"].large
+	{
+		font-size: 28px;
+	}
 
 
 
@@ -219,6 +234,36 @@ textarea.width-50-percent
 		
 	}
 
+input.width-30,
+textarea.width-30
+{
+	width: 8px;
+}
+
+	input[type="button"].width-30,
+	input[type="submit"].width-30,
+	select.width-30,
+	div.languages.width-30
+	{
+		width: 30px;
+		
+	}
+	
+input.width-40,
+textarea.width-40
+{
+	width: 18px;
+}
+
+	input[type="button"].width-40,
+	input[type="submit"].width-40,
+	select.width-40,
+	div.languages.width-40
+	{
+		width: 30px;
+		
+	}
+
 input.width-50,
 textarea.width-50
 {
@@ -231,6 +276,21 @@ textarea.width-50
 	div.languages.width-50
 	{
 		width: 50px;
+		
+	}
+	
+input.width-75,
+extarea.width-75
+{
+	width: 53px;
+}
+
+	input[type="button"].width-75,
+	input[type="submit"].width-75,
+	select.width-75,
+	div.languages.width-75
+	{
+		width: 75px;
 		
 	}
 

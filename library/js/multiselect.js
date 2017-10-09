@@ -547,7 +547,7 @@
 $(document).ready(
 	function($)
 	{
-		$('select[multiple]').multiSelect();
+		$('select[multiple]:not(.no-multiselect)').multiSelect();
 		
 		$(".ms-list").mouseenter(
 			function()

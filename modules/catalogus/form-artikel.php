@@ -55,7 +55,7 @@ if(isset($_GET['dataID']))
 					<?= $mb->_translateReturn("forms", "legend-numbers") ?>
 				</div>
 				
-				<input type="text" name="article_code" id="article_code" value="<?= isset($_GET['dataID']) ? $data['article_code'] : "" ?>" class="width-100 margin" holder="<?= $mb->_translateReturn("forms", "form-products-ac") ?>" validation-required="true" validation-type="int" unique-article="<?= $_GET['dataID'] ?>" />
+				<input type="text" name="article_code" id="article_code" value="<?= isset($_GET['dataID']) ? $data['article_code'] : "" ?>" class="width-100 margin" holder="<?= $mb->_translateReturn("forms", "form-products-ac") ?>" validation-required="true" validation-type="int" unique-article="<?= $data['article_code'] ?>" />
 				<input type="text" name="supplier_code" id="supplier_code" value="<?= isset($_GET['dataID']) ? $data['supplier_code'] : "" ?>" class="width-100 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-sc") ?>" />
 				<input type="text" name="barcode" id="barcode" value="<?= isset($_GET['dataID']) ? $data['barcode'] : "" ?>" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-barcode") ?>" />
 			</div>
@@ -157,7 +157,9 @@ if(isset($_GET['dataID']))
 					<option <?= isset($_GET['dataID']) && $data['visibility'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Kassa, Webwinkel</option>
 				</select>
 				
-				<input type="checkbox" <?= isset($_GET['dataID']) && $data['bookmarks'] == 1 ? "checked=\"checked\"" : "" ?> name="bookmark" id="bookmark" value="1" holder="<?= $mb->_translateReturn("forms", "form-products-bookmark") ?>" />
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['bookmarks'] == 1 ? "checked=\"checked\"" : "" ?> name="bookmark" id="bookmark" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-products-bookmark") ?>" />
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_products'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_products" id="workorders_products" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-products-parts") ?>" />
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_manhours'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_manhours" id="workorders_manhours" value="1" holder="<?= $mb->_translateReturn("forms", "form-products-manhours") ?>" />
 			</div>
 		</div>
 		

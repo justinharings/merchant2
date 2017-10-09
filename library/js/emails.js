@@ -5,6 +5,32 @@ $(document).ready(
 		{
 			loadEmails($("div.tab.js-load-emails").attr("e-mail-customer-id"));
 		}
+		
+		$("select.email-template-choice").on("change",
+			function()
+			{
+				var elm = $(this);
+				
+				if(elm.val() > 0)
+				{
+					$.post(
+						"/library/php/posts/mailserver/load_template.php",
+						{
+							templateID: elm.val()
+						}
+					).done(
+						function(data) 
+						{
+							data = $.parseJSON(data);
+							
+							$("input#email_sender").val(data['sender']);
+							$("input#email_subject").val(data['subject']);
+							$("textarea#email_content").html(data['content']);
+						}
+					);
+				}
+			}
+		);
 	}
 );
 
@@ -52,7 +78,8 @@ function sendEmail()
 				$.post(
 					"/library/php/posts/mailserver/send.php",
 					{
-						customerID: $("input#email_customerID").val(),
+						customerID: $("div.tab.js-load-emails").attr("e-mail-customer-id"),
+						orderID: $("input#email_orderID").val(),
 						sender: $("input#email_sender").val(),
 						receiver: $("input#email_receiver").val(),
 						subject: $("input#email_subject").val(),
@@ -63,24 +90,24 @@ function sendEmail()
 					{
 						loadEmails($("input#email_customerID").val());
 					}
-				);	
+				);
 			}, 1000
 		);
+		
+		setTimeout(
+			function()
+			{
+				$("input#email_sender, input#email_subject, textarea#email_content, select#email_template").val("");
+				$("input#send_email").val($("input#send_email").attr("original")).removeClass("no-action");
+				
+				$('div.content').animate(
+					{
+						scrollTop: 200
+					}, 1000
+				);
+			}, 1500
+		);
 	}
-	
-	setTimeout(
-		function()
-		{
-			$("input#email_sender, input#email_subject, textarea#email_content").val("");
-			$("input#send_email").val($("input#send_email").attr("original")).removeClass("no-action");
-			
-			$('div.content').animate(
-				{
-					scrollTop: 200
-				}, 1000
-			);
-		}, 1500
-	);
 }
 
 function loadEmails(customerID)
@@ -90,7 +117,7 @@ function loadEmails(customerID)
 	$.post(
 		"/library/php/posts/klanten/load_emails.php",
 		{
-			customerID: customerID
+			customerID: $("div.tab.js-load-emails").attr("e-mail-customer-id")
 		}
 	).done(
 		function(data) 

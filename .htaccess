@@ -1,0 +1,59 @@
+RewriteEngine On
+
+RewriteCond %{HTTPS} off
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteCond %{REQUEST_URI} !(/$|\.)
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI}\/ [L,R=301]
+
+
+# Workshop
+RewriteRule ^workshop/$ /extensions/workshop/index.php [L]
+
+# Workshop + module
+RewriteRule ^workshop/modules/([^/]*)/$ /extensions/workshop/index.php?module=$1 [L]
+
+# Workshop + search
+RewriteRule ^workshop/modules/([^/]*)/search/([^/]*)/$ /extensions/workshop/index.php?module=$1&&search_string=$2 [L]
+
+# Point of sale
+RewriteRule ^pos/$ /extensions/point_of_sale/index.php [L]
+
+# Point of sale + module
+RewriteRule ^pos/modules/([^/]*)/$ /extensions/point_of_sale/index.php?module=$1 [L]
+
+# Point of sale + search
+RewriteRule ^pos/modules/([^/]*)/search/([^/]*)/$ /extensions/point_of_sale/index.php?module=$1&search_string=$2 [L]
+
+# Point of sale + focus
+RewriteRule ^pos/modules/([^/]*)/focus/([^/]*)/$ /extensions/point_of_sale/index.php?module=$1&focus=$2 [L]
+
+# Rewrite language packs
+RewriteRule ^([^/]*)/$ /index.php?language_pack=$1 [L]
+
+# Module
+RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/$ /index.php?language_pack=$1&module=$2&file=$3/ [L]
+
+# Module + search
+RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/search/([^/]*)/$ /index.php?language_pack=$1&module=$2&file=$3&search_string=$4/ [L]
+
+# Module + data
+RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/([^/]*)/$ /index.php?language_pack=$1&module=$2&file=$3&form=$4/ [L]
+
+# Module + form + data
+RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?language_pack=$1&module=$2&file=$3&form=$4&dataID=$5/ [L]
+
+# Minify loading
+RewriteRule ^([^/]*)/minify/$ /index.php?language_pack=$1&minify=true [L]
+
+# Errors
+RewriteRule ^/([^/]*)/errors/([^/]*)\.html$ /modules/errors/$2.php?language_pack=$1 [L]
+
+
+<FilesMatch "\.(?i:gif|jpe?g|png|ico|css|js|swf)$">
+
+  <IfModule mod_headers.c>
+    Header set Cache-Control "max-age=172800, public, must-revalidate"
+  </IfModule>
+
+</FilesMatch>
