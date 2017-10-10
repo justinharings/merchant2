@@ -32,7 +32,9 @@ if($_reset == true)
 **	PHP exception for the developer.
 */
 
-define("_DEVELOPMENT_ENVIRONMENT", false);
+$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+define("_DEVELOPMENT_ENVIRONMENT", (strpos($actual_link, "dev.") !== false ? true : false));
 $_SESSION['_DEVELOPMENT_ENVIRONMENT'] = _DEVELOPMENT_ENVIRONMENT;
 
 
