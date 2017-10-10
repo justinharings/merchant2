@@ -1182,7 +1182,23 @@ class cms extends motherboard
 		
 		while($row = parent::fetch_assoc($result))
 		{
-			$row['image'] = "https://merchant.justinharings.nl/library/media/banners/" . $row['bannerID'] . ".jpg";
+			$check = $_SERVER['DOCUMENT_ROOT'] . "/library/media/banners/" . $row['bannerID'];
+			
+			if(file_exists($check . ".jpg"))
+			{
+				$check = ".jpg";
+			}
+			else if(file_exists($check . ".png"))
+			{
+				$check = ".png";
+			}
+			else if(file_exists($check . ".gif"))
+			{
+				$check = ".gif";
+			}
+			
+			$row['image'] = "https://merchant.justinharings.nl/library/media/banners/" . $row['bannerID'] . $check;
+			
 			$return[] = $row;
 		}
 		
