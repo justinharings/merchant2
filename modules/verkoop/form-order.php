@@ -560,6 +560,7 @@ foreach($data['shipments'] AS $shipment)
 										<option <?= $data['invoice_rules'][$i-1]['key'] == "Aanbetaling" ? "selected=\"selected\"" : "" ?> value="Aanbetaling">Aanbetaling</option>
 										<option <?= $data['invoice_rules'][$i-1]['key'] == "Accessoires" ? "selected=\"selected\"" : "" ?> value="Accessoires">Accessoires</option>
 										<option <?= $data['invoice_rules'][$i-1]['key'] == "Afhaalmoment" ? "selected=\"selected\"" : "" ?> value="Afhaalmoment">Afhaalmoment</option>
+										<option <?= $data['invoice_rules'][$i-1]['key'] == "Afhaalpunt" ? "selected=\"selected\"" : "" ?> value="Afhaalpunt">Afhaalpunt</option>
 										<option <?= $data['invoice_rules'][$i-1]['key'] == "Betaling" ? "selected=\"selected\"" : "" ?> value="Betaling">Betaling</option>
 										<option <?= $data['invoice_rules'][$i-1]['key'] == "Extra informatie" ? "selected=\"selected\"" : "" ?> value="Extra informatie">Extra informatie</option>
 										<option <?= $data['invoice_rules'][$i-1]['key'] == "Extra's" ? "selected=\"selected\"" : "" ?> value="Extra's">Extra's</option>
