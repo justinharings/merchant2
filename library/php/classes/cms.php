@@ -1170,7 +1170,8 @@ class cms extends motherboard
 				FROM		banners
 				WHERE		banners.merchantID = %d
 					AND		banners.language_code = '%s'
-					AND		banners.tag = '%s'",
+					AND		banners.tag = '%s'
+				ORDER BY	banners.name",
 			$data[0],
 			$data[1],
 			$data[2]
