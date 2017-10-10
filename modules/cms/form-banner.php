@@ -67,7 +67,7 @@ if(isset($_GET['dataID']))
 				<?= $mb->_translateReturn("forms", "legend-pictures") ?>
 			</div>
 			
-			<input type="file" name="image" id="image" value="" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-banners-image") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-banners-image-eg") ?>" <?= isset($_GET['dataID']) ? "" : "validation-required=\"true\"" ?> validation-type="image" image-extension="jpg"  />
+			<input type="file" name="image" id="image" value="" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-banners-image") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-banners-image-eg") ?>" <?= isset($_GET['dataID']) ? "" : "validation-required=\"true\"" ?>  />
 		</div>
 	</div>
 </form>
