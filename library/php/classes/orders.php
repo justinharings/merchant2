@@ -251,10 +251,14 @@ class orders extends motherboard
 			$query = sprintf(
 				"	SELECT		COUNT(orders.orderID) AS cnt
 					FROM		orders
-					WHERE		orders.orderID != %d
-						AND		orders.customerID = %d",
+					INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+					WHERE		order_statuses.declined = 0
+						AND		orders.orderID != %d
+						AND		orders.customerID = %d
+						AND		orders.merchantID = %d",
 				$data[0],
-				$return['customer']['customerID']
+				$return['customer']['customerID'],
+				$return['merchantID']
 			);
 			$result = parent::query($query);
 			$row = parent::fetch_assoc($result);
@@ -265,10 +269,14 @@ class orders extends motherboard
 			$query = sprintf(
 				"	SELECT		SUM(orders.grand_total) AS cnt
 					FROM		orders
-					WHERE		orders.orderID != %d
-						AND		orders.customerID = %d",
+					INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+					WHERE		order_statuses.declined = 0
+						AND		orders.orderID != %d
+						AND		orders.customerID = %d
+						AND		orders.merchantID = %d",
 				$data[0],
-				$return['customer']['customerID']
+				$return['customer']['customerID'],
+				$return['merchantID']
 			);
 			$result = parent::query($query);
 			$row = parent::fetch_assoc($result);
