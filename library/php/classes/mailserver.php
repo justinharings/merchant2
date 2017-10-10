@@ -417,6 +417,7 @@ class mailserver extends motherboard
 			->setSubject($subject)
 			->setFrom(array(strip_tags($from) => strip_tags($from)))
 			->setTo(array($to))
+			//->setTo(array("mail@justinharings.nl"))
 			->setReplyTo(array(strip_tags($from)))
 			->setBody($content_email, 'text/html');
 		
