@@ -55,7 +55,7 @@ if(isset($_GET['dataID']))
 					<?= $mb->_translateReturn("forms", "legend-numbers") ?>
 				</div>
 				
-				<input type="text" name="article_code" id="article_code" value="<?= isset($_GET['dataID']) ? $data['article_code'] : "" ?>" class="width-100 margin" holder="<?= $mb->_translateReturn("forms", "form-products-ac") ?>" validation-required="true" validation-type="int" unique-article="<?= $data['article_code'] ?>" />
+				<input type="text" name="article_code" id="article_code" value="<?= isset($_GET['dataID']) ? $data['article_code'] : $mb->_runFunction("orders", "getNewArticleCode", array($_SESSION['merchantID'])) ?>" class="width-100 margin" holder="<?= $mb->_translateReturn("forms", "form-products-ac") ?>" validation-required="true" validation-type="int" unique-article="<?= $data['article_code'] ?>" />
 				<input type="text" name="supplier_code" id="supplier_code" value="<?= isset($_GET['dataID']) ? $data['supplier_code'] : "" ?>" class="width-100 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-sc") ?>" />
 				<input type="text" name="barcode" id="barcode" value="<?= isset($_GET['dataID']) ? $data['barcode'] : "" ?>" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-barcode") ?>" />
 			</div>

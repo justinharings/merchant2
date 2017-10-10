@@ -831,6 +831,28 @@ class orders extends motherboard
 	
 	
 	/*
+	**
+	*/
+	
+	public function getNewArticleCode($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		MAX(CONVERT(products.article_code, UNSIGNED INTEGER)) AS article_code
+				FROM		products
+				WHERE		products.merchantID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return ($row['article_code']+1);
+	}
+	
+	
+	
+	/*
 	**	data[0] =	merchantID;
 	**	data[1] =	products;
 	**	data[2] =	customerID;
