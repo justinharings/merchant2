@@ -25,7 +25,7 @@ if($defaults['products'] > 0 && $defaults['manhours'] > 0)
 	$nmbr = count($_SESSION['cart']);
 	$cart = array();
 	
-	foreach($card AS $key => $value)
+	foreach($card AS $value)
 	{
 		$productID = $defaults['products'];
 		
