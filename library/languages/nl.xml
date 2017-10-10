@@ -478,6 +478,7 @@
 		<form-pos-settings-shipment>Standaard verzendmethode</form-pos-settings-shipment>
 		<form-pos-settings-orderstatus>Standaard bestelstatus</form-pos-settings-orderstatus>
 		<form-pos-settings-shipment-required>Verzendmethode verplicht</form-pos-settings-shipment-required>
+		<form-pos-settings-send-emails>E-mails versturen</form-pos-settings-send-emails>
 		
 		<!-- Point of Sale > Printer settings -->
 		<form-pos-printer-google-api>Google Cloud Print API key</form-pos-printer-google-api>

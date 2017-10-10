@@ -282,11 +282,13 @@ class pos extends motherboard
 				"	UPDATE		pos_settings
 					SET			pos_settings.shipmentID = %d,
 								pos_settings.statusID = %d,
-								pos_settings.shipment_required = %d
+								pos_settings.shipment_required = %d,
+								pos_settings.send_emails = %d
 					WHERE		pos_settings.merchantID = %d",
 				intval($data[1]['shipmentID']),
 				intval($data[1]['statusID']),
 				intval($data[1]['shipment_required']),
+				intval($data[1]['send_emails']),
 				$data[0]
 			);
 			parent::query($query);
@@ -297,12 +299,14 @@ class pos extends motherboard
 				"	INSERT INTO		pos_settings
 					SET				pos_settings.merchantID = %d,
 									pos_settings.shipmentID = %d,
+									pos_settings.send_emails = %d
 									pos_settings.statusID = %d,
 									pos_settings.shipment_required = %d",
 				$data[0],
 				intval($data[1]['shipmentID']),
 				intval($data[1]['statusID']),
-				intval($data[1]['shipment_required'])
+				intval($data[1]['shipment_required']),
+				intval($data[1]['send_emails'])
 			);
 			parent::query($query);
 		}

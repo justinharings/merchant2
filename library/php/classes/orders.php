@@ -1026,9 +1026,11 @@ class orders extends motherboard
 		
 		
 		
+		$settings = $this->_runFunction("pos", "loadGeneralSettings", array($data[0]));
+		
 		// Send communication.
 		
-		if($data[5] == 0)
+		if($data[5] == 0 || $settings['send_emails'] == 1)
 		{
 			if($data[2] > 0)
 			{

@@ -63,7 +63,8 @@ $data = $mb->_runFunction("pos", "loadGeneralSettings", array($_SESSION['merchan
 				<?= $mb->_translateReturn("forms", "legend-options") ?>
 			</div>
 		
-			<input type="checkbox" <?= isset($data['shipment_required']) && $data['shipment_required'] == 1 ? "checked=\"checked\"" : "" ?> name="shipment_required" id="shipment_required" value="1" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-shipment-required") ?>" />
+			<input type="checkbox" <?= isset($data['shipment_required']) && $data['shipment_required'] == 1 ? "checked=\"checked\"" : "" ?> name="shipment_required" id="shipment_required" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-shipment-required") ?>" />
+			<input type="checkbox" <?= isset($data['send_emails']) && $data['send_emails'] == 1 ? "checked=\"checked\"" : "" ?> name="send_emails" id="send_emails" value="1" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-send-emails") ?>" />
 		</div>
 	</div>
 </form>

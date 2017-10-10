@@ -241,13 +241,13 @@ class mailserver extends motherboard
 				if($_skip == false)
 				{
 					$params[1]['receiver'] = $data[2];
+					print $params[1]['receiver'] . "<br/>";
 					$this->send($params);
 				}
 			}
 			else
 			{
-				$users = $this->_runFunction("users", "view", array($data[0], "", "users.first_name", "0,500"));
-				
+				$data = $this->_runFunction("users", "view", array($data[0], "", "users.first_name", "0,500"));
 				foreach($data AS $value)
 				{
 					if($value['email_address'] != "")
@@ -370,7 +370,7 @@ class mailserver extends motherboard
 		$to = $data[1]['receiver'];
 		//$to = "mail@justinharings.nl";
 		$from = $data[1]['sender'];
-
+		
 		$content_email = "<!DOCTYPE html><html lang='nl'><head><title></title></head><body>" . $data[1]['content'] . "</body></html>";
 		$content_email = $this->_replace_tags($content_email, $data[1]['customerID'], $data[1]['orderID'], (isset($data[1]['workorderID']) ? $data[1]['workorderID'] : 0));
 

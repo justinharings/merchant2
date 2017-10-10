@@ -32,7 +32,7 @@ $form = "/form-gebruiker/";
 		if($mb->num_rows($data))
 		{
 			foreach($data AS $value)
-			{				
+			{	
 				?>
 				<tr click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form . $value['userID'] ?>">
 					<td><?= $value['first_name'] ?></td>
