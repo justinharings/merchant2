@@ -1111,7 +1111,7 @@ class cms extends motherboard
 	
 	public function deleteBanner($data)
 	{
-		parent::_checkInputValues($data, 2);
+		parent::_checkInputValues($data, 3);
 		
 		$query = sprintf(
 			"	DELETE FROM		banners
@@ -1152,6 +1152,42 @@ class cms extends motherboard
 		foreach($array AS $value)
 		{
 			$return[$value['typeID']] = $value['description'];
+		}
+		
+		return $return;
+	}
+	
+	
+	
+	/*
+	** data[0] =	merchantID;
+	** data[1] =	language;
+	** data[2] =	group.
+	*/
+	
+	public function front_loadBanner($data)
+	{
+		parent::_checkInputValues($data, 3);
+		
+		$query = sprintf(
+			"	SELECT		banners.*
+				FROM		banners
+				WHERE		banners.merchantID = %d
+					AND		banners.language_code = '%s'
+					AND		banners.tag = '%s'",
+			$data[0],
+			$data[1],
+			$data[2]
+		);
+		
+		$result = parent::query($query);
+		
+		$return = array();
+		
+		while($row = parent::fetch_assoc($result))
+		{
+			$row['image'] = "https://" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "mechant") . ".justinharings.nl/library/media/banners/" . $row['bannerID'] . ".jpg";
+			$return[] = $row;
 		}
 		
 		return $return;

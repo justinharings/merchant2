@@ -782,5 +782,40 @@ class products extends motherboard
 			break;
 		}
 	}
+	
+	
+	
+	/*
+	** $data[0] = 	merchantID.
+	*/
+	
+	public function front_highRated($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		products.*,
+							products_media.productMediaID
+				FROM		reviews
+				INNER JOIN	products ON products.productID = reviews.productID
+				INNER JOIN	products_media ON products_media.productID = products.productID
+					AND		products_media.thumb = 1
+				GROUP BY	reviews.productID
+                ORDER BY 	SUM(reviews.stars) DESC
+				LIMIT		0,5",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		$return = array();
+		
+		while($row = parent::fetch_assoc($result))
+		{
+			$row['image'] = "https://" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "mechant") . ".justinharings.nl/library/media/products/" . $row['productMediaID'] . ".png";
+			$return[] = $row;
+		}
+		
+		return $return;
+	}
 }
 ?>
