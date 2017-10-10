@@ -1182,7 +1182,7 @@ class cms extends motherboard
 		
 		while($row = parent::fetch_assoc($result))
 		{
-			$check = $_SERVER['DOCUMENT_ROOT'] . "/library/media/banners/" . $row['bannerID'];
+			$check = "/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/media/banners/" . $row['bannerID'];
 			
 			if(file_exists($check . ".jpg"))
 			{
