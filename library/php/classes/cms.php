@@ -1186,7 +1186,7 @@ class cms extends motherboard
 		
 		while($row = parent::fetch_assoc($result))
 		{
-			$row['image'] = "https://" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "mechant") . ".justinharings.nl/library/media/banners/" . $row['bannerID'] . ".jpg";
+			$row['image'] = "https://merchant.justinharings.nl/library/media/banners/" . $row['bannerID'] . ".jpg";
 			$return[] = $row;
 		}
 		
