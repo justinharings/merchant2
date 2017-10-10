@@ -16,7 +16,7 @@ $form = "/form-artikel/";
 	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
 </div>
 
-<table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">
+<table class="view <?= count($data) ? "hoverable" : "" ?>">
 	<thead>
 		<tr>
 			<td><?= $mb->_translateReturn("table-headers", "ac") ?></td>
