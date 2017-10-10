@@ -93,6 +93,11 @@ foreach($data['shipments'] AS $shipment)
 				
 				<table>
 					<tr>
+						<td style="padding: 0px 20px 20px 0px;"><strong>Vestiging:</strong></td>
+						<td style="padding: 0px 20px 20px 0px;" colspan="2"><?= $data['location'] ?></td>
+					</tr>
+					
+					<tr>
 						<td style="padding: 0px 20px 20px 0px;">
 							<strong><?= $mb->_translateReturn("forms", "form-orders-orderid") ?></strong><br/>
 							# <?= $data['order_reference'] ?>

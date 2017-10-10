@@ -100,8 +100,11 @@ class orders extends motherboard
 		$query = sprintf(
 			"	SELECT		orders.*,
 							CONCAT(YEAR(orders.date_added), orders.orderID) AS order_reference,
-							DATE_FORMAT(orders.date_added, '%%d-%%m-%%Y om %%k:%%i uur') AS date_added
+							DATE_FORMAT(orders.date_added, '%%d-%%m-%%Y om %%k:%%i uur') AS date_added,
+							IF(locations.locationID IS NOT NULL, locations.name, 'Webwinkel bestelling') AS location
 				FROM		orders
+				LEFT JOIN	pos_employees ON pos_employees.employeeID = orders.employeeID
+				LEFT JOIN	locations ON locations.locationID = pos_employees.locationID
 				WHERE		orders.orderID = %d",
 			$data[0]
 		);
