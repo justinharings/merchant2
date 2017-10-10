@@ -183,6 +183,8 @@ $(document).ready(
 		
 		function isFloatOrInteger(n) 
 		{
+			n = n.replace(",", ".");
+			
 		    if	(
 		    		(parseInt(n) == n) 
 		    		|| (parseFloat(n) == n)

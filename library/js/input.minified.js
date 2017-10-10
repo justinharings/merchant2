@@ -22,7 +22,7 @@ var elms=$("select#authorization").find("option:selected");setTimeout(function()
 systemChanges($(this))});checkboxHandler();$(".show-load").on("click",function()
 {$(this).attr("original",$(this).val()).val("Bezig...").addClass("no-action")});$(".no-action").on("click",function(event)
 {event.preventDefault()});function isFloatOrInteger(n)
-{if((parseInt(n)==n)||(parseFloat(n)==n))
+{n=n.replace(",",".");if((parseInt(n)==n)||(parseFloat(n)==n))
 {return!0}
 return!1}
 $(".validate-form").on("click",function(event)
