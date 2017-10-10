@@ -854,6 +854,12 @@ class orders extends motherboard
 		}
 		
 		
+		if(is_array($data[2]))
+		{
+			$data[2] = $this->_runFunction("customers", "save", array($data[0], $data[2]));
+		}
+		
+		
 		if($data[7] == 0)
 		{
 			$query = sprintf(
