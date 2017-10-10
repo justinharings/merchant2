@@ -47,6 +47,36 @@ class stock extends motherboard
 	
 	
 	/*
+	**
+	*/
+	
+	public function viewReservations($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	SELECT		SUM(orders_product.quantity) AS quantity,
+							products.*
+				FROM		orders_product
+				INNER JOIN	products ON products.productID = orders_product.productID
+				INNER JOIN	orders ON orders.orderID = orders_product.orderID
+				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				WHERE		products.merchantID = %d
+					AND		order_statuses.finished = 0
+					AND		order_statuses.declined = 0
+				GROUP BY	orders_product.productID
+				LIMIT		%s",
+			$data[0],
+			$data[1]
+		);
+		$result = parent::query($query);
+		
+		return $result;
+	}
+	
+	
+	
+	/*
 	**	Load a certain location.
 	**	data[0]	=	locationID.
 	*/
