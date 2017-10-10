@@ -922,10 +922,6 @@ class cms extends motherboard
 		{
 			$path = $_SERVER['DOCUMENT_ROOT'] . "/library/media/banners/" . intval($data[1]['bannerID']);
 			
-			$options = array(
-				"extension" => "jpg"
-			);
-			
 			parent::_uploadFile($data[2]['image'], $path, $options);
 		}
 		
