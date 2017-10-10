@@ -255,7 +255,7 @@ class users extends motherboard
 	{
 		parent::_checkInputValues($data, 1);
 		
-		$image = "no-picture.png";
+		$image = "no-picture";
 					
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/library/media/profile_pictures/" . $data[0] . ".png"))
 		{
