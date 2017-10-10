@@ -306,6 +306,8 @@ while($row = $db_old->fetchAssoc($result))
 		if($row_media['type'] == "image")
 		{
 			$image = "https://www.justinharings.nl/merchant" . $row_media['url'];
+			$image = str_replace(".png", "_blank.png", $image);
+			
 			$thumb = $row_media['thumb'];
 			
 			$file_headers = @get_headers($image);
