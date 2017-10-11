@@ -495,8 +495,9 @@ $(document).ready(
 			function()
 			{
 				var key = getKey();
+				var msg = 'Weet u zeker dat u deze werkorder wilt inladen?';
 				
-				if(key)
+				if(key && confirm(msg))
 				{
 					document.location.href = '/extensions/point_of_sale/library/php/posts/workorder_load.php?workorderID=' + key;
 				}
