@@ -902,7 +902,7 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 							</li>
 						</a>
 						
-						<a href="https://github.com/justinharings/merchant2/issues/new" target="_blank">
+						<a href="https://github.com/justinharings/merchant2/issues/" target="_blank">
 							<li class="menu-item">
 								<div class="text"><?= $mb->_translateReturn("menu", "bug-report") ?></div>
 								<div class="sub"><?= $mb->_translateReturn("menu", "bug-report-eg") ?></div>
