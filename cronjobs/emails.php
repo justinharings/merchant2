@@ -23,9 +23,12 @@ foreach($merchants AS $value)
 						customers.*
 			FROM		orders
 			INNER JOIN	customers ON customers.customerID = orders.customerID
+			INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
 			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
 				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 14 DAY)
-				AND		orders.merchantID = %d",
+				AND		orders.merchantID = %d
+				AND		order_statuses.finished = 1
+				AND		order_statuses.declined = 0",
 		$value['merchantID']
 	);
 	$result = $mb->query($query);
@@ -53,9 +56,12 @@ foreach($merchants AS $value)
 						customers.*
 			FROM		orders
 			INNER JOIN	customers ON customers.customerID = orders.customerID
+			INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
 			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 14 DAY)
 				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-				AND		orders.merchantID = %d",
+				AND		orders.merchantID = %d
+				AND		order_statuses.finished = 1
+				AND		order_statuses.declined = 0",
 		$value['merchantID']
 	);
 	$result = $mb->query($query);
@@ -83,9 +89,12 @@ foreach($merchants AS $value)
 						customers.*
 			FROM		orders
 			INNER JOIN	customers ON customers.customerID = orders.customerID
+			INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
 			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
 				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 40 DAY)
-				AND		orders.merchantID = %d",
+				AND		orders.merchantID = %d
+				AND		order_statuses.finished = 1
+				AND		order_statuses.declined = 0",
 		$value['merchantID']
 	);
 	$result = $mb->query($query);
