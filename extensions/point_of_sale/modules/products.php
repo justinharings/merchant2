@@ -22,7 +22,7 @@
 		
 		<tbody>
 			<?php
-			$data = $mb->_runFunction("products", "view", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "products.article_code", "0,50"));
+			$data = $mb->_runFunction("products", "view", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "products.name", "0,50"));
 				
 			if(count($data))
 			{
