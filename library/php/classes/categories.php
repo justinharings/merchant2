@@ -30,8 +30,26 @@ class categories extends motherboard
 			$data[4]
 		);
 		
+		$_lang = parent::_allLanguages();
+		$languages = "";
+		
+		foreach($_lang AS $value)
+		{
+			$languages .= sprintf(
+				"	(
+						SELECT		categories_lang.name
+						FROM		categories_lang
+						WHERE		categories_lang.categoryID = categories.categoryID
+							AND		categories_lang.code = '%s'
+					) AS %s_name, ",
+				$value['code'],
+				strtolower($value['code'])
+			);
+		}
+		
 		$query = sprintf(
-			"	SELECT		categories.categoryID,
+			"	SELECT		%s
+							categories.categoryID,
 							categories.name,
 							categories.stock_type,
 							categories.active,
@@ -53,6 +71,7 @@ class categories extends motherboard
 					%s
 				ORDER BY	%s
 				LIMIT		%s",
+			$languages,
 			$data[0],
 			$parent,
 			$search,
@@ -88,7 +107,7 @@ class categories extends motherboard
 							AND		categories_lang.code = '%s'
 					) AS %s_name, ",
 				$value['code'],
-				$value['code']
+				strtolower($value['code'])
 			);
 		}
 		
@@ -123,7 +142,7 @@ class categories extends motherboard
 								AND		categories_filters_lang.code = '%s'
 						) AS %s_name, ",
 					$value['code'],
-					$value['code']
+					strtolower($value['code'])
 				);
 			}
 			
@@ -427,6 +446,31 @@ class categories extends motherboard
 		parent::query($query);
 		
 		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function front_viewBrands($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		brands.name
+				FROM		categories_products
+				INNER JOIN	products ON products.productID = categories_products.productID
+				INNER JOIN	brands ON brands.brandID = products.brandID
+				WHERE		categories_products.categoryID = %d
+				GROUP BY	brands.name
+				ORDER BY	brands.name",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return $result;
 	}
 }
 ?>
