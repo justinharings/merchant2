@@ -411,7 +411,7 @@ class pos extends motherboard
 		$query = sprintf(
 			"	DELETE FROM		pos_employees
 				WHERE			pos_employees.employeeID = %d",
-			$data[1]['employeeID']
+			$data[1]
 		);
 		$result = parent::query($query);
 		
