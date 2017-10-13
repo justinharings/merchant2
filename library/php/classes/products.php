@@ -817,5 +817,30 @@ class products extends motherboard
 		
 		return $return;
 	}
+	
+	
+	
+	/*
+	** data[0] =	merchantID;
+	** data[1] =	categoryID.
+	*/
+	
+	public function front_loadProducts($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	SELECT		products_cache.*
+				FROM		products_cache
+				WHERE		products_cache.merchantID = %d
+					%s
+				ORDER BY	products_cache.name_sort",
+			$data[0],
+			($data[1] > 0 ? "AND products_cache.categoryID = " . intval($data[1]) : "AND products_cache.sale = 1")
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_array($result);
+	}
 }
 ?>

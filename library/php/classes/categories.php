@@ -492,7 +492,17 @@ class categories extends motherboard
 		);
 		$result = parent::query($query);
 		
-		return $result;
+		$return = array();
+		
+		while($row = parent::fetch_assoc($result))
+		{
+			if(!in_array($row['value'], $return))
+			{
+				$return[] = $row['value'];
+			}
+		}
+		
+		return $return;
 	}
 }
 ?>
