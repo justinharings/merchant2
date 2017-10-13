@@ -254,8 +254,8 @@ class products extends motherboard
 			$query = sprintf(
 				"	SELECT		products_stock.stock
 					FROM		products_stock
-					INNER JOIN	pos_locations ON pos_locations.locationID = products_stock.locationID
-						AND		pos_locations.webshop = 1
+					INNER JOIN	locations ON locations.locationID = products_stock.locationID
+						AND		locations.webshop = 1
 					WHERE		products_stock.productID = %d",
 				$data[0]
 			);
