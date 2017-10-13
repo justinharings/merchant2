@@ -834,6 +834,7 @@ class products extends motherboard
 				FROM		products_cache
 				WHERE		products_cache.merchantID = %d
 					%s
+				GROUP BY	products_cache.productID
 				ORDER BY	products_cache.name_sort",
 			$data[0],
 			($data[1] > 0 ? "AND products_cache.categoryID = " . intval($data[1]) : "AND products_cache.sale = 1")
