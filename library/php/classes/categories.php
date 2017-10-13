@@ -504,5 +504,34 @@ class categories extends motherboard
 		
 		return $return;
 	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function frontend_getStockType($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		if($data[0] > 0)
+		{
+			$query = sprintf(
+				"	SELECT		categories.stock_type
+					FROM		categories
+					WHERE		categories.categoryID = %d",
+				$data[0]
+			);
+			$result = parent::query($query);
+			$row = parent::fetch_assoc($result);
+			
+			return $row['stock_type'];
+		}
+		else
+		{
+			return 6;
+		}
+	}
 }
 ?>
