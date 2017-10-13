@@ -472,5 +472,27 @@ class categories extends motherboard
 		
 		return $result;
 	}
+	
+	
+	
+	/*
+	**	data[0] =	categoryID
+	*/
+	
+	public function front_filterValues($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		products_filters.value
+				FROM		products_filters
+				WHERE		products_filters.language = 'NL'
+					AND		products_filters.filterID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return $result;
+	}
 }
 ?>
