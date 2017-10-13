@@ -162,9 +162,11 @@ class products extends motherboard
 			"	SELECT		%s
 							products.*,
 							LPAD(products.article_code, 5, 0) AS article_code_long,
-							taxes.percentage AS taxrate
+							taxes.percentage AS taxrate,
+							brands.name AS brand
 				FROM		products
 				INNER JOIN	taxes ON taxes.taxesID = products.taxesID
+				LEFT JOIN	brands ON brands.brandID = products.brandID
 				WHERE		products.productID = %d",
 			$languages,
 			$data[0]
