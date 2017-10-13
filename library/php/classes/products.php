@@ -239,6 +239,32 @@ class products extends motherboard
 			}
 			
 			
+			$query = sprintf(
+				"	SELECT		SUM(products_stock.stock) AS stock
+					FROM		products_stock
+					WHERE		products_stock.productID = %d",
+				$data[0]
+			);
+			$result = parent::query($query);
+			$row = parent::fetch_assoc($result);
+			
+			$return['stock'] = $row['stock'];
+			
+			
+			$query = sprintf(
+				"	SELECT		products_stock.stock
+					FROM		products_stock
+					INNER JOIN	pos_locations ON pos_locations.locationID = products_stock.locationID
+						AND		pos_locations.webshop = 1
+					WHERE		products_stock.productID = %d",
+				$data[0]
+			);
+			$result = parent::query($query);
+			$row = parent::fetch_assoc($result);
+			
+			$return['webshop_stock'] = $row['stock'];
+			
+			
 			return $return;
 		}
 		
