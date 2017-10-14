@@ -292,10 +292,13 @@ class products extends motherboard
 			if(parent::num_rows($result))
 			{
 				$reviews = parent::fetch_array($result);
+				$cnt = 0;
 				
 				foreach($reviews AS $review)
 				{
-					$return['reviews'] = $review;
+					$return['reviews'][$cnt] = $review;
+					
+					$cnt++;
 				}
 			}
 			
