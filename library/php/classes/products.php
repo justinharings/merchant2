@@ -279,7 +279,8 @@ class products extends motherboard
 			
 			
 			$query = sprintf(
-				"	SELECT		reviews.*
+				"	SELECT		reviews.*,
+								DATE_FORMAT(reviews.date_added, '%%d-%%m-%%Y om %%k:%%i') AS date_added
 					FROM		reviews
 					WHERE		reviews.productID = %d
 					ORDER BY	reviews.date_added",
