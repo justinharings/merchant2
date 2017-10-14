@@ -265,6 +265,18 @@ class products extends motherboard
 			$return['webshop_stock'] = $row['stock'];
 			
 			
+			$query = sprintf(
+				"	SELECT		SUM(reviews.stars) AS stars
+					FROM		reviews
+					WHERE		reviews.productID = %d",
+				$row['productID']
+			);
+			$result = $mb->query($query);
+			$row = $mb->fetch_assoc($result);
+			
+			$return['review_stars'] = $row['stars'];
+			
+			
 			return $return;
 		}
 		
