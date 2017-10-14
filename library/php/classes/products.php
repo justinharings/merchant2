@@ -277,6 +277,29 @@ class products extends motherboard
 			$return['review_stars'] = $row['stars'];
 			
 			
+			
+			$query = sprintf(
+				"	SELECT		reviews.*
+					FROM		reviews
+					WHERE		reviews.productID = %d
+					ORDER BY	reviews.date",
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['reviews'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$reviews = parent::fetch_array($result);
+				
+				foreach($reviews AS $review)
+				{
+					$return['reviews'] = $review;
+				}
+			}
+			
+			
 			return $return;
 		}
 		
