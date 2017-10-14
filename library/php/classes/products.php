@@ -269,10 +269,10 @@ class products extends motherboard
 				"	SELECT		SUM(reviews.stars) AS stars
 					FROM		reviews
 					WHERE		reviews.productID = %d",
-				$row['productID']
+				$data[0]
 			);
-			$result = $mb->query($query);
-			$row = $mb->fetch_assoc($result);
+			$result = $this->query($query);
+			$row = $this->fetch_assoc($result);
 			
 			$return['review_stars'] = $row['stars'];
 			
