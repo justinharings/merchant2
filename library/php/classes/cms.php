@@ -957,7 +957,7 @@ class cms extends motherboard
 				parent::real_escape_string($data[1]['seo_keywords']),
 				parent::real_escape_string($data[1]['seo_description']),
 				parent::real_escape_string($data[1]['content']),
-				parent::real_escape_string($data[1]['language_code']),
+				strtolower(parent::real_escape_string($data[1]['language_code'])),
 				$data[1]['contentID']
 			);
 			parent::query($query);
@@ -1204,6 +1204,32 @@ class cms extends motherboard
 		}
 		
 		return $return;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function front_loadContent($data)
+	{
+		parent::_checkInputValues($data, 3);
+		
+		$query = sprintf(
+			"	SELECT		content.*
+				FROM		content
+				WHERE		content.seo_url = '%s'
+					AND		content.language = '%s'
+					AND		content.merchantID = %d",
+			parent::real_escape_string($data[2]),
+			strtolower($data[1]),
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return $row;
 	}
 }
 ?>
