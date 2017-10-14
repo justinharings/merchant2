@@ -282,7 +282,7 @@ class products extends motherboard
 				"	SELECT		reviews.*
 					FROM		reviews
 					WHERE		reviews.productID = %d
-					ORDER BY	reviews.date",
+					ORDER BY	reviews.date_added",
 				$data[0]
 			);
 			$result = parent::query($query);
