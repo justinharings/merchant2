@@ -1220,7 +1220,7 @@ class cms extends motherboard
 			"	SELECT		content.*
 				FROM		content
 				WHERE		content.seo_url = '%s'
-					AND		content.language = '%s'
+					AND		content.language_code = '%s'
 					AND		content.merchantID = %d",
 			parent::real_escape_string($data[2]),
 			strtolower($data[1]),
