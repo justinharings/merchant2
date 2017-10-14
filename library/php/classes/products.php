@@ -271,8 +271,8 @@ class products extends motherboard
 					WHERE		reviews.productID = %d",
 				$data[0]
 			);
-			$result = $this->query($query);
-			$row = $this->fetch_assoc($result);
+			$result = parent::query($query);
+			$row = parent::fetch_assoc($result);
 			
 			$return['review_stars'] = $row['stars'];
 			
