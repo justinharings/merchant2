@@ -880,11 +880,15 @@ class products extends motherboard
 		$query = sprintf(
 			"	SELECT		%s
 							products.*,
-							products_media.productMediaID
+							(
+								SELECT		products_media.productMediaID
+								FROM		products_media
+								WHERE		products_media.productID = reviews.productID
+									AND		products_media.thumb = 1
+								LIMIT		0,1
+							) AS productMediaID
 				FROM		reviews
 				INNER JOIN	products ON products.productID = reviews.productID
-				INNER JOIN	products_media ON products_media.productID = products.productID
-					AND		products_media.thumb = 1
 				GROUP BY	reviews.productID
                 ORDER BY 	SUM(reviews.stars) DESC
 				LIMIT		0,5",
