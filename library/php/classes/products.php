@@ -304,6 +304,24 @@ class products extends motherboard
 			}
 			
 			
+			
+			$return['shipment_costs'] = 0;
+			
+			if($return['shipmentID'] > 0)
+			{
+				$query = sprintf(
+					"	SELECT		shipment_methods.price
+						FROM		shipment_methods
+						WHERE		shipment_methods.shippingID = %d",
+					$return['shipmentID']
+				);
+				$result = parent::query($query);
+				$row = parent::fetch_assoc($result);
+				
+				$return['shipment_costs'] = $row['price'];
+			}
+			
+			
 			return $return;
 		}
 		
