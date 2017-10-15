@@ -280,7 +280,7 @@ class products extends motherboard
 			
 			$query = sprintf(
 				"	SELECT		reviews.*,
-								DATE_FORMAT(reviews.date_added, '%%d-%%m-%%Y om %%k:%%i') AS date_added
+								DATE_FORMAT(reviews.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added
 					FROM		reviews
 					WHERE		reviews.productID = %d
 					ORDER BY	reviews.date_added",
@@ -888,23 +888,36 @@ class products extends motherboard
 	
 	
 	/*
-	** data[0] =	merchantID;
-	** data[1] =	categoryID.
+	** data[0] =	merchantID,
+	** data[1] =	categoryID,
+	** data[2] =	search;
 	*/
 	
 	public function front_loadProducts($data)
 	{
-		parent::_checkInputValues($data, 2);
+		parent::_checkInputValues($data, 3);
+		
+		$search = "";
+		
+		if($data[2] != "")
+		{
+			$search = sprintf(
+				"	AND		products_cache.name LIKE ('%%s%')",
+				parent::real_escape_string($data[2])
+			);
+		}
 		
 		$query = sprintf(
 			"	SELECT		products_cache.*
 				FROM		products_cache
 				WHERE		products_cache.merchantID = %d
 					%s
+					%s
 				GROUP BY	products_cache.productID
 				ORDER BY	products_cache.name_sort",
 			$data[0],
-			($data[1] > 0 ? "AND products_cache.categoryID = " . intval($data[1]) : "AND products_cache.sale = 1")
+			($data[1] > 0 ? "AND products_cache.categoryID = " . intval($data[1]) : "AND products_cache.sale = 1"),
+			$search
 		);
 		$result = parent::query($query);
 		
