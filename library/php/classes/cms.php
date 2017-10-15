@@ -1201,7 +1201,7 @@ class cms extends motherboard
 			
 			$row['image'] = "https://merchant.justinharings.nl/library/media/banners/" . $row['bannerID'] . $check;
 			
-			$row['url'] = $data[3] . "/" . $row['url'];
+			$row['url'] = "/" . $data[3] . $row['url'];
 			
 			$return[] = $row;
 		}
