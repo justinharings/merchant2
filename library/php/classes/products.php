@@ -860,8 +860,26 @@ class products extends motherboard
 	{
 		parent::_checkInputValues($data, 1);
 		
+		$_lang = parent::_allLanguages();
+		$languages = "";
+		
+		foreach($_lang AS $value)
+		{
+			$languages .= sprintf(
+				"	(
+						SELECT		products_lang.name
+						FROM		products_lang
+						WHERE		products_lang.productID = products.productID
+							AND		products_lang.code = '%s'
+					) AS %s_name,",
+				$value['code'],
+				strtolower($value['code'])
+			);
+		}
+		
 		$query = sprintf(
-			"	SELECT		products.*,
+			"	SELECT		%s
+							products.*,
 							products_media.productMediaID
 				FROM		reviews
 				INNER JOIN	products ON products.productID = reviews.productID
@@ -870,6 +888,8 @@ class products extends motherboard
 				GROUP BY	reviews.productID
                 ORDER BY 	SUM(reviews.stars) DESC
 				LIMIT		0,5",
+			
+			$languages,
 			$data[0]
 		);
 		$result = parent::query($query);
