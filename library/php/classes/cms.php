@@ -1164,7 +1164,7 @@ class cms extends motherboard
 	
 	public function front_loadBanner($data)
 	{
-		parent::_checkInputValues($data, 3);
+		parent::_checkInputValues($data, 4);
 		
 		$query = sprintf(
 			"	SELECT		banners.*
