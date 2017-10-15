@@ -1,7 +1,7 @@
 <?php
 $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "TPB_BB", 1));
 
-$data = $mb->_runFunction("cms", "viewBanner", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "banners.name", "0,50"));
+$data = $mb->_runFunction("cms", "viewBanner", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "banners.tag", "0,50"));
 $form = "/form-banner/";
 ?>
 
