@@ -1156,9 +1156,10 @@ class cms extends motherboard
 	
 	
 	/*
-	** data[0] =	merchantID;
-	** data[1] =	language;
-	** data[2] =	group.
+	** data[0] =	merchantID,
+	** data[1] =	language,
+	** data[2] =	group,
+	** data[3] =	language;
 	*/
 	
 	public function front_loadBanner($data)
@@ -1199,6 +1200,8 @@ class cms extends motherboard
 			}
 			
 			$row['image'] = "https://merchant.justinharings.nl/library/media/banners/" . $row['bannerID'] . $check;
+			
+			$row['url'] = $data[3] . "/" . $row['url'];
 			
 			$return[] = $row;
 		}
