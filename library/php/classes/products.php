@@ -312,7 +312,7 @@ class products extends motherboard
 				$query = sprintf(
 					"	SELECT		shipment_methods.price
 						FROM		shipment_methods
-						WHERE		shipment_methods.shippingID = %d",
+						WHERE		shipment_methods.shipmentID = %d",
 					$return['shipmentID']
 				);
 				$result = parent::query($query);
