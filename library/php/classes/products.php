@@ -902,7 +902,7 @@ class products extends motherboard
 		if($data[2] != "")
 		{
 			$search = sprintf(
-				"	AND		products_cache.name LIKE ('%%s%')",
+				"	AND		products_cache.name LIKE ('%%%s%%')",
 				parent::real_escape_string($data[2])
 			);
 		}
@@ -916,7 +916,7 @@ class products extends motherboard
 				GROUP BY	products_cache.productID
 				ORDER BY	products_cache.name_sort",
 			$data[0],
-			($data[1] > 0 ? "AND products_cache.categoryID = " . intval($data[1]) : "AND products_cache.sale = 1"),
+			($data[1] > 0 && $data[2] == "" ? "AND products_cache.categoryID = " . intval($data[1]) : "AND products_cache.sale = 1"),
 			$search
 		);
 		$result = parent::query($query);
