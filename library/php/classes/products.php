@@ -898,13 +898,28 @@ class products extends motherboard
 		parent::_checkInputValues($data, 3);
 		
 		$search = "";
+		$category = "";
+		
+		$return = array();
 		
 		if($data[2] != "")
 		{
 			$search = sprintf(
-				"	AND		products_cache.name LIKE ('%%%s%%')",
+				" AND products_cache.name LIKE ('%%%s%%') ",
 				parent::real_escape_string($data[2])
 			);
+		}
+		
+		if($search == "")
+		{
+			if($data[1] > 0)
+			{
+				$category = "AND products_cache.categoryID = " . intval($data[1]);
+			}
+			else
+			{
+				$category = "AND products_cache.sale = 1";
+			}
 		}
 		
 		$query = sprintf(
@@ -916,10 +931,51 @@ class products extends motherboard
 				GROUP BY	products_cache.productID
 				ORDER BY	products_cache.name_sort",
 			$data[0],
-			($data[1] > 0 && $data[2] == "" ? "AND products_cache.categoryID = " . intval($data[1]) : "AND products_cache.sale = 1"),
+			$category,
 			$search
 		);
 		$result = parent::query($query);
+		
+		$return[0] = parent::fetch_array($result);
+		
+		if(parent::num_rows($result) == 0 && $data[2] != "")
+		{
+			$split = explode(" ", $data[2]);
+			$num = 0;
+			
+			$search = " AND ( ";
+			
+			foreach($split AS $string)
+			{
+				$search .= sprintf(
+					" %s products_cache.name LIKE ('%%%s%%') ",
+					($num == 0 ? "" : "OR"),
+					parent::real_escape_string($string)
+				);
+				
+				$num++;
+			}
+			
+			$search .= " ) ";
+			
+			$query = sprintf(
+				"	SELECT		products_cache.*
+					FROM		products_cache
+					WHERE		products_cache.merchantID = %d
+						%s
+						%s
+					GROUP BY	products_cache.productID
+					ORDER BY	products_cache.name_sort",
+				$data[0],
+				$category,
+				$search
+			);
+			$result = parent::query($query);
+			
+			$return[1] = parent::fetch_array($result);
+			
+			return $return;
+		}
 		
 		return parent::fetch_array($result);
 	}
