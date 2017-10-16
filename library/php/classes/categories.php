@@ -189,8 +189,18 @@ class categories extends motherboard
 			$data[0]
 		);
 		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
 		
-		return parent::fetch_assoc($result);
+		$promo = parent::_runFunction("promotions", "checkPromotion", array($row['productID']));
+		$row['promo'] = false;
+		
+		if($promo > 0)
+		{
+			$row['promo'] = true;
+			$row['price'] = $promo;
+		}
+		
+		return $row;
 	}
 	
 	
@@ -215,8 +225,18 @@ class categories extends motherboard
 			$data[0]
 		);
 		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
 		
-		return parent::fetch_assoc($result);
+		$promo = parent::_runFunction("promotions", "checkPromotion", array($row['productID']));
+		$row['promo'] = false;
+		
+		if($promo > 0)
+		{
+			$row['promo'] = true;
+			$row['price'] = $promo;
+		}
+		
+		return $row;
 	}
 	
 	
@@ -241,8 +261,18 @@ class categories extends motherboard
 			$data[0]
 		);
 		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
 		
-		return parent::fetch_assoc($result);
+		$promo = parent::_runFunction("promotions", "checkPromotion", array($row['productID']));
+		$row['promo'] = false;
+		
+		if($promo > 0)
+		{
+			$row['promo'] = true;
+			$row['price'] = $promo;
+		}
+		
+		return $row;
 	}
 	
 	

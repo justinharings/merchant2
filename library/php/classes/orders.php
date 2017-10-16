@@ -1054,7 +1054,6 @@ class orders extends motherboard
 		}
 		
 		
-		
 		$settings = $this->_runFunction("pos", "loadGeneralSettings", array($data[0]));
 		
 		// Send communication.
