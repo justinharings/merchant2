@@ -54,6 +54,7 @@ else
 			$invoice['receipt_text'] = $invoice['EN_receipt_text'];
 		break;
 		
+		case "":
 		case "Netherlands":
 		case "Belgium":
 			$template_suffix = "";
@@ -288,7 +289,6 @@ else if($_GET['type'] != "receipt")
 	**	Now let's process what to do with the request.
 	**	Print it with Google Cloud Print or just save it?
 	*/
-	
 	if($_GET['action'] == "print")
 	{
 		//print $content;
