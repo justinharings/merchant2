@@ -115,6 +115,7 @@ class payment_methods extends motherboard
 			$query = sprintf(
 				"	UPDATE		payment_methods
 					SET			payment_methods.name = '%s',
+								payment_methods.description = '%s',
 								payment_methods.module = '%s',
 								payment_methods.api_key_1 = '%s',
 								payment_methods.api_key_2 = '%s',
@@ -125,6 +126,7 @@ class payment_methods extends motherboard
 								payment_methods.date_update = NOW()
 					WHERE		payment_methods.paymentID = %d",
 				parent::real_escape_string($data[1]['name']),
+				parent::real_escape_string($data[1]['description']),
 				parent::real_escape_string($data[1]['module']),
 				parent::real_escape_string($data[1]['api_key_1']),
 				parent::real_escape_string($data[1]['api_key_2']),
@@ -142,6 +144,7 @@ class payment_methods extends motherboard
 				"	INSERT INTO		payment_methods
 					SET				payment_methods.merchantID = %d,
 									payment_methods.name = '%s',
+									payment_methods.description = '%s',
 									payment_methods.module = '%s',
 									payment_methods.api_key_1 = '%s',
 									payment_methods.api_key_2 = '%s',
@@ -152,6 +155,7 @@ class payment_methods extends motherboard
 									payment_methods.date_added = NOW()",
 				$data[0],
 				parent::real_escape_string($data[1]['name']),
+				parent::real_escape_string($data[1]['description']),
 				parent::real_escape_string($data[1]['module']),
 				parent::real_escape_string($data[1]['api_key_1']),
 				parent::real_escape_string($data[1]['api_key_2']),

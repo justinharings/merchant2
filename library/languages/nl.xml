@@ -521,7 +521,7 @@
 		<form-status-email>Verzend e-mail sturen</form-status-email>
 		
 		<!-- Settings -> Payment Methods -> Form -->
-		<form-payments-name>Omschrijving</form-payments-name>
+		<form-payments-name>Naam</form-payments-name>
 		<form-payments-name-eg>Ook voor de klant zichtbaar.</form-payments-name-eg>
 		<form-payments-maximum-amount>Maximaal bestelbedrag</form-payments-maximum-amount>
 		<form-payments-webshop>Webshop</form-payments-webshop>
@@ -531,6 +531,8 @@
 		<form-payments-module-eg>Optioneel.</form-payments-module-eg>
 		<form-payments-api-key-1>API Sleutel 1</form-payments-api-key-1>
 		<form-payments-api-key-2>API Sleutel 2</form-payments-api-key-2>
+		<form-payments-description>Omschrijving</form-payments-description>
+		<form-payments-description-eg>Een korte webwinkel omschrijving</form-payments-description-eg>
 		
 		<!-- Settings -> Shipment Methods -> Form -->
 		<form-shipment-name>Omschrijving</form-shipment-name>

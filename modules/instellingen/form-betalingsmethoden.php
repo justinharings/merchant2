@@ -43,6 +43,7 @@ if(isset($_GET['dataID']))
 			</div>
 			
 			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-payments-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-name-eg") ?>" validation-required="true" validation-type="text" />
+			<input type="text" name="description" id="description" value="<?= isset($_GET['dataID']) ? $data['description'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-description-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-description-eg") ?>" validation-required="true" validation-type="text" />
 			
 			<input type="text" name="maximum_amount" id="maximum_amount" value="<?= isset($_GET['dataID']) ? $data['maximum_amount'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-payments-maximum-amount") ?>" validation-required="false" validation-type="int" icon="fa-euro" />
 			
