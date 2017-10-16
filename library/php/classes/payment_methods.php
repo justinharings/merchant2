@@ -57,10 +57,29 @@ class payment_methods extends motherboard
 	{
 		parent::_checkInputValues($data, 1);
 		
+		$_lang = parent::_allLanguages();
+		$languages = "";
+		
+		foreach($_lang AS $value)
+		{
+			$languages .= sprintf(
+				"	(
+						SELECT		payment_methods_lang.description
+						FROM		payment_methods_lang
+						WHERE		payment_methods_lang.paymentID = payment_methods.paymentID
+							AND		payment_methods_lang.code = '%s'
+					) AS %s_description, ",
+				$value['code'],
+				$value['code']
+			);
+		}
+		
 		$query = sprintf(
-			"	SELECT		*
+			"	SELECT		%s
+							payment_methods.*
 				FROM		payment_methods
 				WHERE		payment_methods.paymentID = %d",
+			$languages,
 			$data[0]
 		);
 		$result = parent::query($query);
@@ -137,6 +156,13 @@ class payment_methods extends motherboard
 				intval($data[1]['paymentID'])
 			);
 			parent::query($query);
+			
+			$query = sprintf(
+				"	DELETE FROM		payment_methods_lang
+					WHERE			payment_methods_lang.paymentID = %d",
+				intval($data[1]['paymentID'])
+			);
+			parent::query($query);
 		}
 		else
 		{
@@ -163,6 +189,28 @@ class payment_methods extends motherboard
 				intval($data[1]['webshop']),
 				intval($data[1]['pos']),
 				intval($data[1]['cash'])
+			);
+			parent::query($query);
+		}
+		
+		/*
+		**	Store fields with multilanguage support.
+		**	The available languages are also stored in the database
+		**	and manage through the motherboard.
+		*/
+		
+		$_lang = parent::_allLanguages();
+		
+		foreach($_lang AS $value)
+		{
+			$query = sprintf(
+				"	INSERT INTO		payment_methods_lang
+					SET				payment_methods_lang.paymentID = %d,
+									payment_methods_lang.code = '%s',
+									payment_methods_lang.description = '%s'",
+				intval($data[1]['paymentID']),
+				$value['code'],
+				parent::real_escape_string($data[1][$value['code'] . '_description'])
 			);
 			parent::query($query);
 		}

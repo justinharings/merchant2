@@ -42,8 +42,26 @@ if(isset($_GET['dataID']))
 				<?= $mb->_translateReturn("forms", "legend-general") ?>
 			</div>
 			
-			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-payments-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-name-eg") ?>" validation-required="true" validation-type="text" />
-			<input type="text" name="description" id="description" value="<?= isset($_GET['dataID']) ? $data['description'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-description-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-description-eg") ?>" validation-required="true" validation-type="text" />
+			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-payments-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-name-eg") ?>" validation-required="true" validation-type="text" />
+			<input type="text" name="description" id="description" value="<?= isset($_GET['dataID']) ? $data['description'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-payments-description") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-description-eg") ?>" validation-required="true" validation-type="text" />
+			
+			<div class="languages width-300">
+				<span class="fa fa-chevron-circle-down"></span>
+				
+				<?php
+				$_lang = $mb->_allLanguages();
+				
+				foreach($_lang AS $value)
+				{
+					?>
+					<fieldset>
+						<legend><?= $value['language'] ?></legend>
+						<input type="text" name="<?= $value['code'] ?>_description" id="<?= $value['code'] ?>_description" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_description'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
+					</fieldset>
+					<?php
+				}
+				?>
+			</div>
 			
 			<input type="text" name="maximum_amount" id="maximum_amount" value="<?= isset($_GET['dataID']) ? $data['maximum_amount'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-payments-maximum-amount") ?>" validation-required="false" validation-type="int" icon="fa-euro" />
 			
