@@ -239,6 +239,18 @@ if(isset($_GET['dataID']))
 										<td><?= ($workorder['employee'] != "" ? $workorder['employee'] : "-") ?></td>
 									</tr>
 									<?php
+										
+									if($workorder['note'] != "")
+									{
+										?>
+										<tr>
+											<td colspan="5" align="center" style="background-color: #cae2ff;">
+												<strong>Workorder note:</strong><br/>
+												<?= $workorder['note'] ?>
+											</td>
+										</tr>
+										<?php
+									}
 								}
 							}
 							else
