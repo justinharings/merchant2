@@ -247,12 +247,19 @@ class mailserver extends motherboard
 			}
 			else
 			{
-				$data = $this->_runFunction("users", "view", array($data[0], "", "users.first_name", "0,500"));
-				foreach($data AS $value)
+				$query2 = sprintf(
+					"	SELECT		users.email_address
+						FROM		users
+						WHERE		users.merchantID = %d",
+					$data[0]
+				);
+				$result2 = $this->query($query2);
+				
+				while($row2 = $this->fetch_assoc($result2))
 				{
-					if($value['email_address'] != "")
+					if($row2['email_address'] != "")
 					{
-						$params[1]['receiver'] = $value['email_address'];
+						$params[1]['receiver'] = $row2['email_address'];
 						$this->send($params);
 					}
 				}
@@ -396,7 +403,7 @@ class mailserver extends motherboard
 		
 		
 		
-		require_once($_SERVER['DOCUMENT_ROOT'] . "/library/third-party/swiftmailer/swift_required.php");
+		require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/third-party/swiftmailer/swift_required.php");
 		
 		$headers = "From: " . strip_tags($from) . "\r\n";
 		$headers .= "Reply-To: ". strip_tags($to) . "\r\n";
