@@ -85,6 +85,32 @@ while($row = $mb->fetch_assoc($result))
 	
 	while($row2 = $mb->fetch_assoc($result2))
 	{
+		$query3 = sprintf(
+			"	SELECT		promotions_products.*
+				FROM		promotions_products
+				WHERE		promotions_products.productID = %d
+				LIMIT		0,1",
+			$row['productID']
+		);
+		$result3 = $mb->query($query3);
+		
+		if($mb->num_rows($result3))
+		{
+			$row3 = $mb->fetch_assoc($result3);
+			
+			if($row3['discount_type'] == 1 && $row3['discount'] > 0 && $row3['discount'] < 100)
+			{
+				$row2['price'] = $row2['price'] - number_format(($row2['price']/100*$row3['discount']), 2);
+			}
+			else if($row3['discount_type'] == 2 && ($row2['price']-$row3['discount']) > 0)
+			{
+				$row2['price'] = $row2['price']-$row3['discount'];
+			}
+			
+			$row2['price'] = number_format($row2['price'], 2);
+		}
+		
+		
 		$name["nl"] = $row2['name'];
 		$name_sort = $row2['name'];
 		
