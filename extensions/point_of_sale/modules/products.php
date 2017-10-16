@@ -15,6 +15,7 @@
 				<td><?= $mb->_translateReturn("table-headers", "ac") ?></td>
 				<td><?= $mb->_translateReturn("table-headers", "barcode") ?></td>
 				<td><?= $mb->_translateReturn("table-headers", "product") ?></td>
+				<td><?= $mb->_translateReturn("table-headers", "stock") ?></td>
 				<td><?= $mb->_translateReturn("table-headers", "visible") ?></td>
 				<td><?= $mb->_translateReturn("table-headers", "price") ?></td>
 			</tr>
@@ -33,6 +34,7 @@
 						<td><?= $value['article_code'] ?></td>
 						<td><?= $value['barcode'] ?></td>
 						<td><?= $value['name'] ?></td>
+						<td><?= $value['stock'] ?> <?= $mb->_translateReturn("table-headers", "products-inline") ?></td>
 						<td><?= $mb->_runFunction("products", "translateVisibility", array($value['visibility'])) ?></td>
 						<td><?= $value['promo'] == true ? '<span class="fa fa-star"></span>' : '' ?>&nbsp;&euro;&nbsp;<?= number_format($value['price'], 2, ",", ".") ?></td>
 					</tr>
