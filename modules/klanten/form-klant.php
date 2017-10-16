@@ -188,6 +188,70 @@ if(isset($_GET['dataID']))
 						<span class="fa fa-pencil-square-o"></span>
 						<?= $mb->_translateReturn("forms", "legend-workorder-history") ?>
 					</div>
+					
+					<table class="form-table">
+						<thead>
+							<tr>
+								<td><?= $mb->_translateReturn("table-headers", "workorderid") ?></td>
+								<td><?= $mb->_translateReturn("table-headers", "status") ?></td>
+								<td><?= $mb->_translateReturn("table-headers", "expiration_date") ?></td>
+								<td><?= $mb->_translateReturn("table-headers", "grand_total") ?></td>
+								<td><?= $mb->_translateReturn("table-headers", "employee") ?></td>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<?php
+							if(count($data['workorders']) > 0)
+							{
+								foreach($data['workorders'] AS $workorder)
+								{
+									?>
+									<tr>
+										<td><?= $workorder['workorderID'] ?></td>
+										<td>
+											<?php
+											switch($value['status'])
+											{
+												case 0:
+													$color = "red";
+													$text = "OPEN";
+												break;
+												
+												case 1:
+													$color = "green";
+													$text = "KLAAR";
+												break;
+												
+												case 2:
+													$color = "orange";
+													$text = "IN WACHT";
+												break;
+											}
+											?>
+											
+											<div class="status-block <?= $color ?>">
+												<?= $text ?>
+											</div>
+										</td>
+										<td><?= $workorder['expiration_date'] ?></td>
+										<td>&euro;&nbsp;<?= _frontend_float($workorder['grand_total']) ?></td>
+										<td><?= ($workorder['employee'] != "" ? $workorder['employee'] : "-") ?></td>
+									</tr>
+									<?php
+								}
+							}
+							else
+							{
+								?>
+								<tr>
+									<td colspan="5" align="center"><?= $mb->_translateReturn("table-headers", "no-results") ?></td>
+								</tr>
+								<?php
+							}
+							?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 			

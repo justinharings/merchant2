@@ -190,6 +190,7 @@
 		
 		<no-results>Geen resultaten voor dit overzicht.</no-results>
 		<search-required>U dient te zoeken om resultaten te krijgen.</search-required>
+		<workorderid>Werkorder #</workorderid>
 		<orderid>Order #</orderid>
 		<date>Datum</date>
 		<customer>Klant</customer>

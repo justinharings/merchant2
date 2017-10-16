@@ -108,6 +108,27 @@ class customers extends motherboard
 			{
 				$return['orders'] = parent::fetch_array($result);
 			}
+			
+			
+			
+			$query = sprintf(
+				"	SELECT		workorders.*,
+								DATE_FORMAT(workorders.expiration_date, '%%d-%%m-%%Y') AS expiration_date,
+								pos_employees.name AS employee
+					FROM		workorders
+					LEFT JOIN	pos_employees ON pos_employees.employeeID = workorders.employeeID
+					WHERE		workorders.customerID = %d
+					ORDER BY	workorders.expiration_date ASC",
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['workorders'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$return['workorders'] = parent::fetch_array($result);
+			}
 		}
 		
 		return $return;
