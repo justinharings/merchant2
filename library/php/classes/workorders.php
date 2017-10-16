@@ -287,7 +287,7 @@ class workorders extends motherboard
 	
 	public function saveWorkorderCard($data)
 	{
-		parent::_checkInputValues($data, 2);
+		parent::_checkInputValues($data, 3);
 		
 		$query = sprintf(
 			"	DELETE FROM		workorders_card
@@ -320,9 +320,11 @@ class workorders extends motherboard
 		$query = sprintf(
 			"	UPDATE		workorders
 				SET			workorders.grand_total = '%.2f',
-							workorders.card_saved = 1
+							workorders.card_saved = 1,
+							workorders.employeeID = %d
 				WHERE		workorders.workorderID = %d",
 			$grand_total,
+			$data[2],
 			$data[1]['workorderID']
 		);
 		parent::query($query);

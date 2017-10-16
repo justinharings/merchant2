@@ -8,7 +8,7 @@ if(!isset($_SESSION))
 require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php");
 
 $mb = new motherboard();
-$mb->_runFunction("workorders", "saveWorkorderCard", array($_SESSION['merchantID'], $_POST));
+$mb->_runFunction("workorders", "saveWorkorderCard", array($_SESSION['merchantID'], $_POST, $_SESSION['employeeID']));
 
 header("location: /extensions/workshop/modules/popup_close.php");
 ?>
