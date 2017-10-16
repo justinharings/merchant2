@@ -105,7 +105,18 @@ foreach($data['shipments'] AS $shipment)
 						
 						<td style="padding: 0px 20px 20px 0px;">
 							<strong><?= $mb->_translateReturn("forms", "form-orders-products") ?></strong><br/>
-							<?= count($data['products']) ?> <?= $mb->_translateReturn("forms", "form-orders-products-inline") ?>
+							
+							<?php
+							$qty = 0;
+								
+							foreach($data['products'] AS $product)
+							{
+								$qty += $product['quantity'];
+							}
+							
+							print $qty . " " . $mb->_translateReturn("forms", "form-orders-products-inline")
+							?>
+							
 						</td>
 						
 						<td style="padding: 0px 20px 20px 0px;">
