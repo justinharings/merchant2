@@ -595,6 +595,11 @@ function systemChanges(elm)
 		return false;
 	}
 	
+	if(elm.attr("icon") == "fa-globe")
+	{
+		return false;
+	}
+	
 	if(elm.is('[holder]'))
 	{
 		$('<span class="input-holder">' + elm.attr("holder") + '</span>').insertBefore(elm);

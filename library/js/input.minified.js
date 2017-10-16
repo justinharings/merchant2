@@ -99,6 +99,8 @@ $(this).next("input[type='checkbox']").first().attr("checked","checked");$(this)
 function systemChanges(elm)
 {if(elm.attr("system-changes")!=""&&elm.attr("system-changes")!==undefined)
 {return!1}
+if(elm.attr("icon")=="fa-globe")
+{return!1}
 if(elm.is('[holder]'))
 {$('<span class="input-holder">'+elm.attr("holder")+'</span>').insertBefore(elm)}
 if(elm.is('[holder-eg]'))
