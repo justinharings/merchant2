@@ -569,6 +569,24 @@ class orders extends motherboard
 			);
 			parent::query($query);
 			
+			
+			$status = $this->_runFunction("order_statuses", "load", array($data[1]['statusID']));
+			
+			if($status['shipment_email'])
+			{
+				$customerData = $this->_runFunction("customers", "load", array($current['customerID']));
+				
+				$array = array();
+				$array[] = $data[0];
+				$array[] = 7;
+				$array[] = ($customerData['email_address'] != "" ? $customerData['email_address'] : "");
+				$array[] = 0;
+				$array[] = $data[1]['orderID'];
+				
+				$this->_runFunction("mailserver", "sendAllEmail", $array);
+			}
+			
+			
 			if($data[1]['omboeken'] == 1)
 			{
 				$query = sprintf(
@@ -745,7 +763,7 @@ class orders extends motherboard
 		
 		$locationID = 0;
 		
-		if($data[3] > 0)
+		if($data[4] > 0)
 		{
 			$employee = $this->_runFunction("pos", "loadEmployee", array($data[4]));
 			$locationID = $employee['locationID'];

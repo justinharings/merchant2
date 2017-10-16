@@ -245,7 +245,7 @@ class mailserver extends motherboard
 					$this->send($params);
 				}
 			}
-			else
+			else if($row['receiver'] == 2)
 			{
 				$query2 = sprintf(
 					"	SELECT		users.email_address
@@ -472,7 +472,7 @@ class mailserver extends motherboard
 			$content = str_replace("[customer-ZIP_CODE]", $customer_info['zip_code'], $content);
 			$content = str_replace("[customer-CITY]", $customer_info['city'], $content);
 			$content = str_replace("[customer-COUNTRY]", $customer_info['country'], $content);
-			$content = str_replace("[customer-PHINE]", $customer_info['phone'], $content);
+			$content = str_replace("[customer-PHONE]", $customer_info['phone'], $content);
 			$content = str_replace("[customer-MOBILE_PHONE]", $customer_info['mobile_phone'], $content);
 			$content = str_replace("[customer-EMAIL_ADDRESS]", $customer_info['email_address'], $content);
 			$content = str_replace("[customer-CUSTOMER_CODE]", $customer_info['customer_code'], $content);
