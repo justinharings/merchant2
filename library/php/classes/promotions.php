@@ -279,7 +279,7 @@ class promotions extends motherboard
 		$query = sprintf(
 			"	DELETE FROM		promotions_products
 				WHERE			promotions_products.promotionID = %d",
-			$value['promotionID']
+			$data[1]['promotionID']
 		);
 		parent::query($query);
 		
