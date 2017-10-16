@@ -21,8 +21,7 @@ class stock extends motherboard
 		}
 		
 		$query = sprintf(
-			"	SELECT		locations.locationID,
-							locations.name,
+			"	SELECT		locations.*,
 							DATE_FORMAT(locations.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
 							IF(
 								DATE_FORMAT(locations.date_update, '%%d-%%m-%%Y @ %%k:%%i') = '00-00-0000 @ 0:00',
