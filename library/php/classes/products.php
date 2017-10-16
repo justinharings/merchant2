@@ -310,6 +310,22 @@ class products extends motherboard
 			if($return['shipmentID'] > 0)
 			{
 				$query = sprintf(
+					"	SELECT		shipment_methods.*
+						FROM		shipment_methods
+						WHERE		shipment_methods.shipmentID = %d",
+					$return['shipmentID']
+				);
+				$result = parent::query($query);
+				
+				$return['shipment'] = array();
+				
+				if(parent::num_rows($result))
+				{
+					$return['shipment'] = parent::fetch_assoc($result);
+				}
+				
+				
+				$query = sprintf(
 					"	SELECT		shipment_methods.price
 						FROM		shipment_methods
 						WHERE		shipment_methods.shipmentID = %d",
