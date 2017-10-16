@@ -317,11 +317,9 @@ class products extends motherboard
 				);
 				$result = parent::query($query);
 				
-				$return['shipment'] = array();
-				
 				if(parent::num_rows($result))
 				{
-					$return['shipment'] = parent::fetch_assoc($result);
+					$return['shipments'] = parent::fetch_assoc($result);
 				}
 				
 				
