@@ -991,23 +991,32 @@ class orders extends motherboard
 		
 		if($data[6] > 0 && $data[7] == 0)
 		{
-			$shipmentData = $this->_runFunction("shipment_methods", "load", array(intval($data[6])));
-			$courier = $shipmentData['courier'];
-			$price = $shipmentData['price'];
+			if(!is_array($data[6]))
+			{
+				$data[6] = array(0 => $data[6]);
+			}
 			
-			$query = sprintf(
-				"	INSERT INTO		orders_shipment
-					SET				orders_shipment.orderID = %d,
-									orders_shipment.shipmentID = %d,
-									orders_shipment.courier = '%s',
-									orders_shipment.price = '%.2f',
-									orders_shipment.track_code = ''",
-				$orderID,
-				$data[6],
-				$courier,
-				$price
-			);
-			parent::query($query);
+			foreach($data[6] AS $shipmentID)
+			{
+				$shipmentData = $this->_runFunction("shipment_methods", "load", array(intval($shipmentID)));
+				
+				$courier = $shipmentData['courier'];
+				$price = $shipmentData['price'];
+				
+				$query = sprintf(
+					"	INSERT INTO		orders_shipment
+						SET				orders_shipment.orderID = %d,
+										orders_shipment.shipmentID = %d,
+										orders_shipment.courier = '%s',
+										orders_shipment.price = '%.2f',
+										orders_shipment.track_code = ''",
+					$orderID,
+					$shipmentID,
+					$courier,
+					$price
+				);
+				parent::query($query);
+			}
 		}
 		
 		
