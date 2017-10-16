@@ -182,6 +182,7 @@ while($row = $mb->fetch_assoc($result))
 	$insert[$num]['review_stars'] = $stars;
 	$insert[$num]['stock'] = $row['stock_type'];
 	$insert[$num]['sale'] = ($row['status'] == 2 ? 1 : 0);
+	$insert[$num]['status'] = $row['status'];
 	$insert[$num]['filters'] = serialize($filters);
 	
 	$num++;
@@ -206,6 +207,7 @@ foreach($insert AS $key => $value)
 							products_cache.image = '%s',
 							products_cache.review_stars = %d,
 							products_cache.sale = %d,
+							products_cache.status = %d,
 							products_cache.stock_type = %d,
 							products_cache.filters = '%s'",
 		$value['merchantID'],
@@ -218,6 +220,7 @@ foreach($insert AS $key => $value)
 		$value['image'],
 		$value['review_stars'],
 		$value['sale'],
+		$value['status'],
 		$value['stock'],
 		$value['filters']
 	);
