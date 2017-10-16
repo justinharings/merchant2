@@ -307,6 +307,9 @@ else if($_GET['type'] != "receipt" && $_GET['type'] != "workorder")
 	**	Now let's process what to do with the request.
 	**	Print it with Google Cloud Print or just save it?
 	*/
+	
+	//print $content;
+	
 	if($_GET['action'] == "print")
 	{
 		//print $content;
