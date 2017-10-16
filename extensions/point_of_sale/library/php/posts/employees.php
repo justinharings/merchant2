@@ -6,5 +6,8 @@ if(!isset($_SESSION))
 
 $_SESSION['employeeID'] = $_GET['employeeID'];
 
+unset($_SESSION['print_button_order']);
+unset($_SESSION['print_button_workorder']);
+
 header("location: /pos/modules/register/");
 ?>

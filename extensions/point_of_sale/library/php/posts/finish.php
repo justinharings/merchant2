@@ -163,6 +163,12 @@ $orderID = $mb->_runFunction("orders", "runOrder", array($_SESSION['merchantID']
 $_SESSION['last_order'] = $orderID;
 
 
+unset($_SESSION['print_button_order']);
+unset($_SESSION['print_button_workorder']);
+
+$_SESSION['print_button_order'] = $orderID;
+
+
 
 // Reset all the sessions
 $popup = true;

@@ -7,7 +7,10 @@ if(!isset($_SESSION))
 if	(
 		!isset($_GET['type'])
 		|| !isset($_GET['action'])
-		|| !isset($_GET['orderID'])
+		|| 	(
+				!isset($_GET['orderID'])
+				&& !isset($_GET['workorderID'])
+			)
 	)
 {
 	die("Request made without the right information.");
@@ -31,16 +34,18 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php")
 $mb = new motherboard();
 
 $order = $mb->_runFunction("orders", "load", array($_GET['orderID']));
+$workorder = $mb->_runFunction("workorders", "loadWorkorder", array($_GET['workorderID']));
 
-if(!$order['orderID'])
+if(!$order['orderID'] && !$workorder['workorderID'])
 {
 	die("Order not found.");
 }
 else
 {
-	$merchant = $mb->_runFunction("merchant", "load", array($order['merchantID']));
+	$merchant = $mb->_runFunction("merchant", "load", array(($order['merchantID'] ? $order['merchantID'] : $workorder['merchantID'])));
 	$invoice = $mb->_runFunction("cms", "loadInvoiceText", array($order['merchantID']));
 	$customer = $mb->_runFunction("customers", "load", array($order['customerID']));
+	$workorder_receipt = $mb->_runFunction("workorders", "loadSettings", array($_SESSION['merchantID']));
 	
 	$template_suffix = "";
 	
@@ -96,6 +101,19 @@ if(file_exists($file))
 	$content = str_replace("[[invoice_comments]]", nl2br($invoice['invoice_extra']), $content);
 	$content = str_replace("[[receipt_company_info]]", nl2br($invoice['receipt_text']), $content);
 	$content = str_replace("[[logo_merchant]]", '<img class="logo" src="' . $actual_link . '/library/media/merchant_logos/' . $merchant['merchantID'] . '.png" />', $content);
+	
+	// Workorder replacement
+	$content = str_replace("[[workorder_receipt]]", nl2br($workorder_receipt['receipt_content']), $content);
+	$content = str_replace("[workorder-ID]", $workorder['workorderID'], $content);
+	$content = str_replace("[[workorder-ID]]", $workorder['workorderID'], $content);
+	$content = str_replace("[workorder-PHONENUMBER]", ($workorder['phone_number'] ? $workorder['phone_number'] : "Onbekend"), $content);
+	$content = str_replace("[[workorder-PHONENUMBER]]", ($workorder['phone_number'] ? $workorder['phone_number'] : "Onbekend"), $content);
+	$content = str_replace("[workorder-KEYNUMBER]", $workorder['key_number'], $content);
+	$content = str_replace("[[workorder-KEYNUMBER]]", $workorder['key_number'], $content);
+	$content = str_replace("[workorder-DATE]", $workorder['expiration_date'], $content);
+	$content = str_replace("[[workorder-DATE]]", $workorder['expiration_date'], $content);
+	$content = str_replace("[workorder-BARCODE]", '<img src="' . $actual_link . '/library/third-party/barcode-image/barcode.php?code=' . $workorder['workorderID'] . '" />', $content);
+	$content = str_replace("[[workorder-BARCODE]]", '<img src="' . $actual_link . '/library/third-party/barcode-image/barcode.php?code=' . $workorder['workorderID'] . '" />', $content);
 	
 	// Customer replacement
 	$content = str_replace("[[customer_name]]", $customer['name'], $content);
@@ -246,7 +264,7 @@ else
 **	HTML2PDF and Google Cloudprint services.
 */
 
-if($_GET['type'] == "receipt")
+if($_GET['type'] == "receipt" || $_GET['type'] == "workorder")
 {
 	print $content;
 	
@@ -257,7 +275,7 @@ if($_GET['type'] == "receipt")
 	</script>
 	<?php
 }
-else if($_GET['type'] != "receipt")
+else if($_GET['type'] != "receipt" && $_GET['type'] != "workorder")
 {
 	/*
 	**	Create a PDF file from the output.

@@ -317,19 +317,41 @@ body div.top
 		cursor: pointer;
 	}
 	
-	body div.top span.previous-button
+	body div.top span.previous-button,
+	body div.top span.fa-print
 	{
 		width: 25px;
 		height: 25px;
 		
 		position: absolute;
 		top: 20px;
-		right: 55px;
-		
-		visibility: hidden;
+		right: 60px;
+		z-index: 990;
 		
 		font-size: 25px;
 		color: #272b36;
+	}
+	
+	body div.top span.previous-button
+	{
+		visibility: hidden;
+	}
+	
+	body div.top span.print-last-circle
+	{
+		width: 15px;
+		height: 11px;
+		
+		position: absolute;
+		top: 17px;
+		right: 80px;
+		
+		padding: 7px 5px;
+		
+		font-family: 'Raleway', 'Tahoma';
+		font-size: 11px;
+		color: #000;
+		text-align: center;
 	}
 	
 	

@@ -56,6 +56,31 @@ $(document).ready(
 			$select.scrollTop(scrollTop);
 		}
 		
+		$("span.print-last").on("click",
+			function()
+			{
+				if($(this).attr("target") == "workorder" && $(this).attr("workorderID") != "")
+				{
+					window.open('/extensions/printserver/index.php?type=workorder&action=print&workorderID=' + $(this).attr("targetID"));
+				}
+				else if($(this).attr("target") == "receipt" && $(this).attr("workorderID") != "")
+				{
+					window.open('/extensions/printserver/index.php?type=receipt&action=print&orderID=' + $(this).attr("targetID"));
+				}
+				
+				$(this).fadeOut("fast");
+				$(".print-last-circle").fadeOut("fast");
+			}
+		);
+		
+		setTimeout(
+			function()
+			{
+				$(".print-last").fadeOut("fast");
+				$(".print-last-circle").fadeOut("fast");
+			}, 30000
+		);
+		
 		
 		
 		/*

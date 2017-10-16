@@ -408,6 +408,8 @@ class workorders extends motherboard
 				$data[1]['workorderID']
 			);
 			parent::query($query);
+			
+			$workorderID = $data[1]['workorderID'];
 		}
 		else
 		{
@@ -434,9 +436,11 @@ class workorders extends motherboard
 				parent::real_escape_string($data[1]['note'])
 			);
 			parent::query($query);
+			
+			$workorderID = parent::insert_id();
 		}
 		
-		return true;
+		return $workorderID;
 	}
 	
 	

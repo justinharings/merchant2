@@ -202,7 +202,16 @@ if(isset($_SESSION['terminal']) && $_GET['module'] == "register")
 			
 			<div class="top">
 				<span class="fa fa-power-off logout-button-pos"></span>
-				<span class="fa fa-history previous-button"></span>
+				
+				<?php
+				if(isset($_SESSION['print_button_workorder']) || isset($_SESSION['print_button_order']))
+				{
+					?>
+					<span class="fa fa-print print-last" target="<?= isset($_SESSION['print_button_workorder']) ? "workorder" : "receipt" ?>" targetID="<?= isset($_SESSION['print_button_workorder']) ? $_SESSION['print_button_workorder'] : $_SESSION['print_button_order'] ?>"></span>
+					<span class="print-last-circle"><?= isset($_SESSION['print_button_workorder']) ? "W" : "K" ?></span>
+					<?php
+				}
+				?>
 			</div>
 			
 			<div class="content">
