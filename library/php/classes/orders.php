@@ -871,12 +871,13 @@ class orders extends motherboard
 	**	data[4] =	statusID;
 	**	data[5] =	employeeID;
 	**	data[6] =	shipmentID;
-	**	data[7] =	orderID.
+	**	data[7] =	orderID;
+	**	data[8] =	invoice rules.
 	*/
 	
 	public function runOrder($data)
 	{
-		parent::_checkInputValues($data, 8);
+		parent::_checkInputValues($data, 9);
 		
 		$currentOrder = "";
 		
@@ -1032,6 +1033,25 @@ class orders extends motherboard
 			$orderID
 		);
 		parent::query($query);
+		
+		
+		
+		if(is_array($data[8]))
+		{
+			for($i = 1; $i <= 4; $i++)
+			{
+				$query = sprintf(
+					"	INSERT INTO		orders_invoice_rules
+						SET				orders_invoice_rules.orderID = %d,
+										orders_invoice_rules.key = '%s',
+										orders_invoice_rules.value = '%s'",
+					$orderID,
+					parent::real_escape_string($data[8]['key_' . $i]),
+					parent::real_escape_string($data[8]['value_' . $i])
+				);
+				parent::query($query);
+			}
+		}
 		
 		
 		

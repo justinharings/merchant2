@@ -132,6 +132,22 @@ $_orderID = (isset($_SESSION['orderID']) ? $_SESSION['orderID'] : 0);
 
 
 
+// INVOICE RULES
+// Array
+
+$invoice_rules = array();
+
+for($i = 1; $i <= 4; $i++)
+{
+	if($_SESSION['invoice_rules'][$i-1]['key'])
+	{
+		$invoice_rules['key_' . $i] = $_SESSION['invoice_rules'][$i-1]['key'];
+		$invoice_rules['value_' . $i] = $_SESSION['invoice_rules'][$i-1]['value'];
+	}
+}
+
+
+
 //print "<pre>" . print_r($_cart, true) . "</pre><br/><br/>";
 //print $_customer . "<br/><br/>";
 //print "<pre>" . print_r($_payments, true) . "</pre><br/><br/>";
@@ -143,7 +159,7 @@ $_orderID = (isset($_SESSION['orderID']) ? $_SESSION['orderID'] : 0);
 
 
 // Start the process inside the order class.
-$orderID = $mb->_runFunction("orders", "runOrder", array($_SESSION['merchantID'], $_cart, $_customer, $_payments, $_status, $_employee, $_shipment, $_orderID));
+$orderID = $mb->_runFunction("orders", "runOrder", array($_SESSION['merchantID'], $_cart, $_customer, $_payments, $_status, $_employee, $_shipment, $_orderID, $invoice_rules));
 $_SESSION['last_order'] = $orderID;
 
 
