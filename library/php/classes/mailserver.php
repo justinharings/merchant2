@@ -241,7 +241,7 @@ class mailserver extends motherboard
 				if($_skip == false)
 				{
 					$params[1]['receiver'] = $data[2];
-					print $params[1]['receiver'] . "<br/>";
+					//print $params[1]['receiver'] . "<br/>";
 					$this->send($params);
 				}
 			}
