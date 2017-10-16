@@ -24,10 +24,7 @@ class payment_methods extends motherboard
 		}
 		
 		$query = sprintf(
-			"	SELECT		payment_methods.paymentID,
-							payment_methods.name,
-							payment_methods.module,
-							payment_methods.pos,
+			"	SELECT		payment_methods.*,
 							DATE_FORMAT(payment_methods.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
 							IF(
 								DATE_FORMAT(payment_methods.date_update, '%%d-%%m-%%Y @ %%k:%%i') = '00-00-0000 @ 0:00',
