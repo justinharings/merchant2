@@ -7,7 +7,7 @@ if(!isset($_SESSION))
 $_api_key_1 = $_module_keys[0];
 $_api_key_2 = $_module_keys[1];
 
-$file = "/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/" . $_load_module . "/payment.php";
+$file = "/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT == true ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/" . $_load_module . "/payment.php";
 
 if(file_exists($file))
 {
