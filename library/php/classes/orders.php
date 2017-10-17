@@ -880,30 +880,17 @@ class orders extends motherboard
 		$row = parent::fetch_assoc($result);
 		
 		$order = $this->_runFunction("orders", "load", array($data[0]));
-		$customer = $this->_runFunction("orders", "load", array($order['customerID']));
+		$customer = $this->_runFunction("customers", "load", array($order['customerID']));
 		
 		// Send e-mails
 		$array = array();
-		$array[] = $data[0];
+		$array[] = $order['merchantID'];
 		$array[] = 2;
-		$array[] = ($customer['email_address'] != "" ? $customerData['email_address'] : "");
+		$array[] = ($customer['email_address'] != "" ? $customer['email_address'] : "");
 		$array[] = 0;
-		$array[] = $orderID;
+		$array[] = $data[0];
 		
 		$this->_runFunction("mailserver", "sendAllEmail", $array);
-		
-		if($customer['email_address'] != "")
-		{
-			// Send e-mails
-			$array = array();
-			$array[] = $data[0];
-			$array[] = 2;
-			$array[] = ($customer['email_address'] != "" ? $customerData['email_address'] : "");
-			$array[] = 0;
-			$array[] = $orderID;
-			
-			$this->_runFunction("mailserver", "sendAllEmail", $array);
-		}
 	}
 	
 	
