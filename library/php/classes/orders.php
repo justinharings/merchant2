@@ -860,6 +860,55 @@ class orders extends motherboard
 	
 	
 	/*
+	** data[0] =	orderID;
+	** data[1] =	grand_total.
+	*/
+	
+	public function registerPayment($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	UPDATE		orders_payment
+				SET			orders_payment.amount = '%.2f'
+				WHERE		orders_payment.orderID = %d
+					AND		orders_payment.amount = 0",
+			$data[1],
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$order = $this->_runFunction("orders", "load", array($data[0]));
+		$customer = $this->_runFunction("orders", "load", array($order['customerID']));
+		
+		// Send e-mails
+		$array = array();
+		$array[] = $data[0];
+		$array[] = 2;
+		$array[] = ($customer['email_address'] != "" ? $customerData['email_address'] : "");
+		$array[] = 0;
+		$array[] = $orderID;
+		
+		$this->_runFunction("mailserver", "sendAllEmail", $array);
+		
+		if($customer['email_address'] != "")
+		{
+			// Send e-mails
+			$array = array();
+			$array[] = $data[0];
+			$array[] = 2;
+			$array[] = ($customer['email_address'] != "" ? $customerData['email_address'] : "");
+			$array[] = 0;
+			$array[] = $orderID;
+			
+			$this->_runFunction("mailserver", "sendAllEmail", $array);
+		}
+	}
+	
+	
+	
+	/*
 	**
 	*/
 	
@@ -991,6 +1040,9 @@ class orders extends motherboard
 		$this->handleStock(array($merchantID, $orderID, $currentStatus, $newStatus, $employeeID));
 		
 		
+		$_load_module = "";
+		$_payed = 0;
+		
 		foreach($data[3] AS $payment)
 		{
 			$query = sprintf(
@@ -1004,6 +1056,16 @@ class orders extends motherboard
 				parent::floatvalue($payment['amount'])
 			);
 			parent::query($query);
+			
+			$_payed += $payment['amount'];
+			
+			$paymentMethod = $this->_runFunction("payment_methods", "load", array($payment['paymentID']));
+			
+			if($paymentMethod['module'] != "" && $payment['amount'] == 0)
+			{
+				$_load_module = $paymentMethod['module'];
+				$_module_keys = array($paymentMethod['api_key_1'], $paymentMethod['api_key_2']);
+			}
 		}
 		
 		
@@ -1120,7 +1182,7 @@ class orders extends motherboard
 			
 			$this->_runFunction("mailserver", "sendAllEmail", $array);
 			
-			if(count($data[3]) > 0)
+			if(count($data[3]) > 0 && $_payed > 0)
 			{
 				// Send e-mails
 				$array = array();
@@ -1136,6 +1198,16 @@ class orders extends motherboard
 		
 
 
+		if($_load_module != "")
+		{
+			$dev = true;
+			
+			require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/extensions/payments/router.php");
+			exit;
+		}
+		
+		
+		
 		return $orderID;
 	}
 }

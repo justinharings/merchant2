@@ -121,7 +121,7 @@ if(file_exists($file))
 	$content = str_replace("[[customer_address]]", $customer['address'], $content);
 	$content = str_replace("[[customer_postcode]]", $customer['zip_code'], $content);
 	$content = str_replace("[[customer_city]]", $customer['city'], $content);
-	$content = str_replace("[[customer_phone]]", $customer['phone'], $content);
+	$content = str_replace("[[customer_phone]]", ($customer['mobile_phone'] ? $customer['mobile_phone'] : $customer['phone']), $content);
 	
 	// Order replacement
 	$content = str_replace("[[orderID]]", $order['order_reference'], $content);
