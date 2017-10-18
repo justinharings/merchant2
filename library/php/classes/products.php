@@ -769,12 +769,13 @@ class products extends motherboard
 	
 	public function delete($data)
 	{
-		parent::_checkInputValues($data, 2);
+		parent::_checkInputValues($data, 3);
 		
 		$query = sprintf(
-			"	DELETE FROM		taxes
-				WHERE			taxes.taxesID = %d",
-			$data[1]['taxesID']
+			"	UPDATE		products
+				SET			deleted = 1
+				WHERE		products.productID = %d",
+			$data[1]['productID']
 		);
 		parent::query($query);
 		
