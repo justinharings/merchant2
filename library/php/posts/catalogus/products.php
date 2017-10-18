@@ -23,7 +23,7 @@ $return = $mb->_runFunction(
 // Replace the ID of the inserted or updated form.
 $_POST['returnURL'] = str_replace("[dataID]", intval($return), $_POST['returnURL']);
 
-if($return && isset($_POST['returnURL']))
+if(intval($return) >= 0 && isset($_POST['returnURL']))
 {
 	header("location: " . $_POST['returnURL']);
 	exit;
