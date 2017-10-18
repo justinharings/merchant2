@@ -25,15 +25,20 @@ if(isset($_GET['dataID']))
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			
 			<?php
-			if(isset($_GET['dataID']) && $data['products'] == 0)
+			if($data['deleted'] == 0)
 			{
+				if(isset($_GET['dataID']) && $data['stock'] == 0)
+				{
+					?>
+					<input type="button" name="delete-item" id="delete-item" value="<?= $mb->_translateReturn("forms", "button-delete") ?>" class="white show-load" />
+					<?php
+				}
 				?>
-				<input type="button" name="delete-item" id="delete-item" value="<?= $mb->_translateReturn("forms", "button-delete") ?>" class="white show-load" />
+				
+				<input type="submit" name="save" id="save" value="<?= $mb->_translateReturn("forms", "button-save") ?>" class="red show-load validate-form" />
 				<?php
 			}
 			?>
-			
-			<input type="submit" name="save" id="save" value="<?= $mb->_translateReturn("forms", "button-save") ?>" class="red show-load validate-form" />
 		</div>
 		
 		<div class="form-tabs">
