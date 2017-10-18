@@ -35,7 +35,16 @@ $form = "/form-betaallink/";
 				<tr>
 					<td><?= $value['receiver'] ?></td>
 					<td><?= $value['sender'] ?></td>
-					<td><?= $value['subject'] ?></td>
+					<td>
+						<?php
+						if($value['attachment'] == 1)
+						{
+							print "<span class=\"fa fa-paperclip\"></span>&nbsp;";
+						}
+							
+						print $value['subject'];	
+						?>
+					</td>
 					<td><?= $value['date_added'] ?></td>
 					<td><span class="fa large <?= $value['sent'] ? "fa-check-circle green" : "fa-times-circle red" ?>"></span></td>
 				</tr>

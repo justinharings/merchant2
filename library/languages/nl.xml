@@ -398,6 +398,7 @@
 		<form-customers-email-content-eg>U kunt [replace-tags] gebruiken. HTML toegestaan.</form-customers-email-content-eg>
 		<form-customers-email-sender>Afzender</form-customers-email-sender>
 		<form-customers-email-template>E-mail sjabloon</form-customers-email-template>
+		<form-customers-email-attachment>Bijlage</form-customers-email-attachment>
 		<form-customers-sms-template>SMS sjabloon</form-customers-sms-template>
 		<form-customers-sms-content>Inhoud SMS bericht</form-customers-sms-content>
 		<form-customers-sms-content-eg>U kunt [replace-tags] gebruiken. Max. 160 karakters.</form-customers-sms-content-eg>

@@ -25,11 +25,21 @@ if	(
 
 define("_LANGUAGE_PACK", "NL");
 
-require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/functions/arrays.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/functions/floats.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/functions/text.php");
+// Get the DEV or LIVE environment.
+$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$dev = false;
 
-require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php");
+if(strpos($actual_link, "dev.justin") !== false)
+{
+	$dev = true;
+	define("_DEVELOPMENT_ENVIRONMENT", $dev);
+}
+
+require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/php/functions/arrays.php");
+require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/php/functions/floats.php");
+require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/php/functions/text.php");
+
+require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/php/classes/motherboard.php");
 
 $mb = new motherboard();
 
@@ -91,8 +101,8 @@ if(file_exists($file))
 	$actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
 	
 	// CSS Replacement
-	$css .= file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/library/css/normalize.css");
-	$css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/library/css/printer.css");
+	$css .= file_get_contents("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/css/normalize.css");
+	$css = file_get_contents("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/css/printer.css");
 	$content = str_replace("[[css]]", $css, $content);
 	
 	// Merchant replacement
@@ -285,7 +295,7 @@ else if($_GET['type'] != "receipt" && $_GET['type'] != "workorder")
 	
 	try
 	{
-		require_once($_SERVER['DOCUMENT_ROOT'] . "/library/third-party/html2pdf/html2pdf.class.php");
+		require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/third-party/html2pdf/html2pdf.class.php");
 		
 		$file = 'print_' . rand() . '.pdf';
 		
@@ -293,7 +303,7 @@ else if($_GET['type'] != "receipt" && $_GET['type'] != "workorder")
 	    $html2pdf->pdf->SetDisplayMode('fullpage');
 	    $html2pdf->setDefaultFont("montserrat");
 	    $html2pdf->writeHTML($content);
-	    $html2pdf->Output($_SERVER['DOCUMENT_ROOT'] . '/temp/' . $file, 'F');
+	    $html2pdf->Output("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/temp/" . $file, 'F');
 	}
 	catch(HTML2PDF_exception $e) 
 	{
@@ -313,8 +323,12 @@ else if($_GET['type'] != "receipt" && $_GET['type'] != "workorder")
 	if($_GET['action'] == "print")
 	{
 		//print $content;
-		$url = "/library/third-party/google-cloudprint/index.php?print_file=" . $_SERVER['DOCUMENT_ROOT'] . "/temp/" . $file;
+		$url = "/library/third-party/google-cloudprint/index.php?print_file=/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/temp/" . $file;
 		header("location: " . $url);
+	}
+	else if($_GET['action'] == "save")
+	{
+		$_file_name = "/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/temp/" . $file;
 	}
 }
 ?>

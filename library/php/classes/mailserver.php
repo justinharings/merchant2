@@ -389,13 +389,15 @@ class mailserver extends motherboard
 								mailserver.receiver = '%s',
 								mailserver.subject = '%s',
 								mailserver.content = '%s',
+								mailserver.attachment = %d,
 								mailserver.date_added = NOW()",
 			$data[1]['customerID'],
 			$data[1]['orderID'],
 			parent::real_escape_string($from),
 			parent::real_escape_string($to),
 			parent::real_escape_string($subject),
-			parent::real_escape_string($content_email)
+			parent::real_escape_string($content_email),
+			($data[1]['attachment'] != "" ? 1 : 0)
 		);
 		$result = parent::query($query);
 		
@@ -429,10 +431,17 @@ class mailserver extends motherboard
 			->setBody($content_email, 'text/html');
 		
 		
-		if($data[1]['invoice'] > 0)
+		if($data[1]['attachment'] != "")
 		{
-			//$file = '/media/temp/' . $_GET['filename'];
-			$file = "";
+			// Simulate get in order to let
+			// the printserver setup a file.
+			$_GET['type']		= $data[1]['attachment'];
+			$_GET['action']		= "save";
+			$_GET['orderID']	= $data[1]['orderID'];
+			
+			require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/extensions/printserver/router.php");
+			
+			$file = $_file_name;
 				
 			if(file_exists($file))
 			{

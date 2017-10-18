@@ -627,7 +627,7 @@ foreach($data['shipments'] AS $shipment)
 					
 					<input type="text" name="email_sender" id="email_sender" value="" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-customers-email-sender") ?>" />
 					
-					<select name="email_template" id="email_template" class="width-300 double-margin email-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-email-template") ?>">
+					<select name="email_template" id="email_template" class="width-300 margin email-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-email-template") ?>">
 						<option value=""></option>
 						
 						<?php
@@ -640,6 +640,13 @@ foreach($data['shipments'] AS $shipment)
 							<?php
 						}
 						?>
+					</select>
+					
+					<select name="email_attachment" id="email_attachment" class="width-100 double-margin email-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-email-attachment") ?>">
+						<option value=""></option>
+						<option value="invoice">Factuur</option>
+						<option value="tender">Offerte</option>
+						<option value="picklist">Pakbon</option>
 					</select>
 					
 					<input type="text" name="email_subject" id="email_subject" value="" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-customers-email-subject") ?>" />

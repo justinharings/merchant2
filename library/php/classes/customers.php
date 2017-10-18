@@ -213,6 +213,7 @@ class customers extends motherboard
 		
 		while($row = parent::fetch_assoc($result))
 		{
+			$return[$num]['attachment'] = $row['attachment'];
 			$return[$num]['receiver'] = $row['receiver'];
 			$return[$num]['subject'] = $row['subject'];
 			$return[$num]['content'] = $row['content'];

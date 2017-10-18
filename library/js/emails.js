@@ -25,7 +25,7 @@ $(document).ready(
 							
 							$("input#email_sender").val(data['sender']);
 							$("input#email_subject").val(data['subject']);
-							$("textarea#email_content").html(data['content']);
+							$("textarea#email_content").val(data['content']);
 						}
 					);
 				}
@@ -83,7 +83,8 @@ function sendEmail()
 						sender: $("input#email_sender").val(),
 						receiver: $("input#email_receiver").val(),
 						subject: $("input#email_subject").val(),
-						content: $("textarea#email_content").val()
+						content: $("textarea#email_content").val(),
+						attachment: $("select#email_attachment").val()
 					}
 				).done(
 					function(data) 
@@ -97,7 +98,7 @@ function sendEmail()
 		setTimeout(
 			function()
 			{
-				$("input#email_sender, input#email_subject, textarea#email_content, select#email_template").val("");
+				$("input#email_sender, input#email_subject, textarea#email_content, select#email_template, select#email_attachment").val("");
 				$("input#send_email").val($("input#send_email").attr("original")).removeClass("no-action");
 				
 				$('div.content').animate(
@@ -135,7 +136,14 @@ function loadEmails(customerID)
 					.appendTo("div.tab.js-load-emails")
 					.fadeIn("fast");
 				
-				var html = data[i]['date_added'] + "&nbsp;&nbsp;-&nbsp;&nbsp;" + data[i]['receiver'];
+				var attachment = "";
+				
+				if(data[i]['attachment'] != "")
+				{
+					attachment = "&nbsp;&nbsp;<span class=\"fa fa-paperclip\"></span>";
+				}
+				
+				var html = data[i]['date_added'] + "&nbsp;&nbsp;-&nbsp;&nbsp;" + data[i]['receiver'] + attachment;
 				
 				$("<div/>")
 					.addClass("content-header")
