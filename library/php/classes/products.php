@@ -779,7 +779,7 @@ class products extends motherboard
 		);
 		parent::query($query);
 		
-		return true;
+		return 0;
 	}
 	
 	
