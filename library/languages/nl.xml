@@ -41,6 +41,8 @@
 		<webshop-categories-abbr>WC</webshop-categories-abbr>
 		<article-management>Artikelen beheren</article-management>
 		<article-management-abbr>AB</article-management-abbr>
+		<article-export>Artikelen exporteren</article-export>
+		<article-export-abbr>AE</article-export-abbr>
 		<reviews-management>Reviews beheren</reviews-management>
 		<reviews-management-abbr>RB</reviews-management-abbr>
 		<sold-out>Uitverkochte artikelen</sold-out>

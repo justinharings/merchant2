@@ -369,6 +369,16 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 												<span class="textual"><?= $mb->_translateReturn("menu", "article-management-abbr") ?></span>
 											</div>
 										</li>
+										
+										<a href="/modules/catalogus/export.php">
+											<li class="menu-item">
+												<div class="text"><?= $mb->_translateReturn("menu", "article-export") ?></div>
+												
+												<div class="icon">
+													<span class="textual"><?= $mb->_translateReturn("menu", "article-export-abbr") ?></span>
+												</div>
+											</li>
+										</a>
 										<?php
 									}
 									

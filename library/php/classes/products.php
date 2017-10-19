@@ -17,7 +17,7 @@ class products extends motherboard
 		
 		if($data[1] != "")
 		{
-			if($data[1] != " " && $data[1] != "bookmarks")
+			if($data[1] != " " && $data[1] != "bookmarks" && $data[1] != "export")
 			{
 				$split = explode(" ", $data[1]);
 				
@@ -49,6 +49,10 @@ class products extends motherboard
 			{
 				$search = " AND products.bookmarks = 1";
 			}
+			else if($data[1] == "export")
+			{
+				$search = "";
+			}
 		}
 		else
 		{
@@ -56,14 +60,8 @@ class products extends motherboard
 		}
 		
 		$query = sprintf(
-			"	SELECT		products.productID,
+			"	SELECT		products.*,
 							LPAD(products.article_code, 5, 0) AS article_code,
-							products.supplier_code,
-							products.barcode,
-							products.name,
-							products.price,
-							products.visibility,
-							products.status,
 							(
 								SELECT		SUM(products_stock.stock)
 								FROM		products_stock
@@ -359,7 +357,8 @@ class products extends motherboard
 			"	SELECT		products.productID
 				FROM		products
 				WHERE		products.article_code = '%s'
-					AND		products.merchantID = %d",
+					AND		products.merchantID = %d
+					AND		products.deleted = 0",
 			$data[1],
 			$data[0]
 		);
