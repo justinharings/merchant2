@@ -24,7 +24,8 @@ $query = sprintf(
 		INNER JOIN	categories ON categories.categoryID = categories_products.categoryID
 		INNER JOIN	products ON products.productID = categories_products.productID
 		INNER JOIN	brands ON brands.brandID = products.brandID
-		WHERE		products.visibility IN(2, 3)"
+		WHERE		products.visibility IN(2, 3)
+			AND		products.deleted = 0"
 );
 $result = $mb->query($query);
 
