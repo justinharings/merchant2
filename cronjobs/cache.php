@@ -239,16 +239,16 @@ foreach($insert AS $key => $value)
 		$value['merchantID'],
 		$value['productID'],
 		$value['categoryID'],
-		$value['name'],
-		$value['name_sort'],
+		$mb->real_escape_string($value['name']),
+		$mb->real_escape_string($value['name_sort']),
 		$value['price'],
 		$value['price_adviced'],
-		$value['image'],
+		$mb->real_escape_string($value['image']),
 		$value['review_stars'],
 		$value['sale'],
 		$value['status'],
 		$value['stock'],
-		$value['filters']
+		$mb->real_escape_string($value['filters'])
 	);
 	$mb->query($query);
 }
