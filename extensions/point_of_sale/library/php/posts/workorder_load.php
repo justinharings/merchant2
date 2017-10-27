@@ -43,9 +43,9 @@ if($defaults['products'] > 0 && $defaults['manhours'] > 0)
 	}
 	
 	$_SESSION['cart'] = $cart;
+	
+	$mb->_runFunction("workorders", "delete", array($_GET['workorderID'], $workorder['customerID']));
 }
-
-$mb->_runFunction("workorders", "delete", array($_GET['workorderID'], $workorder['customerID']));
 
 header("location: /pos/modules/register/");
 ?>
