@@ -252,7 +252,7 @@ if(isset($_GET['dataID']))
 							<tr>
 								<td><?= $value['name'] ?></td>
 								<td>
-									<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_category.php?categoryID=<?= $value['categoryID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+									<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_category.php?categoryID=<?= $value['categoryID'] ?>&productID=<?= $_GET['dataID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
 								</td>
 							</tr>
 							<?php

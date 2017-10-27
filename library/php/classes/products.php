@@ -793,8 +793,10 @@ class products extends motherboard
 		
 		$query = sprintf(
 			"	DELETE FROM		categories_products
-				WHERE			categories_products.categoryID = %d",
-			$data[1]['categoryID']
+				WHERE			categories_products.categoryID = %d
+					AND			categories_products.productID = %d",
+			$data[1]['categoryID'],
+			$data[1]['productID']
 		);
 		parent::query($query);
 		
@@ -921,10 +923,10 @@ class products extends motherboard
 							) AS productMediaID
 				FROM		reviews
 				INNER JOIN	products ON products.productID = reviews.productID
+				WHERE		reviews.merchantID = %d
 				GROUP BY	reviews.productID
                 ORDER BY 	SUM(reviews.stars) DESC
 				LIMIT		0,5",
-			
 			$languages,
 			$data[0]
 		);
@@ -934,7 +936,7 @@ class products extends motherboard
 		
 		while($row = parent::fetch_assoc($result))
 		{
-			$row['image'] = "https://" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "mechant") . ".justinharings.nl/library/media/products/" . $row['productMediaID'] . ".png";
+			$row['image'] = "https://" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/media/products/" . $row['productMediaID'] . ".png";
 			$return[] = $row;
 		}
 		
