@@ -24,10 +24,7 @@ class shipment_methods extends motherboard
 		}
 		
 		$query = sprintf(
-			"	SELECT		shipment_methods.shipmentID,
-							shipment_methods.name,
-							shipment_methods.courier,
-							shipment_methods.price,
+			"	SELECT		shipment_methods.*,
 							DATE_FORMAT(shipment_methods.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
 							IF(
 								DATE_FORMAT(shipment_methods.date_update, '%%d-%%m-%%Y @ %%k:%%i') = '00-00-0000 @ 0:00',

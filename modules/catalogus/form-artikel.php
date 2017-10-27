@@ -544,14 +544,29 @@ if(isset($_GET['dataID']))
 					<?= $mb->_translateReturn("forms", "legend-stock-settings") ?>
 				</div>
 				
-				<select name="status" id="status" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-status") ?>">
+				<select name="status" id="status" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-products-status") ?>">
 					<option <?= isset($_GET['dataID']) && $data['status'] == 1 ? "selected=\"selected\"" : "" ?> value="1">Artikel draait volledig mee</option>
 					<option <?= isset($_GET['dataID']) && $data['status'] == 2 ? "selected=\"selected\"" : "" ?> value="2">Uitverkoop, laatste varianten</option>
 					<option <?= isset($_GET['dataID']) && $data['status'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Tijdelijk uitverkocht, komt nog terug</option>
 					<option <?= isset($_GET['dataID']) && $data['status'] == 4 ? "selected=\"selected\"" : "" ?> value="4">Uitverkocht, komt niet terug in de voorraad</option>
 				</select>
 				
-				<select name="externalStockID" id="externalStockID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-status") ?>">
+				<select name="stock_type" id="stock_type" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-default-stock-type") ?>">
+					<option value=""></option>
+					
+					<?php
+					$data_stock = $mb->_runFunction("stock", "viewStockType", array());
+					
+					foreach($data_stock AS $stockType => $name)
+					{
+						?>
+						<option <?= isset($_GET['dataID']) && $data['stock_type'] == $stockType ? "selected=\"selected\"" : "" ?> value="<?= $stockType ?>"><?= $name ?></option>
+						<?php
+					}
+					?>
+				</select>
+				
+				<select name="externalStockID" id="externalStockID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-supplier") ?>">
 					<option value=""></option>
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 1 ? "selected=\"selected\"" : "" ?> value="1">Popal Fietsen Nederland</option>
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 2 ? "selected=\"selected\"" : "" ?> value="2">Juncker Bikeparts</option>

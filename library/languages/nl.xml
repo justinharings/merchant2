@@ -350,6 +350,8 @@
 		<form-products-filters-key>Filter</form-products-filters-key>
 		<form-products-filters-value>Waarde</form-products-filters-value>
 		<form-products-status>Product status</form-products-status>
+		<form-products-supplier>Koppeling leverancier</form-products-supplier>
+		<form-products-default-stock-type>Standaard voorraad status</form-products-default-stock-type>
 		<form-products-delivery-days>Leverdagen leverancier</form-products-delivery-days>
 		<form-products-mutation>Doorvoeren</form-products-mutation>
 		<form-products-mutation-eg>Gebruik 'min' (-) voor aftrekken.</form-products-mutation-eg>
