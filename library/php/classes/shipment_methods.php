@@ -30,7 +30,16 @@ class shipment_methods extends motherboard
 								DATE_FORMAT(shipment_methods.date_update, '%%d-%%m-%%Y @ %%k:%%i') = '00-00-0000 @ 0:00',
 								'n.v.t.',
 								DATE_FORMAT(shipment_methods.date_update, '%%d-%%m-%%Y @ %%k:%%i')
-							) AS date_update
+							) AS date_update,
+							(
+								SELECT		COUNT(orders.orderID)
+								FROM		orders
+								INNER JOIN	orders_shipment ON orders_shipment.orderID = orders.orderID
+								INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+								WHERE		orders_shipment.shipmentID = shipment_methods.shipmentID
+									AND		order_statuses.finished = 0
+									AND 	order_statuses.declined = 0
+							) AS used
 				FROM		shipment_methods
 				WHERE		shipment_methods.merchantID = %d
 					%s
