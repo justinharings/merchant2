@@ -442,6 +442,23 @@ class workorders extends motherboard
 			$workorderID = parent::insert_id();
 		}
 		
+		if($data[1]['customerID'] > 0)
+		{
+			$customer = $this->_runFunction("customers", "load", array($data[1]['customerID']));
+			
+			if($customer['mobile_phone'] == "" && $data[1]['phone_number'] != "")
+			{
+				$query = sprintf(
+					"	UPDATE		customers
+						SET			customers.mobile_phone = '%s'
+						WHERE		customers.customerID = %d",
+					$data[1]['phone_number'],
+					$data[1]['customerID']
+				);
+				parent::query($query);
+			}
+		}
+		
 		return $workorderID;
 	}
 	
