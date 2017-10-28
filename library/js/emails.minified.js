@@ -23,6 +23,6 @@ if(valid==!0)
 function loadEmails(customerID)
 {$("div.loaded-email").remove();$.post("/library/php/posts/klanten/load_emails.php",{customerID:$("div.tab.js-load-emails").attr("e-mail-customer-id")}).done(function(data)
 {data=$.parseJSON(data);for(var i=0;i<data.length;i++)
-{var div=$("<div/>").addClass("form-content").addClass("loaded-email").addClass("blue").html(data[i].content).hide().appendTo("div.tab.js-load-emails").fadeIn("fast");var attachment="";if(data[i].attachment!="")
+{var div=$("<div/>").addClass("form-content").addClass("loaded-email").addClass("blue").html(data[i].content).hide().appendTo("div.tab.js-load-emails").fadeIn("fast");var attachment="";if(data[i].attachment==1)
 {attachment="&nbsp;&nbsp;<span class=\"fa fa-paperclip\"></span>"}
 var html=data[i].date_added+"&nbsp;&nbsp;-&nbsp;&nbsp;"+data[i].receiver+attachment;$("<div/>").addClass("content-header").html(html).prependTo(div)}})}

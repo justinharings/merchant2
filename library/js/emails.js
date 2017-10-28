@@ -138,7 +138,7 @@ function loadEmails(customerID)
 				
 				var attachment = "";
 				
-				if(data[i]['attachment'] != "")
+				if(data[i]['attachment'] == 1)
 				{
 					attachment = "&nbsp;&nbsp;<span class=\"fa fa-paperclip\"></span>";
 				}
