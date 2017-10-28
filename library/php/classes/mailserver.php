@@ -491,7 +491,7 @@ class mailserver extends motherboard
 		{
 			$order_info = parent::_runFunction("orders", "load", array($orderID));
 			
-			$content = str_replace("[order-ID]", $order_info['orderID'], $content);
+			$content = str_replace("[order-ID]", $order_info['order_reference'], $content);
 			$content = str_replace("[order-GRANDTOTAL]", $order_info['grand_total'], $content);
 		}
 		
