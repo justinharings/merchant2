@@ -162,6 +162,8 @@ for($i = 1; $i <= 4; $i++)
 $orderID = $mb->_runFunction("orders", "runOrder", array($_SESSION['merchantID'], $_cart, $_customer, $_payments, $_status, $_employee, $_shipment, $_orderID, $invoice_rules));
 $_SESSION['last_order'] = $orderID;
 
+$mb->_runFunction("orders", "bookToday", array($orderID));
+
 
 unset($_SESSION['print_button_order']);
 unset($_SESSION['print_button_workorder']);
