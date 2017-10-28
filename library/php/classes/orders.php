@@ -589,17 +589,26 @@ class orders extends motherboard
 			
 			if($data[1]['omboeken'] == 1)
 			{
-				$query = sprintf(
-					"	UPDATE		orders
-						SET			orders.date_added = NOW()
-						WHERE		orders.orderID = %d",
-					$data[1]['orderID']
-				);
-				parent::query($query);
+				$this->bookToday($data[1]['orderID']);
 			}
 		}
 		
 		return true;
+	}
+	
+	
+	
+	public function bookToday($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	UPDATE		orders
+				SET			orders.date_added = NOW()
+				WHERE		orders.orderID = %d",
+			$data[0]
+		);
+		parent::query($query);
 	}
 	
 	
