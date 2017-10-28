@@ -170,6 +170,11 @@ unset($_SESSION['print_button_workorder']);
 
 $_SESSION['print_button_order'] = $orderID;
 
+if($_customer)
+{
+	$_SESSION['print_auto_active'] = $_customer;
+}
+
 
 
 // Reset all the sessions

@@ -247,6 +247,40 @@ if(isset($_SESSION['terminal']) && $_GET['module'] == "register")
 		{
 			require_once($_SERVER['DOCUMENT_ROOT'] . "/modules/authorization/login_pos.php");
 		}
+		
+		if(isset($_SESSION['print_auto_active']))
+		{
+			$settings = $mb->_runFunction("pos", "loadPrinterSettings", array($_SESSION['merchantID']));
+			?>
+			
+			<script type="text/javascript">
+				<?php
+				if($settings['auto_receipt'] == 1)
+				{
+					?>
+					window.open('/extensions/printserver/index.php?type=receipt&action=print&orderID=<?= $_SESSION['last_order'] ?>');
+					<?php
+				}
+				
+				if($settings['auto_invoice'] == 1)
+				{
+					?>
+					window.open('/extensions/printserver/index.php?type=invoice&action=print&orderID=<?= $_SESSION['last_order'] ?>');
+					<?php
+				}
+				
+				if($settings['auto_picklist'] == 1)
+				{
+					?>
+					window.open('/extensions/printserver/index.php?type=picklist&action=print&orderID=<?= $_SESSION['last_order'] ?>');
+					<?php
+				}
+				?>
+			</script>
+			<?php
+				
+			unset($_SESSION['print_auto_active']);
+		}
 		?>
 		
 		<input type="hidden" name="_language_pack" id="_language_pack" value="<?= _LANGUAGE_PACK ?>" />
