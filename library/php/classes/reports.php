@@ -43,14 +43,17 @@ class reports extends motherboard
 		
 		
 		$query = sprintf(
-			"	SELECT		orders_product.quantity,
-							groups.name
+			"	SELECT		orders_product.orderID,
+							orders_product.quantity,
+							products.groupID
 				FROM		orders_product
-				INNER JOIN	orders ON orders.orderID = orders_product.orderID
 				INNER JOIN	products ON products.productID = orders_product.productID
-				INNER JOIN	groups ON groups.groupID = products.groupID
-				WHERE		products.merchantID = %d
-					AND		DATE(orders.date_added) = '%s'",
+				INNER JOIN	orders ON orders.orderID = orders_product.orderID
+				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				WHERE		orders.merchantID = %d
+					AND		DATE(orders.date_added) = '%s'
+					AND		order_statuses.finished = 1
+					AND		order_statuses.declined = 0",
 			$data[0],
 			$date->format("Y-m-d")
 		);
@@ -60,13 +63,22 @@ class reports extends motherboard
 		
 		while($row = parent::fetch_assoc($result))
 		{
-			if(!isset($groups[$row['name']]))
+			$query2 = sprintf(
+				"	SELECT		groups.name
+					FROM		groups
+					WHERE		groups.groupID = %d",
+				$row['groupID']
+			);
+			$result2 = parent::query($query2);
+			$row2 = parent::fetch_assoc($result2);
+			
+			if(!isset($groups[$row2['name']]))
 			{
-				$groups[$row['name']] = $row['quantity'];
+				$groups[$row2['name']] = $row['quantity'];
 			}
 			else
 			{
-				$groups[$row['name']] = $groups[$row['name']] + $row['quantity'];
+				$groups[$row2['name']] = $groups[$row2['name']] + $row['quantity'];
 			}
 		}
 		
