@@ -27,6 +27,7 @@ try
 	$data[2] = $grand_total;
 	$data[3] = $_api_key_1;
 	$data[4] = $_api_key_2;
+	$data[5] = (isset($_GET['language_pack']) ? $_GET['language_pack'] : "");
 
 	database_write($orderID, serialize($data), $dev);
 
