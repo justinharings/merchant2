@@ -20,7 +20,7 @@ if(strpos($actual_link, "dev.justin") !== false)
 $orderID = intval($_GET['orderID']);
 $mollie = false;
 
-$database = "/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/orders/order-" . $orderID . ".txt";
+$database = "/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT == true ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/orders/order-" . $orderID . ".txt";
 
 if(file_exists($database))
 {
@@ -43,7 +43,7 @@ if(file_exists($database))
 
 
 // Include the order data.
-require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/php/classes/motherboard.php");
+require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT == true ? "dev" : "merchant") . ".justinharings.nl/library/php/classes/motherboard.php");
 
 define("_LANGUAGE_PACK", "nl");
 
@@ -66,7 +66,7 @@ $finished = false;
 if($mollie)
 {
 	// Include the initialize files.
-	require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/initialize.php");
+	require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT == true ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/initialize.php");
 	
 	$payment = $mollie->payments->get($paymentID);
 	
