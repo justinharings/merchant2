@@ -717,6 +717,20 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 							<?php
 						}
 						
+						if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "WEB", 0)))
+						{
+							?>
+							<li class="menu-item" rel="/website/instellingen/">
+								<div class="text"><?= $mb->_translateReturn("menu", "website") ?></div>
+								<div class="sub"><?= $mb->_translateReturn("menu", "website-eg") ?></div>
+								
+								<div class="icon">
+									<span class="fa fa-globe"></span>
+								</div>
+							</li>
+							<?php
+						}
+						
 						if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP", 0)))
 						{
 							?>

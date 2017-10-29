@@ -105,6 +105,9 @@
 		<workorders>Werkorders instellingen</workorders>
 		<workorders-eg>Instellingen voor werkorders</workorders-eg>
 		
+		<website>Website instellingen</website>
+		<website-eg>Instellingen voor de website</website-eg>
+		
 		<reports>Rapporten en statistieken</reports>
 		<reports-eg>Omzet, verkoopaantallen en meer</reports-eg>
 		
@@ -243,6 +246,7 @@
 		<legend-payment-module-required>Betalingsmodule</legend-payment-module-required>
 		<legend-prices-taxes>Prijzen en belastingen</legend-prices-taxes>
 		<legend-manage-content>Content bewerken</legend-manage-content>
+		<legend-manage-website-note>Website notificatie</legend-manage-website-note>
 		<legend-employees>Medewerkers beheren</legend-employees>
 		<legend-google-cloud-print>Google Cloud Print instellingen</legend-google-cloud-print>
 		<legend-standard-data>Standaard waarden</legend-standard-data>
@@ -499,6 +503,12 @@
 		<form-workorders-receipt-content-eg>U kunt [replace-tags] gebruiken.</form-workorders-receipt-content-eg>
 		<form-workorders-radio>Radio beschikbaar</form-workorders-radio>
 		<form-workorders-unique-identifier>Uniek sleutelnummer</form-workorders-unique-identifier>
+		
+		<!-- Website -->
+		<form-website-notification>Website notificatie</form-website-notification>
+		<form-website-notification-eg>Verschijnt als rood blok bovenin de website</form-website-notification-eg>
+		<form-website-minimum>Minimale bedrag</form-website-minimum>
+		<form-website-minimum-eg>0 is geen</form-website-minimum-eg>
 		
 		<!-- Settings -> Users -> Form -->
 		<form-users-name>Voornaam</form-users-name>
