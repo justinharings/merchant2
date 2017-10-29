@@ -18,19 +18,28 @@ if(strpos($actual_link, "dev.justin") !== false)
 
 // Get the stored order DATA.
 $orderID = intval($_GET['orderID']);
+$mollie = false;
 
 $database = "/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/orders/order-" . $orderID . ".txt";
 
-$data = file_get_contents($database);
-$data = unserialize($data);
-
-
-// Reset the data from the stored file.
-$paymentID 		= $data[0];
-$orderID 		= $data[1];
-$grand_total 	= $data[2];
-$_api_key_1		= $data[3];
-$_api_key_2		= $data[4];
+if(file_exists($database))
+{
+	$data = file_get_contents($database);
+	$data = unserialize($data);
+	
+	
+	// Reset the data from the stored file.
+	$paymentID 		= $data[0];
+	$orderID 		= $data[1];
+	$grand_total 	= $data[2];
+	$_api_key_1		= $data[3];
+	$_api_key_2		= $data[4];
+	
+	if($paymentID != 0 || $paymentID != "")
+	{
+		$mollie = true;
+	}
+}
 
 
 // Include the order data.
@@ -52,12 +61,27 @@ $_cancel_url = str_replace("//", "/", $_cancel_url);
 $_cancel_url = str_replace("https:/", "https://", $_cancel_url);
 
 
-// Include the initialize files.
-require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/initialize.php");
+$finished = false;
 
-$payment = $mollie->payments->get($paymentID);
+if($mollie)
+{
+	// Include the initialize files.
+	require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/initialize.php");
+	
+	$payment = $mollie->payments->get($paymentID);
+	
+	if($payment->isPaid())
+	{
+		$finished = true;
+	}
+}
+else
+{
+	$finished = true;
+}
 
-if($payment->isPaid())
+
+if($finished)
 {
 	// The order is payed. Continue to add the payment to the DB and continue to the shop.
 	// print "Finished. Return to " . $_finish_url;

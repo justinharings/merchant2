@@ -446,7 +446,7 @@ class orders extends motherboard
 										orders_product.quantity = %d",
 					$data[1]['orderID'],
 					$productID,
-					$name,
+					parent::real_escape_string($name),
 					$price,
 					$taxrate,
 					$quantity

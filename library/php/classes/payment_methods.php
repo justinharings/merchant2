@@ -82,6 +82,7 @@ class payment_methods extends motherboard
 			$languages,
 			$data[0]
 		);
+		//print "<pre>".$query."</pre>"; exit;
 		$result = parent::query($query);
 		
 		return parent::fetch_assoc($result);
@@ -269,6 +270,8 @@ class payment_methods extends motherboard
 		
 			closedir($handle);
 		}
+		
+		asort($return);
 		
 		return $return;
 	}

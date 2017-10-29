@@ -3,11 +3,13 @@ if(!isset($_SESSION))
 {
 	session_start();
 }
+
+$dev = true;
 	
 $_api_key_1 = $_module_keys[0];
 $_api_key_2 = $_module_keys[1];
 
-$file = "/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT == true ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/" . $_load_module . "/payment.php";
+$file = "/var/www/vhosts/justinharings.nl/dev.justinharings.nl/library/third-party/payment-modules/" . $_load_module . "/payment.php";
 
 if(file_exists($file))
 {
@@ -15,6 +17,7 @@ if(file_exists($file))
 	
 	$_cancel_url = $merchant['website_url'] . $merchant['webshop_cancel_url'];
 	$_cancel_url = str_replace("//", "/", $_cancel_url);
+	$_cancel_url = str_replace("https:/", "https://", $_cancel_url);
 	
 	require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/" . $_load_module . "/payment.php");
 }
