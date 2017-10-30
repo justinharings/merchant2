@@ -1,6 +1,6 @@
 $(document).ready(function()
 {$("input.focus").focus();$("div.loader").fadeOut("fast");$(document).on("keypress",'form',function(e)
-{var code=e.keyCode||e.which;if(code==13)
+{var code=e.keyCode||e.which;if(code==13&&$(":focus").is("textarea")==!1)
 {e.preventDefault();if($(":focus").attr("id")=="login_code")
 {$(this).submit()}
 return!1}});if($("div.simple-form").find("div.form-tabs").length>0)

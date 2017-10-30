@@ -33,8 +33,8 @@ $(document).ready(
 			function (e) 
 			{
 				var code = e.keyCode || e.which;
-				
-				if (code == 13) 
+
+				if(code == 13 && $(":focus").is("textarea") == false)
 				{
 					e.preventDefault();
 					
