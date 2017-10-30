@@ -509,6 +509,7 @@
 		<form-website-notification-eg>Verschijnt als rood blok bovenin de website</form-website-notification-eg>
 		<form-website-minimum>Minimale bedrag</form-website-minimum>
 		<form-website-minimum-eg>0 is geen</form-website-minimum-eg>
+		<form-website-shipment>Verzending tonen</form-website-shipment>
 		
 		<!-- Settings -> Users -> Form -->
 		<form-users-name>Voornaam</form-users-name>

@@ -31,6 +31,15 @@ $data = $mb->_runFunction("website", "load", array($_SESSION['merchantID']));
 		<div class="form-content">
 			<div class="content-header">
 				<span class="fa fa-pencil-square-o"></span>
+				<?= $mb->_translateReturn("forms", "legend-options") ?>
+			</div>
+			
+			<input type="checkbox" <?= isset($data['show_shipment']) && $data['show_shipment'] == 1 ? "checked=\"checked\"" : "" ?> name="show_shipment" id="show_shipment" value="1" holder="<?= $mb->_translateReturn("forms", "form-website-shipment") ?>" />
+		</div>
+		
+		<div class="form-content">
+			<div class="content-header">
+				<span class="fa fa-pencil-square-o"></span>
 				<?= $mb->_translateReturn("forms", "legend-others") ?>
 			</div>
 			
