@@ -454,5 +454,34 @@ class customers extends motherboard
 		
 		return $data[1]['customerID'];
 	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function front_validateCard($data)
+	{
+		$query = sprintf(
+			"	SELECT		customers.customerID
+				FROM		customers
+				WHERE		customers.zip_code = '%s'
+					AND		customers.customer_code = '%s'",
+			$data[0],
+			$data[1]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		if($row['customerID'] > 0)
+		{
+			return $this->load(array($row['customerID']));
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 ?>

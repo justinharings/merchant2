@@ -159,7 +159,8 @@ class orders extends motherboard
 				"	SELECT		%s
 								orders_product.*,
 								LPAD(products.article_code, 5, 0) AS article_code,
-								products.barcode
+								products.barcode,
+								products.visibility
 					FROM		orders_product
 					INNER JOIN	products ON products.productID = orders_product.productID
 					WHERE		orders_product.orderID = %d",
