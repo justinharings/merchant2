@@ -233,5 +233,26 @@ class order_statuses extends motherboard
 		
 		return true;
 	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function loadDefaultStatus($data)
+	{
+		$query = sprintf(
+			"	SELECT		order_statuses.*
+				FROM		order_statuses
+				WHERE		order_statuses.default = 1
+					AND		order_statuses.merchantID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return $this->load(array($row['statusID']));
+	}
 }
 ?>

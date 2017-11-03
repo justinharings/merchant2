@@ -23,8 +23,26 @@ class payment_methods extends motherboard
 			);
 		}
 		
+		$_lang = parent::_allLanguages();
+		$languages = "";
+		
+		foreach($_lang AS $value)
+		{
+			$languages .= sprintf(
+				"	(
+						SELECT		payment_methods_lang.description
+						FROM		payment_methods_lang
+						WHERE		payment_methods_lang.paymentID = payment_methods.paymentID
+							AND		payment_methods_lang.code = '%s'
+					) AS %s_description, ",
+				$value['code'],
+				$value['code']
+			);
+		}
+		
 		$query = sprintf(
-			"	SELECT		payment_methods.*,
+			"	SELECT		%s
+							payment_methods.*,
 							DATE_FORMAT(payment_methods.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
 							IF(
 								DATE_FORMAT(payment_methods.date_update, '%%d-%%m-%%Y @ %%k:%%i') = '00-00-0000 @ 0:00',
@@ -36,6 +54,7 @@ class payment_methods extends motherboard
 					%s
 				ORDER BY	%s
 				LIMIT		%s",
+			$languages,
 			$data[0],
 			$search,
 			$data[2],

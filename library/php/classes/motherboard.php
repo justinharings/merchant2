@@ -373,5 +373,25 @@ class motherboard extends database
 			}
 		}
 	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function replaceCurrency($currency)
+	{
+		$query = sprintf(
+			"	SELECT		currencies.target
+				FROM		currencies
+				WHERE		currencies.currency = '%s'",
+			strtoupper($currency)
+		);
+		$result = $this->query($query);
+		$row = $this->fetch_assoc($result);
+		
+		return $row['target'];
+	}
 }
 ?>

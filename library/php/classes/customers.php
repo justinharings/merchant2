@@ -97,7 +97,7 @@ class customers extends motherboard
 					FROM		orders
 					INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
 					WHERE		orders.customerID = %d
-					ORDER BY	orders.date_added ASC",
+					ORDER BY	orders.date_added DESC",
 				$data[0]
 			);
 			$result = parent::query($query);

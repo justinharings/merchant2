@@ -43,7 +43,7 @@ class categories extends motherboard
 							AND		categories_lang.code = '%s'
 					) AS %s_name, ",
 				$value['code'],
-				strtolower($value['code'])
+				$value['code']
 			);
 		}
 		
@@ -107,7 +107,7 @@ class categories extends motherboard
 							AND		categories_lang.code = '%s'
 					) AS %s_name, ",
 				$value['code'],
-				strtolower($value['code'])
+				$value['code']
 			);
 		}
 		
@@ -142,7 +142,7 @@ class categories extends motherboard
 								AND		categories_filters_lang.code = '%s'
 						) AS %s_name, ",
 					$value['code'],
-					strtolower($value['code'])
+					$value['code']
 				);
 			}
 			
