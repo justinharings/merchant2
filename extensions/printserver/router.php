@@ -83,6 +83,26 @@ else
 			$invoice['receipt_text'] = $invoice['DE_receipt_text'];
 		break;
 	}
+	
+	switch($customer['country'])
+	{
+		default:
+			$currency = "EUR";
+			$sign = "&euro;";
+		break;
+		
+		case "United Kingdom":
+			$currency = "GBP";
+			$sign = "&pound;";
+		break;
+	}
+	
+	$target = 1;
+	
+	if($currency != "EUR")
+	{
+		$target = $mb->replaceCurrency($currency);
+	}
 }
 
 
@@ -138,8 +158,8 @@ if(file_exists($file))
 	$content = str_replace("[[orderDate]]", $order['date_added'], $content);
 	$content = str_replace("[[barcode]]", '<img src="' . $actual_link . '/library/third-party/barcode-image/barcode.php?code=' . $order['orderID'] . '" />', $content);
 	$content = str_replace("[[shipping]]", $order['date_added'], $content);
-	$content = str_replace("[[total]]", _frontend_float($order['grand_total']), $content);
-	$content = str_replace("[[total_taxes]]", _frontend_float($order['vat_total']), $content);
+	$content = str_replace("[[total]]", $sign . "&nbsp;" . _frontend_float(($order['grand_total']*$target), $currency), $content);
+	$content = str_replace("[[total_taxes]]", $sign . "&nbsp;" . _frontend_float(($order['vat_total']*$target), $currency), $content);
 	
 	$shipment_costs = 0;
 	
@@ -148,8 +168,8 @@ if(file_exists($file))
 		$shipment_costs += $shipment['price'];
 	}
 	
-	$content = str_replace("[[shipping_costs]]", _frontend_float($shipment_costs), $content);
-	$content = str_replace("[[subtotal]]", _frontend_float($order['grand_total']-$shipment_costs), $content);
+	$content = str_replace("[[shipping_costs]]", $sign . "&nbsp;" . _frontend_float(($shipment_costs*$target), $currency), $content);
+	$content = str_replace("[[subtotal]]", $sign . "&nbsp;" . _frontend_float((($order['grand_total']-$shipment_costs)*$target), $currency), $content);
 	
 	
 	$product_row = "";
@@ -176,8 +196,8 @@ if(file_exists($file))
 					'. ($_GET['type'] == "picklist" ? "o&nbsp;o&nbsp;&nbsp;" . _chopString($product['name'], 40) : $product['name']) .'
 				</td>
 				<td style="padding: 5px 0px; ' . $font_size . '">'. $product['quantity'] .' stuk(s)</td>
-				<td style="padding: 5px 0px; ' . $font_size . '">&euro;&nbsp;'. _frontend_float($product['price']) .'</td>
-				<td style="padding: 5px 0px; ' . $font_size . '">&euro;&nbsp;'. _frontend_float($product['quantity']*$product['price']) .'</td>
+				<td style="padding: 5px 0px; ' . $font_size . '">'. $sign . "&nbsp;" . _frontend_float(($product['price']*$target), $currency) .'</td>
+				<td style="padding: 5px 0px; ' . $font_size . '">'. $sign . "&nbsp;" . _frontend_float((($product['quantity']*$product['price'])*$target), $currency) .'</td>
 			</tr>
 		';
 	}
@@ -201,7 +221,7 @@ if(file_exists($file))
 			</tr>
 			
 			<tr>
-				<td colspan="2" style="padding: 0px 0px 10px 0px; ' . $font_size . '">EUR&nbsp;&nbsp;' . _frontend_float($product['price']) . '</td>
+				<td colspan="2" style="padding: 0px 0px 10px 0px; ' . $font_size . '">' . $sign . "&nbsp;" . _frontend_float(($product['price']*$target), $currency) . '</td>
 			</tr>
 		';
 	}
@@ -218,7 +238,7 @@ if(file_exists($file))
 		$payments_row .= '
 			<tr>
 				<td>' . $payment['date'] . '</td>
-				<td>&euro;&nbsp;' . _frontend_float($payment['amount']) . '</td>
+				<td>&euro;&nbsp;' . $sign . "&nbsp;" . _frontend_float(($payment['amount']*$target), $currency) . '</td>
 			</tr>
 		';
 	}
