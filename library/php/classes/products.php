@@ -266,7 +266,8 @@ class products extends motherboard
 			$query = sprintf(
 				"	SELECT		SUM(reviews.stars) AS stars
 					FROM		reviews
-					WHERE		reviews.productID = %d",
+					WHERE		reviews.productID = %d
+						AND		reviews.approved = 1",
 				$data[0]
 			);
 			$result = parent::query($query);
@@ -281,6 +282,7 @@ class products extends motherboard
 								DATE_FORMAT(reviews.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added
 					FROM		reviews
 					WHERE		reviews.productID = %d
+						AND		reviews.approved = 1
 					ORDER BY	reviews.date_added",
 				$data[0]
 			);

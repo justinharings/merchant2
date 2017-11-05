@@ -140,5 +140,64 @@ class reviews extends motherboard
 		
 		return true;
 	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function front_getArticles($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		orders_product.*
+				FROM		orders_product
+				WHERE		orders_product.orderID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		$return = array();
+		
+		while($row = parent::fetch_assoc($result))
+		{
+			$details = $this->_runFunction("products", "load", array($row['productID']));
+			
+			$return[] = $details;
+		}
+		
+		return $return;
+	}
+	
+	
+	
+	public function front_addReview($data)
+	{
+		parent::_checkInputValues($data, 4);
+		print_r($data);
+		$order = $this->_runFunction("orders", "load", array($data[0]));
+
+		foreach($data[2] AS $key => $review)
+		{
+			$query = sprintf(
+				"	INSERT INTO		reviews
+					SET				reviews.merchantID = %d,
+									reviews.productID = %d,
+									reviews.name = '%s',
+									reviews.stars = %d,
+									reviews.description = '%s',
+									reviews.approved = 0,
+									reviews.date_added = NOW()",
+				$order['merchantID'],
+				$data[3][$key],
+				$order['customer']['name'],
+				$data[1][$key],
+				parent::real_escape_string($data[2][$key])
+			);
+			parent::query($query);
+		}		
+	}
 }
 ?>

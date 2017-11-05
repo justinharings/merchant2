@@ -11,7 +11,7 @@
 			</div>
 			
 			<div class="input">
-				<input type="text" name="login_code" id="login_code" value="2611084808017" class="width-100-percent focus" />
+				<input type="text" name="login_code" id="login_code" value="" class="width-100-percent focus" />
 			</div>
 		</div>
 	</form>
