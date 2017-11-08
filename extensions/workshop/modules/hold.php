@@ -46,7 +46,7 @@ if($mb->num_rows($data))
 			
 			<div class="workorder">
 				<strong style="color: #d00000;">Werkorder:</strong><br/>
-				<?= $value['workorder'] ?>
+				<?= strip_tags($value['workorder']) ?>
 			</div>
 			
 			<div class="summary" <?= time() >= strtotime($value['expiration_date']) ? "style='background-color: #fae6e6;'" : ((strtotime($value['expiration_date']) - 172800) > time() ? "style='background-color: #e6faec;'" : "") ?>>
