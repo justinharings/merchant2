@@ -102,7 +102,8 @@ class pos extends motherboard
 							DATE_FORMAT(pos_employees.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added
 				FROM		pos_employees
 				INNER JOIN	locations ON locations.locationID = pos_employees.locationID
-				WHERE		pos_employees.merchantID = %d",
+				WHERE		pos_employees.merchantID = %d
+				ORDER BY	pos_employees.name",
 			$data[0]
 		);
 		$result = parent::query($query);
