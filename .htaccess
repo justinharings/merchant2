@@ -28,6 +28,9 @@ RewriteRule ^pos/modules/([^/]*)/search/([^/]*)/$ /extensions/point_of_sale/inde
 # Point of sale + focus
 RewriteRule ^pos/modules/([^/]*)/focus/([^/]*)/$ /extensions/point_of_sale/index.php?module=$1&focus=$2 [L]
 
+# Point of sale + focus + price
+RewriteRule ^pos/modules/([^/]*)/focus/([^/]*)/price/$ /extensions/point_of_sale/index.php?module=$1&focus=$2&price=true [L]
+
 # Rewrite language packs
 RewriteRule ^([^/]*)/$ /index.php?language_pack=$1 [L]
 

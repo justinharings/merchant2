@@ -27,13 +27,15 @@
 			if($mb->num_rows($data))
 			{
 				foreach($data AS $value)
-				{				
+				{			
+					$phone = ($value['mobile_phone'] != "" ? $value['mobile_phone'] : $value['phone']);
+						
 					?>
 					<tr key="<?= $value['customerID'] ?>">
 						<td><?= $value['name'] ?></td>
 						<td><?= $value['city'] . ", " . $value['country'] ?></td>
 						<td><?= $value['zip_code'] ?></td>
-						<td><?= $value['phone'] == "" ? "Onbekend" : $value['phone'] ?></td>
+						<td><?= $phone == "" ? "Onbekend" : $phone ?></td>
 						<td><?= $value['customer_code'] == "" ? "Onbekend" : $value['customer_code'] ?></td>
 					</tr>
 					<?php					

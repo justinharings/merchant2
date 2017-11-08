@@ -42,15 +42,7 @@ class customers extends motherboard
 		}
 		
 		$query = sprintf(
-			"	SELECT		customers.customerID,
-							customers.name,
-							customers.company,
-							customers.zip_code,
-							customers.city,
-							customers.country,
-							customers.phone,
-							customers.email_address,
-							customers.customer_code
+			"	SELECT		customers.*
 				FROM		customers
 				WHERE		customers.merchantID = %d
 					%s
