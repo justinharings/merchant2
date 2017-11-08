@@ -45,6 +45,16 @@ if($mb->num_rows($data))
 			</div>
 			
 			<div class="workorder">
+				<?php
+				if($value['customerID'] > 0)
+				{
+					?>
+					<strong><?= $value['customer_name'] ?></strong><br/>
+					<Br/>
+					<?php
+				}
+				?>
+				
 				<strong style="color: #d00000;">Werkorder:</strong><br/>
 				<?= strip_tags($value['workorder']) ?>
 			</div>
@@ -53,7 +63,27 @@ if($mb->num_rows($data))
 				<table>
 					<tr>
 						<td width="60">
-							<span class="fa <?= $value['card_saved'] == 1 ? "workorder-action" : "" ?> fa-check" phone_number="<?= $value['phone_number'] ?>" workorderID="<?= $value['workorderID'] ?>" <?= $value['card_saved'] != 1 ? "style=\"color: #ccc;\"" : "" ?>></span>
+							<?php
+							$class = "";
+								
+							if	(
+									$value['card_saved'] == 1
+									&&
+									(
+										$value['customerID'] == 0
+										||
+										(
+											$value['customerID'] > 0
+											&& $value['note'] != ""
+										)
+									)
+								)
+							{
+								$class = "workorder-action";
+							}
+							?>
+							
+							<span class="fa <?= $class != "" ? $class : "" ?> fa-check" phone_number="<?= $value['phone_number'] ?>" workorderID="<?= $value['workorderID'] ?>" <?= $class == "" ? "style=\"color: #ccc;\"" : "" ?>></span>
 						</td>
 						
 						<td width="60">

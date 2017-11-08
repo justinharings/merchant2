@@ -45,6 +45,16 @@ if($mb->num_rows($data))
 			</div>
 			
 			<div class="workorder">
+				<?php
+				if($value['customerID'] > 0)
+				{
+					?>
+					<strong><?= $value['customer_name'] ?></strong><br/>
+					<Br/>
+					<?php
+				}
+				?>
+				
 				<strong style="color: #d00000;">Werkorder:</strong><br/>
 				<?= strip_tags($value['workorder']) ?>
 			</div>
