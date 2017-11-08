@@ -36,6 +36,7 @@ if(isset($_GET['key']))
 	$_POST['key'] = $_GET['key'];
 }
 
+$price = "";
 
 if(isset($_POST['qty']) && $_POST['qty'] > 0)
 {
@@ -70,11 +71,16 @@ else
 		$cart[$nmbr]['name'] = $product['name'];
 		$cart[$nmbr]['quantity'] = 1;
 		
+		if($product['price'] == 0)
+		{
+			$price = "price/";
+		}
+		
 		$_SESSION['cart'] = $cart;
 	}
 	
 	$focus = "last";
 }
 
-header("location: /pos/modules/register/focus/" . $focus . "/");
+header("location: /pos/modules/register/focus/" . $focus . "/" . $price);
 ?>

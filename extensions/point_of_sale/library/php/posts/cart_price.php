@@ -22,5 +22,5 @@ foreach($_SESSION['cart'] AS $key => $value)
 	}
 }
 
-header("location: /extensions/point_of_sale/modules/popup_close.php");
+header("location: /extensions/point_of_sale/modules/popup_close.php?force=register/focus/" . $_POST['key'] . "/");
 ?>
