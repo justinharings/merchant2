@@ -186,6 +186,7 @@ class reviews extends motherboard
 					SET				reviews.merchantID = %d,
 									reviews.productID = %d,
 									reviews.name = '%s',
+									reviews.country = '%s',
 									reviews.stars = %d,
 									reviews.description = '%s',
 									reviews.approved = 0,
@@ -193,6 +194,7 @@ class reviews extends motherboard
 				$order['merchantID'],
 				$data[3][$key],
 				$order['customer']['name'],
+				ucfirst($order['customer']['country']),
 				$data[1][$key],
 				parent::real_escape_string($data[2][$key])
 			);
