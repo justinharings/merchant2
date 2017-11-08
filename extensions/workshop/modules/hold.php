@@ -1,5 +1,5 @@
 <?php
-$data = $mb->_runFunction("workorders", "view", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "workorders.status ASC, workorders.expiration_date", "0,100"));
+$data = $mb->_runFunction("workorders", "view", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "workorders.priority DESC, workorders.expiration_date", "0,100"));
 	
 if($mb->num_rows($data))
 {
