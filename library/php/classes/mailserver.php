@@ -93,9 +93,12 @@ class mailserver extends motherboard
 			$content = $row['content'];
 			$content = $this->_replace_tags($content, $customerID, $data[4], $data[3]);
 			
+			$merchant = $this->_runFunction("merchant", "load", array($data[0]));
+			$merchant = $merchant['sms_sender'];
+			
 			$params = array(
 			     'to' => $data[2],
-				 'from' => 'Harings',
+				 'from' => $merchant,
 				 'message' => $content,
 			);
 			
@@ -284,9 +287,12 @@ class mailserver extends motherboard
 		$content = $data[2];
 		$content = $this->_replace_tags($content, $data[3], $data[5], $data[4]);
 		
+		$merchant = $this->_runFunction("merchant", "load", array($data[0]));
+		$merchant = $merchant['sms_sender'];
+		
 		$params = array(
 		     'to' => $data[1],
-			 'from' => 'Harings',
+			 'from' => $merchant,
 			 'message' => $content,
 			 'orderID' => $data[5],
 			 'customerID' => $data[3]
