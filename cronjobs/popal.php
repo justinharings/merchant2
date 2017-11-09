@@ -90,6 +90,7 @@ $db->query($query);
 $query = sprintf(
 	"	SELECT		products.productID,
 					products.supplier_code,
+					products_stock.barcode,
 					products_stock.stock
 		FROM		products
 		INNER JOIN	products_stock ON products_stock.productID = products.productID
@@ -101,6 +102,11 @@ while($row = $db->fetch_assoc($result))
 {
 	$values = "";
 	$values = searchArray($stock, "barcode", $row['supplier_code']);
+	
+	if($row['barcode'] != "")
+	{
+		$row['supplier_code'] = $row['barcode'];
+	}
 	
 	if($row['supplier_code'] != "" && $values['barcode'] == $row['supplier_code'])
 	{

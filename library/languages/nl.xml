@@ -235,6 +235,7 @@
 		<button-invoice>Factuur</button-invoice>
 		<button-tender>Offerte</button-tender>
 		<button-picklist>Pakbon</button-picklist>
+		<button-duplicate>Dupliceren</button-duplicate>
 		
 		<legend-general>Algemene gegevens</legend-general>
 		<legend-options>Opties in- en uitschakelen</legend-options>

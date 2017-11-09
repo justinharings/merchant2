@@ -511,13 +511,14 @@ class categories extends motherboard
 	
 	public function front_filterValues($data)
 	{
-		parent::_checkInputValues($data, 1);
+		parent::_checkInputValues($data, 2);
 		
 		$query = sprintf(
 			"	SELECT		products_filters.value
 				FROM		products_filters
-				WHERE		products_filters.language = 'NL'
+				WHERE		products_filters.language = '%s'
 					AND		products_filters.filterID = %d",
+			strtoupper($data[1]),
 			$data[0]
 		);
 		$result = parent::query($query);

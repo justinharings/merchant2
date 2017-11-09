@@ -10,8 +10,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php")
 $mb = new motherboard();
 
 $return = $mb->_runFunction(
-	"categories",
-	"deleteFilter",
+	"products",
+	"deleteProperty",
 	array(
 		$_SESSION['merchantID'],
 		$_GET

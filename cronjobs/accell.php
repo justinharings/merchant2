@@ -38,6 +38,7 @@ $db->query($query);
 $query = sprintf(
 	"	SELECT		products.productID,
 					products.supplier_code,
+					products.barcode,
 					products_stock.stock
 		FROM		products
 		INNER JOIN	products_stock ON products_stock.productID = products.productID
@@ -47,6 +48,11 @@ $result = $db->query($query);
 
 while($row = $db->fetch_assoc($result))
 {
+	if($row['barcode'] != "")
+	{
+		$row['supplier_code'] = $row['barcode'];
+	}
+	
 	if($row['supplier_code'] != "" && isset($products[$row['supplier_code']]))
 	{
 		switch($products[$row['supplier_code']])

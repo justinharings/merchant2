@@ -26,7 +26,8 @@ else if($(this).attr("browse")!="")
 {$(this).removeClass("fa-power-button").addClass("fa-spinner").addClass("fa-spin");document.location.href='/pos/modules/workorders/'});$("span.previous-button, input#return").on("click",function()
 {if($(this).hasClass("fa-previous-button"))
 {$(this).removeClass("fa-previous-button").addClass("fa-spinner").addClass("fa-spin")}
-window.history.back()});$("input#search").focus();$("input#search").on("keypress",function(e)
+window.history.back()});$("input#duplicate").on("click",function()
+{document.location.href=document.location.href+'duplicate/'});$("input#search").focus();$("input#search").on("keypress",function(e)
 {if(e.which==13)
 {var str=document.location.href;var match=str.match("/search/");var url;if(match!=""&&match!=null)
 {url=str.split("search/");url=url[0]}

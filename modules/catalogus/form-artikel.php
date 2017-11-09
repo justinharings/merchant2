@@ -15,7 +15,7 @@ if(isset($_GET['dataID']))
 </ul>
 
 <form method="post" id="form" action="/library/php/posts/catalogus/products.php" enctype="multipart/form-data">
-	<input type="hidden" name="productID" id="productID" value="<?= isset($_GET['dataID']) ? $_GET['dataID'] : 0 ?>" />
+	<input type="hidden" name="productID" id="productID" value="<?= isset($_GET['dataID']) && !isset($_GET['duplicate']) ? $_GET['dataID'] : 0 ?>" />
 	<input type="hidden" name="returnURL" id="returnURL" value="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/[dataID]/" ?>" />
 	
 	<div class="simple-form">
@@ -25,6 +25,13 @@ if(isset($_GET['dataID']))
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			
 			<?php
+			if(!isset($_GET['duplicate']))
+			{
+				?>
+				<input type="button" name="duplicate" id="duplicate" value="<?= $mb->_translateReturn("forms", "button-duplicate") ?>" class="show-load" />
+				<?php
+			}
+				
 			if($data['deleted'] == 0)
 			{
 				if(isset($_GET['dataID']) && $data['stock'] == 0)
@@ -60,7 +67,7 @@ if(isset($_GET['dataID']))
 					<?= $mb->_translateReturn("forms", "legend-numbers") ?>
 				</div>
 				
-				<input type="text" name="article_code" id="article_code" value="<?= isset($_GET['dataID']) ? $data['article_code'] : $mb->_runFunction("orders", "getNewArticleCode", array($_SESSION['merchantID'])) ?>" class="width-100 margin" holder="<?= $mb->_translateReturn("forms", "form-products-ac") ?>" validation-required="true" validation-type="int" unique-article="<?= $data['article_code'] ?>" />
+				<input type="text" name="article_code" id="article_code" value="<?= isset($_GET['dataID']) && !isset($_GET['duplicate']) ? $data['article_code'] : $mb->_runFunction("orders", "getNewArticleCode", array($_SESSION['merchantID'])) ?>" class="width-100 margin" holder="<?= $mb->_translateReturn("forms", "form-products-ac") ?>" validation-required="true" validation-type="int" unique-article="<?= $data['article_code'] ?>" />
 				<input type="text" name="supplier_code" id="supplier_code" value="<?= isset($_GET['dataID']) ? $data['supplier_code'] : "" ?>" class="width-100 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-sc") ?>" />
 				<input type="text" name="barcode" id="barcode" value="<?= isset($_GET['dataID']) ? $data['barcode'] : "" ?>" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-barcode") ?>" />
 			</div>
@@ -246,16 +253,19 @@ if(isset($_GET['dataID']))
 					
 					<tbody>
 						<?php
-						foreach($data['categories'] AS $value)
+						if(!isset($_GET['duplicate']))
 						{
-							?>
-							<tr>
-								<td><?= $value['name'] ?></td>
-								<td>
-									<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_category.php?categoryID=<?= $value['categoryID'] ?>&productID=<?= $_GET['dataID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
-								</td>
-							</tr>
-							<?php
+							foreach($data['categories'] AS $value)
+							{
+								?>
+								<tr>
+									<td><?= $value['name'] ?></td>
+									<td>
+										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_category.php?categoryID=<?= $value['categoryID'] ?>&productID=<?= $_GET['dataID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+									</td>
+								</tr>
+								<?php
+							}
 						}
 						?>
 						
@@ -314,39 +324,42 @@ if(isset($_GET['dataID']))
 					
 					<tbody>
 						<?php
-						foreach($data['images'] AS $value)
+						if(!isset($_GET['duplicate']))
 						{
-							?>
-							<tr>
-								<td>
-									<?php	
-									$image = $_SERVER['DOCUMENT_ROOT'] . "/library/media/products/" . $value['productMediaID'] . ".png";
-									
-									if(file_exists($image))
-									{
+							foreach($data['images'] AS $value)
+							{
+								?>
+								<tr>
+									<td>
+										<?php	
+										$image = $_SERVER['DOCUMENT_ROOT'] . "/library/media/products/" . $value['productMediaID'] . ".png";
+										
+										if(file_exists($image))
+										{
+											?>
+											<img src="/library/media/products/<?= $value['productMediaID'] ?>.png" class="product" />
+											<?php
+										}
+										else
+										{
+											print "Geen foto";
+										}
 										?>
-										<img src="/library/media/products/<?= $value['productMediaID'] ?>.png" class="product" />
+									</td>
+									<td><span class="fa large <?= $value['thumb'] ? "fa-check-circle green" : "fa-times-circle red" ?>"></span></td>
+									<td>
 										<?php
-									}
-									else
-									{
-										print "Geen foto";
-									}
-									?>
-								</td>
-								<td><span class="fa large <?= $value['thumb'] ? "fa-check-circle green" : "fa-times-circle red" ?>"></span></td>
-								<td>
-									<?php
-									if($value['thumb'] == 0)
-									{
+										if($value['thumb'] == 0)
+										{
+											?>
+											<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_media.php?productMediaID=<?= $value['productMediaID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+											<?php
+										}
 										?>
-										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_media.php?productMediaID=<?= $value['productMediaID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
-										<?php
-									}
-									?>
-								</td>
-							</tr>
-							<?php
+									</td>
+								</tr>
+								<?php
+							}
 						}
 						?>
 						
@@ -374,26 +387,29 @@ if(isset($_GET['dataID']))
 					
 					<tbody>
 						<?php
-						$_lang = $mb->_allLanguages();
-						$_lang_abbr = array("nl" => "Nederlands");
-						
-						foreach($_lang AS $value)
+						if(!isset($_GET['duplicate']))
 						{
-							$_lang_abbr[$value['code']] = $value['language'];
-						}
-						
-						foreach($data['products_properties'] AS $value)
-						{
-							?>
-							<tr>
-								<td><?= $_lang_abbr[$value['language']] ?></td>
-								<td><?= $value['key'] ?></td>
-								<td><?= $value['value'] ?></td>
-								<td>
-									<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_filter.php?filterID=<?= $value['filterID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
-								</td>
-							</tr>
-							<?php
+							$_lang = $mb->_allLanguages();
+							$_lang_abbr = array("nl" => "Nederlands");
+							
+							foreach($_lang AS $value)
+							{
+								$_lang_abbr[$value['code']] = $value['language'];
+							}
+							
+							foreach($data['products_properties'] AS $value)
+							{
+								?>
+								<tr>
+									<td><?= $_lang_abbr[$value['language']] ?></td>
+									<td><?= $value['key'] ?></td>
+									<td><?= $value['value'] ?></td>
+									<td>
+										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_specificatie.php?productPropertieID=<?= $value['productPropertieID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+									</td>
+								</tr>
+								<?php
+							}
 						}
 						?>
 						
@@ -422,73 +438,76 @@ if(isset($_GET['dataID']))
 
 		<div class="tab tab-6">
 			<?php
-			foreach($data['categories'] AS $key => $value)
+			if(!isset($_GET['duplicate']))
 			{
-				$filter_values = $data['categories'][$key]['filters']['filters'];
-				
-				if(is_array($filter_values) && count($filter_values) == 0)
+				foreach($data['categories'] AS $key => $value)
 				{
-					continue;
-				}
-				
-				?>
-				<div class="form-content">
-					<table class="form-table">
-						<thead>
-							<tr>
-								<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-language") ?></td>
-								<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-key") ?></td>
-								<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-value") ?></td>
-							</tr>
-						</thead>
-						
-						<tbody>
-							<?php
-							foreach($filter_values AS $key => $filter)
-							{
-								?>
-								
+					$filter_values = $data['categories'][$key]['filters']['filters'];
+					
+					if(is_array($filter_values) && count($filter_values) == 0)
+					{
+						continue;
+					}
+					
+					?>
+					<div class="form-content">
+						<table class="form-table">
+							<thead>
 								<tr>
-									<td>Nederlands</td>
-									<td><?= $filter['name'] ?></td>
-									<td>
-										<input type="hidden" name="filter_id[]" id="filter_id_nl_<?= $key ?>" value="<?= $filter['filterID'] ?>" />
-										<input type="hidden" name="filter_languages[]" id="filter_languages_nl_<?= $key ?>" value="NL" />
-										<input type="text" name="filter_values[]" id="filter_values_nl_<?= $key ?>" value="<?= $mb->_runFunction("products", "loadFilterValue", array($_GET['dataID'], $filter['filterID'], "NL")) ?>" validation-required="true" validation-type="text" /></td>
-									</td>
+									<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-language") ?></td>
+									<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-key") ?></td>
+									<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-value") ?></td>
 								</tr>
-								
+							</thead>
+							
+							<tbody>
 								<?php
-								$_lang = $mb->_allLanguages();
-								
-								foreach($_lang AS $lang_value)
+								foreach($filter_values AS $key => $filter)
 								{
 									?>
+									
 									<tr>
-										<td><?= $lang_value['language'] ?></td>
-										<td><?= $filter[$lang_value['code'] . '_name'] ?></td>
+										<td>Nederlands</td>
+										<td><?= $filter['name'] ?></td>
 										<td>
-											<input type="hidden" name="filter_id[]" id="filter_id_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $filter['filterID'] ?>" />
-											<input type="hidden" name="filter_languages[]" id="filter_languages_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $lang_value['code'] ?>" />
-											<input type="text" name="filter_values[]" id="filter_values_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $mb->_runFunction("products", "loadFilterValue", array($_GET['dataID'], $filter['filterID'], $lang_value['code'])) ?>" validation-required="true" validation-type="text" /></td>
+											<input type="hidden" name="filter_id[]" id="filter_id_nl_<?= $key ?>" value="<?= $filter['filterID'] ?>" />
+											<input type="hidden" name="filter_languages[]" id="filter_languages_nl_<?= $key ?>" value="NL" />
+											<input type="text" name="filter_values[]" id="filter_values_nl_<?= $key ?>" value="<?= $mb->_runFunction("products", "loadFilterValue", array($_GET['dataID'], $filter['filterID'], "NL")) ?>" validation-required="true" validation-type="text" /></td>
 										</td>
 									</tr>
+									
+									<?php
+									$_lang = $mb->_allLanguages();
+									
+									foreach($_lang AS $lang_value)
+									{
+										?>
+										<tr>
+											<td><?= $lang_value['language'] ?></td>
+											<td><?= $filter[$lang_value['code'] . '_name'] ?></td>
+											<td>
+												<input type="hidden" name="filter_id[]" id="filter_id_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $filter['filterID'] ?>" />
+												<input type="hidden" name="filter_languages[]" id="filter_languages_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $lang_value['code'] ?>" />
+												<input type="text" name="filter_values[]" id="filter_values_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $mb->_runFunction("products", "loadFilterValue", array($_GET['dataID'], $filter['filterID'], $lang_value['code'])) ?>" validation-required="true" validation-type="text" /></td>
+											</td>
+										</tr>
+										<?php
+									}
+									?>
+									
+									<tr>
+										<td colspan="3"></td>
+									</tr>
+									
 									<?php
 								}
 								?>
-								
-								<tr>
-									<td colspan="3"></td>
-								</tr>
-								
-								<?php
-							}
-							?>
-						</tbody>
-					</table>
-				</div>
-				<?php
-			} 
+							</tbody>
+						</table>
+					</div>
+					<?php
+				}
+			}
 			?>
 		</div>
 		

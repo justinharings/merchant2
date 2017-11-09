@@ -231,6 +231,19 @@ $(document).ready(
 		
 		
 		/*
+		**
+		*/
+		
+		$("input#duplicate").on("click",	
+			function()
+			{
+				document.location.href = document.location.href + 'duplicate/';
+			}
+		);
+		
+		
+		
+		/*
 		**	When the 'Enter' button is pressed in a search input,
 		**	get the data and post is with an URL.
 		*/

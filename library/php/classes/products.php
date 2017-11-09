@@ -839,6 +839,26 @@ class products extends motherboard
 	
 	
 	/*
+	**	Remove a media item.
+	*/
+	
+	public function deleteProperty($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	DELETE FROM		products_properties
+				WHERE			products_properties.productPropertieID = %d",
+			$data[1]['productPropertieID']
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
+	
+	
+	/*
 	**	Transform the visibility code into
 	**	readable text for the user.
 	*/

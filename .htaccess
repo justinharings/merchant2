@@ -45,6 +45,7 @@ RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/([^/]*)/$ /index.php?language_pack=
 
 # Module + form + data
 RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/([^/]*)/([^/]*)/$ /index.php?language_pack=$1&module=$2&file=$3&form=$4&dataID=$5/ [L]
+RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/([^/]*)/([^/]*)/duplicate/$ /index.php?language_pack=$1&module=$2&file=$3&form=$4&dataID=$5&duplicate=true/ [L]
 
 # Minify loading
 RewriteRule ^([^/]*)/minify/$ /index.php?language_pack=$1&minify=true [L]
