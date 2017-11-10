@@ -351,6 +351,8 @@
 		<form-products-properties-language>Taal</form-products-properties-language>
 		<form-products-properties-key>Sleutel</form-products-properties-key>
 		<form-products-properties-value>Waarde</form-products-properties-value>
+		<form-products-pricecheck-website>Website</form-products-pricecheck-website>
+		<form-products-pricecheck-key></form-products-pricecheck-key>
 		<form-products-filters-language>Taal</form-products-filters-language>
 		<form-products-filters-key>Filter</form-products-filters-key>
 		<form-products-filters-value>Waarde</form-products-filters-value>

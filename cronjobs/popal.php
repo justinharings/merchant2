@@ -90,23 +90,23 @@ $db->query($query);
 $query = sprintf(
 	"	SELECT		products.productID,
 					products.supplier_code,
-					products_stock.barcode,
+					products.barcode,
 					products_stock.stock
 		FROM		products
-		INNER JOIN	products_stock ON products_stock.productID = products.productID
+		LEFT JOIN	products_stock ON products_stock.productID = products.productID
 		WHERE		products.externalStockID = 1"
 );
 $result = $db->query($query);
 
 while($row = $db->fetch_assoc($result))
 {
-	$values = "";
-	$values = searchArray($stock, "barcode", $row['supplier_code']);
-	
-	if($row['barcode'] != "")
+	if(trim($row['barcode']) != "" && strlen($row['barcode']) > 5)
 	{
 		$row['supplier_code'] = $row['barcode'];
 	}
+	
+	$values = "";
+	$values = searchArray($stock, "barcode", $row['supplier_code']);
 	
 	if($row['supplier_code'] != "" && $values['barcode'] == $row['supplier_code'])
 	{
@@ -139,4 +139,6 @@ while($row = $db->fetch_assoc($result))
 		}
 	}
 }
+
+echo "done.";
 ?>

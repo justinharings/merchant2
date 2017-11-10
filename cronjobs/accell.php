@@ -41,7 +41,7 @@ $query = sprintf(
 					products.barcode,
 					products_stock.stock
 		FROM		products
-		INNER JOIN	products_stock ON products_stock.productID = products.productID
+		LEFT JOIN	products_stock ON products_stock.productID = products.productID
 		WHERE		products.externalStockID = 2"
 );
 $result = $db->query($query);

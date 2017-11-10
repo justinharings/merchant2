@@ -6,6 +6,11 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{REQUEST_URI} !(/$|\.)
 RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI}\/ [L,R=301]
 
+# Assistent
+RewriteRule ^assistent/$ /extensions/assistent/index.php [L]
+
+# Assistent + module
+RewriteRule ^assistent/modules/([^/]*)/$ /extensions/assistent/index.php?module=$1 [L]
 
 # Workshop
 RewriteRule ^workshop/$ /extensions/workshop/index.php [L]

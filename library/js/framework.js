@@ -359,6 +359,10 @@ $(document).ready(
 							{
 								prefix = "workshop";
 							}
+							else if($(this).hasClass("assistent"))
+							{
+								prefix = "assistent";
+							}
 							
 							document.location.href = "/" + prefix + "/modules" + $(this).attr("rel");
 						}

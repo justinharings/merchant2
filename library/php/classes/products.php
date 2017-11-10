@@ -67,6 +67,7 @@ class products extends motherboard
 								FROM		products_stock
 								WHERE		products_stock.productID = products.productID
 							) AS stock,
+							products.date_update AS date_update_core,
 							DATE_FORMAT(products.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
 							IF(
 								DATE_FORMAT(products.date_update, '%%d-%%m-%%Y @ %%k:%%i') = '00-00-0000 @ 0:00',
@@ -234,6 +235,27 @@ class products extends motherboard
 			if(parent::num_rows($result))
 			{
 				$return['products_properties'] = parent::fetch_array($result);
+			}
+			
+			
+			$query = sprintf(
+				"	SELECT		products_pricecheck.*,
+								IF(
+									DATE_FORMAT(products_pricecheck.date_update, '%%d-%%m-%%Y @ %%k:%%i') = '00-00-0000 @ 0:00',
+									'n.v.t.',
+									DATE_FORMAT(products_pricecheck.date_update, '%%d-%%m-%%Y @ %%k:%%i')
+								) AS date_update
+					FROM		products_pricecheck
+					WHERE		products_pricecheck.productID = %d",
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['pricecheck'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$return['pricecheck'] = parent::fetch_array($result);
 			}
 			
 			
@@ -507,6 +529,13 @@ class products extends motherboard
 				intval($data[1]['productID'])
 			);
 			parent::query($query);
+			
+			$query = sprintf(
+				"	DELETE FROM		products_pricecheck
+					WHERE			products_pricecheck.productID = %d",
+				intval($data[1]['productID'])
+			);
+			parent::query($query);
 		}
 		else
 		{
@@ -738,6 +767,31 @@ class products extends motherboard
 			{
 				parent::_runFunction("stock", "updateStock", array(intval($data[1]['productID']), intval($data[1]['stock_location'][$key]), $stock_mutation));
 			}
+		}
+		
+		
+		
+		/*
+		**	Save the added website checks.
+		*/
+		
+		foreach($data[1]['pricecheck_website'] AS $key => $pricecheck_website)
+		{
+			if($pricecheck_website == "")
+			{
+				continue;
+			}
+			
+			$query = sprintf(
+				"	INSERT INTO		products_pricecheck
+					SET				products_pricecheck.productID = %d,
+									products_pricecheck.website = '%s',
+									products_pricecheck.field = '%s'",
+				$data[1]['productID'],
+				parent::real_escape_string($data[1]['pricecheck_website'][$key]),
+				parent::real_escape_string($data[1]['pricecheck_field'][$key])
+			);
+			parent::query($query);
 		}
 		
 		return $data[1]['productID'];

@@ -595,6 +595,11 @@ function systemChanges(elm)
 		return false;
 	}
 	
+	if(elm.attr("type") == "radio")
+	{
+		return false;
+	}
+	
 	if(elm.attr("icon") == "fa-globe")
 	{
 		return false;

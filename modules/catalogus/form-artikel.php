@@ -20,7 +20,7 @@ if(isset($_GET['dataID']))
 	
 	<div class="simple-form">
 		<div class="form-header">
-			<h1><?= (isset($_GET['dataID']) ? $mb->_translateReturn("forms", "edit", array($data['name'])) : $mb->_translateReturn("forms", "add-new-title")) ?></h1>
+			<h1><?= (isset($_GET['dataID']) ? $mb->_translateReturn("forms", "edit", array(_chopString($data['name'], 40))) : $mb->_translateReturn("forms", "add-new-title")) ?></h1>
 			
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			
@@ -58,6 +58,7 @@ if(isset($_GET['dataID']))
 			<div class="fa fa-list"></div>
 			<div class="fa fa-filter"></div>
 			<div class="fa fa-exchange"></div>
+			<div class="fa fa-search"></div>
 		</div>
 		
 		<div class="tab tab-1">
@@ -604,6 +605,61 @@ if(isset($_GET['dataID']))
 					}
 					?>
 				</select>
+			</div>
+		</div>
+		
+		<div class="tab tab-8">
+			<div class="form-content">
+				<table class="form-table">
+					<thead>
+						<tr>
+							<td><?= $mb->_translateReturn("forms", "form-products-pricecheck-website") ?></td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<?php
+						if(!isset($_GET['duplicate']))
+						{
+							foreach($data['pricecheck'] AS $value)
+							{
+								?>
+								<tr>
+									<td><input type="text" name="pricecheck_website_234" id="pricecheck_website" value="<?= $value['website'] ?>" class="width-300" /></td>
+									<td><input type="text" name="pricecheck_website_234" id="pricecheck_website" value='<?= $value['field'] ?>' class="width-300" /></td>
+									<td>
+										<?php
+										if($value['price'] == 0)
+										{
+											print "Mislukt";
+										}
+										else
+										{
+											print "&euro;&nbsp;". _frontend_float($value['price']);
+										}
+										?>
+									</td>
+									<td><?= $value['date_update'] ?></td>
+									<td>
+										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_specificatie.php?productPropertieID=<?= $value['productPropertieID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+									</td>
+								</tr>
+								<?php
+							}
+						}
+						?>
+						
+						<tr class="new-row">
+							<td><input type="text" name="pricecheck_website[]" id="pricecheck_website_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
+							<td><input type="text" name="pricecheck_field[]" id="pricecheck_field_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
+							<td colspan="2">&nbsp;</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

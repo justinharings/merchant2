@@ -47,6 +47,8 @@ if($(this).attr("rel")!=""&&typeof $(this).attr("rel")!='undefined')
 {prefix="pos"}
 else if($(this).hasClass("workshop"))
 {prefix="workshop"}
+else if($(this).hasClass("assistent"))
+{prefix="assistent"}
 document.location.href="/"+prefix+"/modules"+$(this).attr("rel")})}});var cnt=0;$("table.view").each(function()
 {$(this).before('<div class="table-holder n-'+cnt+'"></div>');$(this).appendTo($("div.table-holder.n-"+cnt));cnt++});$("table.view").find("tbody").find("tr").each(function()
 {if($(this).attr("click")!=""&&typeof $(this).attr("click")!=="undefined")
