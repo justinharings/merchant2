@@ -529,13 +529,6 @@ class products extends motherboard
 				intval($data[1]['productID'])
 			);
 			parent::query($query);
-			
-			$query = sprintf(
-				"	DELETE FROM		products_pricecheck
-					WHERE			products_pricecheck.productID = %d",
-				intval($data[1]['productID'])
-			);
-			parent::query($query);
 		}
 		else
 		{

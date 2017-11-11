@@ -81,6 +81,15 @@ class customers extends motherboard
 		{
 			$return = parent::fetch_assoc($result);
 			
+			$return['street'] = "";
+			$return['housenumber'] = "";
+			
+			if(preg_match('/(?P<address>[^\d]+) (?P<number>\d+.?)/', $return['address'], $matches))
+			{
+				$return['street'] = $matches['address'];
+				$return['housenumber'] = $matches['number'];
+			}
+			
 			$query = sprintf(
 				"	SELECT		orders.*,
 								CONCAT(YEAR(orders.date_added), orders.orderID) AS order_reference,

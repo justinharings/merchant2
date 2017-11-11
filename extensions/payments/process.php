@@ -28,7 +28,6 @@ if(file_exists($database))
 	$data = file_get_contents($database);
 	$data = unserialize($data);
 	
-	
 	// Reset the data from the stored file.
 	$paymentID 		= $data[0];
 	$orderID 		= $data[1];
