@@ -41,39 +41,51 @@ function sortArray($data, $field)
 
 
 
-$array = file_get_contents("http://plm.popal.nl/webservice/channel/2");
-$array = json_decode($array, true);
+$array = file_get_contents("http://hoopfietsen.nl/index.php?user=Haringsvof&passw=Welkom0!&option=com_rsfiles&task=rsfiles.download&path=hoopfietsen_products_export.xml&Itemid=689");
+$array = new SimpleXMLElement($array);
+
 
 $stock = array();
 $num = 0;
 
-foreach($array AS $key => $values)
+
+foreach($array as $element) 
 {
-	foreach($values['products'] AS $key_p => $value_p)
+	foreach($element as $key => $val) 
 	{
-		foreach($value_p['properties'] AS $key_pr => $value_pr)
+		if($key == "EanNummer")
 		{
-			if($value_pr['name']['nl_nl'] == "Barcode")
-			{		
-				$barcode = $value_pr['value'];
-			}
-
-			if($value_pr['name']['nl_nl'] == "Voorraad aanwezig")
-			{
-				$stock_value = ($value_pr['value'] == 1 ? 1 : 0);
-			}
+			$barcode = $val;
 		}
-
-		if($barcode != "")
+		
+		if($key == "UitAssortiment")
 		{
-			$stock[$num] = array();
-			$stock[$num]['barcode'] = $barcode;
-			$stock[$num]['stock'] = $stock_value;
-	
-			$num++;
+			$soldout = $val;
+		}
+		
+		if($key == "Voorraad")
+		{
+			$stock_value = $val;
 		}
 	}
+	
+	if($barcode == "" || $soldout == "")
+	{
+		continue;
+	}
+	
+	$stock[$num] = array();
+	$stock[$num]['barcode'] = $barcode;
+	$stock[$num]['stock'] = ($stock_value == 0 ? 0 : 1);
+	
+	if($stock[$num]['stock'] == 0 && $soldout == "J")
+	{
+		$stock[$num]['stock'] = 2;
+	}
+
+	$num++;
 }
+
 
 $stock = sortArray($stock, 'stock');
 $stock = array_reverse($stock);
@@ -83,7 +95,7 @@ $stock = array_reverse($stock);
 $query = sprintf(
 	"	UPDATE		products
 		SET			products.externalStock = 0
-		WHERE		products.externalStockID = 1"
+		WHERE		products.externalStockID = 4"
 );
 $db->query($query);
 
@@ -97,7 +109,7 @@ $query = sprintf(
 						WHERE		products_stock.productID = products.productID
 					) AS stock
 		FROM		products
-		WHERE		products.externalStockID = 1"
+		WHERE		products.externalStockID = 4"
 );
 $result = $db->query($query);
 
@@ -117,7 +129,7 @@ while($row = $db->fetch_assoc($result))
 			"	UPDATE		products
 				SET			products.externalStock = %d
 				WHERE		products.productID = %d",
-			$values['stock'],
+			($values['stock'] == 2 ? 0 : $values['stock']),
 			$row['productID']
 		);
 		$db->query($query);
@@ -135,6 +147,16 @@ while($row = $db->fetch_assoc($result))
 			$query = sprintf(
 				"	UPDATE		products
 					SET			products.status = 3
+					WHERE		products.productID = %d",
+				$row['productID']
+			);
+			$db->query($query);
+		}
+		else if($values['stock'] == 2)
+		{
+			$query = sprintf(
+				"	UPDATE		products
+					SET			products.status = 4
 					WHERE		products.productID = %d",
 				$row['productID']
 			);

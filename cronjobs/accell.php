@@ -39,9 +39,12 @@ $query = sprintf(
 	"	SELECT		products.productID,
 					products.supplier_code,
 					products.barcode,
-					products_stock.stock
+					(
+						SELECT		SUM(products_stock.stock)
+						FROM		products_stock
+						WHERE		products_stock.productID = products.productID
+					) AS stock
 		FROM		products
-		LEFT JOIN	products_stock ON products_stock.productID = products.productID
 		WHERE		products.externalStockID = 2"
 );
 $result = $db->query($query);
