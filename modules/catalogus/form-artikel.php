@@ -20,7 +20,7 @@ if(isset($_GET['dataID']))
 	
 	<div class="simple-form">
 		<div class="form-header">
-			<h1><?= (isset($_GET['dataID']) ? $mb->_translateReturn("forms", "edit", array(_chopString($data['name'], 40))) : $mb->_translateReturn("forms", "add-new-title")) ?></h1>
+			<h1><?= (isset($_GET['dataID']) ? $mb->_translateReturn("forms", "edit", array(_chopString(strip_tags($data['name']), 40))) : $mb->_translateReturn("forms", "add-new-title")) ?></h1>
 			
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			
@@ -591,6 +591,7 @@ if(isset($_GET['dataID']))
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 1 ? "selected=\"selected\"" : "" ?> value="1">Popal Fietsen Nederland</option>
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 2 ? "selected=\"selected\"" : "" ?> value="2">Juncker Bikeparts</option>
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Batavus, Sparta en Loekie</option>
+					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 3 ? "selected=\"selected\"" : "" ?> value="4">Hoop Fietsen</option>
 				</select>
 				
 				<select name="delivery_days" id="delivery_days" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-delivery-days") ?>">
