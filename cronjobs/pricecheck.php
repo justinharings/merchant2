@@ -35,13 +35,42 @@ while($row = $mb->fetch_assoc($result))
 		
 		if($content != "")
 		{
-			$explode = explode($row['field'], $content);
-			$explode = explode('"', $explode[1]);
+			if(strpos($content, '<meta property="product:price:amount" content="') !== false)
+			{
+				$explode = explode('<meta property="product:price:amount" content="', $content);
+				$explode = explode('"', $explode[1]);
+				
+				$value = $explode[0];
+				$value = str_replace(",", ".", $value);
+			}
+			else if(strpos($content, '<meta property="product:price" content="') !== false)
+			{
+				$explode = explode('<meta property="product:price" content="', $content);
+				$explode = explode('"', $explode[1]);
+				
+				$value = $explode[0];
+				$value = str_replace(",", ".", $value);
+			}
+			else if(strpos($content, '<meta property="price" content="') !== false)
+			{
+				$explode = explode('<meta property="price" content="', $content);
+				$explode = explode('"', $explode[1]);
+				
+				$value = $explode[0];
+				$value = str_replace(",", ".", $value);
+			}
+			else if(strpos($content, '<meta itemprop="price" content="') !== false)
+			{
+				$explode = explode('<meta itemprop="price" content="', $content);
+				$explode = explode('"', $explode[1]);
+				
+				$value = $explode[0];
+				$value = str_replace(",", ".", $value);
+			}
 			
-			$value = $explode[0];
-			$value = str_replace(",", ".", $value);
+			$had[$row['website']] = (floatVal($value) > 0 ? $value : 0);
 			
-			$had[$row['website']] = $value;
+			//print $row['website'] . "<br/>" . $value . "<br/><br/>";
 		}
 	}
 	
@@ -58,4 +87,6 @@ while($row = $mb->fetch_assoc($result))
 		$mb->query($query);
 	}
 }
+
+print "Done.";
 ?>
