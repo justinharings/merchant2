@@ -1,7 +1,7 @@
 <?php
 $query = sprintf(
 	"	SELECT		products.*,
-					products_pricecheck.price AS concurent_price,
+					IF(products_pricecheck.website LIKE '%%fietsenwinkel.nl%%', (products_pricecheck.price+30), products_pricecheck.price) AS concurent_price,
 					taxes.percentage AS taxrate,
 					IF(
 						DATE_FORMAT(products_pricecheck.date_update, '%%d-%%m-%%Y @ %%k:%%i') = '00-00-0000 @ 0:00',
@@ -36,10 +36,9 @@ while($row = $mb->fetch_assoc($result))
 				<td>AC</td>
 				<td>Naam</td>
 				<td>Prijscontrole</td>
-				<td>Adviesprijs</td>
 				<td>Inkoop (incl.)</td>
 				<td>Huidige prijs</td>
-				<td>Laagste concurent</td>
+				<td>Concurent</td>
 				<td>Nieuwe prijs</td>
 			</tr>
 		</thead>
@@ -70,17 +69,12 @@ while($row = $mb->fetch_assoc($result))
 				
 				foreach($data AS $key => $value)
 				{
-					if(in_array($row['productID'], $skip))
+					if(in_array($value['productID'], $skip))
 					{
 						continue;
 					}
 					
-					if($value['price'] == $concurent)
-					{
-						continue;
-					}
-					
-					$skip[] = $row['productID'];
+					$skip[] = $value['productID'];
 					
 					$cnt++;
 					
@@ -95,51 +89,97 @@ while($row = $mb->fetch_assoc($result))
 					?>
 					<tr>
 						<td>
-							<input type="hidden" name="productIDs[]" id="productIDs_<?= $value['productID'] ?>"  value="<?= $value['productID'] ?>" />
-							
-							<input type="radio" checked="checked" name="action_<?= $value['productID'] ?>" id="action_<?= $value['productID'] ?>" value="0" style="-webkit-appearance: radio !important;" onclick="$(this).parent().parent().find('td.price').find('input').css('border-color', 'red');" />
-							&nbsp;&nbsp;
-							<input type="radio" name="action_<?= $value['productID'] ?>" id="action_<?= $value['productID'] ?>" value="1" style="-webkit-appearance: radio !important;" onclick="$(this).parent().parent().find('td.price').find('input').css('border-color', 'green');" />
-						</td>
-						<td><?= $value['article_code'] ?></td>
-						<td><?= $value['name'] ?></td>
-						<td><?= $value['date_pricecheck'] ?></td>
-						<td>&euro;&nbsp;<?= $value['price_adviced'] ?></td>
-						<td>&euro;&nbsp;<?= number_format($value['price_purchase'], 2) ?></td>
-						<td>
 							<?php
-							if($value['price'] == ceil($value['price_purchase']))
+							if($concurent > 0)
 							{
-								print "<span class=\"fa fa-unsorted\" style=\"color: orange;\"></span>";
-							}
-							else
-							{
-								if($value['price'] > $concurent)
-								{
-									print "<span class=\"fa fa-caret-up\" style=\"color: red;\"></span>";
-								}
-								else if($value['price'] < $concurent)
-								{
-									print "<span class=\"fa fa-caret-down\" style=\"color: green;\"></span>";
-								}
-							}
-							?>
-							&euro;&nbsp;<?= $value['price'] ?>
-						</td>
-						<td>
-							<?php
-							$new_price = $concurent;
+								?>
+								<input type="hidden" name="productIDs[]" id="productIDs_<?= $value['productID'] ?>"  value="<?= $value['productID'] ?>" />
 								
-							if($concurent < $value['price_adviced'])
-							{
-								$new_price = ceil($value['price_purchase']);
-								print "<span class=\"fa fa-exclamation-triangle\" style=\"color: red;\"></span>";
+								<input type="radio" checked="checked" name="action_<?= $value['productID'] ?>" id="action_<?= $value['productID'] ?>" value="0" style="-webkit-appearance: radio !important;" onclick="$(this).parent().parent().find('td.price').find('input').css('border-color', 'red');" />
+								&nbsp;&nbsp;
+								<input type="radio" name="action_<?= $value['productID'] ?>" id="action_<?= $value['productID'] ?>" value="1" style="-webkit-appearance: radio !important;" onclick="$(this).parent().parent().find('td.price').find('input').css('border-color', 'green');" />
+								<?php
 							}
 							?>
-							&euro;&nbsp;<?= $concurent ?>
+						</td>
+						<td <?= $concurent == 0 ? "style=\"color: #cccccc;\"" : "" ?>><?= $value['article_code'] ?></td>
+						<td <?= $concurent == 0 ? "style=\"color: #cccccc;\"" : "" ?>><?= $value['name'] ?></td>
+						<td>
+							<?php
+							if($concurent > 0)
+							{
+								print $value['date_pricecheck'];
+							}
+							?>
+						</td>
+						<td>
+							<?php
+							if($concurent > 0)
+							{
+								?>
+								&euro;&nbsp;<?= number_format($value['price_purchase'], 2) ?>
+								<?php
+							}
+							?>
+						</td>
+						<td>
+							<?php
+							if($concurent > 0)
+							{
+								if($value['price'] == $concurent)
+								{
+									print "<span class=\"fa fa-unsorted\" style=\"font-size: 16px; color: orange;\"></span>";
+									$color = "orange";
+								}
+								else
+								{
+									if($value['price'] > $concurent)
+									{
+										print "<span class=\"fa fa-caret-up\" style=\"font-size: 16px; color: red;\"></span>";
+										$color = "red";
+									}
+									else if($value['price'] < $concurent)
+									{
+										print "<span class=\"fa fa-caret-down\" style=\"font-size: 16px; color: green;\"></span>";
+										$color = "green";
+									}
+								}
+								?>
+								<span style="color: <?= $color ?>">
+									&euro;&nbsp;<?= $value['price'] ?>
+								</span>
+								
+								<small>(&euro;&nbsp;<?= number_format($value['price'] - $value['price_purchase'], 2) ?>)</small>
+								<?php
+							}
+							?>
+						</td>
+						<td>
+							<?php
+							if($concurent > 0)
+							{
+								$new_price = $concurent;
+									
+								if($concurent < ceil($value['price_purchase']))
+								{
+									$new_price = ceil($value['price_purchase']) + 20;
+									print "<span class=\"fa fa-exclamation-triangle\" style=\"color: red;\"></span>";
+								}
+								?>
+								&euro;&nbsp;<?= $concurent ?>&nbsp;<small>(&euro;&nbsp;<?= number_format($concurent - $value['price_purchase'], 2) ?>)</small>
+								<?php
+							}
+							?>
 						</td>
 						<td class="price">
-							<input type="text" name="price_<?= $value['productID'] ?>" id="price_<?= $value['productID'] ?>" value="<?= $new_price ?>" class="width-75" icon="fa-euro" style="border-color: red;" />
+							<?php
+							if($concurent > 0)
+							{
+								?>
+								<input type="text" name="price_<?= $value['productID'] ?>" id="price_<?= $value['productID'] ?>" value="<?= $new_price ?>" class="width-75" icon="fa-euro" style="border-color: red;" />
+								<?php
+							}
+							?>
 						</td>
 					</tr>
 					<?php

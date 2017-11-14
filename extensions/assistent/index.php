@@ -103,21 +103,27 @@ $mb = new motherboard();
 			
 			<div class="menu-items-holder">
 				<ul class="menu">
+					<li class="menu-item assistent" rel="/pricecheck/">
+						<div class="icon">
+							<span class="fa fa-euro"></span>
+						</div>
+					</li>
+					
 					<li class="menu-item assistent" rel="/articles/">
 						<div class="icon">
-							<span class="fa fa-tags"></span>
+							<span class="fa fa-question"></span>
+						</div>
+					</li>
+					
+					<li class="menu-item assistent" rel="/add-new/">
+						<div class="icon">
+							<span class="fa fa-plus"></span>
 						</div>
 					</li>
 					
 					<li class="menu-item assistent" rel="/soldout/">
 						<div class="icon">
 							<span class="fa fa-trash"></span>
-						</div>
-					</li>
-					
-					<li class="menu-item assistent" rel="/pricecheck/">
-						<div class="icon">
-							<span class="fa fa-euro"></span>
 						</div>
 					</li>
 				</ul>
@@ -134,7 +140,7 @@ $mb = new motherboard();
 			{
 				?>
 				<script type="text/javascript">
-					document.location.href = '/assistent/modules/articles';
+					document.location.href = '/assistent/modules/pricecheck/';
 				</script>
 				<?php
 			}

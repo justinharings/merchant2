@@ -12,6 +12,9 @@ RewriteRule ^assistent/$ /extensions/assistent/index.php [L]
 # Assistent + module
 RewriteRule ^assistent/modules/([^/]*)/$ /extensions/assistent/index.php?module=$1 [L]
 
+# Assistent + module + data
+RewriteRule ^assistent/modules/([^/]*)/stock/([^/]*)/$ /extensions/assistent/index.php?module=$1&stock=$2 [L]
+
 # Workshop
 RewriteRule ^workshop/$ /extensions/workshop/index.php [L]
 

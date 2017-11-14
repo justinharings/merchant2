@@ -1,5 +1,4 @@
 <?php
-$mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "SET_BP", 1));
 
 $data = $mb->_runFunction("products", "view", array($_SESSION['merchantID'], "export", "LPAD(products.article_code, 5, 0)", "0,99999"));
 ?>
