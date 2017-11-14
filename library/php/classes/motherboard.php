@@ -107,7 +107,9 @@ class motherboard extends database
 	{
 		$query = sprintf(
 			"	SELECT		languages.*
-				FROM		languages"
+				FROM		languages
+				WHERE		languages.merchantID = %d",
+			$_SESSION['merchantID']
 		);
 		$result = parent::query($query);
 		
