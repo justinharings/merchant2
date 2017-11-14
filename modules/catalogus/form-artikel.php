@@ -1,7 +1,7 @@
 <?php
 $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "TPB_BB", 1));
 
-if(isset($_GET['dataID']))
+if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 {
 	$data = $mb->_runFunction("products", "load", array($_GET['dataID']));
 }
@@ -617,7 +617,6 @@ if(isset($_GET['dataID']))
 							<td><?= $mb->_translateReturn("forms", "form-products-pricecheck-website") ?></td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td>&nbsp;</td>
 							<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
 						</tr>
 					</thead>
@@ -631,7 +630,6 @@ if(isset($_GET['dataID']))
 								?>
 								<tr>
 									<td><input type="text" name="pricecheck_website_234" id="pricecheck_website" value="<?= $value['website'] ?>" class="width-300" /></td>
-									<td><input type="text" name="pricecheck_website_234" id="pricecheck_website" value='<?= $value['field'] ?>' class="width-300" /></td>
 									<td>
 										<?php
 										if($value['price'] == 0)
@@ -656,8 +654,7 @@ if(isset($_GET['dataID']))
 						
 						<tr class="new-row">
 							<td><input type="text" name="pricecheck_website[]" id="pricecheck_website_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
-							<td><input type="text" name="pricecheck_field[]" id="pricecheck_field_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
-							<td colspan="2">&nbsp;</td>
+							<td colspan="3">&nbsp;</td>
 						</tr>
 					</tbody>
 				</table>

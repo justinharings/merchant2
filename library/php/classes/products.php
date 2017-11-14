@@ -778,11 +778,9 @@ class products extends motherboard
 			$query = sprintf(
 				"	INSERT INTO		products_pricecheck
 					SET				products_pricecheck.productID = %d,
-									products_pricecheck.website = '%s',
-									products_pricecheck.field = '%s'",
+									products_pricecheck.website = '%s'",
 				$data[1]['productID'],
-				parent::real_escape_string($data[1]['pricecheck_website'][$key]),
-				parent::real_escape_string($data[1]['pricecheck_field'][$key])
+				parent::real_escape_string($data[1]['pricecheck_website'][$key])
 			);
 			parent::query($query);
 		}
