@@ -86,6 +86,43 @@ class categories extends motherboard
 	
 	
 	/*
+	**
+	*/
+	
+	public function viewSpecifications($data)
+	{
+		parent::_checkInputValues($data, 4);
+		
+		$search = "";
+		
+		if($data[1] != "")
+		{
+			$search = sprintf(
+				"	AND		specifications.name LIKE ('%%%s%%')",
+				parent::real_escape_string($data[1])
+			);
+		}
+		
+		$query = sprintf(
+			"	SELECT		specifications.*
+				FROM		specifications
+				WHERE		specifications.merchantID = %d
+					%s
+				ORDER BY	%s
+				LIMIT		%s",
+			$data[0],
+			$search,
+			$data[2],
+			$data[3]
+		);
+		$result = parent::query($query);
+		
+		return $result;
+	}
+	
+	
+	
+	/*
 	**	Load a certain categorie.
 	**	data[0]	=	categoryID.
 	*/
@@ -152,6 +189,47 @@ class categories extends motherboard
 					FROM		categories_filters
 					WHERE		categories_filters.categoryID = %d",
 				$languages,
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['filters'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$return['filters'] = parent::fetch_array($result);
+			}
+		}
+		
+		return $return;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function loadSpecification($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		specifications.*
+				FROM		specifications
+				WHERE		specifications.specificationID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		if(parent::num_rows($result))
+		{
+			$return = parent::fetch_assoc($result);
+			
+			$query = sprintf(
+				"	SELECT		specifications_filters.*
+					FROM		specifications_filters
+					WHERE		specifications_filters.specificationID = %d",
 				$data[0]
 			);
 			$result = parent::query($query);
@@ -404,6 +482,70 @@ class categories extends motherboard
 			}
 		}
 
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveSpecifications($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		if(isset($data[1]['delete']) && $data[1]['delete'] != 0)
+		{
+			return $this->deleteSpecifications($data);
+		}
+		
+		if(isset($data[1]['specificationID']) && $data[1]['specificationID'] != 0)
+		{
+			$query = sprintf(
+				"	UPDATE		specifications
+					SET			specifications.name = '%s'
+					WHERE		specifications.specificationID = %d",
+				parent::real_escape_string($data[1]['name']),
+				intval($data[1]['specificationID'])
+			);
+			parent::query($query);
+		}
+		else
+		{
+			$query = sprintf(
+				"	INSERT INTO		specifications
+					SET				specifications.merchantID = %d,
+									specifications.name = '%s'",
+				$data[0],
+				parent::real_escape_string($data[1]['name'])
+			);
+			$result = parent::query($query);
+			
+			$data[1]['specificationID'] = parent::insert_id($result);
+		}
+		
+		foreach($data[1]['filter_language'] AS $key => $language)
+		{
+			if($data[1]['filter_key'][$key] == "")
+			{
+				continue;
+			}
+			
+			$query = sprintf(
+				"	INSERT INTO		specifications_filters
+					SET				specifications_filters.specificationID = %d,
+									specifications_filters.language = '%s',
+									specifications_filters.key = '%s',
+									specifications_filters.value = '%s'",
+				$data[1]['specificationID'],
+				$language,
+				$data[1]['filter_key'][$key],
+				$data[1]['filter_value'][$key]
+			);
+			parent::query($query);
+		}
 		
 		return true;
 	}

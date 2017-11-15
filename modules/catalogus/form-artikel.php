@@ -382,11 +382,36 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-language") ?></td>
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-key") ?></td>
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-value") ?></td>
-							<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
+							<td width="45">
+								<span class="add-row fa fa-plus-circle add-specification" style="float: right;" onclick="$('.specs-table').hide();"></span>
+								<span class="fa fa-gg-circle" style="float: right; margin: 1px 5px 0px 0px; font-size: 18px;" onclick="$('.specs-table').show();"></span>
+							</td>
 						</tr>
 					</thead>
 					
 					<tbody>
+						<tr class="specs-table" style="display: none; background-color: #f1f1f1;">
+							<td align="center"><span class="fa fa-gg-circle" style="font-size: 20px;"></span></td>
+							<td><strong>Deze tabel inladen:</strong></td>
+							<td>
+								<select name="specificationID" id="specificationID" class="width-200">
+									<option value=""></option>
+									
+									<?php
+									$dataSpecifications = $mb->_runFunction("categories", "viewSpecifications", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "specifications.name", "0,50"));
+									
+									foreach($dataSpecifications AS $specifications)
+									{
+										?>
+										<option value="<?= $specifications['specificationID'] ?>"><?= $specifications['name'] ?></option>
+										<?php
+									}
+									?>
+								</select>
+							</td>
+							<td>&nbsp;</td>
+						</tr>
+						
 						<?php
 						if(!isset($_GET['duplicate']))
 						{
@@ -430,7 +455,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 							</td>
 							<td><input type="text" name="filter_key[]" id="filter_key_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
 							<td><input type="text" name="filter_value[]" id="filter_value_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
-							<td colspan="2">&nbsp;</td>
+							<td>&nbsp;</td>
 						</tr>
 					</tbody>
 				</table>

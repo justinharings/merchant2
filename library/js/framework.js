@@ -517,6 +517,43 @@ $(document).ready(
 		
 		
 		/*
+		**
+		*/
+		
+		$("#specificationID").on("change",
+			function()
+			{
+				$.post(
+					"/library/php/posts/catalogus/return_specifications.php",
+					{
+						specificationID: $("#specificationID").val()
+					}
+				).done(
+					function(data) 
+					{
+						data = $.parseJSON(data);
+						
+						if(data.length > 0)
+						{
+							for(var i = 0; i < data.length; i++)
+							{
+								$(".add-specification").trigger("click");
+								
+								var add_key = (i+1);
+								
+								$("#filter_language_"+add_key).val(data[i]['language']);
+								$("#filter_key_"+add_key).val(data[i]['key']);
+								$("#filter_value_"+add_key).val(data[i]['value']);
+							}
+						}
+					}
+				);	
+			}
+		);
+		
+		
+		
+		/*
 		**	Search for product information out of the form-table
 		**	option. It's possible that the product information
 		**	is used for data showing.

@@ -379,6 +379,14 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 												</div>
 											</li>
 										</a>
+										
+										<li class="menu-item" rel="/catalogus/specificaties/">
+											<div class="text"><?= $mb->_translateReturn("menu", "specification-table") ?></div>
+											
+											<div class="icon">
+												<span class="textual"><?= $mb->_translateReturn("menu", "article-management-abbr") ?></span>
+											</div>
+										</li>
 										<?php
 									}
 									
