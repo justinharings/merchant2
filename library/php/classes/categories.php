@@ -47,6 +47,11 @@ class categories extends motherboard
 			);
 		}
 		
+		if(!in_array('EN', $_lang))
+		{
+			$languages .= "categories.name AS EN_name,";
+		}
+		
 		$query = sprintf(
 			"	SELECT		%s
 							categories.categoryID,
@@ -166,6 +171,11 @@ class categories extends motherboard
 		if(parent::num_rows($result))
 		{
 			$return = parent::fetch_assoc($result);
+			
+			if($return['EN_name'] == "")
+			{
+				$return['EN_name'] = $return['name'];
+			}
 			
 			$languages = "";
 			

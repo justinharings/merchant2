@@ -105,11 +105,13 @@ class motherboard extends database
 	
 	public function _allLanguages()
 	{
+		$merchantID = (isset($_SESSION['merchantID']) ? $_SESSION['merchantID'] : _MERCHANT_ID);
+		
 		$query = sprintf(
 			"	SELECT		languages.*
 				FROM		languages
 				WHERE		languages.merchantID = %d",
-			$_SESSION['merchantID']
+			$merchantID
 		);
 		$result = parent::query($query);
 		

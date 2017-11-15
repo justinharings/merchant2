@@ -133,6 +133,11 @@ while($row = $mb->fetch_assoc($result))
 		{
 			$price_adviced[strtolower($value['code'])] = $row2[strtolower($value['code']) . '_price_adviced'];
 		}
+		
+		if(!isset($name['en']) || $name['en'] == "")
+		{
+			$name['en'] = $name['nl'];
+		}
 	}
 	
 	
