@@ -354,6 +354,7 @@
 		<form-products-categories>Categorie</form-products-categories>
 		<form-products-images>Afbeelding</form-products-images>
 		<form-products-images-thumb>Thumb</form-products-images-thumb>
+		<form-products-videos>Video's</form-products-videos>
 		<form-products-properties-language>Taal</form-products-properties-language>
 		<form-products-properties-key>Sleutel</form-products-properties-key>
 		<form-products-properties-value>Waarde</form-products-properties-value>

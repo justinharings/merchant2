@@ -55,6 +55,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 			<div class="fa fa-credit-card"></div>
 			<div class="fa fa-tags"></div>
 			<div class="fa fa-picture-o"></div>
+			<div class="fa fa-youtube-play"></div>
 			<div class="fa fa-list"></div>
 			<div class="fa fa-filter"></div>
 			<div class="fa fa-exchange"></div>
@@ -379,6 +380,47 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 				<table class="form-table">
 					<thead>
 						<tr>
+							<td width="500"><?= $mb->_translateReturn("forms", "form-products-videos") ?></td>
+							<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<?php
+						if(!isset($_GET['duplicate']))
+						{
+							foreach($data['videos'] AS $value)
+							{
+								?>
+								<tr>
+									<td>
+										<a href="<?= $value['url'] ?>" target="_blank">
+											<?= $value['url'] ?>
+										</a>
+										&nbsp;<small><span class="fa fa-external-link"></span></small>
+									</td>
+									<td><span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_video.php?videoID=<?= $value['videoID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span></td>
+								</tr>
+								<?php
+							}
+						}
+						?>
+						
+						<tr class="new-row">
+							<td><input type="text" name="video[]" id="video_+" value="" class="width-200" validation-type="text" /></td>
+							<td colspan="2">&nbsp;</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		
+		<div class="tab tab-6">
+			<div class="form-content">
+				<table class="form-table">
+					<thead>
+						<tr>
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-language") ?></td>
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-key") ?></td>
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-value") ?></td>
@@ -462,7 +504,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 			</div>
 		</div>
 
-		<div class="tab tab-6">
+		<div class="tab tab-7">
 			<?php
 			if(!isset($_GET['duplicate']))
 			{
@@ -537,7 +579,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 			?>
 		</div>
 		
-		<div class="tab tab-7">
+		<div class="tab tab-8">
 			<?php
 			$data_locations = $mb->_runFunction("stock", "viewLocations", array($_SESSION['merchantID'], "", "locations.name", "0,50"));
 			
@@ -634,7 +676,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 			</div>
 		</div>
 		
-		<div class="tab tab-8">
+		<div class="tab tab-9">
 			<div class="form-content">
 				<table class="form-table">
 					<thead>

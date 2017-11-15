@@ -222,6 +222,22 @@ class products extends motherboard
 			
 			
 			$query = sprintf(
+				"	SELECT		products_videos.*
+					FROM		products_videos
+					WHERE		products_videos.productID = %d",
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['videos'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$return['videos'] = parent::fetch_array($result);
+			}
+			
+			
+			$query = sprintf(
 				"	SELECT		products_properties.*
 					FROM		products_properties
 					WHERE		products_properties.productID = %d
@@ -701,6 +717,29 @@ class products extends motherboard
 		
 		
 		/*
+		**
+		*/
+		
+		foreach($data[1]['video'] AS $key => $video)
+		{
+			if($video == "")
+			{
+				continue;
+			}
+			
+			$query = sprintf(
+				"	INSERT INTO		products_videos
+					SET				products_videos.productID = %d,
+									products_videos.url = '%s'",
+				$data[1]['productID'],
+				parent::real_escape_string($video)
+			);
+			$result = parent::query($query);
+		}
+		
+		
+		
+		/*
 		**	Save the added properties.
 		*/
 		
@@ -877,6 +916,26 @@ class products extends motherboard
 		{
 			unlink($image);
 		}
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**	Remove a media item.
+	*/
+	
+	public function deleteVideo($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	DELETE FROM		products_videos
+				WHERE			products_videos.videoID = %d",
+			$data[1]['videoID']
+		);
+		parent::query($query);
 		
 		return true;
 	}
@@ -1064,47 +1123,6 @@ class products extends motherboard
 			$search
 		);
 		$result = parent::query($query);
-		
-		$return[0] = parent::fetch_array($result);
-		
-		if(parent::num_rows($result) == 0 && $data[2] != "")
-		{
-			$split = explode(" ", $data[2]);
-			$num = 0;
-			
-			$search = " AND ( ";
-			
-			foreach($split AS $string)
-			{
-				$search .= sprintf(
-					" %s products_cache.name LIKE ('%%%s%%') ",
-					($num == 0 ? "" : "OR"),
-					parent::real_escape_string($string)
-				);
-				
-				$num++;
-			}
-			
-			$search .= " ) ";
-			
-			$query = sprintf(
-				"	SELECT		products_cache.*
-					FROM		products_cache
-					WHERE		products_cache.merchantID = %d
-						%s
-						%s
-					GROUP BY	products_cache.productID
-					ORDER BY	products_cache.name_sort",
-				$data[0],
-				$category,
-				$search
-			);
-			$result = parent::query($query);
-			
-			$return[1] = parent::fetch_array($result);
-			
-			return $return;
-		}
 		
 		return parent::fetch_array($result);
 	}
