@@ -590,7 +590,7 @@ class orders extends motherboard
 			
 			if($data[1]['omboeken'] == 1)
 			{
-				$this->bookToday($data[1]['orderID']);
+				$this->bookToday(array(intval($data[1]['orderID'])));
 			}
 		}
 		
@@ -944,7 +944,8 @@ class orders extends motherboard
 		parent::_checkInputValues($data, 9);
 		
 		$currentOrder = "";
-		
+		$_order_suffix = "";
+				
 		
 		if(count($data[1]) == 0 && $data[7] == 0)
 		{
@@ -952,9 +953,28 @@ class orders extends motherboard
 		}
 		
 		
+		if($data[7] > 0 && strpos($data[7], "-") !== false)
+		{
+			$expl = explode("-", $data[7]);
+			$data[7] = $expl[0];
+			
+			$_order_suffix = $expl[1];
+		}
+		
+		
 		if(is_array($data[2]))
 		{
-			$data[2] = $this->_runFunction("customers", "save", array($data[0], $data[2]));
+			if($data[7] == 0)
+			{
+				$data[2] = $this->_runFunction("customers", "save", array($data[0], $data[2]));
+			}
+			else
+			{
+				$currentOrder = $this->load(array($data[7]));
+				
+				$data[2]['customerID'] = $currentOrder['customer']['customerID'];
+				$data[2] = $this->_runFunction("customers", "save", array($data[0], $data[2]));
+			}
 		}
 		
 		
@@ -977,8 +997,6 @@ class orders extends motherboard
 		}
 		else
 		{
-			$currentOrder = $this->load(array($data[7]));
-			
 			$query = sprintf(
 				"	UPDATE		orders
 					SET			orders.merchantID = %d,
@@ -999,42 +1017,62 @@ class orders extends motherboard
 		
 		
 		
-		if($data[7] == 0)
+		if($data[7] > 0)
 		{
-			$vatTotal = 0;
+			$query = sprintf(
+				"	DELETE FROM		orders_product
+					WHERE			orders_product.orderID = %d",
+				$orderID
+			);
+			parent::query($query);
+		}
+		
+		
+		$vatTotal = 0;
+		
+		foreach($data[1] AS $product)
+		{
+			$productData = $this->_runFunction("products", "load", array(intval($product['productID'])));
+			$taxrate = $productData['taxrate'];
 			
-			foreach($data[1] AS $product)
-			{
-				$productData = $this->_runFunction("products", "load", array(intval($product['productID'])));
-				$taxrate = $productData['taxrate'];
-				
-				$query = sprintf(
-					"	INSERT INTO		orders_product
-						SET				orders_product.orderID = %d,
-										orders_product.productID = %d,
-										orders_product.name = '%s',
-										orders_product.price = '%.2f',
-										orders_product.taxrate = '%.2f',
-										orders_product.quantity = %d",
-					$orderID,
-					intval($product['productID']),
-					parent::real_escape_string($product['name']),
-					parent::floatvalue($product['price']),
-					parent::floatvalue($taxrate),
-					intval($product['quantity'])
-				);
-				parent::query($query);
-			}
+			$query = sprintf(
+				"	INSERT INTO		orders_product
+					SET				orders_product.orderID = %d,
+									orders_product.productID = %d,
+									orders_product.name = '%s',
+									orders_product.price = '%.2f',
+									orders_product.taxrate = '%.2f',
+									orders_product.quantity = %d",
+				$orderID,
+				intval($product['productID']),
+				parent::real_escape_string($product['name']),
+				parent::floatvalue($product['price']),
+				parent::floatvalue($taxrate),
+				intval($product['quantity'])
+			);
+			parent::query($query);
 		}
 		
 		
 		$merchantID = $data[0];
-		$orderID = $orderID;
 		$currentStatus = ($currentOrder == "" ? 0 : $currentOrder['statusID']);
 		$newStatus = $data[4];
 		$employeeID = $data[5];
 		
 		$this->handleStock(array($merchantID, $orderID, $currentStatus, $newStatus, $employeeID));
+		
+		
+		
+		if($data[7] > 0)
+		{
+			$query = sprintf(
+				"	DELETE FROM		orders_payment
+					WHERE			orders_payment.orderID = %d",
+				$orderID
+			);
+			parent::query($query);
+		}
+		
 		
 		
 		$_load_module = "";
@@ -1067,7 +1105,18 @@ class orders extends motherboard
 		
 		
 		
-		if($data[6] > 0 && $data[7] == 0)
+		if($data[7] > 0)
+		{
+			$query = sprintf(
+				"	DELETE FROM		orders_shipment
+					WHERE			orders_shipment.orderID = %d",
+				$orderID
+			);
+			parent::query($query);
+		}
+		
+		
+		if($data[6] > 0)
 		{
 			if(!is_array($data[6]))
 			{
@@ -1112,6 +1161,16 @@ class orders extends motherboard
 		parent::query($query);
 		
 		
+		if($data[7] > 0)
+		{
+			$query = sprintf(
+				"	DELETE FROM		orders_invoice_rules
+					WHERE			orders_invoice_rules.orderID = %d",
+				$orderID
+			);
+			parent::query($query);
+		}
+		
 		
 		if(is_array($data[8]))
 		{
@@ -1136,64 +1195,66 @@ class orders extends motherboard
 		
 		// Send communication.
 		
-		if($data[5] == 0 || $settings['send_emails'] == 1)
+		if($data[7] == 0)
 		{
-			if($data[2] > 0)
+			if($data[5] == 0 || $settings['send_emails'] == 1)
 			{
-				$customerData = $this->_runFunction("customers", "load", array(intval($data[2])));
-				
-				if($customerData['mobile_phone'])
+				if($data[2] > 0)
 				{
-					// Send order SMS
-					$array = array();
-					$array[] = $data[0];
-					$array[] = 3;
-					$array[] = $customerData['mobile_phone'];
-					$array[] = 0;
-					$array[] = $orderID;
+					$customerData = $this->_runFunction("customers", "load", array(intval($data[2])));
 					
-					$this->_runFunction("mailserver", "sendAllSMS", $array);
-					
-					if(count($data[3]) > 0)
+					if($customerData['mobile_phone'])
 					{
-						// Send payment SMS
+						// Send order SMS
 						$array = array();
 						$array[] = $data[0];
-						$array[] = 4;
+						$array[] = 3;
 						$array[] = $customerData['mobile_phone'];
 						$array[] = 0;
 						$array[] = $orderID;
 						
 						$this->_runFunction("mailserver", "sendAllSMS", $array);
+						
+						if(count($data[3]) > 0)
+						{
+							// Send payment SMS
+							$array = array();
+							$array[] = $data[0];
+							$array[] = 4;
+							$array[] = $customerData['mobile_phone'];
+							$array[] = 0;
+							$array[] = $orderID;
+							
+							$this->_runFunction("mailserver", "sendAllSMS", $array);
+						}
 					}
 				}
-			}
-				
-			// Send e-mails
-			$array = array();
-			$array[] = $data[0];
-			$array[] = 1;
-			$array[] = ($data[2] > 0 ? $customerData['email_address'] : "");
-			$array[] = 0;
-			$array[] = $orderID;
-			
-			$this->_runFunction("mailserver", "sendAllEmail", $array);
-			
-			if(count($data[3]) > 0 && $_payed > 0)
-			{
+					
 				// Send e-mails
 				$array = array();
 				$array[] = $data[0];
-				$array[] = 2;
+				$array[] = 1;
 				$array[] = ($data[2] > 0 ? $customerData['email_address'] : "");
 				$array[] = 0;
 				$array[] = $orderID;
 				
 				$this->_runFunction("mailserver", "sendAllEmail", $array);
+				
+				if(count($data[3]) > 0 && $_payed > 0)
+				{
+					// Send e-mails
+					$array = array();
+					$array[] = $data[0];
+					$array[] = 2;
+					$array[] = ($data[2] > 0 ? $customerData['email_address'] : "");
+					$array[] = 0;
+					$array[] = $orderID;
+					
+					$this->_runFunction("mailserver", "sendAllEmail", $array);
+				}
 			}
 		}
 		
-
 
 		if($_load_module != "")
 		{

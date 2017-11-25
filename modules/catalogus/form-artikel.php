@@ -659,6 +659,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 2 ? "selected=\"selected\"" : "" ?> value="2">Juncker Bikeparts</option>
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Batavus, Sparta en Loekie</option>
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 4 ? "selected=\"selected\"" : "" ?> value="4">Hoop Fietsen</option>
+					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 5 ? "selected=\"selected\"" : "" ?> value="5">Union Fietsen</option>
 				</select>
 				
 				<select name="delivery_days" id="delivery_days" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-delivery-days") ?>">

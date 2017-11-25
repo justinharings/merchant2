@@ -397,12 +397,13 @@ class workorders extends motherboard
 								workorders.key_number = %d,
 								workorders.phone_number = '%s',
 								workorders.workorder = '%s',
-								workorders.note = '%s'
+								workorders.note = '%s',
+								workorders.date_added = NOW()
 					WHERE		workorders.workorderID = %d",
 				$data[1]['customerID'],
 				$data[1]['status'],
 				$data[1]['priority'],
-				parent::datevalue($data[1]['expiration_date']) . " " . date("G") . ":" . date("i") . ":". date("s"),
+				parent::datevalue($data[1]['expiration_date']),
 				$data[1]['key_number'],
 				parent::real_escape_string($data[1]['phone_number']),
 				parent::real_escape_string($data[1]['workorder']),
@@ -426,12 +427,13 @@ class workorders extends motherboard
 									workorders.key_number = %d,
 									workorders.phone_number = '%s',
 									workorders.workorder = '%s',
-									workorders.note = '%s'",
+									workorders.note = '%s',
+									workorders.date_added = NOW()",
 				$data[0],
 				$data[1]['customerID'],
 				$data[1]['status'],
 				$data[1]['priority'],
-				parent::datevalue($data[1]['expiration_date']) . " " . date("G") . ":" . date("i") . ":". date("s"),
+				parent::datevalue($data[1]['expiration_date']),
 				$data[1]['key_number'],
 				parent::real_escape_string($data[1]['phone_number']),
 				parent::real_escape_string($data[1]['workorder']),
@@ -513,8 +515,10 @@ class workorders extends motherboard
 			"	SELECT		COUNT(workorders.workorderID) AS cnt
 				FROM		workorders
 				WHERE		workorders.key_number = %d
-					AND		workorders.removed = 0",
-			$data[1]['check']
+					AND		workorders.removed = 0
+					AND		workorders.merchantID = %d",
+			$data[1]['check'],
+			$data[0]
 		);
 		$result = parent::query($query);
 		$row = parent::fetch_assoc($result);

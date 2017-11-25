@@ -33,6 +33,8 @@ class categories extends motherboard
 		$_lang = parent::_allLanguages();
 		$languages = "";
 		
+		$_got_en = false;
+		
 		foreach($_lang AS $value)
 		{
 			$languages .= sprintf(
@@ -45,9 +47,14 @@ class categories extends motherboard
 				$value['code'],
 				$value['code']
 			);
+			
+			if(strtoupper($value['code']) == "EN")
+			{
+				$_got_en = true;
+			}
 		}
 		
-		if(!in_array('EN', $_lang))
+		if($_got_en == false)
 		{
 			$languages .= "categories.name AS EN_name,";
 		}
@@ -668,6 +675,8 @@ class categories extends motherboard
 		$query = sprintf(
 			"	SELECT		products_filters.value
 				FROM		products_filters
+				INNER JOIN	products ON products.productID = products_filters.productID
+					AND		products.deleted = 0
 				WHERE		products_filters.language = '%s'
 					AND		products_filters.filterID = %d",
 			strtoupper($data[1]),
