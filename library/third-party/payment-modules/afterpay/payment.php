@@ -33,9 +33,11 @@ try
 	unset($initials[0]);
 	$customerData['name'] = implode(" ", $initials);
 	
+	$customerData['phone'] = ($customerData['phone'] != "" ? $customerData['phone'] : $customerData['mobile_phone']);
+	
 	if(strlen($customerData['phone']) < 10)
 	{
-		//$customerData['phone'] = "0" . $customerData['phone'];
+		$customerData['phone'] = "0" . $customerData['phone'];
 	}
 	
 	
@@ -60,18 +62,26 @@ try
 	
 	
 	// Set up the additional information
-	$aporder['ordernumber'] = 			$orderDATA['order_reference'];
+	$aporder['ordernumber'] = 			$orderDATA['order_reference'] . $_order_suffix;
 	$aporder['bankaccountnumber'] = 	'';
 	$aporder['currency'] = 				'EUR';
 	$aporder['ipaddress'] = 			$_SERVER['REMOTE_ADDR'];
 	
 	
 	
+	$total = 0;
+	
 	// Set up order lines, repeat for more order lines
 	if(count($orderDATA['products']) > 0)
 	{
 		foreach($orderDATA['products'] AS $product)
 		{
+			$expl = explode(".", $product['price']);
+			$heel = $expl[0] * 100;
+			$cent = $expl[1];
+			
+			$product['price'] = $heel + $cent;
+			
 			$sku = $product['article_code'];
 			$name = $product['name'];
 			$qty = $product['quantity'];
@@ -79,8 +89,74 @@ try
 			$tax_category = 1; // 1 = high, 2 = low, 3, zero, 4 no tax
 			
 			$Afterpay->create_order_line($sku, $name, $qty, $price, $tax_category);
+			
+			$total += $price;
 		}
 	}
+	
+	// Set up order lines, repeat for more order lines
+	if(count($orderDATA['shipments']) > 0)
+	{
+		$_total_shipment = 0;
+		
+		foreach($orderDATA['shipments'] AS $shipment)
+		{
+			$_pickup_order = (strpos(strtolower($shipment['method']), "afhalen") !== false ? true : false);
+			
+			if($_pickup_order == false)
+			{
+				$_pickup_order = (strpos(strtolower($shipment['method']), "afhaal") !== false ? true : false);
+			}
+			
+			$expl = explode(".", $shipment['price']);
+			$heel = $expl[0] * 100;
+			$cent = $expl[1];
+			
+			$shipment['price'] = $heel + $cent;
+			
+			$sku = "" . $shipment['shipmentID'];
+			$name = $shipment['method'];
+			$qty = 1;
+			$price = $shipment['price']; // in cents
+			$tax_category = 1; // 1 = high, 2 = low, 3, zero, 4 no tax
+			
+			$Afterpay->create_order_line($sku, $name, $qty, $price, $tax_category);
+			
+			$_total_shipment += $price;
+			$total += $price;
+		}
+	}
+	
+	if($_pickup_order == true)
+	{
+		print "Picked up!";
+		
+		$merchant = parent::_runFunction("merchant", "load", array($data[0]));
+		
+		preg_match("/([^a-zA-Z]+)(.*)/", $merchant['housenumber'], $matches);
+		
+		unset($matches[0]);
+		$merchant['housenumber'] = $matches[1];
+		
+		unset($matches[1]);
+		$merchant['housenumber_additions'] = implode("-", $matches);
+		
+		$aporder['shiptoaddress']['city'] = 							$merchant['city'];
+		$aporder['shiptoaddress']['housenumber'] = 						$merchant['housenumber'];
+		$aporder['shiptoaddress']['housenumberaddition'] = 				$merchant['housenumber_additions'];
+		$aporder['shiptoaddress']['isocountrycode'] = 					"nl";
+		$aporder['shiptoaddress']['postalcode'] = 						$merchant['zip_code'];
+		$aporder['shiptoaddress']['referenceperson']['dob'] = 			'1980-12-12T00:00:00';
+		$aporder['shiptoaddress']['referenceperson']['email'] = 		$merchant['email_address'];
+		$aporder['shiptoaddress']['referenceperson']['gender'] = 		'';
+		$aporder['shiptoaddress']['referenceperson']['initials'] = 		'bedr.';
+		$aporder['shiptoaddress']['referenceperson']['isolanguage'] = 	'nl';
+		$aporder['shiptoaddress']['referenceperson']['lastname'] = 		$merchant['company_name'];
+		$aporder['shiptoaddress']['referenceperson']['phonenumber'] = 	$merchant['phone'];
+		$aporder['shiptoaddress']['streetname'] = 					 	$merchant['street'];
+	}
+	
+	print_r($aporder['shiptoaddress']); exit;
 	
 	
 	
@@ -93,14 +169,15 @@ try
 	$authorisation['merchantid'] = $_api_key_1;
 	$authorisation['portfolioid'] = '2';
 	$authorisation['password'] = $_api_key_2;
-	$modus = 'test'; // for production set to 'live'
-	//$modus = 'live'; // for test set to 'test'
-	
+	//$modus = 'test'; // for production set to 'live'
+	$modus = 'live'; // for test set to 'test'
 	
 	// Request and process the data
 	$Afterpay->do_request( $authorisation, $modus);
 	$results = $Afterpay->order_result;
 	$results = json_decode(json_encode($results), true);
+	
+	//print "<pre>" . print_r($results, true) . "</pre>"; exit;
 	
 	$urlSuccess = "https://" . ($dev ? "dev" : "merchant") . ".justinharings.nl/extensions/payments/process.php?orderID=" . $orderID;
 	
@@ -123,13 +200,13 @@ try
 	}
 	else
 	{
-		header("location: " . $_cancel_url . "/error/afterpay/");
+		header("location: " . $_cancel_url . "&error=afterpay" . $results['return']['resultId']);
 	}
 }
 catch (Exception $e)
 {
 	// Something failed, go back to the cancel page.
-	header("location: " . $_cancel_url . "/error/afterpay/");
+	header("location: " . $_cancel_url . "&error=afterpay");
 	//print $e->getMessage();
 }
 ?>
