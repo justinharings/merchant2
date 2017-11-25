@@ -34,8 +34,18 @@ class merchant extends motherboard
 			$data[0]
 		);
 		$result = parent::query($query);
+		$return = parent::fetch_assoc($result);
 		
-		return parent::fetch_assoc($result);
+		$return['street'] = "";
+		$return['housenumber'] = "";
+		
+		if(preg_match('/(?P<address>[^\d]+) (?P<number>\d+.?)/', $return['address'], $matches))
+		{
+			$return['street'] = $matches['address'];
+			$return['housenumber'] = $matches['number'];
+		}
+		
+		return $return;
 	}
 }
 ?>

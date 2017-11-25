@@ -53,11 +53,13 @@ $mb = new motherboard();
 $order = $mb->_runFunction("orders", "load", array($orderID));
 $merchant = $mb->_runFunction("merchant", "load", array($order['merchantID']));
 
+// $merchant['website_url'] = "https://websites.justinharings.nl/";
+
 $_finish_url = $merchant['website_url'] . ($_language_pack != "" ? "/" . $_language_pack . "/" : "") . $merchant['webshop_success_url'];
 $_finish_url = str_replace("//", "/", $_finish_url);
 $_finish_url = str_replace("https:/", "https://", $_finish_url);
 
-$_cancel_url = $merchant['website_url'] . ($_language_pack != "" ? "/" . $_language_pack . "/" : "") . $merchant['webshop_cancel_url'];
+$_cancel_url = $merchant['website_url'] . $merchant['webshop_cancel_url'];
 $_cancel_url = str_replace("//", "/", $_cancel_url);
 $_cancel_url = str_replace("https:/", "https://", $_cancel_url);
 
@@ -100,6 +102,6 @@ else
 	// The order isn't payed. Go back to the declined page from the webshop.
 	//print "declined. Return to " . $_cancel_url; exit;
 	
-	header("location:" . $_cancel_url);
+	header("location:" . $_cancel_url . "?orderID=" . $orderID);
 }
 ?>

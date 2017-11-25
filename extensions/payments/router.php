@@ -13,9 +13,13 @@ if(file_exists($file))
 {
 	$merchant = $this->_runFunction("merchant", "load", array($data[0]));
 	
-	$_cancel_url = $merchant['website_url'] . (isset($_GET['language_pack']) ? $_GET['language_pack'] : "") . $merchant['webshop_cancel_url'];
+	// $merchant['website_url'] = "https://websites.justinharings.nl/";
+	
+	$_cancel_url = $merchant['website_url'] . $merchant['webshop_cancel_url'];
 	$_cancel_url = str_replace("//", "/", $_cancel_url);
 	$_cancel_url = str_replace("https:/", "https://", $_cancel_url);
+	
+	$_cancel_url = $_cancel_url . "?orderID=" . $orderID;
 	
 	require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT == true ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/" . $_load_module . "/payment.php");
 }
