@@ -1,6 +1,12 @@
 <?php	
 try
 {
+	if(!isset($_POST['dob']))
+	{
+		header("location: " . $_cancel_url . "&error=afterpay");
+	}
+	
+	
 	// Load AfterPay Library
 	require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/third-party/payment-modules/systems/vendor/autoload.php");
 	
@@ -42,13 +48,21 @@ try
 	
 	
 	
+	$d = substr($_POST['dob'], 0, 2);
+	$m = substr($_POST['dob'], 3, 2);
+	$y = substr($_POST['dob'], 6, 4);
+	
+	$dob = $y . "-" . $m . "-" . $d;
+	
+	
+	
 	// Set up address information for shipping and invoice
 	$aporder['billtoaddress']['city'] = 							$customerData['city'];
 	$aporder['billtoaddress']['housenumber'] = 						$customerData['housenumber'];
 	$aporder['billtoaddress']['housenumberaddition'] = 				$customerData['housenumber_additions'];
 	$aporder['billtoaddress']['isocountrycode'] = 					$this->_countryCodes($customerData['country']);
 	$aporder['billtoaddress']['postalcode'] = 						$customerData['zip_code'];
-	$aporder['billtoaddress']['referenceperson']['dob'] = 			'1980-12-12T00:00:00';
+	$aporder['billtoaddress']['referenceperson']['dob'] = 			$dob . 'T00:00:00';
 	$aporder['billtoaddress']['referenceperson']['email'] = 		$customerData['email_address'];
 	$aporder['billtoaddress']['referenceperson']['gender'] = 		'';
 	$aporder['billtoaddress']['referenceperson']['initials'] = 		$customerData['initials'];
@@ -144,7 +158,7 @@ try
 		$aporder['shiptoaddress']['housenumberaddition'] = 				$merchant['housenumber_additions'];
 		$aporder['shiptoaddress']['isocountrycode'] = 					"nl";
 		$aporder['shiptoaddress']['postalcode'] = 						$merchant['zip_code'];
-		$aporder['shiptoaddress']['referenceperson']['dob'] = 			'1980-12-12T00:00:00';
+		$aporder['shiptoaddress']['referenceperson']['dob'] = 			$dob . 'T00:00:00';
 		$aporder['shiptoaddress']['referenceperson']['email'] = 		$merchant['email_address'];
 		$aporder['shiptoaddress']['referenceperson']['gender'] = 		'';
 		$aporder['shiptoaddress']['referenceperson']['initials'] = 		'bedr.';
