@@ -2,7 +2,7 @@
 try
 {
 	// Load AfterPay Library
-	require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/vendor/autoload.php");
+	require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/third-party/payment-modules/systems/vendor/autoload.php");
 	
 	// Create new AfterPay Object
 	$Afterpay = new \Afterpay\Afterpay();
@@ -129,8 +129,6 @@ try
 	
 	if($_pickup_order == true)
 	{
-		print "Picked up!";
-		
 		$merchant = parent::_runFunction("merchant", "load", array($data[0]));
 		
 		preg_match("/([^a-zA-Z]+)(.*)/", $merchant['housenumber'], $matches);
@@ -156,8 +154,6 @@ try
 		$aporder['shiptoaddress']['streetname'] = 					 	$merchant['street'];
 	}
 	
-	print_r($aporder['shiptoaddress']); exit;
-	
 	
 	
 	// Create the order object for B2C or B2B
@@ -179,12 +175,12 @@ try
 	
 	//print "<pre>" . print_r($results, true) . "</pre>"; exit;
 	
-	$urlSuccess = "https://" . ($dev ? "dev" : "merchant") . ".justinharings.nl/extensions/payments/process.php?orderID=" . $orderID;
+	$urlSuccess = "https://merchant.justinharings.nl/extensions/payments/process.php?orderID=" . $orderID;
 	
 	if(isset($results['return']['resultId']) && $results['return']['resultId'] == 0)
 	{
 		// Require the initialize function from Mollie.
-		require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/database.php");
+		require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/third-party/payment-modules/systems/mollie/database.php");
 		
 		$data = array();
 		$data[0] = 0;
@@ -194,7 +190,7 @@ try
 		$data[4] = $_api_key_2;
 		$data[5] = (isset($_GET['language_pack']) ? $_GET['language_pack'] : "");
 	
-		database_write($orderID, serialize($data), $dev);
+		database_write($orderID, serialize($data), _DEVELOPMENT_ENVIRONMENT);
 		
 		header("location: " . $urlSuccess);
 	}

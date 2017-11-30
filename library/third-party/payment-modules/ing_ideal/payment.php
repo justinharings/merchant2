@@ -6,7 +6,7 @@ try
 	$merchantID = $_api_key_2;
 	
 	// Succes and error URL
-	$urlSuccess = "https://" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/extensions/payments/process.php?orderID=" . $orderID;
+	$urlSuccess = "https://merchant.justinharings.nl/extensions/payments/process.php?orderID=" . $orderID;
 	$urlCancel = $_cancel_url;
 	$urlError = $_cancel_url;
 	
@@ -50,7 +50,7 @@ try
 	
 	
 	// Require the initialize function from Mollie.
-	require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/database.php");
+	require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/third-party/payment-modules/systems/mollie/database.php");
 	
 	// Store data that can be used later on.
 	$data = array();
@@ -61,7 +61,7 @@ try
 	$data[4] = $_api_key_2;
 	$data[5] = (isset($_GET['language_pack']) ? $_GET['language_pack'] : "");
 
-	database_write($orderID, serialize($data), $dev);
+	database_write($orderID, serialize($data), _DEVELOPMENT_ENVIRONMENT);
 	
 	
 echo <<<EOT

@@ -1258,17 +1258,7 @@ class orders extends motherboard
 
 		if($_load_module != "")
 		{
-			$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-			$dev = false;
-			
-			if(strpos($actual_link, "dev.justin") !== false)
-			{
-				$dev = true;
-			}
-			
-			define("_DEVELOPMENT_ENVIRONMENT", $dev);
-			
-			require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/extensions/payments/router.php");
+			require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/extensions/payments/router.php");
 			exit;
 		}
 		

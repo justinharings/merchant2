@@ -2,7 +2,7 @@
 try
 {
 	// Require the initialize function from Mollie.
-	require_once("/var/www/vhosts/justinharings.nl/" . ($dev ? "dev" : "merchant") . ".justinharings.nl/library/third-party/payment-modules/systems/mollie/initialize.php");
+	require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/third-party/payment-modules/systems/mollie/initialize.php");
 
 	// Calculate the grand total for this order.
 	$grand_total = $this->calcTotal($orderID);
@@ -12,7 +12,7 @@ try
 		array(
 			"amount"       => $grand_total,
 			"description"  => "Betaling voor order #" . $orderID,
-			"redirectUrl"  => "https://" . ($dev ? "dev" : "merchant") . ".justinharings.nl/extensions/payments/process.php?orderID=" . $orderID,
+			"redirectUrl"  => "https://merchant.justinharings.nl/extensions/payments/process.php?orderID=" . $orderID,
 			"method"	   => "sofort",
 			"metadata"     => array(
 				"order_id" => $orderID,
@@ -29,7 +29,7 @@ try
 	$data[4] = $_api_key_2;
 	$data[5] = (isset($_GET['language_pack']) ? $_GET['language_pack'] : "");
 
-	database_write($orderID, serialize($data), $dev);
+	database_write($orderID, serialize($data), _DEVELOPMENT_ENVIRONMENT);
 
 	
 	// Go to the Mollie session that has been started.
