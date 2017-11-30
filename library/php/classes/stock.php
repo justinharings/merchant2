@@ -221,7 +221,16 @@ class stock extends motherboard
 		}
 		
 		$query = sprintf(
-			"	SELECT		products_stock.stock
+			"	SELECT		products_stock.stock,
+							(
+								SELECT		SUM(orders_product.quantity)
+								FROM		orders_product
+								INNER JOIN	orders ON orders.orderID = orders_product.orderID
+								INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+								WHERE		orders_product.productID = products_stock.productID
+									AND		order_statuses.finished = 0
+									AND 	order_statuses.declined = 0
+							) AS reserved
 				FROM		products_stock
 				WHERE		products_stock.productID = %d
 					%s",
@@ -232,6 +241,7 @@ class stock extends motherboard
 		$row = parent::fetch_assoc($result);
 		
 		$row['stock'] = intval($row['stock']);
+		$row['reserved'] = intval($row['reserved']);
 		
 		return $row;
 	}

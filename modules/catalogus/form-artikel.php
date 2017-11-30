@@ -601,13 +601,13 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 						</tr>
 						
 						<tr>
-							<td>Economisch:</td>
-							<td>0 <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
+							<td><strong>Gereserveerd:</strong></td>
+							<td><?= $stock['reserved'] ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
 						</tr>
 						
 						<tr>
-							<td><strong>Gereserveerd:</strong></td>
-							<td>1 <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
+							<td>Economisch:</td>
+							<td><?= ($stock['stock']-$stock['reserved']) ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
 						</tr>
 					</table>
 				</div>
