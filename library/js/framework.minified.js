@@ -71,7 +71,19 @@ systemChanges($(this))});checkboxHandler();findProduct()});$("span.remove-row").
 {$.post("/library/php/posts/catalogus/return_specifications.php",{specificationID:$("#specificationID").val()}).done(function(data)
 {data=$.parseJSON(data);if(data.length>0)
 {for(var i=0;i<data.length;i++)
-{$(".add-specification").trigger("click");var add_key=(i+1);$("#filter_language_"+add_key).val(data[i].language);$("#filter_key_"+add_key).val(data[i].key);$("#filter_value_"+add_key).val(data[i].value)}}})});$(document).on("keypress",'input.product-search',function(e)
+{$(".add-specification").trigger("click");var add_key=(i+1);$("#filter_language_"+add_key).val(data[i].language);$("#filter_key_"+add_key).val(data[i].key);$("#filter_value_"+add_key).val(data[i].value)}}})});function addslashes(str)
+{return(str+'').replace(/[\\"']/g,'\\$&').replace(/\u0000/g,'\\0')}
+$(".fa-refresh").on("click",function()
+{$(this).addClass("fa-spin");var array=new Array();$(".prop_keys").each(function()
+{var key="";var value="";if($(this).val()!="")
+{key=$(this).val();value=$(this).parent().find(".prop_values").val()}
+else{key=$(this).html();value=$(this).parent().find(".prop_values").html()}
+array.push(key+"=="+value)});for(var i=0;i<=array.length;i++)
+{if(typeof array[i]!=='undefined')
+{var str=array[i];str=str.split("==");var key=str[0];var value=str[1];$("tr.filter-item[name='"+addslashes(key)+"']").find("input.filter-value").val(value)}}
+$(this).removeClass("fa-spin")});$("#description-template").on("change",function()
+{$.post("/library/php/posts/catalogus/return_description.php",{descriptionID:$("#description-template").val()}).done(function(data)
+{data=$.parseJSON(data);$("textarea#description").html(data.description)})});$(document).on("keypress",'input.product-search',function(e)
 {var code=e.keyCode||e.which;var elm=$(this);if(code==13)
 {e.preventDefault();elm.prev("span.fa").removeClass("fa-search").addClass("fa-circle-o-notch").addClass("fa-spin");$.post("/library/php/posts/catalogus/return_product.php",{article_code:elm.val()}).done(function(data)
 {if(data=="null")

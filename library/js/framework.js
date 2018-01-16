@@ -554,6 +554,88 @@ $(document).ready(
 		
 		
 		/*
+		**
+		*/
+		
+		function addslashes(str) 
+		{
+			return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+		}
+		
+		$(".fa-refresh").on("click",
+			function()
+			{
+				$(this).addClass("fa-spin");
+				
+				var array = new Array();
+				
+				$(".prop_keys").each(
+					function()
+					{
+						var key = "";
+						var value = "";
+						
+						if($(this).val() != "")
+						{
+							key = $(this).val();
+							value = $(this).parent().find(".prop_values").val();
+						}
+						else
+						{
+							key = $(this).html();
+							value = $(this).parent().find(".prop_values").html();
+						}
+						
+						array.push(key+"=="+value);
+					}
+				);
+				
+				for(var i = 0; i <= array.length; i++)
+				{
+					if(typeof array[i] !== 'undefined')
+					{
+						var str = array[i];
+						str = str.split("==");
+						
+						var key = str[0];
+						var value = str[1];
+						
+						$("tr.filter-item[name='" + addslashes(key) + "']").find("input.filter-value").val(value);
+					}
+				}
+				
+				$(this).removeClass("fa-spin");
+			}
+		);
+		
+		
+		
+		/*
+		**
+		*/
+		
+		$("#description-template").on("change",
+			function()
+			{
+				$.post(
+					"/library/php/posts/catalogus/return_description.php",
+					{
+						descriptionID: $("#description-template").val()
+					}
+				).done(
+					function(data) 
+					{
+						data = $.parseJSON(data);
+						
+						$("textarea#description").html(data['description']);
+					}
+				);
+			}
+		);
+		
+		
+		
+		/*
 		**	Search for product information out of the form-table
 		**	option. It's possible that the product information
 		**	is used for data showing.

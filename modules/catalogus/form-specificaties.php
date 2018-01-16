@@ -8,7 +8,7 @@ if(isset($_GET['dataID']))
 <ul class="breadcrumbs">
 	<li>Merchant</li>
 	<li><?= $mb->_translateReturn("menu", "catalog") ?></li>
-	<li><?= $mb->_translateReturn("menu", "reviews-management") ?></li>
+	<li><?= $mb->_translateReturn("menu", "specification-table") ?></li>
 	<li><?= (isset($_GET['dataID']) ? $data['name'] : $mb->_translateReturn("forms", "add")) ?></li>
 </ul>
 

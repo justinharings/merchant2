@@ -45,6 +45,8 @@
 		<article-export-abbr>AE</article-export-abbr>
 		<specification-table>Specificatie tabellen</specification-table>
 		<specification-table-abbr>ST</specification-table-abbr>
+		<description-templates>Omschrijving templates</description-templates>
+		<description-templates-abbr>OT</description-templates-abbr>
 		<reviews-management>Reviews beheren</reviews-management>
 		<reviews-management-abbr>RB</reviews-management-abbr>
 		<sold-out>Uitverkochte artikelen</sold-out>
@@ -285,6 +287,9 @@
 		<!-- Specification tables > Form -->
 		<form-specifications-name>Omschrijving</form-specifications-name>
 		
+		<!-- Description templates > Form -->
+		<form-descriptions-name>Omschrijving</form-descriptions-name>
+		
 		<!-- Reports > Form -->
 		<form-repports-month>Boekingsmaand</form-repports-month>
 		<form-repports-year>Boekingsjaar</form-repports-year>
@@ -334,7 +339,7 @@
 		<form-products-sc>Leverancier code</form-products-sc>
 		<form-products-barcode>Barcode</form-products-barcode>
 		<form-products-name>Product naam</form-products-name>
-		<form-products-description>Omschrijving</form-products-description>
+		<form-products-description>Bijzonderheden</form-products-description>
 		<form-products-description-eg>Geen HTML. Vertaling wordt gedaan door Google Translate.</form-products-description-eg>
 		<form-products-shipment>Standaard verzendmethode</form-products-shipment>
 		<form-products-weight>Gewicht</form-products-weight>

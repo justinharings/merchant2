@@ -135,6 +135,43 @@ class categories extends motherboard
 	
 	
 	/*
+	**
+	*/
+	
+	public function viewDescriptionTemplates($data)
+	{
+		parent::_checkInputValues($data, 4);
+		
+		$search = "";
+		
+		if($data[1] != "")
+		{
+			$search = sprintf(
+				"	AND		descriptions.name LIKE ('%%%s%%')",
+				parent::real_escape_string($data[1])
+			);
+		}
+		
+		$query = sprintf(
+			"	SELECT		descriptions.*
+				FROM		descriptions
+				WHERE		descriptions.merchantID = %d
+					%s
+				ORDER BY	%s
+				LIMIT		%s",
+			$data[0],
+			$search,
+			$data[2],
+			$data[3]
+		);
+		$result = parent::query($query);
+		
+		return $result;
+	}
+	
+	
+	
+	/*
 	**	Load a certain categorie.
 	**	data[0]	=	categoryID.
 	*/
@@ -258,6 +295,24 @@ class categories extends motherboard
 				$return['filters'] = parent::fetch_array($result);
 			}
 		}
+		
+		return $return;
+	}
+	
+	
+	
+	public function loadDescription($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		descriptions.*
+				FROM		descriptions
+				WHERE		descriptions.descriptionID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$return = parent::fetch_assoc($result);
 		
 		return $return;
 	}
@@ -570,6 +625,53 @@ class categories extends motherboard
 	
 	
 	/*
+	**
+	*/
+	
+	public function saveDescriptions($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		if(isset($data[1]['delete']) && $data[1]['delete'] != 0)
+		{
+			return $this->deleteDescription($data);
+		}
+		
+		if(isset($data[1]['descriptionID']) && $data[1]['descriptionID'] != 0)
+		{
+			$query = sprintf(
+				"	UPDATE		descriptions
+					SET			descriptions.name = '%s',
+								descriptions.description = '%s'
+					WHERE		descriptions.descriptionID = %d",
+				parent::real_escape_string($data[1]['name']),
+				parent::real_escape_string($data[1]['description']),
+				intval($data[1]['descriptionID'])
+			);
+			parent::query($query);
+			
+		}
+		else
+		{
+			$query = sprintf(
+				"	INSERT INTO		descriptions
+					SET				descriptions.name = '%s',
+									descriptions.description = '%s',
+									descriptions.merchantID = %d",
+				parent::real_escape_string($data[1]['name']),
+				parent::real_escape_string($data[1]['description']),
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+		}
+				
+		return true;
+	}
+	
+	
+	
+	/*
 	**	Remove the categorye from the database.
 	**	Called by the save function when delete is set.
 	*/
@@ -631,6 +733,26 @@ class categories extends motherboard
 			"	DELETE FROM		categories_filters_lang
 				WHERE			categories_filters_lang.filterID = %d",
 			$data[1]['filterID']
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function deleteDescription($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	DELETE FROM		descriptions
+				WHERE			descriptions.descriptionID = %d",
+			$data[1]['descriptionID']
 		);
 		parent::query($query);
 		

@@ -80,7 +80,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					<?= $mb->_translateReturn("forms", "legend-manage-content") ?>
 				</div>
 				
-				<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-products-name") ?>" validation-required="true" validation-type="text" />
+				<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-products-name") ?>" <?= $_SESSION['merchantID'] == 1 ? 'holder-eg="[INCH] [BRAND] [TYPE] [GEARS] [ELECTRIC] [COLOR] [SEX] [SIZE]"' : "" ?> validation-required="true" validation-type="text" />
 				
 				<div class="languages width-300">
 					<span class="fa fa-chevron-circle-down"></span>
@@ -99,6 +99,24 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					}
 					?>
 				</div>
+				
+				<select name="description-template" id="description-template" class="width-200 margin" holder="Description template">
+					<option value=""></option>
+					
+					<?php
+					$data_description = $mb->_runFunction("categories", "viewDescriptionTemplates", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "descriptions.name", "0,50"));
+					
+					if($mb->num_rows($data_description))
+					{
+						foreach($data_description AS $value)
+						{
+							?>
+							<option value="<?= $value['descriptionID'] ?>"><?= $value['name'] ?></option>
+							<?php
+						}
+					}
+					?>
+				</select>
 				
 				<textarea name="description" id="description" class="width-100-percent" holder="<?= $mb->_translateReturn("forms", "form-products-description") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-products-description-eg") ?>" validation-required="true" validation-type="text"><?= isset($_GET['dataID']) ? $data['description'] : "" ?></textarea>
 			</div>
@@ -470,8 +488,8 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 								?>
 								<tr>
 									<td><?= $_lang_abbr[$value['language']] ?></td>
-									<td><?= $value['key'] ?></td>
-									<td><?= $value['value'] ?></td>
+									<td class="prop_keys"><?= $value['key'] ?></td>
+									<td class="prop_values"><?= $value['value'] ?></td>
 									<td>
 										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_specificatie.php?productPropertieID=<?= $value['productPropertieID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
 									</td>
@@ -495,8 +513,8 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 									?>
 								</select>
 							</td>
-							<td><input type="text" name="filter_key[]" id="filter_key_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
-							<td><input type="text" name="filter_value[]" id="filter_value_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
+							<td><input type="text" name="filter_key[]" id="filter_key_+" value="" class="width-300 prop_keys" validation-required="true" validation-type="text" /></td>
+							<td><input type="text" name="filter_value[]" id="filter_value_+" value="" class="width-300 prop_values" validation-required="true" validation-type="text" /></td>
 							<td>&nbsp;</td>
 						</tr>
 					</tbody>
@@ -525,6 +543,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 									<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-language") ?></td>
 									<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-key") ?></td>
 									<td width="500"><?= $mb->_translateReturn("forms", "form-products-filters-value") ?></td>
+									<td><span class="fa fa-refresh"></span></td>
 								</tr>
 							</thead>
 							
@@ -534,13 +553,13 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 								{
 									?>
 									
-									<tr>
+									<tr class="filter-item" name="<?= $mb->real_escape_string($filter['name']) ?>">
 										<td>Nederlands</td>
 										<td><?= $filter['name'] ?></td>
 										<td>
 											<input type="hidden" name="filter_id[]" id="filter_id_nl_<?= $key ?>" value="<?= $filter['filterID'] ?>" />
 											<input type="hidden" name="filter_languages[]" id="filter_languages_nl_<?= $key ?>" value="NL" />
-											<input type="text" name="filter_values[]" id="filter_values_nl_<?= $key ?>" value="<?= $mb->_runFunction("products", "loadFilterValue", array($_GET['dataID'], $filter['filterID'], "NL")) ?>" validation-required="true" validation-type="text" /></td>
+											<input type="text" class="filter-value" name="filter_values[]" id="filter_values_nl_<?= $key ?>" value="<?= $mb->_runFunction("products", "loadFilterValue", array($_GET['dataID'], $filter['filterID'], "NL")) ?>" validation-required="true" validation-type="text" /></td>
 										</td>
 									</tr>
 									
@@ -556,7 +575,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 											<td>
 												<input type="hidden" name="filter_id[]" id="filter_id_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $filter['filterID'] ?>" />
 												<input type="hidden" name="filter_languages[]" id="filter_languages_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $lang_value['code'] ?>" />
-												<input type="text" name="filter_values[]" id="filter_values_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $mb->_runFunction("products", "loadFilterValue", array($_GET['dataID'], $filter['filterID'], $lang_value['code'])) ?>" validation-required="true" validation-type="text" /></td>
+												<input type="text" class="filter-value" name="filter_values[]" id="filter_values_<?= $lang_value['code'] ?>_<?= $key ?>" value="<?= $mb->_runFunction("products", "loadFilterValue", array($_GET['dataID'], $filter['filterID'], $lang_value['code'])) ?>" validation-required="true" validation-type="text" /></td>
 											</td>
 										</tr>
 										<?php
