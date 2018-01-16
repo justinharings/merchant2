@@ -33,7 +33,7 @@ if($_reset == true)
 */
 
 $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
+//$actual_link = "dev.";
 define("_DEVELOPMENT_ENVIRONMENT", (strpos($actual_link, "dev.") !== false ? true : false));
 $_SESSION['_DEVELOPMENT_ENVIRONMENT'] = _DEVELOPMENT_ENVIRONMENT;
 
@@ -382,6 +382,14 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 										
 										<li class="menu-item" rel="/catalogus/specificaties/">
 											<div class="text"><?= $mb->_translateReturn("menu", "specification-table") ?></div>
+											
+											<div class="icon">
+												<span class="textual"><?= $mb->_translateReturn("menu", "article-management-abbr") ?></span>
+											</div>
+										</li>
+										
+										<li class="menu-item" rel="/catalogus/descriptions/">
+											<div class="text"><?= $mb->_translateReturn("menu", "description-templates") ?></div>
 											
 											<div class="icon">
 												<span class="textual"><?= $mb->_translateReturn("menu", "article-management-abbr") ?></span>
