@@ -442,9 +442,10 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-language") ?></td>
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-key") ?></td>
 							<td><?= $mb->_translateReturn("forms", "form-products-properties-value") ?></td>
-							<td width="45">
+							<td width="60">
 								<span class="add-row fa fa-plus-circle add-specification" style="float: right;" onclick="$('.specs-table').hide();"></span>
 								<span class="fa fa-gg-circle" style="float: right; margin: 1px 5px 0px 0px; font-size: 18px;" onclick="$('.specs-table').show();"></span>
+								<span class="fa fa-trash trash-properties" style="float: right; margin: 1px 5px 0px 0px; font-size: 18px;"></span>
 							</td>
 						</tr>
 					</thead>

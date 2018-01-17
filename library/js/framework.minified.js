@@ -81,7 +81,9 @@ else{key=$(this).html();value=$(this).parent().find(".prop_values").html()}
 array.push(key+"=="+value)});for(var i=0;i<=array.length;i++)
 {if(typeof array[i]!=='undefined')
 {var str=array[i];str=str.split("==");var key=str[0];var value=str[1];$("tr.filter-item[name='"+addslashes(key)+"']").find("input.filter-value").val(value)}}
-$(this).removeClass("fa-spin")});$("#description-template").on("change",function()
+$(this).removeClass("fa-spin")});$(".trash-properties").on("click",function()
+{var msg="Are you sure mate?";if(confirm(msg))
+{document.location.href='/library/php/posts/catalogus/verwijder_properties.php?productID='+$("#productID").val()+'&returnURL='+$("#returnURL").val()}});$("#description-template").on("change",function()
 {$.post("/library/php/posts/catalogus/return_description.php",{descriptionID:$("#description-template").val()}).done(function(data)
 {data=$.parseJSON(data);$("textarea#description").html(data.description)})});$(document).on("keypress",'input.product-search',function(e)
 {var code=e.keyCode||e.which;var elm=$(this);if(code==13)

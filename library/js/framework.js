@@ -609,6 +609,19 @@ $(document).ready(
 		);
 		
 		
+		$(".trash-properties").on("click",
+			function()
+			{
+				var msg = "Are you sure mate?";
+				
+				if(confirm(msg))
+				{
+					document.location.href = '/library/php/posts/catalogus/verwijder_properties.php?productID=' + $("#productID").val() + '&returnURL=' + $("#returnURL").val();
+				}
+			}
+		);
+		
+		
 		
 		/*
 		**
