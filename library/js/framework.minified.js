@@ -76,7 +76,7 @@ systemChanges($(this))});checkboxHandler();findProduct()});$("span.remove-row").
 $(".fa-refresh").on("click",function()
 {$(this).addClass("fa-spin");var array=new Array();$(".prop_keys").each(function()
 {var key="";var value="";if($(this).val()!="")
-{key=$(this).val();value=$(this).parent().find(".prop_values").val()}
+{key=$(this).val();value=$(this).parent().parent().find("td.values").find(".prop_values").val()}
 else{key=$(this).html();value=$(this).parent().find(".prop_values").html()}
 array.push(key+"=="+value)});for(var i=0;i<=array.length;i++)
 {if(typeof array[i]!=='undefined')

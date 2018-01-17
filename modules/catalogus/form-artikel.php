@@ -514,7 +514,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 								</select>
 							</td>
 							<td><input type="text" name="filter_key[]" id="filter_key_+" value="" class="width-300 prop_keys" validation-required="true" validation-type="text" /></td>
-							<td><input type="text" name="filter_value[]" id="filter_value_+" value="" class="width-300 prop_values" validation-required="true" validation-type="text" /></td>
+							<td class="values"><input type="text" name="filter_value[]" id="filter_value_+" value="" class="width-300 prop_values" validation-required="true" validation-type="text" /></td>
 							<td>&nbsp;</td>
 						</tr>
 					</tbody>
@@ -569,7 +569,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 									foreach($_lang AS $lang_value)
 									{
 										?>
-										<tr>
+										<tr class="filter-item" name="<?= $mb->real_escape_string($filter[$lang_value['code'] . '_name']) ?>">
 											<td><?= $lang_value['language'] ?></td>
 											<td><?= $filter[$lang_value['code'] . '_name'] ?></td>
 											<td>

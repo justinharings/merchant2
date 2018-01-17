@@ -578,7 +578,7 @@ $(document).ready(
 						if($(this).val() != "")
 						{
 							key = $(this).val();
-							value = $(this).parent().find(".prop_values").val();
+							value = $(this).parent().parent().find("td.values").find(".prop_values").val();
 						}
 						else
 						{
