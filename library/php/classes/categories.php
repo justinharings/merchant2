@@ -770,9 +770,9 @@ class categories extends motherboard
 		parent::_checkInputValues($data, 2);
 		
 		$query = sprintf(
-			"	DELETE FROM		specifications
-				WHERE			specifications.specificationID = %d",
-			$data[1]['specificationID']
+			"	DELETE FROM		specifications_filters
+				WHERE			specifications_filters.filterID = %d",
+			$data[1]['filterID']
 		);
 		parent::query($query);
 		
