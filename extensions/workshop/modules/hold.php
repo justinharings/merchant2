@@ -12,6 +12,24 @@ if($mb->num_rows($data))
 			continue;
 		}
 		
+		$battery_date = "";
+		
+		$query_batt = sprintf(
+			"	SELECT		batteries_test.date_added
+				FROM		batteries_test
+				INNER JOIN	batteries ON batteries.batteryID = batteries_test.batteryID
+				WHERE		batteries.customerID = %d
+				ORDER BY	batteries_test.date_added DESC",
+			$value['customerID']
+		);
+		$result_batt = $mb->query($query_batt);
+		
+		if($mb->num_rows($result_batt) > 0)
+		{
+			$row_batt = $mb->fetch_assoc($result_batt);
+			$battery_date = $row_batt['date_added'];
+		}
+		
 		$num++;
 		?>
 		
@@ -87,6 +105,18 @@ if($mb->num_rows($data))
 							<small>Sleutelnummer</small><br/>
 							Nummer <?= $value['key_number'] ?>
 						</td>
+						
+						<?php
+						if($value['customerID'] > 0 && $battery_date != "")
+						{
+							?>
+							<td class="info-block">
+								<small>Accu controle</small><br/>
+								<?= $battery_date ?>
+							</td>
+							<?php
+						}
+						?>
 						
 						<td class="info-block">
 							<small>Totaal</small><br/>

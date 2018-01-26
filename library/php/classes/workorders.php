@@ -390,7 +390,7 @@ class workorders extends motherboard
 		$query = sprintf(
 			"	SELECT		batteries.*
 				FROM		batteries
-				WHERE		batteries.barcode = %d",
+				WHERE		batteries.barcode = '%s'",
 			$data[1]['barcode']
 		);
 		$result = parent::query($query);
@@ -401,7 +401,7 @@ class workorders extends motherboard
 				"	INSERT INTO		batteries
 					SET				batteries.customerID = %d,
 									batteries.ampere = '%.2f',
-									batteries.barcode = %d",
+									batteries.barcode = '%s'",
 				$workorder['customerID'],
 				$data[1]['ampere'],
 				$data[1]['barcode']
