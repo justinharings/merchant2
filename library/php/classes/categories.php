@@ -570,7 +570,7 @@ class categories extends motherboard
 		
 		if(isset($data[1]['delete']) && $data[1]['delete'] != 0)
 		{
-			return $this->deleteSpecification($data);
+			return $this->deleteFullSpecification($data);
 		}
 		
 		if(isset($data[1]['specificationID']) && $data[1]['specificationID'] != 0)
@@ -753,6 +753,33 @@ class categories extends motherboard
 			"	DELETE FROM		descriptions
 				WHERE			descriptions.descriptionID = %d",
 			$data[1]['descriptionID']
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function deleteFullSpecification($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	DELETE FROM		specifications
+				WHERE			specifications.specificationID = %d",
+			$data[1]['specificationID']
+		);
+		parent::query($query);
+		
+		$query = sprintf(
+			"	DELETE FROM		specifications_filters
+				WHERE			specifications_filters.specificationID = %d",
+			$data[1]['specificationID']
 		);
 		parent::query($query);
 		

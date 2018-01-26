@@ -23,7 +23,7 @@ if(isset($_GET['dataID']))
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			
 			<?php
-			if(isset($_GET['dataID']) && true == false)
+			if(isset($_GET['dataID']))
 			{
 				?>
 				<input type="button" name="delete-item" id="delete-item" value="<?= $mb->_translateReturn("forms", "button-delete") ?>" class="white show-load" />
