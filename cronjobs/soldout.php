@@ -9,8 +9,8 @@ $db = new database();
 $query = sprintf(
 	"	UPDATE		products
 		INNER JOIN	products_stock ON products_stock.productID = products.productID
-		SET			products.status = 4
-		WHERE		products.status = 2
+		SET			products.status = 1
+		WHERE		products.status = 4
 			AND		(
 						products_stock.stock - (
 							SELECT		SUM(orders_product.quantity)
@@ -21,7 +21,7 @@ $query = sprintf(
 								AND		order_statuses.finished = 0
 								AND 	order_statuses.declined = 0
 						)
-					) <= 0"
+					) > 0"
 );
 $db->query($query);
 ?>

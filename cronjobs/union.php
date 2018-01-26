@@ -10,9 +10,16 @@ $array = array(
 	"89155451" => "https://www.union.nl/nl/fast-dark-blue.html?id=89155451", 	// 49 cm
 	"89155463" => "https://www.union.nl/nl/fast-dark-blue.html?id=89155463", 	// 53 cm
 	"89155475" => "https://www.union.nl/nl/fast-dark-blue.html?id=89155475", 	// 57 cm
+	
 	"89155928" => "https://www.union.nl/nl/fast-cool-grey.html?id=89155928", 	// 49 cm
 	"89155940" => "https://www.union.nl/nl/fast-cool-grey.html?id=89155940", 	// 53 cm
-	"89155952" => "https://www.union.nl/nl/fast-cool-grey.html?id=89155952" 	// 57 cm
+	"89155952" => "https://www.union.nl/nl/fast-cool-grey.html?id=89155952", 	// 57 cm
+	
+	"104779322" => "https://www.union.nl/nl/lite-damesfiets-zilver.html?id=104779322", 	// 57 cm
+	
+	"87125603" => "https://www.union.nl/nl/flow-berry-blue-dames.html?id=87125603",		// 53cm
+
+	"88193810" => "https://www.union.nl/nl/flow-pistache-green-heren.html?id=88193810"	// 57cm
 );
 
 
