@@ -1017,7 +1017,7 @@ class orders extends motherboard
 		
 		
 		
-		if($data[7] > 0)
+		if($data[7] > 0 && count($data[1]) > 0)
 		{
 			$query = sprintf(
 				"	DELETE FROM		orders_product
