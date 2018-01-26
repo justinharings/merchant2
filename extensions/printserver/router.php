@@ -323,7 +323,15 @@ else if($_GET['type'] != "receipt" && $_GET['type'] != "workorder")
 	    $html2pdf->pdf->SetDisplayMode('fullpage');
 	    $html2pdf->setDefaultFont("montserrat");
 	    $html2pdf->writeHTML($content);
-	    $html2pdf->Output("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/temp/" . $file, 'F');
+		
+		if($_GET['action'] == "download")
+		{
+			$html2pdf->Output($file, "D");
+		}
+		else
+		{
+			$html2pdf->Output("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/temp/" . $file, "F");
+		}
 	}
 	catch(HTML2PDF_exception $e) 
 	{
