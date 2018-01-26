@@ -94,9 +94,11 @@ class customers extends motherboard
 				"	SELECT		orders.*,
 								CONCAT(YEAR(orders.date_added), orders.orderID) AS order_reference,
 								order_statuses.name AS status,
-								DATE_FORMAT(order_statuses.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added
+								DATE_FORMAT(order_statuses.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
+								pos_employees.name AS employee
 					FROM		orders
 					INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+					LEFT JOIN	pos_employees ON pos_employees.employeeID = orders.employeeID
 					WHERE		orders.customerID = %d
 					ORDER BY	orders.date_added DESC",
 				$data[0]
@@ -129,6 +131,30 @@ class customers extends motherboard
 			if(parent::num_rows($result))
 			{
 				$return['workorders'] = parent::fetch_array($result);
+			}
+			
+			
+			
+			$query = sprintf(
+				"	SELECT		batteries.*,
+								batteries.ampere AS ampere_new,
+								batteries_test.*,
+								DATE_FORMAT(batteries_test.date_added, '%%d-%%m-%%Y') AS date_added,
+								pos_employees.name AS employee
+					FROM		batteries_test
+					INNER JOIN	batteries ON batteries.batteryID = batteries_test.batteryID
+					LEFT JOIN	pos_employees ON pos_employees.employeeID = batteries_test.employeeID
+					WHERE		batteries.customerID = %d
+					ORDER BY	batteries_test.date_added ASC",
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['batteries'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$return['batteries'] = parent::fetch_array($result);
 			}
 		}
 		
@@ -467,10 +493,8 @@ class customers extends motherboard
 		$query = sprintf(
 			"	SELECT		customers.customerID
 				FROM		customers
-				WHERE		customers.zip_code = '%s'
-					AND		customers.customer_code = '%s'",
-			$data[0],
-			$data[1]
+				WHERE		customers.customer_code = '%s'",
+			$data[0]
 		);
 		$result = parent::query($query);
 		$row = parent::fetch_assoc($result);

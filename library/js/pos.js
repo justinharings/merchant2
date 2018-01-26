@@ -566,6 +566,13 @@ $(document).ready(
 		**	Workorders
 		*/
 		
+		$(".workshop.battery-test").on("click",
+			function()
+			{
+				popup(400, 135, "/extensions/workshop/modules/popup_battery_detection.php");
+			}
+		);
+		
 		$(".fa-music").on("click",
 			function()
 			{
@@ -627,6 +634,15 @@ $(document).ready(
 				var workorderID = $(this).attr("workorderID");
 				
 				popup(500, 260, "/extensions/workshop/modules/popup_notes.php?workorderID=" + workorderID);
+			}
+		);
+		
+		$(".workorder-action.fa-battery-1").on("click",
+			function()
+			{
+				var workorderID = $(this).attr("workorderID");
+				
+				popup(400, 175, "/extensions/workshop/modules/popup_battery.php?workorderID=" + workorderID);
 			}
 		);
 		

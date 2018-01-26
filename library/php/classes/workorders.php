@@ -381,6 +381,69 @@ class workorders extends motherboard
 	**
 	*/
 	
+	public function saveWorkorderBattery($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$workorder = $this->loadWorkorder(array($data[1]['workorderID']));
+		
+		$query = sprintf(
+			"	SELECT		batteries.*
+				FROM		batteries
+				WHERE		batteries.barcode = %d",
+			$data[1]['barcode']
+		);
+		$result = parent::query($query);
+		
+		if($workorder['customerID'] > 0 && parent::num_rows($result) == 0)
+		{
+			$query = sprintf(
+				"	INSERT INTO		batteries
+					SET				batteries.customerID = %d,
+									batteries.ampere = '%.2f',
+									batteries.barcode = %d",
+				$workorder['customerID'],
+				$data[1]['ampere'],
+				$data[1]['barcode']
+			);
+			parent::query($query);
+		}
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function saveWorkorderBatteryTest($data)
+	{
+		parent::_checkInputValues($data, 3);
+		
+		if(isset($data[1]['batteryID']))
+		{
+			$query = sprintf(
+				"	INSERT INTO		batteries_test
+					SET				batteries_test.batteryID = %d,
+									batteries_test.employeeID = %d,
+									batteries_test.ampere = '%.2f',
+									batteries_test.timer = %d,
+									batteries_test.date_added = NOW()",
+				$data[1]['batteryID'],
+				$data[2],
+				$data[1]['ampere'],
+				$data[1]['timer']
+			);
+			parent::query($query);
+		}
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
 	public function saveWorkorder($data)
 	{
 		parent::_checkInputValues($data, 2);
@@ -478,7 +541,8 @@ class workorders extends motherboard
 		{
 			$query = sprintf(
 				"	UPDATE		workorders
-					SET			workorders.removed = 1
+					SET			workorders.removed = 1,
+								workorders.status = 1
 					WHERE		workorders.workorderID = %d",
 				$data[0]
 			);

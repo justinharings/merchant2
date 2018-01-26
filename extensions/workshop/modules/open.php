@@ -98,6 +98,10 @@ if($mb->num_rows($data))
 							<span class="fa workorder-action fa-exclamation" workorderID="<?= $value['workorderID'] ?>"></span>
 						</td>
 						
+						<td width="60">
+							<span class="fa <?= $value['customerID'] == 0 ? "" : "workorder-action" ?> fa-battery-1" workorderID="<?= $value['workorderID'] ?>" <?= $value['customerID'] == 0 ? "style=\"color: #ccc;\"" : "" ?>></span>
+						</td>
+						
 						<td class="info-block">
 							<small>Verloopdatum</small><br/>
 							<?= $value['expiration_date'] ?>
