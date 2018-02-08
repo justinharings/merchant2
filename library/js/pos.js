@@ -569,7 +569,7 @@ $(document).ready(
 		$(".workshop.battery-test").on("click",
 			function()
 			{
-				popup(400, 135, "/extensions/workshop/modules/popup_battery_detection.php");
+				popup(300, 135, "/extensions/workshop/modules/popup_battery_detection.php");
 			}
 		);
 		
@@ -642,7 +642,7 @@ $(document).ready(
 			{
 				var workorderID = $(this).attr("workorderID");
 				
-				popup(400, 175, "/extensions/workshop/modules/popup_battery.php?workorderID=" + workorderID);
+				popup(300, 175, "/extensions/workshop/modules/popup_battery.php?workorderID=" + workorderID);
 			}
 		);
 		
