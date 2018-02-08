@@ -1113,7 +1113,11 @@ class products extends motherboard
 		if($data[2] != "")
 		{
 			$search = sprintf(
-				" AND products_cache.name LIKE ('%%%s%%') ",
+				" AND 	(
+							products_cache.name LIKE ('%%%s%%')
+					OR		products_cache.article_code LIKE ('%%%s%%')
+					OR		products_cache.barcode LIKE ('%%%s%%')
+						)",
 				parent::real_escape_string($data[2])
 			);
 		}

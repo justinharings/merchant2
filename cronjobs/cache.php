@@ -19,7 +19,9 @@ $query = sprintf(
 					categories.stock_type,
 					categories.merchantID,
 					brands.name AS brand,
-					products.status
+					products.status,
+					products.article_code,
+					products.barcode
 		FROM		categories_products
 		INNER JOIN	categories ON categories.categoryID = categories_products.categoryID
 		INNER JOIN	products ON products.productID = categories_products.productID
@@ -233,6 +235,8 @@ foreach($insert AS $key => $value)
 							products_cache.productID = %d,
 							products_cache.categoryID = %d,	
 							products_cache.name = '%s',
+							products_cache.article_code = '%s',
+							products_cache.barcode = '%s',
 							products_cache.name_sort = '%s',
 							products_cache.price = '%s',
 							products_cache.price_adviced = '%s',
@@ -246,6 +250,8 @@ foreach($insert AS $key => $value)
 		$value['productID'],
 		$value['categoryID'],
 		$mb->real_escape_string($value['name']),
+		$mb->real_escape_string($value['article_code']),
+		$mb->real_escape_string($value['barcode']),
 		$mb->real_escape_string($value['name_sort']),
 		$value['price'],
 		$value['price_adviced'],
