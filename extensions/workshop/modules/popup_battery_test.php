@@ -68,6 +68,11 @@ foreach($card AS $key => $value)
 			<input type="text" name="timer" id="timer" value="" holder="Verstreken tijd" holder-eg="Vermeld op het test apparaat." class="width-100-percent margin" />
 			<input type="text" name="ampere" id="ampere" value="" holder="Amperes" holder-eg="Vermeld op het test apparaat." class="width-100-percent double-margin" />
 			
+			<select multiple="multiple" name="removed" id="removed" class="width-100-percent no-multiselect double-margin" style="height: 55px;">
+				<option selected="selected" value="0">Goedgekeurd, accu blijven gebruiken</option>
+				<option value="1">Afgekeurd, accu afmelden</option>
+			</select>
+			
 			<br/>
 			<input type="submit" name="select" id="select" value="Gegevens opslaan" class="width-100-percent red margin" />
 		</form>
