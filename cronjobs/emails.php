@@ -136,5 +136,70 @@ foreach($merchants AS $value)
 			$mb->_runFunction("mailserver", "sendAllEmail", $array);
 		}
 	}
+	
+	
+	
+	// Orders - Na 365 dagen pauze
+	$query = sprintf(
+		"	SELECT		orders.*,
+						customers.*
+			FROM		orders
+			INNER JOIN	customers ON customers.customerID = orders.customerID
+			INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 355 DAY)
+				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 375 DAY)
+				AND		orders.merchantID = %d
+				AND		order_statuses.finished = 1
+				AND		order_statuses.declined = 0",
+		$value['merchantID']
+	);
+	$result = $mb->query($query);
+	
+	while($row = $mb->fetch_assoc($result))
+	{
+		if($row['email_address'] != "" && _checkWorkorder($row['orderID']) == 0)
+		{
+			$array = array();
+			$array[] = $value['merchantID'];
+			$array[] = 8;
+			$array[] = $row['email_address'];
+			$array[] = 0;
+			$array[] = $row['orderID'];
+			
+			$mb->_runFunction("mailserver", "sendAllEmail", $array);
+		}
+	}
+	
+	
+	// Orders - Na 730 dagen pauze
+	$query = sprintf(
+		"	SELECT		orders.*,
+						customers.*
+			FROM		orders
+			INNER JOIN	customers ON customers.customerID = orders.customerID
+			INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 720 DAY)
+				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 740 DAY)
+				AND		orders.merchantID = %d
+				AND		order_statuses.finished = 1
+				AND		order_statuses.declined = 0",
+		$value['merchantID']
+	);
+	$result = $mb->query($query);
+	
+	while($row = $mb->fetch_assoc($result))
+	{
+		if($row['email_address'] != "" && _checkWorkorder($row['orderID']) == 0)
+		{
+			$array = array();
+			$array[] = $value['merchantID'];
+			$array[] = 9;
+			$array[] = $row['email_address'];
+			$array[] = 0;
+			$array[] = $row['orderID'];
+			
+			$mb->_runFunction("mailserver", "sendAllEmail", $array);
+		}
+	}
 }
 ?>
