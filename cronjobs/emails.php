@@ -146,8 +146,8 @@ foreach($merchants AS $value)
 			FROM		orders
 			INNER JOIN	customers ON customers.customerID = orders.customerID
 			INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
-			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 355 DAY)
-				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 375 DAY)
+			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 305 DAY)
+				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 425 DAY)
 				AND		orders.merchantID = %d
 				AND		order_statuses.finished = 1
 				AND		order_statuses.declined = 0",
@@ -178,8 +178,8 @@ foreach($merchants AS $value)
 			FROM		orders
 			INNER JOIN	customers ON customers.customerID = orders.customerID
 			INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
-			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 720 DAY)
-				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 740 DAY)
+			WHERE		DATE(orders.date_added) <= DATE_SUB(CURDATE(), INTERVAL 690 DAY)
+				AND		DATE(orders.date_added) > DATE_SUB(CURDATE(), INTERVAL 790 DAY)
 				AND		orders.merchantID = %d
 				AND		order_statuses.finished = 1
 				AND		order_statuses.declined = 0",
