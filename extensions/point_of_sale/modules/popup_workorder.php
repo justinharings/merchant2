@@ -30,6 +30,15 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php")
 
 $mb = new motherboard();
 
+if(!$mb->_runFunction("authorization", "validateLoginPOS"))
+{
+	?>
+	<script type="text/javascript">
+		document.location.href = '/extensions/point_of_sale/modules/popup_close.php';
+	</script>
+	<?php
+}
+
 if(isset($_GET['key']))
 {
 	$data = $mb->_runFunction("workorders", "loadWorkorder", array($_GET['key']));
