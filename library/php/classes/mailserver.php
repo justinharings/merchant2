@@ -236,6 +236,26 @@ class mailserver extends motherboard
 					{
 						$_skip = true;
 					}
+					
+					if($row['groupID'] > 0)
+					{
+						$query_group = sprintf(
+							"	SELECT		COUNT(orders_product.orderID) AS cnt
+								FROM		orders_product
+								INNER JOIN	products ON products.productID = orders_product.productID
+								WHERE		orders_product.orderID = %d
+									AND		products.groupID = %d",
+							$params[1]['orderID'],
+							$row['groupID']
+						);
+						$result_group = parent::query($query_group);
+						$row_group = parent::fetch_assoc($result_group);
+						
+						if($row_group['cnt'] == 0)
+						{
+							$_skip = true;
+						}
+					}
 				}
 				
 				if($_skip == false)

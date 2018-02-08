@@ -475,6 +475,7 @@
 		<form-email-content-eg>U kunt [replace-tags] gebruiken. HTML toegestaan.</form-email-content-eg>
 		<form-email-language>Taalkeuze</form-email-language>
 		<form-email-language-eg>Voor een specifieke taal.</form-email-language-eg>
+		<form-email-salesgroup>Specifieke verkoopgroep</form-email-salesgroup>
 		
 		<!-- CMS > SMS Templates > Form -->
 		<form-sms-name>Omschrijving</form-sms-name>

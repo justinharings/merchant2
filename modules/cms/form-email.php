@@ -65,7 +65,7 @@ if(isset($_GET['dataID']))
 				<option <?= isset($_GET['dataID']) && $data['receiver'] == 2 ? "selected=\"selected\"" : "" ?> value="2">Merchant gebruikers</option>
 			</select>
 			
-			<select name="language_code" id="language_code" class="width-200" holder="<?= $mb->_translateReturn("forms", "form-email-language") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-email-language-eg") ?>">
+			<select name="language_code" id="language_code" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-email-language") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-email-language-eg") ?>">
 				<option <?= isset($_GET['dataID']) && $data['language_code'] == "nl" ? "selected=\"selected\"" : "" ?> value="nl">Nederlands</option>
 				<?php
 				$_lang = $mb->_allLanguages();
@@ -74,6 +74,21 @@ if(isset($_GET['dataID']))
 				{
 					?>
 					<option <?= isset($_GET['dataID']) && $data['language_code'] == $value['code'] ? "selected=\"selected\"" : "" ?> value="<?= $value['code'] ?>"><?= $value['language'] ?></option>
+					<?php
+				}
+				?>
+			</select>
+			
+			<select name="groupID" id="groupID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-email-salesgroup") ?>">
+				<option value=""></option>
+				
+				<?php
+				$data_groups = $mb->_runFunction("groups", "view", array($_SESSION['merchantID'], "", "groups.name", "0,50"));
+				
+				foreach($data_groups AS $values)
+				{
+					?>
+					<option <?= isset($_GET['dataID']) && $data['groupID'] == $values['groupID'] ? "selected=\"selected\"" : "" ?> value="<?= $values['groupID'] ?>"><?= $values['name'] ?></option>
 					<?php
 				}
 				?>
