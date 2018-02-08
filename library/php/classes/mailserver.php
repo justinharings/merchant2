@@ -224,10 +224,7 @@ class mailserver extends motherboard
 					$query_search = sprintf(
 						"	SELECT		COUNT(mailserver.emailID) AS cnt
 							FROM		mailserver
-							WHERE		(
-											mailserver.receiver = '%s'
-									OR		mailserver.receiver = 'mail@justinharings.nl'
-										)
+							WHERE		mailserver.receiver = '%s'
 								AND		mailserver.subject = '%s'",
 						$data[2],
 						$row['subject']

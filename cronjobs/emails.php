@@ -15,6 +15,29 @@ $mb = new motherboard();
 
 $merchants = $mb->_runFunction("merchant", "view");
 
+
+function _checkWorkorder($orderID)
+{
+	global $mb;
+	
+	$query = sprintf(
+		"	SELECT		COUNT(orders_product.productID) AS cnt
+			FROM		orders_product
+			INNER JOIN	products ON products.productID = orders_product.productID
+			WHERE		orders_product.orderID = %d
+				AND		(
+							products.workorders_products = 1
+					OR		products.workorders_manhours = 1
+						)",
+		$orderID
+	);
+	$result = $mb->query($query);
+	$row = $mb->fetch_assoc($result);
+	
+	return $row['cnt'];
+}
+
+
 foreach($merchants AS $value)
 {
 	// Orders - Na 7 dagen pauze
@@ -35,7 +58,7 @@ foreach($merchants AS $value)
 	
 	while($row = $mb->fetch_assoc($result))
 	{
-		if($row['email_address'] != "")
+		if($row['email_address'] != "" && _checkWorkorder($row['orderID']) == 0)
 		{
 			$array = array();
 			$array[] = $value['merchantID'];
@@ -45,7 +68,7 @@ foreach($merchants AS $value)
 			$array[] = $row['orderID'];
 			
 			$mb->_runFunction("mailserver", "sendAllEmail", $array);
-		}
+		}		
 	}
 	
 	
@@ -68,7 +91,7 @@ foreach($merchants AS $value)
 	
 	while($row = $mb->fetch_assoc($result))
 	{
-		if($row['email_address'] != "")
+		if($row['email_address'] != "" && _checkWorkorder($row['orderID']) == 0)
 		{
 			$array = array();
 			$array[] = $value['merchantID'];
@@ -101,7 +124,7 @@ foreach($merchants AS $value)
 	
 	while($row = $mb->fetch_assoc($result))
 	{
-		if($row['email_address'] != "")
+		if($row['email_address'] != "" && _checkWorkorder($row['orderID']) == 0)
 		{
 			$array = array();
 			$array[] = $value['merchantID'];
