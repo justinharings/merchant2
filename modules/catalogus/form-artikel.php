@@ -689,7 +689,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					for($i = 1; $i < 20; $i++)
 					{
 						?>
-						<option <?= isset($_GET['dataID']) && $data['delivery_days'] == $i ? "selected=\"selected\"" : "" ?> value="<?= $i ?>">Binnen <?= $i ?> dag bij de klant</option>
+						<option <?= isset($_GET['dataID']) && $data['delivery_days'] == $i ? "selected=\"selected\"" : "" ?> value="<?= $i ?>">Binnen <?= $i ?> dag<?= $i > 1 ? "en" : "" ?> bij de klant</option>
 						<?php
 					}
 					?>
