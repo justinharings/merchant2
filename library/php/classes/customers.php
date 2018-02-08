@@ -94,7 +94,7 @@ class customers extends motherboard
 				"	SELECT		orders.*,
 								CONCAT(YEAR(orders.date_added), orders.orderID) AS order_reference,
 								order_statuses.name AS status,
-								DATE_FORMAT(order_statuses.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
+								DATE_FORMAT(orders.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
 								pos_employees.name AS employee
 					FROM		orders
 					INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
