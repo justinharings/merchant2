@@ -39,7 +39,7 @@
 			$row = $mb->fetch_assoc($result);
 			?>
 			<script type="text/javascript">
-				parent.popup(400, 175, "/extensions/workshop/modules/popup_battery_test.php?batteryID=<?= $row['batteryID'] ?>");
+				parent.popup(300, 250, "/extensions/workshop/modules/popup_battery_test.php?batteryID=<?= $row['batteryID'] ?>");
 			</script>
 			<?php
 		}
