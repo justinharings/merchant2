@@ -15,7 +15,7 @@ if($mb->num_rows($data))
 		$battery_date = "";
 		
 		$query_batt = sprintf(
-			"	SELECT		batteries_test.date_added
+			"	SELECT		DATE_FORMAT(batteries_test.date_added, '%%d-%%m-%%Y') AS date_added
 				FROM		batteries_test
 				INNER JOIN	batteries ON batteries.batteryID = batteries_test.batteryID
 				WHERE		batteries.customerID = %d
