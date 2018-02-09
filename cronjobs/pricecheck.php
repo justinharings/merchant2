@@ -120,7 +120,7 @@ while($row = $mb->fetch_assoc($result))
 	
 	if($value > 0)
 	{
-		if(!is_array($products[$row['productID']]))
+		if(!isset($products[$row['productID']]) || !is_array($products[$row['productID']]))
 		{
 			$products[$row['productID']] = array();
 		}

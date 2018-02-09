@@ -717,7 +717,13 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 							{
 								?>
 								<tr>
-									<td><input type="text" name="pricecheck_website_234" id="pricecheck_website" value="<?= $value['website'] ?>" class="width-300" /></td>
+									<td>
+										<input type="text" name="pricecheck_website_234" id="pricecheck_website" value="<?= $value['website'] ?>" class="width-300" />
+											&nbsp;
+											<a href="<?= $value['website'] ?>" target="_blank" style="color: inherit;">
+												<small><span class="fa fa-external-link"></span></small>
+											</a>
+									</td>
 									<td>
 										<?php
 										if($value['price'] == 0)
@@ -732,7 +738,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 									</td>
 									<td><?= $value['date_update'] ?></td>
 									<td>
-										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_specificatie.php?productPropertieID=<?= $value['productPropertieID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_pricewatch.php?productWebsiteID=<?= $value['productWebsiteID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
 									</td>
 								</tr>
 								<?php

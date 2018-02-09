@@ -983,6 +983,26 @@ class products extends motherboard
 	
 	
 	/*
+	**
+	*/
+	
+	public function deletePricecheck($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	DELETE FROM		products_pricecheck
+				WHERE			products_pricecheck.productWebsiteID = %d",
+			$data[1]['productWebsiteID']
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
+	
+	
+	/*
 	**	Transform the visibility code into
 	**	readable text for the user.
 	*/
