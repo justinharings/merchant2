@@ -114,6 +114,16 @@ while($row = $mb->fetch_assoc($result))
 				$had[$row['website']] = $value[0] . $value[1] . "." . $value[2];
 			}
 			
+			$query = sprintf(
+				"	UPDATE		products_pricecheck
+					SET			products_pricecheck.price = '%.2f',
+								products_pricecheck.date_update = NOW()
+					WHERE		products_pricecheck.website = '%s'",
+				$had[$row['website']],
+				$row['website']
+			);
+			$mb->query($query);
+			
 			//print $row['productID'] . "<br/>" . $row['website'] . "<br/>" . $had[$row['website']] . "<br/><br/>";
 		}
 	}
