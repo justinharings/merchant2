@@ -72,25 +72,7 @@ if(isset($_GET['dataID']))
 				<?= $mb->_translateReturn("forms", "legend-prices-taxes") ?>
 			</div>
 			
-			<input type="text" name="price" id="price" value="<?= isset($_GET['dataID']) ? _frontend_float($data['price']) : "" ?>" class="width-100 margin" icon="fa-euro" holder="<?= $mb->_translateReturn("forms", "form-shipment-price") ?>" validation-required="true" validation-type="int" />
-			
-			<div class="languages width-150">
-				<span class="fa fa-chevron-circle-down"></span>
-				
-				<?php
-				$_lang = $mb->_allLanguages();
-				
-				foreach($_lang AS $value)
-				{
-					?>
-					<fieldset>
-						<legend><?= $value['language'] ?></legend>
-						<input type="text" name="<?= $value['code'] ?>_price" id="<?= $value['code'] ?>_price" value="<?= isset($_GET['dataID']) ? _frontend_float($data[$value['code'] . '_price']) : "" ?>" class="width-100-percent" validation-required="true" validation-type="int" icon="fa-globe" />
-					</fieldset>
-					<?php
-				}
-				?>
-			</div>
+			<input type="text" name="price" id="price" value="<?= isset($_GET['dataID']) ? _frontend_float($data['price']) : "" ?>" class="width-100 double-margin" icon="fa-euro" holder="<?= $mb->_translateReturn("forms", "form-shipment-price") ?>" validation-required="true" validation-type="int" />
 			
 			<select name="taxesID" id="taxesID" class="width-300" holder="<?= $mb->_translateReturn("forms", "form-shipment-taxes") ?>">
 				<?php
@@ -105,7 +87,67 @@ if(isset($_GET['dataID']))
 				?>
 			</select>
 		</div>
-			
+		
+		<div class="form-content">
+			<div class="content-header">
+				<span class="fa fa-pencil-square-o"></span>
+				<?= $mb->_translateReturn("forms", "legend-prices-divergent") ?>
+			</div>
+		
+			<table class="form-table">
+				<thead>
+					<tr>
+						<td width="400"><?= $mb->_translateReturn("forms", "form-shipment-table-language") ?></td>
+						<td><?= $mb->_translateReturn("forms", "form-shipment-table-price") ?></td>
+						<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<?php
+					foreach($data['fees'] AS $value)
+					{
+						?>
+						<tr>
+							<td><?= $value['country'] ?></td>
+							<td>&euro;&nbsp;<?= _frontend_float($value['fee']) ?></td>
+							<td>
+								<span class="remove-row fa fa-remove" post="/library/php/posts/instellingen/verwijder_verzendmethoden_fee.php?feeID=<?= $value['feeID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+							</td>
+						</tr>
+						<?php
+					}
+					?>
+					
+					<tr class="new-row">
+						<td>
+							<select name="export_fee_country[]" id="export_fee_country_+" class="width-200">
+								<option value="Overige landen">Overige landen</option>
+								<?php
+								$_lang = $mb->_allCountries();
+								
+								foreach($_lang AS $value)
+								{
+									if($value == "Netherlands")
+									{
+										continue;
+									}
+									
+									?>
+									<option value="<?= $value ?>"><?= $value ?></option>
+									<?php
+								}
+								?>
+							</select>
+						</td>
+						
+						<td><input type="text" name="export_fee_price[]" id="export_fee_price_+" value="" class="width-100" validation-required="true" validation-type="int" icon="fa-euro" /></td>
+						<td class="searched-p-productID">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
 		<div class="form-content">
 			<div class="content-header">
 				<span class="fa fa-pencil-square-o"></span>

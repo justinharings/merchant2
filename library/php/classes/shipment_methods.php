@@ -84,10 +84,10 @@ class shipment_methods extends motherboard
 						WHERE		shipment_methods_lang.shipmentID = shipment_methods.shipmentID
 							AND		shipment_methods_lang.code = '%s'
 					) AS %s_price, ",
-				$value['code'],
-				$value['code'],
-				$value['code'],
-				$value['code']
+				strtoupper($value['code']),
+				strtoupper($value['code']),
+				strtoupper($value['code']),
+				strtoupper($value['code'])
 			);
 		}
 		
@@ -101,7 +101,27 @@ class shipment_methods extends motherboard
 		);
 		$result = parent::query($query);
 		
-		return parent::fetch_assoc($result);
+		if(parent::num_rows($result))
+		{
+			$return = parent::fetch_assoc($result);
+			
+			$query = sprintf(
+				"	SELECT		shipment_methods_fee.*
+					FROM		shipment_methods_fee
+					WHERE		shipment_methods_fee.shipmentID = %d",
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['fees'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$return['fees'] = parent::fetch_array($result);
+			}
+		}
+		
+		return $return;
 	}
 	
 	
@@ -199,11 +219,33 @@ class shipment_methods extends motherboard
 									shipment_methods_lang.name = '%s',
 									shipment_methods_lang.price = '%.2f'",
 				intval($data[1]['shipmentID']),
-				$value['code'],
+				strtoupper($value['code']),
 				parent::real_escape_string($data[1][$value['code'] . '_name']),
 				parent::floatvalue($data[1][$value['code'] . '_price'])
 			);
 			parent::query($query);
+		}
+		
+		
+		/*
+		**
+		*/
+		
+		foreach($data[1]['export_fee_country'] AS $key => $country)
+		{
+			if($data[1]['export_fee_price'][$key] > 0)
+			{
+				$query = sprintf(
+					"	INSERT INTO		shipment_methods_fee
+						SET				shipment_methods_fee.shipmentID = %d,
+										shipment_methods_fee.country = '%s',
+										shipment_methods_fee.fee = '%.2f'",
+					intval($data[1]['shipmentID']),
+					$country,
+					$data[1]['export_fee_price'][$key]
+				);
+				parent::query($query);
+			}
 		}
 		
 		return true;
@@ -221,9 +263,28 @@ class shipment_methods extends motherboard
 		parent::_checkInputValues($data, 2);
 		
 		$query = sprintf(
-			"	DELETE FROM		groups
-				WHERE			groups.groupID = %d",
-			$data[1]['groupID']
+			"	DELETE FROM		shipment_methods
+				WHERE			shipment_methods.shipmentID = %d",
+			$data[1]['shipmentID']
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
+	
+	/*
+	**
+	*/
+	
+	public function deleteFee($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	DELETE FROM		shipment_methods_fee
+				WHERE			shipment_methods_fee.feeID = %d",
+			$data[1]['feeID']
 		);
 		parent::query($query);
 		

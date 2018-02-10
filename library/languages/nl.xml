@@ -250,6 +250,7 @@
 		<legend-payment-module>Eventuele betalingsmodule</legend-payment-module>
 		<legend-payment-module-required>Betalingsmodule</legend-payment-module-required>
 		<legend-prices-taxes>Prijzen en belastingen</legend-prices-taxes>
+		<legend-prices-divergent>Afwijkende prijzen</legend-prices-divergent>
 		<legend-manage-content>Content bewerken</legend-manage-content>
 		<legend-manage-website-note>Website notificatie</legend-manage-website-note>
 		<legend-employees>Medewerkers beheren</legend-employees>
@@ -577,6 +578,9 @@
 		<form-shipment-free-choice>Vrije kiesbaar</form-shipment-free-choice>
 		<form-shipment-combine>Wordt samengevoegd</form-shipment-combine>
 		<form-shipment-pay>Eenmalig afrekenen</form-shipment-pay>
+		
+		<form-shipment-table-language>Land van verzending</form-shipment-table-language>
+		<form-shipment-table-price>Extra toeslag</form-shipment-table-price>
 		
 		<!-- Settings -> Groups -> Form -->
 		<form-group-name>Groepsnaam</form-group-name>
