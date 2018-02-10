@@ -202,47 +202,11 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					<?= $mb->_translateReturn("forms", "legend-prizes") ?>
 				</div>
 				
-				<input type="text" name="price" id="price" value="<?= isset($_GET['dataID']) ? $data['price'] : "" ?>" class="width-150 margin" holder="<?= $mb->_translateReturn("forms", "form-products-price") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-products-price-eg") ?>" icon="fa-euro" validation-required="true" validation-type="int" />
+				<input type="text" name="price" id="price" value="<?= isset($_GET['dataID']) ? $data['price'] : "" ?>" class="width-150 margin" holder="<?= $mb->_translateReturn("forms", "form-products-price") ?>" icon="fa-euro" validation-required="true" validation-type="int" />
 				
-				<div class="languages width-300">
-					<span class="fa fa-chevron-circle-down"></span>
-					
-					<?php
-					$_lang = $mb->_allLanguages();
-					
-					foreach($_lang AS $value)
-					{
-						?>
-						<fieldset>
-							<legend><?= $value['language'] ?></legend>
-							<input type="text" name="<?= $value['code'] ?>_price" id="<?= $value['code'] ?>_price" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_price'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
-						</fieldset>
-						<?php
-					}
-					?>
-				</div>
+				<input type="text" name="price_adviced" id="price_adviced" value="<?= isset($_GET['dataID']) ? $data['price_adviced'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-price-adviced") ?>" icon="fa-euro" />
 				
-				<input type="text" name="price_purchase" id="price_purchase" value="<?= isset($_GET['dataID']) ? $data['price_purchase'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-price-purchase") ?>" icon="fa-euro" />
-				
-				<input type="text" name="price_adviced" id="price_adviced" value="<?= isset($_GET['dataID']) ? $data['price_adviced'] : "" ?>" class="width-150 margin" holder="<?= $mb->_translateReturn("forms", "form-products-price-adviced") ?>" icon="fa-euro" />
-				
-				<div class="languages width-300">
-					<span class="fa fa-chevron-circle-down"></span>
-					
-					<?php
-					$_lang = $mb->_allLanguages();
-					
-					foreach($_lang AS $value)
-					{
-						?>
-						<fieldset>
-							<legend><?= $value['language'] ?></legend>
-							<input type="text" name="<?= $value['code'] ?>_price_adviced" id="<?= $value['code'] ?>_price_adviced" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_price_adviced'] : "" ?>" class="width-100-percent" icon="fa-globe" />
-						</fieldset>
-						<?php
-					}
-					?>
-				</div>
+				<input type="text" name="price_purchase" id="price_purchase" value="<?= isset($_GET['dataID']) ? $data['price_purchase'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-price-purchase") ?>"holder-eg="<?= $mb->_translateReturn("forms", "form-products-purchase-eg") ?>" icon="fa-euro" />
 				
 				<select name="taxesID" id="taxesID" class="width-200" holder="<?= $mb->_translateReturn("forms", "form-products-taxes") ?>" validation-required="true" validation-type="int">
 					<option value="-"></option>

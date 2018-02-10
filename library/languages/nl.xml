@@ -352,9 +352,9 @@
 		<form-products-parts>Werkorders producten</form-products-parts>
 		<form-products-manhours>Werkorders manuren</form-products-manhours>
 		<form-products-price>Verkoopprijs</form-products-price>
-		<form-products-price-eg>Inclusief BTW.</form-products-price-eg>
 		<form-products-price-adviced>Adviesprijs</form-products-price-adviced>
 		<form-products-price-purchase>Inkoopsprijs</form-products-price-purchase>
+		<form-products-purchase-eg>Exclusief BTW.</form-products-purchase-eg>
 		<form-products-taxes>Belastingpercentage</form-products-taxes>
 		<form-products-categories>Categorie</form-products-categories>
 		<form-products-images>Afbeelding</form-products-images>
