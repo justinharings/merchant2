@@ -23,6 +23,13 @@ if(isset($_GET['dataID']))
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			
 			<?php
+			if(!isset($_GET['duplicate']))
+			{
+				?>
+				<input type="button" name="duplicate" id="duplicate" value="<?= $mb->_translateReturn("forms", "button-duplicate") ?>" class="show-load" />
+				<?php
+			}
+			
 			if(isset($_GET['dataID']))
 			{
 				?>
@@ -63,19 +70,52 @@ if(isset($_GET['dataID']))
 					{
 						$_lang_abbr[$value['code']] = $value['language'];
 					}
-					
-					foreach($data['filters'] AS $value)
+						
+					if(isset($_GET['duplicate']))
 					{
-						?>
-						<tr>
-							<td><?= $_lang_abbr[$value['language']] ?></td>
-							<td><?= $value['key'] ?></td>
-							<td><?= $value['value'] ?></td>
-							<td>
-								<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_specificatie_filter.php?filterID=<?= $value['filterID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
-							</td>
-						</tr>
-						<?php
+						$num = 1;
+						
+						foreach($data['filters'] AS $value)
+						{
+							?>
+							<tr>
+								<td>
+									<select name="filter_language[]" id="filter_language_<?= $num ?>" class="width-200">
+										<option <?= $value['language'] == "nl" ? "selected=\"selected\"" : "" ?> value="nl">Nederlands</option>
+										<?php
+										foreach($_lang AS $lValue)
+										{
+											?>
+											<option <?= $lValue['code'] == $value['language'] ? "selected=\"selected\"" : "" ?> value="<?= $lValue['code'] ?>"><?= $lValue['language'] ?></option>
+											<?php
+										}
+										?>
+									</select>
+								</td>
+								<td><input type="text" name="filter_key[]" id="filter_key_<?= $num ?>" value="<?= $value['key'] ?>" class="width-300" validation-required="true" validation-type="text" /></td>
+								<td><input type="text" name="filter_value[]" id="filter_value_<?= $num ?>" value="<?= $value['value'] ?>" class="width-300" validation-required="true" validation-type="text" /></td>
+								<td colspan="2">&nbsp;</td>
+							</tr>
+							<?php
+								
+							$num++;
+						}
+					}
+					else
+					{
+						foreach($data['filters'] AS $value)
+						{
+							?>
+							<tr>
+								<td><?= $_lang_abbr[$value['language']] ?></td>
+								<td><?= $value['key'] ?></td>
+								<td><?= $value['value'] ?></td>
+								<td>
+									<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_specificatie_filter.php?filterID=<?= $value['filterID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+								</td>
+							</tr>
+							<?php
+						}
 					}
 					?>
 					
