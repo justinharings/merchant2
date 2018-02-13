@@ -69,8 +69,14 @@ $data = $mb->_runFunction("reports", "viewArticleGroups", array($_SESSION['merch
 				
 				<tbody>
 					<?php
+					$total = 0;
+					$quantity = 0;
+						
 					foreach($data AS $value)
 					{
+						$total += $value['grand_total'];
+						$quantity += $value['grand_total'];
+						
 						?>
 						<tr>
 							<td><?= $value['group'] ?></td>
@@ -80,6 +86,12 @@ $data = $mb->_runFunction("reports", "viewArticleGroups", array($_SESSION['merch
 						<?php
 					}
 					?>
+					
+					<tr>
+						<td></td>
+						<td><strong>&euro;&nbsp;<?= _frontend_float($total) ?></strong></td>
+						<td><strong>&euro;&nbsp;<?= $quantity ?></strong></td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
