@@ -514,7 +514,7 @@ class orders extends motherboard
 				$amount = $data[1]['amount'][$key];
 				$date = $data[1]['date'][$key];
 				
-				if($amount < 1)
+				if($paymentID < 1)
 				{
 					continue;
 				}
@@ -1130,6 +1130,21 @@ class orders extends motherboard
 				$courier = $shipmentData['courier'];
 				$price = $shipmentData['price'];
 				
+				$fee = 0;
+				
+				foreach($shipmentData['fees'] AS $fValue)
+				{
+					if($fValue['country'] == $data[2]['country'])
+					{
+						$fee = floatval($fValue['fee']);
+					}
+					
+					if($fValue['country'] == "Overige landen" && $fee == 0)
+					{
+						$fee = floatval($fValue['fee']);
+					}
+				}
+				
 				$query = sprintf(
 					"	INSERT INTO		orders_shipment
 						SET				orders_shipment.orderID = %d,
@@ -1140,7 +1155,7 @@ class orders extends motherboard
 					$orderID,
 					$shipmentID,
 					$courier,
-					$price
+					($price + $fee)
 				);
 				parent::query($query);
 			}
