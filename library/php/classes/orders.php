@@ -21,7 +21,9 @@ class orders extends motherboard
 				"	AND		(
 								orders.orderID = %d
 						OR		customers.name LIKE ('%%%s%%')
+						OR		orders_invoice_rules.value LIKE ('%%%s%%')
 							)",
+				parent::real_escape_string($data[1]),
 				parent::real_escape_string($data[1]),
 				parent::real_escape_string($data[1])
 			);
@@ -69,6 +71,7 @@ class orders extends motherboard
 							) AS date_update
 				FROM		orders
 				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				LEFT JOIN 	orders_invoice_rules ON orders_invoice_rules.orderID = orders.orderID
 				LEFT JOIN	customers ON customers.customerID = orders.customerID
 				WHERE		orders.merchantID = %d
 					%s
@@ -975,6 +978,9 @@ class orders extends motherboard
 				$data[2]['customerID'] = $currentOrder['customer']['customerID'];
 				$data[2] = $this->_runFunction("customers", "save", array($data[0], $data[2]));
 			}
+			
+			$customerData = $this->_runFunction("customers", "load", array($data[2]));
+			$country = $customerData['country'];
 		}
 		
 		
@@ -1132,16 +1138,19 @@ class orders extends motherboard
 				
 				$fee = 0;
 				
-				foreach($shipmentData['fees'] AS $fValue)
+				if($country != "Netherlands")
 				{
-					if($fValue['country'] == $data[2]['country'])
+					foreach($shipmentData['fees'] AS $fValue)
 					{
-						$fee = floatval($fValue['fee']);
-					}
-					
-					if($fValue['country'] == "Overige landen" && $fee == 0)
-					{
-						$fee = floatval($fValue['fee']);
+						if($fValue['country'] == $country)
+						{
+							$fee = floatval($fValue['fee']);
+						}
+						
+						if($fValue['country'] == "Overige landen" && $fee == 0)
+						{
+							$fee = floatval($fValue['fee']);
+						}
 					}
 				}
 				
