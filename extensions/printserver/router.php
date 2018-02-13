@@ -193,7 +193,7 @@ if(file_exists($file))
 		$product_row .= '
 			<tr>
 				<td style="padding: 5px 0px 5px 10px; ' . $font_size . '">
-					'. ($_GET['type'] == "picklist" ? "o&nbsp;o&nbsp;&nbsp;" . _chopString($product['name'], 40) : $product['name']) .'
+					'. ($_GET['type'] == "picklist" ? "o&nbsp;o&nbsp;&nbsp;" . _chopString($product['name'], 50) : _chopString($product['name'], 50)) .'
 				</td>
 				<td style="padding: 5px 0px; ' . $font_size . '">'. $product['quantity'] .' stuk(s)</td>
 				<td style="padding: 5px 0px; ' . $font_size . '">'. $sign . "&nbsp;" . _frontend_float(($product['price']*$target), $currency) .'</td>
