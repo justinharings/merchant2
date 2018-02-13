@@ -493,8 +493,10 @@ class customers extends motherboard
 		$query = sprintf(
 			"	SELECT		customers.customerID
 				FROM		customers
-				WHERE		customers.customer_code = '%s'",
-			$data[0]
+				WHERE		customers.customer_code = '%s'
+					AND		customers.zip_code = '%s'",
+			$data[1],
+			parent::real_escape_string($data[0])
 		);
 		$result = parent::query($query);
 		$row = parent::fetch_assoc($result);
