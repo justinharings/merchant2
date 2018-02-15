@@ -161,6 +161,13 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 	$minifier->add($sourcePath);
 	$minifier->minify($savePath);
 	
+	$sourcePath = $_SERVER['DOCUMENT_ROOT'] . '/library/js/dashboard.js';
+	$savePath = $_SERVER['DOCUMENT_ROOT'] . '/library/js/dashboard.minified.js';
+	
+	$minifier = new Minify\JS();
+	$minifier->add($sourcePath);
+	$minifier->minify($savePath);
+	
 	if(isset($_GET['minify']))
 	{
 		echo "Minify done.";

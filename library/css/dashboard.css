@@ -1,0 +1,213 @@
+div.c-1
+{
+	width: calc(100% - 20px);
+	height: 175px;
+	
+	margin: 10px;
+	float: left;
+}
+div.c-1.flexible
+{
+	height: 10px;
+	display: table;
+}
+
+div.c-2
+{
+	width: 100%;
+	height: 10px;
+	
+	display: table;
+}
+
+	div.c-2-1,
+	div.c-2-2
+	{
+		width: calc(50% - 20px);
+		height: calc(100% - 20px);
+		
+		margin: 10px;
+		float: left;
+		display: table;
+	}
+	
+	div.c-2-2
+	{
+		float: right;
+	}
+	
+	div.c-2 div.c-small,
+	div.c-1 div.c-small
+	{
+		width: 50%;
+		height: 50%;
+		
+		position: relative;
+		
+		float: left;
+	}
+	div.c-2 div.c-small.full,
+	div.c-1 div.c-small.full
+	{
+		height: 100%;
+	}
+	div.c-1 div.c-small
+	{
+		width: 25% !important;
+	}
+	div.c-2 div.c-small.center div.value,
+	div.c-2 div.c-small.center div.title,
+	div.c-1 div.c-small.center div.value,
+	div.c-1 div.c-small.center div.title
+	{
+		text-align: center;
+		
+		left: 0px; !important;
+	}
+	div.c-2 div.c-small.center div.value,
+	div.c-1 div.c-small.center div.value
+	{
+		margin-top: -40px;
+	}
+	div.c-2 div.c-small.center div.title,
+	div.c-1 div.c-small.center div.title
+	{
+		margin-top: 15px;
+	}
+	
+	div.c-2 div.c-small.red,
+	div.c-1 div.c-small.red
+	{
+		background-color: #d00000;
+		
+		color: #fff;
+	}
+	
+		div.c-2 div.c-small.red div.progress-container,
+		div.c-1 div.c-small.red div.progress-container
+		{
+			background-color: #242831;
+		}
+	
+	div.c-2 div.c-small.dark-gray,
+	div.c-1 div.c-small.dark-gray
+	{
+		background-color: #242831;
+		
+		color: #fff;
+	}
+	
+		div.c-2 div.c-small.dark-gray div.progress-container,
+		div.c-1 div.c-small.dark-gray div.progress-container
+		{
+			background-color: #788195;
+		}
+	
+	div.c-2 div.c-small.white,
+	div.c-1 div.c-small.white
+	{
+		background-color: #fff;
+		
+		color: #242831
+	}
+	
+		div.c-2 div.c-small.white div.progress-container,
+		div.c-1 div.c-small.white div.progress-container
+		{
+			background-color: #788195;
+		}
+	
+	div.c-2 div.c-small.light-gray,
+	div.c-1 div.c-small.light-gray
+	{
+		background-color: #788195;
+		
+		color: #fff;
+	}
+	
+		div.c-1 div.c-small.light-gray div.progress-container,
+		div.c-2 div.c-small.light-gray div.progress-container
+		{
+			background-color: #242831;
+		}
+		
+			div.c-2 div.c-small div.progress-container div.progress,
+			div.c-1 div.c-small div.progress-container div.progress
+			{
+				width: 100%;
+				height: 100%;
+				
+				float: left;
+				
+				background-color: #fff;
+			}
+	
+		div.c-2 div.c-small div.value,
+		div.c-1 div.c-small div.value
+		{
+			width: 100%;
+			height: 59px;
+			
+			position: absolute;
+			top: 50%;
+			left: 20px;
+			
+			margin: -55px 0px 0px 0px;
+			
+			font-family: 'Raleway', 'Tahoma';
+			font-size: 50px;
+			color: inherit;
+		}
+		
+			div.c-2 div.c-small div.value span,
+			div.c-1 div.c-small div.value span
+			{
+				font-family: 'Raleway', 'Tahoma';
+				font-size: 50px;
+				color: inherit;
+			}
+			
+		div.c-2 div.c-small div.title,
+		div.c-1 div.c-small div.title
+		{
+			width: 100%;
+			height: 59px;
+			
+			position: absolute;
+			top: 50%;
+			left: 20px;
+			
+			margin: 10px 0px 0px 0px;
+			
+			font-family: 'Raleway', 'Tahoma';
+			font-size: 18px;
+			color: inherit;
+		}
+			
+		div.c-2 div.c-small div.extra,
+		div.c-1 div.c-small div.extra
+		{
+			width: 100%;
+			height: 59px;
+			
+			position: absolute;
+			top: 50%;
+			left: 20px;
+			
+			margin: 35px 0px 0px 0px;
+			
+			font-family: 'Raleway', 'Tahoma';
+			font-size: 12px;
+			color: inherit;
+		}
+		
+		div.c-2 div.c-small div.progress-container,
+		div.c-1 div.c-small div.progress-container
+		{
+			height: 4px;
+			
+			position: absolute;
+			right: 0px;
+			bottom: 20px;
+			left: 0px;
+		}

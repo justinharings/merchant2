@@ -114,10 +114,10 @@ class reports extends motherboard
 					WHERE		products.groupID = %d
 						AND		order_statuses.finished = 1
 						AND		order_statuses.declined = 0
-						AND		MONTH(orders.date_added) = %d
+						%s
 						AND		YEAR(orders.date_added) = %d",	
 				$group['groupID'],
-				$data[1],
+				($data[1] != "" ? 'AND MONTH(orders.date_added) = ' . $data[1] : ""),
 				$data[2]
 			);
 			$result = parent::query($query);

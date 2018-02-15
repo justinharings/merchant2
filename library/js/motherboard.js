@@ -49,5 +49,12 @@ $(document).ready(
 				console.log("Sms.minified.js file loaded.");
 			}
 		);
+		
+		$.getScript("/library/js/dashboard.minified.js", 
+			function()
+			{
+				console.log("Dashboard.minified.js file loaded.");
+			}
+		);
 	}
 );
