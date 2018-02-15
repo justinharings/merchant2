@@ -76,6 +76,7 @@ class orders extends motherboard
 				WHERE		orders.merchantID = %d
 					%s
 					%s
+				GROUP BY	orders.orderID
 				ORDER BY	%s
 				LIMIT		%s",
 			$data[0],
