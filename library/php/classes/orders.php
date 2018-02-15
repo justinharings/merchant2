@@ -71,7 +71,7 @@ class orders extends motherboard
 							) AS date_update
 				FROM		orders
 				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
-				LEFT JOIN 	orders_invoice_rules ON orders_invoice_rules.orderID = orders.orderID
+				%s
 				LEFT JOIN	customers ON customers.customerID = orders.customerID
 				WHERE		orders.merchantID = %d
 					%s
@@ -79,6 +79,7 @@ class orders extends motherboard
 				GROUP BY	orders.orderID
 				ORDER BY	%s
 				LIMIT		%s",
+			($search != "" ? "LEFT JOIN orders_invoice_rules ON orders_invoice_rules.orderID = orders.orderID" : ""),
 			$data[0],
 			$type,
 			$search,
