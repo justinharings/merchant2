@@ -75,7 +75,7 @@ $data = $mb->_runFunction("reports", "viewArticleGroups", array($_SESSION['merch
 					foreach($data AS $value)
 					{
 						$total += $value['grand_total'];
-						$quantity += $value['grand_total'];
+						$quantity += $value['quantity'];
 						
 						?>
 						<tr>
@@ -90,7 +90,7 @@ $data = $mb->_runFunction("reports", "viewArticleGroups", array($_SESSION['merch
 					<tr>
 						<td></td>
 						<td><strong>&euro;&nbsp;<?= _frontend_float($total) ?></strong></td>
-						<td><strong>&euro;&nbsp;<?= $quantity ?></strong></td>
+						<td><strong><?= $quantity ?> <?= $mb->_translateReturn("forms", "form-reports-table-quantity-inline") ?></strong></td>
 					</tr>
 				</tbody>
 			</table>
