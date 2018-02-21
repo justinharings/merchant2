@@ -61,6 +61,8 @@ document.location.href="/"+prefix+"/modules"+$(this).attr("rel")})}});var cnt=0;
 {var str=$(this).attr("id");if(str.indexOf("_+")>=0)
 {var replaced=str.replace("_+","_"+cnt)
 $(this).attr("id",replaced)}
+if($(this).attr("checked")=="checked"&&cnt>1)
+{$(this).removeAttr("checked")}
 $(this).removeClass("hasDatepicker")});clone.appendTo(tbody).removeClass("new-row").show();$("input, select, textarea").each(function()
 {if($(this).parents('tr.new-row').length)
 {return}

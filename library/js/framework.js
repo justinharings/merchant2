@@ -470,6 +470,11 @@ $(document).ready(
 							$(this).attr("id", replaced);
 						}
 						
+						if($(this).attr("checked") == "checked" && cnt > 1)
+						{
+							$(this).removeAttr("checked");
+						}
+						
 						$(this).removeClass("hasDatepicker");
 					}
 				);

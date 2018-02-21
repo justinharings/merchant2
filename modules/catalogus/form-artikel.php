@@ -355,8 +355,11 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 						<?php
 						if(!isset($_GET['duplicate']))
 						{
+							$exists = false;
+							
 							foreach($data['images'] AS $value)
 							{
+								$exists = ($exists == true || $value['thumb'] == 1 ? true : false);
 								?>
 								<tr>
 									<td>
@@ -377,14 +380,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 									</td>
 									<td><span class="fa large <?= $value['thumb'] ? "fa-check-circle green" : "fa-times-circle red" ?>"></span></td>
 									<td>
-										<?php
-										if($value['thumb'] == 0)
-										{
-											?>
-											<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_media.php?productMediaID=<?= $value['productMediaID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
-											<?php
-										}
-										?>
+										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_media.php?productMediaID=<?= $value['productMediaID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
 									</td>
 								</tr>
 								<?php
@@ -394,7 +390,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 						
 						<tr class="new-row">
 							<td><input type="file" name="image[]" id="image_+" value="" class="width-200" validation-type="image" image-extension="png" /></td>
-							<td><input type="checkbox" name="thumb[]" id="thumb_+" value="1" class="width-200" validation-required="true" validation-type="int" /></td>
+							<td><input type="checkbox" <?= $exists ? "" : "checked=\"checked\"" ?> name="thumb[]" id="thumb_+" value="1" class="width-200" validation-required="true" validation-type="int" /></td>
 							<td colspan="2">&nbsp;</td>
 						</tr>
 					</tbody>
