@@ -251,6 +251,51 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 								<?php
 							}
 						}
+						else
+						{
+							foreach($data['categories'] AS $value)
+							{
+								?>
+								<tr>
+									<td>
+										<select name="categories[]" id="categories" class="width-200">
+											<option value=""></option>
+											
+											<?php
+											$data_categories = $mb->_runFunction("categories", "view", array($_SESSION['merchantID'], "", "categories.name", "0,50", 0));
+											
+											foreach($data_categories AS $values)
+											{
+												?>
+												<option <?= $value['categoryID'] == $values['categoryID'] ? "selected=\"selected\"" : "" ?> value="<?= $values['categoryID'] ?>"><?= $values['name'] ?></option>
+			
+												<?php
+												$data_categories_2 = $mb->_runFunction("categories", "view", array($_SESSION['merchantID'], "", "categories.name", "0,50", $values['categoryID']));
+												
+												foreach($data_categories_2 AS $values2)
+												{
+													?>
+													<option <?= $value['categoryID'] == $values2['categoryID'] ? "selected=\"selected\"" : "" ?> value="<?= $values2['categoryID'] ?>">&nbsp;&nbsp;-&nbsp;<?= $values2['name'] ?></option>
+			
+													<?php
+													$data_categories_3 = $mb->_runFunction("categories", "view", array($_SESSION['merchantID'], "", "categories.name", "0,50", $values2['categoryID']));
+												
+													foreach($data_categories_3 AS $values3)
+													{
+														?>
+														<option <?= $value['categoryID'] == $values3['categoryID'] ? "selected=\"selected\"" : "" ?> value="<?= $values3['categoryID'] ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;<?= $values3['name'] ?></option>
+														<?php
+													}
+												}
+											}
+											?>
+										</select>
+									</td>
+									<td colspan="2">&nbsp;</td>
+								</tr>
+								<?php
+							}
+						}
 						?>
 						
 						<tr class="new-row">
@@ -460,6 +505,35 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 									</td>
 								</tr>
 								<?php
+							}
+						}
+						else
+						{
+							$cnt = 1;
+							
+							foreach($data['products_properties'] AS $value)
+							{
+								?>
+								<tr>
+									<td>
+										<select name="filter_language[]" id="filter_language_<?= $cnt ?>" class="width-200">
+											<option <?= $value['language'] == "nl" ? "selected=\"selected\"" : "" ?> value="nl">Nederlands</option>
+											<?php
+											foreach($_lang AS $lValue)
+											{
+												?>
+												<option <?= $value['language'] == $lValue['code'] ? "selected=\"selected\"" : "" ?> value="<?= $lValue['code'] ?>"><?= $lValue['language'] ?></option>
+												<?php
+											}
+											?>
+										</select>
+									</td>
+									<td><input type="text" name="filter_key[]" id="filter_key_<?= $cnt ?>" value="<?= $value['key'] ?>" class="width-300 prop_keys" validation-required="true" validation-type="text" /></td>
+									<td class="values"><input type="text" name="filter_value[]" id="filter_value_<?= $cnt ?>" value="<?= $value['value'] ?>" class="width-300 prop_values" validation-required="true" validation-type="text" /></td>
+									<td>&nbsp;</td>
+								</tr>
+								<?php
+								$cnt++;
 							}
 						}
 						?>
@@ -706,6 +780,19 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 									</td>
 								</tr>
 								<?php
+							}
+						}
+						else
+						{
+							foreach($data['pricecheck'] AS $value)
+							{
+								$cnt = 1;
+								?>
+								<tr>
+									<td><input type="text" name="pricecheck_website[]" id="pricecheck_website_<?= $cnt ?>" value="<?= $value['website'] ?>" class="width-300" validation-required="true" validation-type="text" /></td>
+									<td colspan="3">&nbsp;</td>
+								</tr>
+								<?php	
 							}
 						}
 						?>
