@@ -13,7 +13,7 @@ if(isset($_GET['dataID']))
 </ul>
 
 <form method="post" id="form" action="/library/php/posts/catalogus/specifications.php">
-	<input type="hidden" name="specificationID" id="specificationID" value="<?= isset($_GET['dataID']) ? $_GET['dataID'] : 0 ?>" />
+	<input type="hidden" name="specificationID" id="specificationID" value="<?= isset($_GET['dataID']) && !isset($_GET['duplicate']) ? $_GET['dataID'] : 0 ?>" />
 	<input type="hidden" name="returnURL" id="returnURL" value="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] ?>" />
 	
 	<div class="simple-form">
