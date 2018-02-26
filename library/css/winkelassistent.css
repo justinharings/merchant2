@@ -1,0 +1,381 @@
+body
+{
+	background-color: #f0f0f0 !important;
+}
+body.black
+{
+	background-color: #000 !important;
+}
+body.green
+{
+	background-color: #e2efda !important;
+}
+body.blue
+{
+	background-color: #dadbef !important;
+}
+body.orange
+{
+	background-color: #efe6da !important;
+}
+body.red
+{
+	background-color: #efdada !important;
+}
+body.purple
+{
+	background-color: #e8daef !important;
+}
+
+
+span.review-large
+{
+	font-size: 50px;
+	color: #ffcc00;
+}
+
+center
+{
+	font-family: 'Raleway', 'Tahoma';
+	font-size: 16px;
+}
+
+body div.timeblock
+{
+	height: 75px;
+	
+	position: fixed;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	
+	background-color: #000;
+}
+
+	body div.timeblock div.date
+	{
+		position: absolute;
+		top: 25px;
+		left: 25px;
+		
+		font-family: 'Raleway', 'Tahoma';
+		font-size: 25px;
+		color: #fff;
+	}
+	
+	body div.timeblock div.refresh
+	{
+		width: 58px;
+		height: 58px;
+		
+		position: absolute;
+		top: 50%;
+		right: 25px;
+		
+		margin-top: -22px;
+		
+		font-size: 45px;
+		color: #fff;
+		text-align: right;
+	}
+	
+	body div.timeblock div.scroll.up
+	{
+		width: 58px;
+		height: 58px;
+		
+		position: absolute;
+		top: 50%;
+		right: 150px;
+		
+		margin-top: -22px;
+		
+		font-size: 45px;
+		color: #fff;
+		text-align: right;
+	}
+	
+	body div.timeblock div.scroll.down
+	{
+		width: 58px;
+		height: 58px;
+		
+		position: absolute;
+		top: 50%;
+		right: 220px;
+		
+		margin-top: -22px;
+		
+		font-size: 45px;
+		color: #fff;
+		text-align: right;
+	}
+
+body div.popup-overlay
+{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: 999;
+	
+	display: none;
+	
+	background-color: #d00000;
+	
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=70);
+	-moz-opacity: 0.7;
+	-khtml-opacity: 0.7;
+	opacity: 0.7;
+}
+
+body div.popup-container
+{
+	width: 800px;
+	height: 600px;
+	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 999;
+	
+	margin: -300px 0px 0px -400px;
+	padding: 10px;
+	display: none;
+	
+	background-color: #fff;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px;
+}
+
+	body div.popup-container div.closer
+	{
+		width: 30px;
+		height: 30px;
+		
+		position: absolute;
+		top: -15px;
+		right: -15px;
+		
+		background-color: #000;
+		border: 4px solid #fff;
+		
+		-moz-border-radius: 30px;
+		-webkit-border-radius: 30px;
+		-khtml-border-radius: 30px;
+		border-radius: 30px;
+	}
+		body div.popup-container div.closer span
+		{
+			width: 100%;
+			
+			margin: 6px 0px 0px 0px;
+			
+			font-size: 15px;
+			color: #fff;
+			text-align: center;
+		}
+
+	body div.popup-container iframe
+	{
+		width: 100%;
+		height: 100%;
+		
+		border: none;
+	}
+
+
+	body div.container
+	{
+		position: fixed;
+		top: 50px;
+		right: 50px;
+		bottom: 50px;
+		left: 50px;
+		
+		overflow-y: scroll;
+	}
+	
+		body div.container div.save-button,
+		body div.container div.date-button
+		{
+			width: 70px;
+			height: 50px;
+			
+			position: fixed;
+			top: 70px;
+			right: 75px;
+			z-index: 999;
+			
+			padding-top: 20px;
+			
+			-moz-border-radius: 70px;
+			-webkit-border-radius: 70px;
+			-khtml-border-radius: 70px;
+			border-radius: 70px;
+			
+			background-color: #d00000;
+		}
+		body div.container div.save-button.second,
+		body div.container div.date-button.second
+		{
+			right: 150px;
+			
+			background-color: green;
+		}
+		body div.container div.save-button.third,
+		body div.container div.date-button.third
+		{
+			right: 225px;
+			
+			background-color: blue;
+		}
+		
+			body div.container div.save-button span,
+			body div.container div.date-button span
+			{
+				width: 100%;
+				
+				font-size: 30px;
+				color: #fff;
+				text-align: center;
+			}
+	
+		body div.container h1
+		{
+			font-family: 'Raleway', 'Tahoma';
+			font-size: 20px;
+			color: #000;
+		}
+		
+		body div.container div.content-assistent
+		{
+			height: 10px;
+			
+			position: absolute;
+			top: 50px;
+			right: 0px;
+			left: 0px;
+			
+			padding: 20px;
+			display: table;
+			
+			background-color: #fff;
+			
+			-moz-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			-khtml-border-radius: 10px;
+			border-radius: 10px;
+		}
+		body div.container div.content-assistent.flexible
+		{
+			width: calc(100% - 40px);
+			height: 10px;
+			
+			position: relative;
+			
+			margin: 0px 0px 20px 0px;
+			float: left;
+			display: table;
+		}
+		body div.container div.content-assistent.flexible.first
+		{
+			margin-top: -50px;
+		}
+		
+			body div.container div.content-assistent strong
+			{
+				margin: 0px 0px 10px 0px;
+				float: left;
+				
+				font-family: 'Raleway', 'Tahoma';
+				font-size: 20px;
+			}
+		
+			body div.container div.content-assistent div.product-tile
+			{
+				width: calc(25% - 15px);
+				height: 10px;
+				
+				position: relative;
+				
+				display: table;
+				float: left;
+				margin: 0px 0px 30px 20px;
+				padding: 0px 0px 30px 0px;
+			}
+			body div.container div.content-assistent div.product-tile.first
+			{
+				margin: 0px;
+			}
+			
+				body div.container div.content-assistent div.product-tile img
+				{
+					width: 100%;
+				}
+				
+				body div.container div.content-assistent div.product-tile span
+				{
+					width: 100%;
+					
+					margin: 10px 0px 0px 0px;
+					float: left;
+					
+					font-family: 'Raleway', 'Tahoma';
+					font-size: 17px;
+					text-align: center;
+				}
+				
+				body div.container div.content-assistent div.product-tile div.overlay
+				{
+					position: absolute;
+					top: 0px;
+					right: 0px;
+					bottom: 0px;
+					left: 0px;
+				}
+				body div.container div.content-assistent div.product-tile div.overlay.white
+				{
+					background-color: #fff;
+					
+					-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+					filter: alpha(opacity=75);
+					-moz-opacity: 0.75;
+					-khtml-opacity: 0.75;
+					opacity: 0.75;
+				}
+				body div.container div.content-assistent div.product-tile div.overlay.red
+				{
+					background-color: #d00000;
+					
+					-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+					filter: alpha(opacity=50);
+					-moz-opacity: 0.5;
+					-khtml-opacity: 0.5;
+					opacity: 0.5;
+				}
+				
+			body div.container div.content-assistent table.form-table
+			{
+				width: 100%;
+			}
+			
+				body div.container div.content-assistent table.form-table tr td
+				{
+					padding: 10px 0px;
+					
+					font-family: 'Raleway', 'Tahoma';
+					font-size: 14px;
+				}
+				
+				body div.container div.content-assistent table.form-table thead tr td
+				{
+					font-weight: bold;
+					
+					border-bottom: 1px solid #ccc;
+				}

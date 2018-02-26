@@ -808,6 +808,8 @@ $(document).ready(
 				var button = $(this).find("div.pos-button");
 				var val = $("input.popup-keyboard-output").val();
 				
+				val = val.replace(/-/g, "");
+				
 				if(button.hasClass("fa"))
 				{
 					if(button.hasClass("fa-backward"))
@@ -844,6 +846,58 @@ $(document).ready(
 				else
 				{
 					val = val + button.html();
+				}
+				
+				if($("input.popup-keyboard-output").hasClass("date-field"))
+				{
+					var string = "";
+					var check = val;
+					
+					// Dag
+					if(check.length >= 2)
+					{
+						string = string + check.substring(0, 1);
+						string = string + check.substring(2, 1);
+						string = string + "-";
+					}
+					
+					// Maand
+					if(check.substring(3, 2) != "")
+					{
+						string = string + check.substring(3, 2);
+					}
+					
+					if(check.substring(4, 3) != "")
+					{
+						string = string + check.substring(4, 3);
+						string = string + "-";
+					}
+					
+					// Jaar
+					if(check.substring(5, 4) != "")
+					{
+						string = string + check.substring(5, 4);
+					}
+					
+					if(check.substring(6, 5) != "")
+					{
+						string = string + check.substring(6, 5);
+					}
+					
+					if(check.substring(7, 6) != "")
+					{
+						string = string + check.substring(7, 6);
+					}
+					
+					if(check.substring(8, 7) != "")
+					{
+						string = string + check.substring(8, 7);
+					}
+					
+					if(string != "")
+					{
+						val = string;
+					}
 				}
 				
 				$("input.popup-keyboard-output").val(val)
