@@ -26,6 +26,7 @@ class workorders extends motherboard
 		$query = sprintf(
 			"	SELECT		workorders.*,
 							DATE_FORMAT(workorders.expiration_date, '%%d-%%m-%%Y') AS expiration_date,
+							workorders.expiration_date AS expiration_date_core,
 							LPAD(workorders.key_number, 3, 0) AS key_number,
 							customers.name AS customer_name
 				FROM		workorders
