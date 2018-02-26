@@ -847,7 +847,8 @@ class categories extends motherboard
 				INNER JOIN	products ON products.productID = products_filters.productID
 					AND		products.deleted = 0
 				WHERE		products_filters.language = '%s'
-					AND		products_filters.filterID = %d",
+					AND		products_filters.filterID = %d
+				ORDER BY	products_filters.value",
 			strtoupper($data[1]),
 			$data[0]
 		);
