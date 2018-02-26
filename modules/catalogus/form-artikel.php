@@ -502,36 +502,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 								</tr>
 								<?php
 							}
-						}
-						else
-						{
-							$cnt = 1;
-							
-							foreach($data['products_properties'] AS $value)
-							{
-								?>
-								<tr>
-									<td>
-										<select name="filter_language[]" id="filter_language_<?= $cnt ?>" class="width-200">
-											<option <?= $value['language'] == "nl" ? "selected=\"selected\"" : "" ?> value="nl">Nederlands</option>
-											<?php
-											foreach($_lang AS $lValue)
-											{
-												?>
-												<option <?= $value['language'] == $lValue['code'] ? "selected=\"selected\"" : "" ?> value="<?= $lValue['code'] ?>"><?= $lValue['language'] ?></option>
-												<?php
-											}
-											?>
-										</select>
-									</td>
-									<td><input type="text" name="filter_key[]" id="filter_key_<?= $cnt ?>" value="<?= $value['key'] ?>" class="width-300 prop_keys" validation-required="true" validation-type="text" /></td>
-									<td class="values"><input type="text" name="filter_value[]" id="filter_value_<?= $cnt ?>" value="<?= $value['value'] ?>" class="width-300 prop_values" validation-required="true" validation-type="text" /></td>
-									<td>&nbsp;</td>
-								</tr>
-								<?php
-								$cnt++;
-							}
-						}
+						} 
 						?>
 						
 						<tr class="new-row">
