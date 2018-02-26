@@ -1,5 +1,5 @@
 <?php
-$data = $mb->_runFunction("categories", "viewSpecifications", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "specifications.name", "0,50"));
+$data = $mb->_runFunction("categories", "viewSpecifications", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "specifications.name", "0,99999"));
 $form = "/form-specificaties/";
 ?>
 
