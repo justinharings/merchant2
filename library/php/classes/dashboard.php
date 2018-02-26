@@ -1,15 +1,16 @@
 <?php
 class dashboard extends motherboard
 {
-	private function _bot_detected() 
+	public function _bot_detected() 
 	{
-		return sprintf(
-			"	AND		visitor.user_agent NOT LIKE ('%bot%')
-				AND		visitor.user_agent NOT LIKE ('%crawl%')
-				AND		visitor.user_agent NOT LIKE ('%slurp%')
-				AND		visitor.user_agent NOT LIKE ('%spider%')
-				AND		visitor.user_agent NOT LIKE ('%mediapartners%')"
-		);
+		// return "";
+		
+		return "	
+			AND		visitors.user_agent NOT LIKE ('%bot%')
+			AND		visitors.user_agent NOT LIKE ('%crawl%')
+			AND		visitors.user_agent NOT LIKE ('%slurp%')
+			AND		visitors.user_agent NOT LIKE ('%spider%')
+			AND		visitors.user_agent NOT LIKE ('%mediapartners%')";
 	}
 	
 	
@@ -69,7 +70,6 @@ class dashboard extends motherboard
 			$day = "AND DAY(visitors.date_added) = " . intval($data[2]);
 		}
 		
-		
 		$query = sprintf(
 			"	SELECT		COUNT(%s visitors.ip) AS total
 				FROM		visitors
@@ -81,7 +81,7 @@ class dashboard extends motherboard
 			$data[0],
 			$month,
 			$day,
-			$this->_bot_detected
+			$this->_bot_detected()
 		);
 		$result = parent::query($query);
 		$row = parent::fetch_assoc($result);
@@ -110,7 +110,7 @@ class dashboard extends motherboard
 			$data[0],
 			$data[1],
 			$data[2],
-			$this->_bot_detected
+			$this->_bot_detected()
 		);
 		$result = parent::query($query);
 		$row = parent::fetch_assoc($result);
