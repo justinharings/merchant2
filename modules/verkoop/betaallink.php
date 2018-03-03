@@ -24,8 +24,7 @@ $merchant = $mb->_runFunction("merchant", "load", array($_SESSION['merchantID'])
 			<td><?= $mb->_translateReturn("table-headers", "orderid") ?></td>
 			<td><?= $mb->_translateReturn("table-headers", "description") ?></td>
 			<td class="hide-mobile"><?= $mb->_translateReturn("table-headers", "module") ?></td>
-			<td><?= $mb->_translateReturn("table-headers", "amount") ?></td>
-			<td width="1"><?= $mb->_translateReturn("table-headers", "status") ?></td>
+			<td><?= $mb->_translateReturn("table-headers", "status") ?></td>
 		</tr>
 	</thead>
 	
@@ -40,8 +39,10 @@ $merchant = $mb->_runFunction("merchant", "load", array($_SESSION['merchantID'])
 					<td><?= $value['order_reference'] ?></td>
 					<td><?= $value['description'] ?></td>
 					<td class="hide-mobile"><?= $value['payment_module'] ?></td>
-					<td>&euro;&nbsp;<?= _frontend_float($value['amount']) ?></td>
-					<td><?= $merchant['website_url'] . "paylink/" . $value['key'] ?></td>
+					<td>
+						<span class="clipboard-content"><?= $merchant['website_url'] . "paylink/" . $value['key'] ?></span>
+						<span class="clipboard-button fa fa-clipboard"></span>
+					</td>
 				</tr>
 				<?php
 			}
