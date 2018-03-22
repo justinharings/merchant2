@@ -317,7 +317,8 @@ class products extends motherboard
 			
 			$query = sprintf(
 				"	SELECT		reviews.*,
-								DATE_FORMAT(reviews.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added
+								DATE_FORMAT(reviews.date_added, '%%d-%%m-%%Y @ %%k:%%i') AS date_added,
+								DATE_FORMAT(reviews.date_added, '%%Y-%%m-%%d') AS date_added_raw
 					FROM		reviews
 					WHERE		reviews.productID = %d
 						AND		reviews.approved = 1
@@ -1094,8 +1095,9 @@ class products extends motherboard
 				FROM		reviews
 				INNER JOIN	products ON products.productID = reviews.productID
 				WHERE		reviews.merchantID = %d
+					AND		products.deleted = 0
 				GROUP BY	reviews.productID
-                ORDER BY 	SUM(reviews.stars) DESC
+                ORDER BY 	SUM(reviews.stars) DESC, products.name ASC
 				LIMIT		0,5",
 			$languages,
 			$data[0]
