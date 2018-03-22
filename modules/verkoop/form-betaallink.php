@@ -72,8 +72,6 @@ $data_payments = $mb->_runFunction("payment_methods", "view", array($_SESSION['m
 				}
 				?>
 			</select>
-			
-			<input type="text" name="amount" id="amount" value="<?= isset($_GET['dataID']) ? $data['amount'] : "" ?>" class="width-100 margin" holder="<?= $mb->_translateReturn("forms", "form-paylink-amount") ?>" icon="fa-euro" validation-required="true" validation-type="int" />
 		</div>
 	</div>
 </form>

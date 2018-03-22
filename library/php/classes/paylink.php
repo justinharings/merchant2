@@ -135,22 +135,46 @@ class paylink extends motherboard
 	
 	
 	/*
-	**	Remove the brand from the database.
-	**	Called by the save function when delete is set.
+	**
 	*/
 	
-	public function delete($data)
+	public function front_validateCode($data)
 	{
-		parent::_checkInputValues($data, 2);
+		parent::_checkInputValues($data, 1);
 		
 		$query = sprintf(
-			"	DELETE FROM		brands
-				WHERE			brands.brandID = %d",
-			$data[1]['brandID']
+			"	SELECT		paylink.paylinkID
+				FROM		paylink
+				WHERE		paylink.key = '%s'
+					AND		paylink.completed = 0",
+			$data[0]
 		);
-		parent::query($query);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
 		
-		return true;
+		return ($row['paylinkID'] > 0 ? true : false);
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	public function front_loadPaylink($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		paylink.*
+				FROM		paylink
+				WHERE		paylink.key = '%s'",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return ($row['paylinkID'] > 0 ? $row : false);
 	}
 }
 ?>

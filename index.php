@@ -319,19 +319,6 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 										</li>
 										<?php
 									}
-									
-									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "VER_BG", 0)))
-									{
-										?>
-										<li class="menu-item" rel="/verkoop/betaallink/">
-											<div class="text"><?= $mb->_translateReturn("menu", "paylink") ?></div>
-											
-											<div class="icon">
-												<span class="textual"><?= $mb->_translateReturn("menu", "paylink-abbr") ?></span>
-											</div>
-										</li>
-										<?php
-									}
 									?>
 								</ul>
 							</li>
@@ -495,6 +482,7 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 							<?php
 						}
 						
+						/*
 						if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "DSB", 0)))
 						{
 							?>
@@ -508,6 +496,7 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 							</li>
 							<?php
 						}
+						*/
 						
 						if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "DIS", 0)))
 						{

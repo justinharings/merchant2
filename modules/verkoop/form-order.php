@@ -1,5 +1,6 @@
 <?php
 $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "SET_BP", 1));
+$merchant = $mb->_runFunction("merchant", "load", array($_SESSION['merchantID']));
 
 if(isset($_GET['dataID']))
 {
@@ -551,6 +552,18 @@ foreach($data['shipments'] AS $shipment)
 						</tr>
 					</tbody>
 				</table>
+				
+				<?php
+				if(($data['grand_total'] - $data['payed']) > 0)
+				{
+					?>
+					<br/>
+					<a href="<?= $merchant['website_url'] ?>paylink/<?= md5($data['orderID']) ?>" target="_blank">
+						<img src="/library/media/betaallink.png" />
+					</a>
+					<?php
+				}
+				?>
 			</div>
 		</div>
 		

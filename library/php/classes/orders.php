@@ -79,7 +79,7 @@ class orders extends motherboard
 				GROUP BY	orders.orderID
 				ORDER BY	%s
 				LIMIT		%s",
-			($search != "" ? "LEFT JOIN orders_invoice_rules ON orders_invoice_rules.orderID = orders.orderID" : ""),
+			($search != "" ? "INNER JOIN orders_invoice_rules ON orders_invoice_rules.orderID = orders.orderID" : ""),
 			$data[0],
 			$type,
 			$search,
@@ -1291,6 +1291,30 @@ class orders extends motherboard
 		
 		
 		return $orderID;
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	/*
+	**
+	*/
+	
+	public function front_startPaylink($data)
+	{
+		$_load_module = $data[0];
+		$_module_keys = $data[1];
+		$orderID = $data[2];
+		$data = $data[3];
+		
+		if($_load_module != "")
+		{
+			require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/extensions/payments/router.php");
+			exit;
+		}
 	}
 }
 ?>
