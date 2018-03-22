@@ -464,7 +464,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 									<option value=""></option>
 									
 									<?php
-									$dataSpecifications = $mb->_runFunction("categories", "viewSpecifications", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "specifications.name", "0,50"));
+									$dataSpecifications = $mb->_runFunction("categories", "viewSpecifications", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "specifications.name", "0,99999"));
 									
 									foreach($dataSpecifications AS $specifications)
 									{
