@@ -3,8 +3,6 @@ class dashboard extends motherboard
 {
 	public function _bot_detected() 
 	{
-		// return "";
-		
 		return "	
 			AND		visitors.user_agent NOT LIKE ('%bot%')
 			AND		visitors.user_agent NOT LIKE ('%crawl%')
@@ -32,10 +30,9 @@ class dashboard extends motherboard
 		}
 		
 		$query = sprintf(
-			"	SELECT		SUM(orders_product.price) AS amnt
-				FROM		orders_product
-				INNER JOIN	products ON products.productID = orders_product.productID
-				INNER JOIN	orders ON orders.orderID = orders_product.orderID
+			"	SELECT		SUM(orders_payment.amount) AS amnt
+				FROM		orders_payment
+				INNER JOIN	orders ON orders.orderID = orders_payment.orderID
 				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
 				WHERE		order_statuses.finished = 1
 					AND		order_statuses.declined = 0
