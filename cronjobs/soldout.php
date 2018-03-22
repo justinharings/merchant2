@@ -5,6 +5,18 @@ require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library
 $db = new database();
 
 
+$query = sprintf(
+	"	UPDATE		products
+		LEFt JOIN	products_stock ON products_stock.productID = products.productID
+		SET			products.status = 4
+		WHERE		products.status = 2
+			AND		(
+						products_stock.stock <= 0
+				OR		products_stock.stock IS NULL
+					)"
+);
+$db->query($query);
+
 
 $query = sprintf(
 	"	UPDATE		products

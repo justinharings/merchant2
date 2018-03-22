@@ -13,9 +13,9 @@ function _createCategoryURL($name)
 
 
 
-$_take_languages = 		array("nl", "en");
+$_take_languages = 		array("nl", "en", "de");
 $_websites = 			array(1 => "https://www.haringstweewielers.com/");
-$_save_location =		array(1 => "/var/www/vhosts/justinharings.nl/haringstweewielers.com/sitemap.xml");
+$_save_location =		array(1 => "/var/www/vhosts/justinharings.nl/haringstweewielers.com/sitemap_%s.xml");
 
 $_categories = 			array(
 							1 => array(
@@ -56,7 +56,7 @@ foreach($_websites AS $merchantID => $webaddress)
 	{
 		foreach($_take_languages AS $lang)
 		{
-			$urls[] = $webaddress . $lang . "/service/" . $row['seo_url'];
+			$urls[$lang][] = $webaddress . $lang . "/service/" . $row['seo_url'];
 		}
 	}
 	
@@ -67,7 +67,7 @@ foreach($_websites AS $merchantID => $webaddress)
 	{
 		foreach($_take_languages AS $lang)
 		{
-			$urls[] = $webaddress . $lang . "/catalog/" . $category . ".html";
+			$urls[$lang][] = $webaddress . $lang . "/catalog/" . $category . ".html";
 		}
 		
 		$query = sprintf(
@@ -92,7 +92,7 @@ foreach($_websites AS $merchantID => $webaddress)
 			{
 				foreach($_take_languages AS $lang)
 				{
-					$urls[] = $webaddress . $lang . "/catalog/" . $category . "/" . $row2['categoryID'] . "/filters/none/" . _createCategoryURL($row2['name']) . ".html";
+					$urls[$lang][] = $webaddress . $lang . "/catalog/" . $category . "/" . $row2['categoryID'] . "/filters/none/" . _createCategoryURL($row2['name']) . ".html";
 				}
 				
 				$query3 = sprintf(
@@ -115,7 +115,7 @@ foreach($_websites AS $merchantID => $webaddress)
 					{
 						if($row3['name'][$lang] != "")
 						{
-							$urls[] = $webaddress . $lang . "/catalog/" . $category . "/" . _createCategoryURL($row2['name']) . "/details/" . $row3['productID'] . "/" . _createCategoryURL($row3['name'][$lang]) . ".html";
+							$urls[$lang][] = $webaddress . $lang . "/catalog/" . $category . "/" . _createCategoryURL($row2['name']) . "/details/" . $row3['productID'] . "/" . _createCategoryURL($row3['name'][$lang]) . ".html";
 						}
 					}
 				}
@@ -123,38 +123,44 @@ foreach($_websites AS $merchantID => $webaddress)
 		}
 	}
 	
-	$xml = '<?xml version="1.0" encoding="UTF-8"?>
-			<urlset
-			      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-			      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-			            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
-			            
-	foreach($urls AS $url)
+	foreach($_take_languages AS $lang)
 	{
-		$xml .= '
-			<url>
-			  <loc>' . $url . '</loc>
-			  <priority>1.00</priority>
-			</url>
-		';
-	}
-	
-	$xml .= '</urlset>';
-	
-	try 
-	{
-		$file = fopen("/var/www/vhosts/justinharings.nl/websites.justinharings.nl/sitemap.xml", "w");
-		fwrite($file, $xml);
-		fclose($file);
+		$xml = '<?xml version="1.0" encoding="UTF-8"?>
+				<urlset
+				      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+				      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+				            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
+				            
+		foreach($urls[$lang] AS $url)
+		{
+			$xml .= '
+				<url>
+				  <loc>' . $url . '</loc>
+				  <priority>1.00</priority>
+				</url>
+			';
+		}
 		
-		$file = fopen($_save_location[$merchantID], "w");
-		fwrite($file, $xml);
-		fclose($file);
-	}
-	catch (Exception $e) 
-	{
-		echo 'Caught exception: ',  $e->getMessage(), "\n";
+		$xml .= '</urlset>';
+	
+	
+		try 
+		{
+			
+			$sLocation = sprintf(
+					$_save_location[$merchantID],
+				$lang
+			);
+			
+			$file = fopen($sLocation, "w");
+			fwrite($file, $xml);
+			fclose($file);
+		}
+		catch (Exception $e) 
+		{
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+		}
 	}
 	
 	$urls = array();

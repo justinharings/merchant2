@@ -6,6 +6,7 @@ if(!isset($_SESSION))
 
 
 define("_LANGUAGE_PACK", "nl");
+define("_MERCHANT_ID", "1");
 
 $_SERVER['DOCUMENT_ROOT'] = "/var/www/vhosts/justinharings.nl/dev.justinharings.nl";
 
@@ -21,7 +22,12 @@ $query = sprintf(
 					brands.name AS brand,
 					products.status,
 					products.article_code,
-					products.barcode
+					products.barcode,
+					(
+						SELECT		SUM(products_stock.stock)
+						FROM		products_stock
+						WHERE		products_stock.productID = products.productID
+					) AS total_stock
 		FROM		categories_products
 		INNER JOIN	categories ON categories.categoryID = categories_products.categoryID
 		INNER JOIN	products ON products.productID = categories_products.productID
@@ -220,6 +226,7 @@ while($row = $mb->fetch_assoc($result))
 	$insert[$num]['sale'] = ($row['status'] == 2 ? 1 : 0);
 	$insert[$num]['status'] = $row['status'];
 	$insert[$num]['filters'] = serialize($filters);
+	$insert[$num]['total_stock'] = $row['total_stock'];
 	
 	$num++;
 }
@@ -247,6 +254,7 @@ foreach($insert AS $key => $value)
 							products_cache.sale = %d,
 							products_cache.status = %d,
 							products_cache.stock_type = %d,
+							products_cache.stock = %d,
 							products_cache.filters = '%s'",
 		$value['merchantID'],
 		$value['productID'],
@@ -262,6 +270,7 @@ foreach($insert AS $key => $value)
 		$value['sale'],
 		$value['status'],
 		$value['stock'],
+		$value['total_stock'],
 		$mb->real_escape_string($value['filters'])
 	);
 	$mb->query($query);

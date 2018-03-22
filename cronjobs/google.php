@@ -24,11 +24,12 @@ function outputCSV($data)
 
 function _transformCategoryURL($name)
 {
+	$name = strtolower($name);
 	$name = strip_tags($name);
+	
 	$name = str_replace(" ", "_", $name);
-	$name = str_replace("/", "-", $name);
+	$name = str_replace("/", "_", $name);
 	$name = str_replace("&", "en", $name);
-	$name = strToLower($name);
 	
 	return $name;
 }
@@ -52,108 +53,132 @@ while($row = $db->fetch_assoc($result))
 
 foreach($_merchants AS $merchantID)
 {
-	$articles = $mb->_runFunction("products", "view", array($merchantID, "export", "products.name", "0,9999"));
+	$_SESSION['merchantID'] = $merchantID;
 	
-	$return = array();
+	$articles = $mb->_runFunction("products", "view", array($merchantID, "export", "products.name", "0,9999999"));
+	
 	$num = 0;
 	
-	foreach($articles AS $key => $value)
+	$_lang = $mb->_allLanguages();
+	
+	$langs = array();
+	
+	$langs[] = "nl";
+	
+	foreach($_lang AS $language)
 	{
-		$details = $mb->_runFunction("products", "load", array($value['productID']));
+		$langs[] = strtolower($language['code']);
+	}
+	
+	foreach($langs AS $language)
+	{
+		$return = array();
 		
-		if(strpos(strtolower($details['visibility']), "webwinkel") === false)
+		foreach($articles AS $key => $value)
 		{
-			//continue;
-		}
-		
-		$return[$num]['id'] = $details['article_code'];
-		$return[$num]['name'] = $details['name'];
-		$return[$num]['description'] = nl2br($details['description']);
-		$return[$num]['link'] = "https://www.haringstweewielers.com/nl/catalog/details/" . $details['productID'] . "/" . _transformCategoryURL($details['name']) . ".html";
-		$return[$num]['state'] = "nieuw";
-		$return[$num]['price'] = number_format($details['price'], 2, ",", "");
-		$return[$num]['stock'] = "Op voorraad";
-		$return[$num]['image'] = "";
-		$return[$num]['gtin'] = $details['supplier_code'];
-		$return[$num]['mpn'] = "123";
-		$return[$num]['brand'] = $details['brand'];
-		$return[$num]['shipping'] = 0;
-		
-		if($details['stock'] < 1 && $details['status'] < 3)
-		{
-			$return[$num]['stock'] = "Vooraf bestellen";
-		}
-		else if($details['stock'] < 1 && $details['status'] > 2)
-		{
-			$return[$num]['stock'] = "Niet op voorraad";
-		}
-		
-		foreach($details['images'] AS $media)
-		{
-			if($media['thumb'])
+			if($value['visibility'] < 2)
 			{
-				$return[$num]['image'] = "https://merchant.justinharings.nl/library/media/products/" . $media['productMediaID'] . ".png";
-			}	
-		}
-		
-		$data_shipments = $mb->_runFunction("shipment_methods", "view", array($merchantID, "", "shipment_methods.name", "0,50"));
-					
-		foreach($data_shipments AS $values)
-		{
-			if($details['shipmentID'] == $values['shipmentID'])
-			{
-				$return[$num]['shipping'] = $values['price'] . " EUR";
+				continue;
 			}
-		}
+			
+			$details = $mb->_runFunction("products", "load", array($value['productID']));
+			
+			$dataShipment = $mb->_runFunction("shipment_methods", "load", array($details['shipmentID']));
+			$exportFee = 0;
+			
+			if($language != "nl")
+			{
+				foreach($dataShipment['fees'] AS $value)
+				{
+					if($value['country'] == "United Kingdom" && $language == "en")
+					{
+						$exportFee = $value['fee'];
+					}
+					else if($value['country'] == "Germany" && $language == "de")
+					{
+						$exportFee = $value['fee'];
+					}
+				}
+			}
+			
+			$return[$num]['id'] = $details['article_code'];
+			$return[$num]['name'] = $details['name'];
+			$return[$num]['description'] = nl2br($details['description']);
+			$return[$num]['link'] = "https://www.haringstweewielers.com/" . $language . "/catalog/details/" . $details['productID'] . "/" . _transformCategoryURL($details[($language != "nl" ? strtoupper($language) . "_" : "") . 'name']) . ".html";
+			$return[$num]['state'] = "nieuw";
+			$return[$num]['price'] = number_format($details['price'], 2, ".", "") . " EUR";
+			$return[$num]['stock'] = "Op voorraad";
+			$return[$num]['image'] = "";
+			$return[$num]['gtin'] = $details['barcode'];
+			$return[$num]['mpn'] = $details['supplier_code'];
+			$return[$num]['brand'] = $details['brand'];
+			$return[$num]['shipping'] = ($details['shipment_costs'] + $exportFee) . " EUR";
+			
+			if($details['stock'] < 1 && $details['status'] < 3)
+			{
+				$return[$num]['stock'] = "Vooraf bestellen";
+			}
+			else if($details['stock'] < 1 && $details['status'] > 2)
+			{
+				$return[$num]['stock'] = "Niet op voorraad";
+			}
+			
+			foreach($details['images'] AS $media)
+			{
+				if($media['thumb'])
+				{
+					$return[$num]['image'] = "https://merchant.justinharings.nl/library/media/products/" . $media['productMediaID'] . ".png";
+				}	
+			}
 				
-		$num++;
-	}
-	
-	$data = array();
-	$data[] = array("id", "titel", "beschrijving", "link", "staat", "prijs", "beschikbaarheid", "afbeeldingslink", "gtin", "mpn", "merk", "adult", "verzending(prijs)");
-	
-	foreach($return AS $value)
-	{
-		if	(
-				($value['gtin'] == "" || strlen($value['gtin']) < 13)
-				|| $value['brand'] == ""
-			)
-		{
-			continue;
-		}
-	
-		$value['description'] = trim(preg_replace('/\s+/', ' ', $value['description']));
-		
-		$data[] = array($value['id'], $value['name'], $value['description'], $value['link'], $value['state'], $value['price'], $value['stock'], $value['image'], $value['gtin'], $value['mpn'], $value['brand'], "nee", $value['shipping']);
-	}
-	
-	$folder = "/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/csv/";
-	$file = "google_" . $merchantID . ".csv";
-	
-	if(file_exists($folder.$file))
-	{
-		unlink($folder.$file);
-	}
-	
-	if(!is_dir($folder))
-	{
-		mkdir($folder, 0777);
-	}
-	
-	try
-	{
-		$fp = fopen($folder.$file, 'w');
-		
-		foreach ($data as $fields) 
-		{
-			fputcsv($fp, $fields);
+			$num++;
 		}
 		
-		fclose($fp);
-	} 
-	catch (Exception $e) 
-	{
-		$e->getMessage(); exit;
+		$data = array();
+		$data[] = array("id", "titel", "beschrijving", "link", "staat", "prijs", "beschikbaarheid", "afbeeldingslink", "gtin", "mpn", "merk", "adult", "verzending(prijs)");
+		
+		foreach($return AS $value)
+		{
+			if	(
+					$value['gtin'] == "" || strlen($value['gtin']) < 2 || $value['brand'] == ""
+				)
+			{
+				continue;
+			}
+		
+			$value['description'] = trim(preg_replace('/\s+/', ' ', $value['description']));
+			
+			$data[] = array($value['id'], $value['name'], $value['description'], $value['link'], $value['state'], $value['price'], $value['stock'], $value['image'], $value['gtin'], $value['mpn'], $value['brand'], "nee", $value['shipping']);
+		}
+		
+		$folder = "/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/csv/";
+		$file = "google_" . $language . "_" . $merchantID . ".csv";
+		
+		if(file_exists($folder.$file))
+		{
+			unlink($folder.$file);
+		}
+		
+		if(!is_dir($folder))
+		{
+			mkdir($folder, 0777);
+		}
+		
+		try
+		{
+			$fp = fopen($folder.$file, 'w');
+			
+			foreach($data as $fields) 
+			{
+				fputcsv($fp, $fields);
+			}
+			
+			fclose($fp);
+		} 
+		catch (Exception $e) 
+		{
+			print $e->getMessage(); exit;
+		}
 	}
 }
 ?>

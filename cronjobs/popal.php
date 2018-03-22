@@ -103,15 +103,22 @@ $result = $db->query($query);
 
 while($row = $db->fetch_assoc($result))
 {
-	if(trim($row['barcode']) != "" && strlen($row['barcode']) > 5)
+	if($row['stock'] > 0)
 	{
-		$row['supplier_code'] = $row['barcode'];
+		$query = sprintf(
+			"	UPDATE		products
+				SET			products.status = 1
+				WHERE		products.productID = %d
+					AND		products.status != 2",
+			$row['productID']
+		);
+		$db->query($query);
 	}
 	
 	$values = "";
-	$values = searchArray($stock, "barcode", $row['supplier_code']);
+	$values = searchArray($stock, "barcode", $row['barcode']);
 	
-	if($row['supplier_code'] != "" && $values['barcode'] == $row['supplier_code'])
+	if($row['barcode'] != "" && $values['barcode'] == $row['barcode'])
 	{
 		$query = sprintf(
 			"	UPDATE		products
@@ -141,7 +148,7 @@ while($row = $db->fetch_assoc($result))
 			$db->query($query);
 		}
 	}
-	else
+	else if($row['stock'] <= 0 && $row['barcode'] != "")
 	{
 		$query = sprintf(
 			"	UPDATE		products
