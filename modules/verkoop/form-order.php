@@ -558,7 +558,7 @@ foreach($data['shipments'] AS $shipment)
 				{
 					?>
 					<br/>
-					<a href="<?= $merchant['website_url'] ?>paylink/<?= md5($data['orderID']) ?>" target="_blank">
+					<a href="<?= $merchant['website_url'] ?>paylink/<?= base64_encode($data['orderID']) ?>" target="_blank">
 						<img src="/library/media/betaallink.png" />
 					</a>
 					<?php
