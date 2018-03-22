@@ -370,7 +370,8 @@ class categories extends motherboard
 				FROM		products
 				INNER JOIN	taxes ON taxes.taxesID = products.taxesID
 				WHERE		products.article_code = '%s'
-					AND		products.merchantID = %d",
+					AND		products.merchantID = %d
+					AND		products.deleted = 0",
 			$data[1]['article_code'],
 			$data[0]
 		);
@@ -406,7 +407,8 @@ class categories extends motherboard
 				FROM		products
 				INNER JOIN	taxes ON taxes.taxesID = products.taxesID
 				WHERE		products.barcode = '%s'
-					AND		products.merchantID = %d",
+					AND		products.merchantID = %d
+					AND		products.deleted = 0",
 			$data[1]['barcode'],
 			$data[0]
 		);
