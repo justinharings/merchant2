@@ -395,7 +395,21 @@ class workorders extends motherboard
 			$data[1]['barcode']
 		);
 		$result = parent::query($query);
-		if($workorder['customerID'] > 0 && parent::num_rows($result) == 0)
+		
+		if(parent::num_rows($result) > 0)
+		{
+			$query = sprintf(
+				"	UPDATE		batteries
+					SET			batteries.customerID = %d,
+								batteries.ampere = '%.2f'
+					WHERE		batteries.barcode = '%s'",
+				$workorder['customerID'],
+				$data[1]['ampere'],
+				$data[1]['barcode']
+			);
+			parent::query($query);
+		}
+		else if($workorder['customerID'] > 0)
 		{
 			$query = sprintf(
 				"	INSERT INTO		batteries
