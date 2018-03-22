@@ -61,6 +61,21 @@ $mb = new motherboard();
 if(!isset($_GET['module']))
 {
 	$query = sprintf(
+		"	SELECT		assistent_callback.*
+			FROM		assistent_callback
+			LIMIT		0,1"
+	);
+	$result = $mb->query($query);
+	
+	if($mb->num_rows($result))
+	{
+		$row = $mb->fetch_assoc($result);
+		
+		header("location: /assistent/?module=callback&callbackID=" . $row['callbackID'] . "&productID=" . $row['productID'] . "&number=" . $row['number']);
+		exit;
+	}
+	
+	$query = sprintf(
 		"	SELECT		assistent.timer
 			FROM		assistent"
 	);
@@ -78,7 +93,7 @@ if(!isset($_GET['module']))
 	$hours = $diff->days * 24;
 	$hours += $diff->h;
 	
-	if($hours > 7)
+	if($hours > 7 && true == false)
 	{
 		header("location: /assistent/?module=cleanup");
 		exit;
@@ -88,8 +103,12 @@ if(!isset($_GET['module']))
 		$query = sprintf(
 			"	SELECT		assistent_orders.orderID
 				FROM		assistent_orders
+				INNER JOIN	orders ON orders.orderID = assistent_orders.orderID
+				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
 				WHERE		DATE(assistent_orders.date) <= DATE_ADD(CURDATE(), INTERVAL 1 DAY)
 					AND		assistent_orders.ready = 0
+					AND		order_statuses.finished = 0
+					AND 	order_statuses.declined = 0
 				LIMIT		1"
 		);
 		$result = $mb->query($query);
@@ -112,7 +131,11 @@ if(!isset($_GET['module']))
 					$query = sprintf(
 						"	SELECT		assistent_orders.*
 							FROM		assistent_orders
-							WHERE		assistent_orders.orderID = %d",
+							INNER JOIN	orders ON orders.orderID = assistent_orders.orderID
+							INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+							WHERE		assistent_orders.orderID = %d
+								AND		order_statuses.finished = 0
+								AND 	order_statuses.declined = 0",
 						$value['orderID']
 					);
 					$result = $mb->query($query);
@@ -130,21 +153,6 @@ if(!isset($_GET['module']))
 				}
 			}
 		}
-	}
-	
-	$query = sprintf(
-		"	SELECT		assistent_callback.*
-			FROM		assistent_callback
-			LIMIT		0,1"
-	);
-	$result = $mb->query($query);
-	
-	if($mb->num_rows($result))
-	{
-		$row = $mb->fetch_assoc($result);
-		
-		header("location: /assistent/?module=callback&callbackID=" . $row['callbackID'] . "&productID=" . $row['productID'] . "&number=" . $row['number']);
-		exit;
 	}
 	
 	$data = $mb->_runFunction("workorders", "view", array(1, "", "workorders.expiration_date ASC, workorders.priority DESC, workorders.date_added ASC", "0,100"));
@@ -225,6 +233,10 @@ switch($_GET['module'])
 	case "callback":
 		$color = "purple";
 	break;
+	
+	case "calendar":
+		$color = "white";
+	break;
 }
 ?>
 
@@ -266,6 +278,12 @@ switch($_GET['module'])
 		<div class="popup-container">
 			<div class="closer"><span class="fa fa-times"></span></div>
 			<iframe src="about:blank"></iframe>
+		</div>
+		
+		<div class="total-calendar">
+			<a href="/assistent/?module=calendar">
+				<span class="fa fa-calendar"></span>
+			</a>
 		</div>
 		
 		<div class="container">
@@ -953,6 +971,70 @@ switch($_GET['module'])
 					</div>
 				</form>
 				<?php
+			}
+			else if(isset($_GET['module']) && $_GET['module'] == "calendar")
+			{	
+				$query = sprintf(
+					"	SELECT		assistent_orders.*
+						FROM		assistent_orders
+						INNER JOIN	orders ON orders.orderID = assistent_orders.orderID
+						INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+						WHERE		assistent_orders.ready = 0
+							AND		order_statuses.finished = 0
+							AND 	order_statuses.declined = 0
+						ORDER BY	assistent_orders.date"
+				);
+				$result = $mb->query($query);
+				
+				while($row = $mb->fetch_assoc($result))
+				{
+					$order = $mb->_runFunction("orders", "load", array(intval($row['orderID'])));
+					?>
+					<a href="/assistent/?module=order&orderID=<?= $row['orderID'] ?>&ready=<?= $row['ready'] ?>">
+						<div class="content-assistent flexible">
+							<strong><?= _dutchDate($row['date'], "date") ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= $order['customer']['name'] ?></strong>
+							
+							<hr/>
+							
+							<table class="form-table">
+								<thead>
+									<tr>
+										<td><?= $mb->_translateReturn("table-headers", "ac") ?></td>
+										<td><?= $mb->_translateReturn("table-headers", "barcode") ?></td>
+										<td><?= $mb->_translateReturn("table-headers", "quantity") ?></td>
+										<td><?= $mb->_translateReturn("table-headers", "product") ?></td>
+										<td><?= $mb->_translateReturn("table-headers", "price") ?></td>
+									</tr>
+								</thead>
+								
+								<tbody>
+									<?php
+									if(count($order['products']) > 0)
+									{
+										foreach($order['products'] AS $product)
+										{
+											$calc_vat = ($product['taxrate'] / 100) + 1;
+											$product['price_ex_vat'] = ($product['price'] / $calc_vat);
+											?>
+											<tr id="<?= $product['orderProductID'] ?>">
+												<td><?= $product['article_code'] ?></td>
+												<td><?= ($product['barcode'] != "" ? $product['barcode'] : "Onbekend") ?></td>
+												<td><?= $product['quantity'] ?> stuk(s)</td>
+												<td><?= $product['name'] ?></td>
+												<td><?= $product['price'] ?></td>
+											</tr>
+											<?php
+										}
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+					</a>
+					<?php
+				}
+				
+				print "<br/><br/><br/><br/><br/><br/>";
 			}
 			?>
 		</div>
