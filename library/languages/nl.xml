@@ -145,6 +145,11 @@
 		<manage-brands-abbr>MB</manage-brands-abbr>
 		<manage-taxes>Belasting percentages</manage-taxes>
 		<manage-taxes-abbr>BP</manage-taxes-abbr>
+		<manage-postnl>PostNL Koppeling</manage-postnl>
+		<manage-postnl-abbr>PK</manage-postnl-abbr>
+		
+		<koppelingen>Koppelingen</koppelingen>
+		<koppelingen-eg>Aansluitingen met andere apps</koppelingen-eg>
 		
 		<release-notes>Release notes</release-notes>
 		<release-notes-eg>Release informatie</release-notes-eg>
@@ -242,6 +247,7 @@
 		<button-duplicate>Dupliceren</button-duplicate>
 		
 		<legend-general>Algemene gegevens</legend-general>
+		<legend-apis>Koppeling gegevens</legend-apis>
 		<legend-options>Opties in- en uitschakelen</legend-options>
 		<legend-personal-information>Persoonsgegevens</legend-personal-information>
 		<legend-address-information>Adresgegevens</legend-address-information>
@@ -593,6 +599,13 @@
 		<form-taxes-name>Omschrijving</form-taxes-name>
 		<form-taxes-name-eg>Alleen voor de backoffice.</form-taxes-name-eg>
 		<form-taxes-percentage>Percentage</form-taxes-percentage>
+		
+		<!-- Koppelingen -> PostNL -->
+		<form-postnl-customercode>Customer code</form-postnl-customercode>
+		<form-postnl-customercodeint>Customer code international</form-postnl-customercodeint>
+		<form-postnl-customernumber>Customer number</form-postnl-customernumber>
+		<form-postnl-apikey>API key</form-postnl-apikey>
+		<form-postnl-contactperson>Contactpersoon</form-postnl-contactperson>
 	</forms>
 	
 	<buttons>

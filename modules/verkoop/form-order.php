@@ -473,10 +473,12 @@ foreach($data['shipments'] AS $shipment)
 						</tr>
 					</tbody>
 				</table>
+				
 				<br/>
-				<a href="/modules/verkoop/print-label.php?orderID=<?= $_GET['dataID'] ?>" target="_blank">
-					<img src="/library/media/verzendlabel.png" />
-				</a>
+				
+				<a href="/modules/verkoop/print-label.php?orderID=<?= intval($_GET['dataID']) ?>" target="_blank"><img src="/library/media/verzendlabel.png" /></a>
+				&nbsp;
+				<a href="/extensions/shipment/postnl/label.php?orderID=<?= ($_GET['dataID']) ?>" target="_blank"><img src="/library/media/postnl-print.png" /></a>
 			</div>
 		</div>
 		

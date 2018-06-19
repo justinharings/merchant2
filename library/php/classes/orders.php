@@ -253,6 +253,15 @@ class orders extends motherboard
 			{
 				$row = parent::fetch_assoc($result);
 				
+				$row['street'] = "";
+				$row['housenumber'] = "";
+				
+				if(preg_match('/(?P<address>[^\d]+) (?P<number>\d+.?)/', $row['address'], $matches))
+				{
+					$row['street'] = $matches['address'];
+					$row['housenumber'] = $matches['number'];
+				}
+				
 				$return['customer'] = $row;
 			}
 			
@@ -378,6 +387,48 @@ class orders extends motherboard
 		$shipment = $row['price'];
 		
 		return ($products+$shipment);
+	}
+	
+	
+	
+	/*
+	**
+	*/
+	
+	private function calcRemainingTotal($orderID)
+	{
+		$query = sprintf(
+			"	SELECT		SUM(orders_product.quantity*orders_product.price) AS price
+				FROM		orders_product
+				WHERE		orders_product.orderID = %d",
+			$orderID
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$products = $row['price'];
+		
+		$query = sprintf(
+			"	SELECT		SUM(orders_shipment.price) AS price
+				FROM		orders_shipment
+				WHERE		orders_shipment.orderID = %d",
+			$orderID
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$shipment = $row['price'];
+		
+		$query = sprintf(
+			"	SELECT		orders.payed
+				FROM		orders
+				WHERE		orders.orderID = %d",
+			$orderID
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return (($products+$shipment) - $row['payed']);
 	}
 	
 	
@@ -894,6 +945,20 @@ class orders extends motherboard
 		$result = parent::query($query);
 		$row = parent::fetch_assoc($result);
 		
+		$query = sprintf(
+			"	UPDATE		orders
+				SET			orders.grand_total = '%.2f',
+							orders.vat_total = '%.2f',
+							orders.payed = '%.2f',
+							orders.date_update = NOW()
+				WHERE		orders.orderID = %d",
+			$this->calcTotal($data[0]),
+			$this->calcVatTotal($data[0]),
+			$this->calcPayed($data[0]),
+			$data[0]
+		);
+		parent::query($query);
+		
 		$order = $this->_runFunction("orders", "load", array($data[0]));
 		$customer = $this->_runFunction("customers", "load", array($order['customerID']));
 		
@@ -1071,7 +1136,7 @@ class orders extends motherboard
 		
 		
 		
-		if($data[7] > 0)
+		if($data[7] > 0 && !isset($_POST['paylink']))
 		{
 			$query = sprintf(
 				"	DELETE FROM		orders_payment
@@ -1113,7 +1178,7 @@ class orders extends motherboard
 		
 		
 		
-		if($data[7] > 0)
+		if($data[7] > 0 && !isset($_POST['paylink']))
 		{
 			$query = sprintf(
 				"	DELETE FROM		orders_shipment
@@ -1291,30 +1356,6 @@ class orders extends motherboard
 		
 		
 		return $orderID;
-	}
-	
-	
-	
-	/*
-	**
-	*/
-	
-	/*
-	**
-	*/
-	
-	public function front_startPaylink($data)
-	{
-		$_load_module = $data[0];
-		$_module_keys = $data[1];
-		$orderID = $data[2];
-		$data = $data[3];
-		
-		if($_load_module != "")
-		{
-			require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/extensions/payments/router.php");
-			exit;
-		}
 	}
 }
 ?>

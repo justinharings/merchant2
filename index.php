@@ -927,6 +927,27 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 						}
 						?>
 						
+						<li class="parent menu-item">
+							<div class="text"><?= $mb->_translateReturn("menu", "koppelingen") ?></div>
+							<div class="sub"><?= $mb->_translateReturn("menu", "koppelingen-eg") ?></div>
+							
+							<div class="icon">
+								<span class="fa fa-plug correction"></span>
+							</div>
+						</li>
+						
+						<li class="submenu">
+							<ul>
+								<li class="menu-item" rel="/instellingen/form-postnl/">
+									<div class="text"><?= $mb->_translateReturn("menu", "manage-postnl") ?></div>
+									
+									<div class="icon">
+										<span class="textual"><?= $mb->_translateReturn("menu", "manage-postnl-abbr") ?></span>
+									</div>
+								</li>
+							</ul>
+						</li>
+						
 						<a href="https://github.com/justinharings/merchant2/releases" target="_blank">
 							<li class="menu-item">
 								<div class="text"><?= $mb->_translateReturn("menu", "release-notes") ?></div>
