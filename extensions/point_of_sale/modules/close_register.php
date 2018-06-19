@@ -9,6 +9,20 @@ define("_LANGUAGE_PACK", "NL");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php");
 
 $mb = new motherboard();
+
+if(!isset($_SESSION['merchantID']))
+{
+	?>
+	
+	<script type="text/javascript">
+		window.opener.top.location.reload();
+		setTimeout(function() { window.close(); }, 100);
+	</script>
+	
+	<?php
+	exit;
+}
+
 $data = $mb->_runFunction("reports", "closeRegister", array($_SESSION['merchantID'], $_GET['period']));
 
 
