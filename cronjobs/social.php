@@ -1,46 +1,62 @@
 <?php
-define("_DEVELOPMENT_ENVIRONMENT", true);
+// Instagram accounts
+$accounts = array(
+	"harings2wielers",
+	"haringsvuurwerk"
+);
+
+foreach($accounts AS $account)
+{
+	$raw = file_get_contents('https://www.instagram.com/' . $account);
+	preg_match('/\"followed_by\"\:\s?\{\"count\"\:\s?([0-9]+)/', $raw, $m);
 	
-require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/php/classes/database.php");
-$db = new database();
+	try
+	{
+		file_put_contents("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/txt/instagram_" . $account . ".txt", intval($m[1]));
+	}
+	catch (Exception $e)
+	{ }
+}
 
 
-$query = sprintf(
-	"	UPDATE		products
-		INNER JOIN	products_stock ON products_stock.productID = products.productID
-		SET			products.status = 4
-		WHERE		products.status = 2
-			AND		(
-						products_stock.stock - (
-							SELECT		SUM(orders_product.quantity)
-							FROM		orders_product
-							INNER JOIN	orders ON orders.orderID = orders_product.orderID
-							INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
-							WHERE		orders_product.productID = products_stock.productID
-								AND		order_statuses.finished = 0
-								AND 	order_statuses.declined = 0
-						)
-					) <= 0"
+
+// Facebook accounts
+$accounts = array(
+	"harings2wielers",
+	"haringsvuurwerk"
 );
-$db->query($query);
+
+foreach($accounts AS $account)
+{
+	$fb = file_get_contents("https://graph.facebook.com/" . $account . "/?fields=fan_count&access_token=1122266441142292|eRlIlb7rtRl09X62eyhnO5DYSiA");
+	$fb = json_decode($fb, true);
+	
+	try
+	{
+		file_put_contents("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/txt/facebook_" . $account . ".txt", intval($fb['fan_count']));
+	}
+	catch (Exception $e)
+	{ }
+}
 
 
-$query = sprintf(
-	"	UPDATE		products
-		INNER JOIN	products_stock ON products_stock.productID = products.productID
-		SET			products.status = 1
-		WHERE		products.status = 4
-			AND		(
-						products_stock.stock - (
-							SELECT		SUM(orders_product.quantity)
-							FROM		orders_product
-							INNER JOIN	orders ON orders.orderID = orders_product.orderID
-							INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
-							WHERE		orders_product.productID = products_stock.productID
-								AND		order_statuses.finished = 0
-								AND 	order_statuses.declined = 0
-						)
-					) > 0"
+
+// Twitter accounts
+$accounts = array(
+	"harings2wielers",
+	"haringsvuurwerk"
 );
-$db->query($query);
+
+foreach($accounts AS $account)
+{
+	$tw = file_get_contents('https://cdn.syndication.twimg.com/widgets/followbutton/info.json?screen_names=' . $account); 
+	$tw = json_decode($tw, true);
+	
+	try
+	{
+		file_put_contents("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/txt/twitter_" . $account . ".txt", intval($tw[0]['followers_count']));
+	}
+	catch (Exception $e)
+	{ }
+}
 ?>
