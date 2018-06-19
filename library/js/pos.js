@@ -808,7 +808,10 @@ $(document).ready(
 				var button = $(this).find("div.pos-button");
 				var val = $("input.popup-keyboard-output").val();
 				
-				val = val.replace(/-/g, "");
+				if($("input.popup-keyboard-output").hasClass("date-field"))
+				{
+					val = val.replace(/-/g, "");
+				}
 				
 				if(button.hasClass("fa"))
 				{

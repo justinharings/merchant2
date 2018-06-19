@@ -58,6 +58,12 @@ $mb = new motherboard();
 **	the article database.
 */
 
+$query = sprintf(
+	"	DELETE FROM 	assistent_hold
+		WHERE 			NOW() - INTERVAL 15 MINUTE > assistent_hold.date_time"
+);
+$mb->query($query);
+
 if(!isset($_GET['module']))
 {
 	$query = sprintf(
@@ -105,10 +111,12 @@ if(!isset($_GET['module']))
 				FROM		assistent_orders
 				INNER JOIN	orders ON orders.orderID = assistent_orders.orderID
 				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				LEFT JOIN	assistent_hold ON assistent_hold.orderID = orders.orderID
 				WHERE		DATE(assistent_orders.date) <= DATE_ADD(CURDATE(), INTERVAL 1 DAY)
 					AND		assistent_orders.ready = 0
 					AND		order_statuses.finished = 0
 					AND 	order_statuses.declined = 0
+					AND		assistent_hold.orderID IS NULL
 				LIMIT		1"
 		);
 		$result = $mb->query($query);
@@ -1047,6 +1055,15 @@ switch($_GET['module'])
 				<div class="date">
 					<?= date("d-m-Y G:i") ?> uur
 				</div>
+				
+				<?php
+				if(isset($_GET['module']) && $_GET['module'] == "pickup")
+				{
+					?>
+					<div class="fa fa-history" onclick="document.location.href = '/extensions/assistent/library/php/pickup_park.php?orderID=<?= $_GET['orderID'] ?>';"></div>
+					<?php
+				}
+				?>
 				
 				<div class="scroll up fa fa-caret-up"></div>
 				<div class="scroll down fa fa-caret-down"></div>

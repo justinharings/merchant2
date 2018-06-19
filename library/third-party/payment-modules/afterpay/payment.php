@@ -199,10 +199,11 @@ try
 		$data = array();
 		$data[0] = 0;
 		$data[1] = $orderID;
-		$data[2] = $this->calcTotal($orderID);
+		$data[2] = $this->calcRemainingTotal($orderID);
 		$data[3] = $_api_key_1;
 		$data[4] = $_api_key_2;
 		$data[5] = (isset($_GET['language_pack']) ? $_GET['language_pack'] : "");
+		$data[6] = (isset($_POST['paylink']) ? 1 : 0);
 	
 		database_write($orderID, serialize($data), _DEVELOPMENT_ENVIRONMENT);
 		

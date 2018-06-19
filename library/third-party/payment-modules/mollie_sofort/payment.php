@@ -5,7 +5,7 @@ try
 	require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/third-party/payment-modules/systems/mollie/initialize.php");
 
 	// Calculate the grand total for this order.
-	$grand_total = $this->calcTotal($orderID);
+	$grand_total = $this->calcRemainingTotal($orderID);
 	 
 	// Setup a Mollie payment.
 	$payment = $mollie->payments->create(
@@ -28,6 +28,7 @@ try
 	$data[3] = $_api_key_1;
 	$data[4] = $_api_key_2;
 	$data[5] = (isset($_GET['language_pack']) ? $_GET['language_pack'] : "");
+	$data[6] = (isset($_POST['paylink']) ? 1 : 0);
 
 	database_write($orderID, serialize($data), _DEVELOPMENT_ENVIRONMENT);
 

@@ -35,6 +35,7 @@ if(file_exists($database))
 	$_api_key_1		= $data[3];
 	$_api_key_2		= $data[4];
 	$_language_pack = $data[5];
+	$_paylink 		= $data[6];
 	
 	if($paymentID != 0 || $paymentID != "")
 	{
@@ -59,9 +60,16 @@ $_finish_url = $merchant['website_url'] . ($_language_pack != "" ? "/" . $_langu
 $_finish_url = str_replace("//", "/", $_finish_url);
 $_finish_url = str_replace("https:/", "https://", $_finish_url);
 
-$_cancel_url = $merchant['website_url'] . $merchant['webshop_cancel_url'];
-$_cancel_url = str_replace("//", "/", $_cancel_url);
-$_cancel_url = str_replace("https:/", "https://", $_cancel_url);
+if($_paylink == 0)
+{
+	$_cancel_url = $merchant['website_url'] . $merchant['webshop_cancel_url'];
+	$_cancel_url = str_replace("//", "/", $_cancel_url);
+	$_cancel_url = str_replace("https:/", "https://", $_cancel_url);
+}
+else
+{
+	$_cancel_url = $merchant['website_url'] . "/paylink/" . base64_encode($orderID);
+}
 
 
 $finished = false;

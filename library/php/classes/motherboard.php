@@ -16,8 +16,13 @@ class motherboard extends database
 	**	the session is not found neither then turn it off.
 	*/
 	
-	public function __construct()
+	public function __construct($language = "")
 	{
+		if($language == "")
+		{
+			$language = _LANGUAGE_PACK;
+		}
+		
 		parent::__construct();
 		
 		if(!defined("_DEVELOPMENT_ENVIRONMENT"))
@@ -39,15 +44,15 @@ class motherboard extends database
 		
 		if(strpos($_SERVER['REQUEST_URI'], "php/posts") === false)
 		{
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/library/languages/" . strtolower(_LANGUAGE_PACK) . ".xml"))
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/library/languages/" . strtolower($language) . ".xml"))
 			{
-				$this->language_xml = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/library/languages/" . strtolower(_LANGUAGE_PACK) . ".xml");
+				$this->language_xml = file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/library/languages/" . strtolower($language) . ".xml");
 			}
 			else
 			{
 				if(defined("_DEVELOPMENT_ENVIRONMENT") && _DEVELOPMENT_ENVIRONMENT == true)
 				{
-					die("Language pack <em>" . strtolower(_LANGUAGE_PACK) . ".xml</em> not found.");
+					die("Language pack <em>" . strtolower($language) . ".xml</em> not found.");
 				}
 				else
 				{

@@ -14,11 +14,12 @@ try
 	$purchaseID = $orderID;
 	
 	// Calculate the total
-	$grand_total = $this->calcTotal($orderID);
-	
+	$grand_total = number_format($this->calcRemainingTotal($orderID), 2, '.', '');
+
 	$expl = explode(".", $grand_total);
+	
 	$heel = $expl[0] * 100;
-	$cent = $expl[1];
+	$cent = intval($expl[1]);
 	
 	$grand_total = $heel + $cent;
 	$amount = $itemPrice1 = $grand_total;
@@ -60,6 +61,7 @@ try
 	$data[3] = $_api_key_1;
 	$data[4] = $_api_key_2;
 	$data[5] = (isset($_GET['language_pack']) ? $_GET['language_pack'] : "");
+	$data[6] = (isset($_POST['paylink']) ? 1 : 0);
 
 	database_write($orderID, serialize($data), _DEVELOPMENT_ENVIRONMENT);
 	

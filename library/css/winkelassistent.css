@@ -116,6 +116,22 @@ body div.timeblock
 		color: #fff;
 	}
 	
+	body div.timeblock div.fa-history
+	{
+		width: 58px;
+		height: 58px;
+		
+		position: absolute;
+		top: 50%;
+		right: 80px;
+		
+		margin-top: -22px;
+		
+		font-size: 45px;
+		color: #fff;
+		text-align: right;
+	}
+
 	body div.timeblock div.refresh
 	{
 		width: 58px;
@@ -139,7 +155,7 @@ body div.timeblock
 		
 		position: absolute;
 		top: 50%;
-		right: 150px;
+		right: 240px;
 		
 		margin-top: -22px;
 		
@@ -155,7 +171,7 @@ body div.timeblock
 		
 		position: absolute;
 		top: 50%;
-		right: 220px;
+		right: 300px;
 		
 		margin-top: -22px;
 		
