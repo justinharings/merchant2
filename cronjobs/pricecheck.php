@@ -15,7 +15,9 @@ $mb = new motherboard();
 
 $query = sprintf(
 	"	SELECT		products_pricecheck.*
-		FROM		products_pricecheck"
+		FROM		products_pricecheck
+		INNER JOIN	products ON products.productID = products_pricecheck.productID
+		WHERE		products.deleted = 0"
 );
 $result = $mb->query($query);
 
