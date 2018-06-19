@@ -5,7 +5,7 @@ $db = new database();
 $_SERVER['DOCUMENT_ROOT'] = "/var/www/vhosts/justinharings.nl/merchant.justinharings.nl";
 
 
-// Homepage banner
+// Homepage banner NL
 
 $files = array();
 
@@ -55,7 +55,60 @@ $content = file_get_contents($file);
 file_put_contents($oldfile, $content);
 
 
-// Quick links
+/* *********************************************************************************************** */
+
+// Homepage banner EN
+
+$files = array();
+
+if($handle = opendir(__DIR__ . '/banners/en/homepage/')) 
+{
+	while (false !== ($entry = readdir($handle))) 
+	{
+		if($entry == "." || $entry == "..")
+		{
+			continue;
+		}
+		
+		$files[] = $entry;
+	}
+	
+	closedir($handle);
+}
+
+$oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/87.jpg';
+
+$image = array_rand($files);
+$image = $files[$image];
+
+$file = __DIR__ . '/banners/en/homepage/' . $image;
+
+if(file_get_contents($oldfile) == file_get_contents($file))
+{
+	$image = array_rand($files);
+	$image = $files[$image];
+	
+	$file = __DIR__ . '/banners/en/homepage/' . $image;
+}
+
+$url = str_replace(".jpg", "", $image);
+$url = str_replace(".png", "", $url);
+$url = str_replace("|", "/", $url);
+
+$query = sprintf(
+	"	UPDATE			banners
+		SET				banners.url = '%s'
+		WHERE			banners.bannerID = 87",
+	$url
+);
+$db->query($query);
+
+$content = file_get_contents($file);
+file_put_contents($oldfile, $content);
+
+/* *********************************************************************************************** */
+
+// Quick links NL
 
 $files = array();
 
@@ -169,8 +222,125 @@ $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/7.jpg';
 $content = file_get_contents($file);
 file_put_contents($oldfile, $content);
 
+/* *********************************************************************************************** */
 
-// Fietsen 1 banner
+// Quick links EN
+
+$files = array();
+
+if($handle = opendir(__DIR__ . '/banners/en/quick_links/')) 
+{
+	while (false !== ($entry = readdir($handle))) 
+	{
+		if($entry == "." || $entry == "..")
+		{
+			continue;
+		}
+		
+		$files[] = $entry;
+	}
+	
+	closedir($handle);
+}
+
+$rand = array_rand($files);
+$image1 = $files[$rand];
+
+unset($files[$rand]);
+
+$rand = array_rand($files);
+$image2 = $files[$rand];
+
+unset($files[$rand]);
+
+$rand = array_rand($files);
+$image3 = $files[$rand];
+
+unset($files[$rand]);
+
+$rand = array_rand($files);
+$image4 = $files[$rand];
+
+unset($files[$rand]);
+
+$url = str_replace(".jpg", "", $image1);
+$url = str_replace(".png", "", $url);
+$url = str_replace("|", "/", $url);
+
+$query = sprintf(
+	"	UPDATE			banners
+		SET				banners.url = '%s'
+		WHERE			banners.bannerID = 88",
+	$url
+);
+$db->query($query);
+
+$file = __DIR__ . '/banners/en/quick_links/' . $image1;
+$oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/88.jpg';
+
+$content = file_get_contents($file);
+file_put_contents($oldfile, $content);
+
+/* ** */
+$url = str_replace(".jpg", "", $image2);
+$url = str_replace(".png", "", $url);
+$url = str_replace("|", "/", $url);
+
+$query = sprintf(
+	"	UPDATE			banners
+		SET				banners.url = '%s'
+		WHERE			banners.bannerID = 90",
+	$url
+);
+$db->query($query);
+
+$file = __DIR__ . '/banners/en/quick_links/' . $image2;
+$oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/90.jpg';
+
+$content = file_get_contents($file);
+file_put_contents($oldfile, $content);
+
+/* ** */
+$url = str_replace(".jpg", "", $image3);
+$url = str_replace(".png", "", $url);
+$url = str_replace("|", "/", $url);
+
+$query = sprintf(
+	"	UPDATE			banners
+		SET				banners.url = '%s'
+		WHERE			banners.bannerID = 89",
+	$url
+);
+$db->query($query);
+
+$file = __DIR__ . '/banners/en/quick_links/' . $image3;
+$oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/89.jpg';
+
+$content = file_get_contents($file);
+file_put_contents($oldfile, $content);
+
+/* ** */
+$url = str_replace(".jpg", "", $image4);
+$url = str_replace(".png", "", $url);
+$url = str_replace("|", "/", $url);
+
+$query = sprintf(
+	"	UPDATE			banners
+		SET				banners.url = '%s'
+		WHERE			banners.bannerID = 91",
+	$url
+);
+$db->query($query);
+
+$file = __DIR__ . '/banners/en/quick_links/' . $image4;
+$oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/91.jpg';
+
+$content = file_get_contents($file);
+file_put_contents($oldfile, $content);
+
+/* *********************************************************************************************** */
+
+// Fietsen 1 banner NL
 
 $files = array();
 
@@ -219,8 +389,60 @@ $db->query($query);
 $content = file_get_contents($file);
 file_put_contents($oldfile, $content);
 
+/* *********************************************************************************************** */
 
-// Fietsen 2 en 3 banner
+// Fietsen 1 banner EN
+
+$files = array();
+
+if($handle = opendir(__DIR__ . '/banners/en/fietsen_1/')) 
+{
+	while (false !== ($entry = readdir($handle))) 
+	{
+		if($entry == "." || $entry == "..")
+		{
+			continue;
+		}
+		
+		$files[] = $entry;
+	}
+	
+	closedir($handle);
+}
+
+$oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/93.jpg';
+
+$image = array_rand($files);
+$image = $files[$image];
+
+$file = __DIR__ . '/banners/en/fietsen_1/' . $image;
+
+if(file_get_contents($oldfile) == file_get_contents($file))
+{
+	$image = array_rand($files);
+	$image = $files[$image];
+	
+	$file = __DIR__ . '/banners/en/fietsen_1/' . $image;
+}
+
+$url = str_replace(".jpg", "", $image);
+$url = str_replace(".png", "", $url);
+$url = str_replace("|", "/", $url);
+
+$query = sprintf(
+	"	UPDATE			banners
+		SET				banners.url = '%s'
+		WHERE			banners.bannerID = 93",
+	$url
+);
+$db->query($query);
+
+$content = file_get_contents($file);
+file_put_contents($oldfile, $content);
+
+/* *********************************************************************************************** */
+
+// Fietsen 2 en 3 banner NL
 
 $files = array();
 
@@ -286,4 +508,71 @@ $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/43.jpg';
 $content = file_get_contents($file);
 file_put_contents($oldfile, $content);
 
+/* *********************************************************************************************** */
+
+// Fietsen 2 en 3 banner EN
+
+$files = array();
+
+if($handle = opendir(__DIR__ . '/banners/en/fietsen_2/')) 
+{
+	while (false !== ($entry = readdir($handle))) 
+	{
+		if($entry == "." || $entry == "..")
+		{
+			continue;
+		}
+		
+		$files[] = $entry;
+	}
+	
+	closedir($handle);
+}
+
+$rand = array_rand($files);
+$image1 = $files[$rand];
+
+unset($files[$rand]);
+
+$rand = array_rand($files);
+$image2 = $files[$rand];
+
+unset($files[$rand]);
+
+$url = str_replace(".jpg", "", $image1);
+$url = str_replace(".png", "", $url);
+$url = str_replace("|", "/", $url);
+
+$query = sprintf(
+	"	UPDATE			banners
+		SET				banners.url = '%s'
+		WHERE			banners.bannerID = 94",
+	$url
+);
+$db->query($query);
+
+$file = __DIR__ . '/banners/en/fietsen_2/' . $image1;
+$oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/94.jpg';
+
+$content = file_get_contents($file);
+file_put_contents($oldfile, $content);
+
+/* ** */
+$url = str_replace(".jpg", "", $image2);
+$url = str_replace(".png", "", $url);
+$url = str_replace("|", "/", $url);
+
+$query = sprintf(
+	"	UPDATE			banners
+		SET				banners.url = '%s'
+		WHERE			banners.bannerID = 95",
+	$url
+);
+$db->query($query);
+
+$file = __DIR__ . '/banners/en/fietsen_2/' . $image2;
+$oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/95.jpg';
+
+$content = file_get_contents($file);
+file_put_contents($oldfile, $content);
 ?>
