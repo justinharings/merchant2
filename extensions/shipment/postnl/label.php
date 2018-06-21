@@ -40,7 +40,6 @@ if(preg_match('/(?P<address>[^\d]+) (?P<number>\d+.?)/', $data1['address'], $mat
 }
 
 
-
 /* POSTNL API */
 
 use ThirtyBees\PostNL\Entity\Label;
@@ -69,13 +68,13 @@ else
 
 $customer = Customer::create(
 	[
-	    'CollectionLocation' => "12345",
-	    'CustomerCode'       => $data2['customer_code'],
-	    'CustomerNumber'     => $data2['customer_number'],
-	    'ContactPerson'      => $data2['contactperson'],
-	    'Email'              => $data1['email_address'],
-	    'Name'               => $data2['contactperson'],
-	    'Address'            => Address::create(
+	    'CollectionLocation' 		=> $data2['collection_location'],
+	    'CustomerCode'       		=> $data2['customer_code'],
+	    'CustomerNumber'     		=> $data2['customer_number'],
+	    'ContactPerson'      		=> $data2['contactperson'],
+	    'Email'              		=> $data1['email_address'],
+	    'Name'               		=> $data2['contactperson'],
+	    'Address'            		=> Address::create(
 	    	[
 		        'AddressType' => '02',
 		        'City'        => $data1['city'],
@@ -90,49 +89,58 @@ $customer = Customer::create(
 );
 
 $apikey = $data2['api_key'];
-$sandbox = true;
+$sandbox = ($data2['sandbox'] == 1 ? true : false);
 
 $postnl = new PostNL($customer, $apikey, $sandbox, PostNL::MODE_SOAP);
 
 $barcodes = $postnl->generateBarcodesByCountryCodes([$country_code => 2]);
 
-$shipments = [
-    Shipment::create(
-    	[
-	        'Addresses'           => [
-	            Address::create(
-	            	[
-		                'AddressType' => '01',
-		                'City'        => ucfirst($data3['customer']['city']),
-		                'Countrycode' => $country_code,
-		                'FirstName'   => '',
-		                'HouseNr'     => $data3['customer']['housenumber'],
-		                'HouseNrExt'  => $data3['customer']['housenumber_add'],
-		                'Name'        => $data3['customer']['name'],
-		                'Street'      => $data3['customer']['street'],
-		                'Zipcode'     => $data3['customer']['zip_code'],
-					]
-				),
-	        ],
-	        'Barcode'             => $barcodes[$country_code][0],
-	        'Dimension'           => new Dimension('1000'),
-	        'ProductCodeDelivery' => $ProductCodeDelivery,
-		]
-	)
-];
+$shipment = Shipment::create(
+	[
+        'Addresses'           => [
+            Address::create(
+            	[
+	                'AddressType' => '01',
+	                'City'        => ucfirst($data3['customer']['city']),
+	                'Countrycode' => $country_code,
+	                'FirstName'   => '',
+	                'HouseNr'     => $data3['customer']['housenumber'],
+	                'HouseNrExt'  => $data3['customer']['housenumber_add'],
+	                'Name'        => $data3['customer']['name'],
+	                'Street'      => $data3['customer']['street'],
+	                'Zipcode'     => $data3['customer']['zip_code'],
+				]
+			),
+        ],
+        'Barcode'             => $barcodes[$country_code][0],
+        'Dimension'           => new Dimension('2000'),
+        'ProductCodeDelivery' => $ProductCodeDelivery,
+	]
+);
 
+$label = $postnl->generateLabel(
+	$shipment,
+	'GraphicFile|PDF|MergeA',
+	true,
+	Label::FORMAT_A4
+);
+
+$label = base64_decode($label->getResponseShipments()[0]->getLabels()[0]->getContent());
+
+/*
 $label = $postnl->generateLabels(
     $shipments,
     'GraphicFile|PDF',
     true, 				// Confirm immediately
     Label::FORMAT_A4, 	// Format -- this merges multiple A6 labels onto an A4
     [
-        1 => true,
-        2 => true,
+        1 => false,
+        2 => false,
         3 => true,
-        4 => true,
+        4 => false,
     ]
 );
+*/
 
 if(is_array($label))
 {

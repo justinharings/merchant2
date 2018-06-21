@@ -27,8 +27,12 @@ $data = $mb->_runFunction("postnl", "load", array($_SESSION['merchantID']));
 			<input type="text" name="contactperson" id="contactperson" value="<?= isset($data['contactperson']) ? $data['contactperson'] : "" ?>" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-postnl-contactperson") ?>" validation-required="true" validation-type="text" />
 			
 			<input type="text" name="customer_code" id="customer_code" value="<?= isset($data['customer_code']) ? $data['customer_code'] : "" ?>" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-postnl-customercode") ?>" validation-required="true" validation-type="text" />
-			<input type="text" name="customer_number" id="customer_number" value="<?= isset($data['customer_number']) ? $data['customer_number'] : "" ?>" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-postnl-customernumber") ?>" validation-required="true" validation-type="text" />
+			<input type="text" name="customer_number" id="customer_number" value="<?= isset($data['customer_number']) ? $data['customer_number'] : "" ?>" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-postnl-customernumber") ?>" validation-required="true" validation-type="text" />
+			<input type="text" name="collection_location" id="collection_location" value="<?= isset($data['collection_location']) ? $data['collection_location'] : "" ?>" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-postnl-collection_location") ?>" validation-required="true" validation-type="text" />
+			
 			<input type="text" name="api_key" id="api_key" value="<?= isset($data['api_key']) ? $data['api_key'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-postnl-apikey") ?>" validation-required="true" validation-type="text" />
+			<?= $data['sandbxox'] ?><br/>
+			<input type="checkbox" <?= isset($data['sandbox']) && $data['sandbox'] == 1 ? "checked=\"checked\"" : "" ?> name="sandbox" id="sandbox" value="1" holder="Sandbox" />
 		</div>
 	</div>
 </form>

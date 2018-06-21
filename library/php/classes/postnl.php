@@ -15,15 +15,17 @@ class postnl extends motherboard
 				SET				postnl.merchantID = %d,
 								postnl.contactperson = '%s',
 								postnl.customer_code = '%s',
-								postnl.customer_code_int = '%s',
+								postnl.collection_location = '%s',
 								postnl.customer_number = '%s',
-								postnl.api_key = '%s'",
+								postnl.api_key = '%s',
+								postnl.sandbox = %d",
 			$data[0],
 			$data[1]['contactperson'],
 			$data[1]['customer_code'],
-			$data[1]['customer_code_int'],
+			$data[1]['collection_location'],
 			$data[1]['customer_number'],
-			$data[1]['api_key']
+			$data[1]['api_key'],
+			$data[1]['sandbox']
 		);
 		parent::query($query);
 		

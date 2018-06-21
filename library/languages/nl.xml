@@ -604,6 +604,7 @@
 		<form-postnl-customercode>Customer code</form-postnl-customercode>
 		<form-postnl-customercodeint>Customer code international</form-postnl-customercodeint>
 		<form-postnl-customernumber>Customer number</form-postnl-customernumber>
+		<form-postnl-collection_location>Collection location</form-postnl-collection_location>
 		<form-postnl-apikey>API key</form-postnl-apikey>
 		<form-postnl-contactperson>Contactpersoon</form-postnl-contactperson>
 	</forms>
