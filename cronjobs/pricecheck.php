@@ -3,7 +3,7 @@ if(!isset($_SESSION))
 {
 	session_start();
 }
-
+ 
 
 define("_LANGUAGE_PACK", "nl");
 
