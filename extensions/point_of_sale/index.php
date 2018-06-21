@@ -78,8 +78,8 @@ if(isset($_SESSION['terminal']) && $_GET['module'] == "register")
 		<meta name="keywords" content="<?= $mb->_runFunction("head", "keywords") ?>" />
 
 		<link rel="apple-touch-icon" href="/library/media/apple-icon.png" />
-		<link type="image/x-icon" rel="icon" href="/library/media/favicon.png" />
-		<link type="image/x-icon" rel="shortcut icon" href="/library/media/favicon.png" />
+		<link type="image/png" rel="icon" href="/library/media/favicon.png" />
+		<link type="image/png" rel="shortcut icon" href="/library/media/favicon.png" />
 		
 		<link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
 		<link rel="stylesheet" type="text/css" href="/library/css/motherboard.minified.css" />
