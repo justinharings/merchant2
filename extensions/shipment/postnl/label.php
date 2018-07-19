@@ -63,7 +63,7 @@ else if($country_code == "BE")
 }
 else
 {
-	$ProductCodeDelivery = 4945;
+	$ProductCodeDelivery = 4944;
 }
 
 $customer = Customer::create(

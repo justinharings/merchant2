@@ -37,7 +37,7 @@ class motherboard extends database
 			}
 		}
 		
-		if(!isset($_SERVER['REQUEST_URI']))
+		if(!isset($_SERVER['REQUEST_URI']) || defined("_DATABASE_FOLDER"))
 		{
 			$_SERVER['REQUEST_URI'] = "php/posts";
 		}

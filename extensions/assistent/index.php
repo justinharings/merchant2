@@ -52,6 +52,46 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php")
 $mb = new motherboard();
 
 
+function checkStock($order)
+{
+	require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php");
+
+	$mb = new motherboard();
+	
+	$stockCheck = sprintf(
+		"	SELECT		COUNT(assistent_stock.stockID) AS cnt
+			FROM		assistent_stock
+			WHERE		assistent_stock.orderID = %d",
+		intval($order['orderID'])
+	);
+	$resultCheck = $mb->query($stockCheck);
+	$rowCheck = $mb->fetch_assoc($resultCheck);
+	
+	if($rowCheck['cnt'] == 0)
+	{
+		if(count($order['products']) > 0)
+		{
+			foreach($order['products'] AS $product)
+			{
+				if($product['productID'] == 132 || $product['productID'] == 131 || $product['productID'] == 134)
+				{
+					continue;
+				}
+				
+				$queryAddStock = sprintf(
+					"	INSERT INTO		assistent_stock
+						SET				assistent_stock.orderID = %d,
+										assistent_stock.productID = %d",
+					intval($order['orderID']),
+					$product['productID']
+				);
+				$mb->query($queryAddStock);
+			}
+		}
+	}
+}
+
+
 
 /*
 **	Check the last time we've cleaned up
@@ -163,6 +203,33 @@ if(!isset($_GET['module']))
 		}
 	}
 	
+	$stockCheck = sprintf(
+		"	SELECT		assistent_stock.*
+			FROM		assistent_stock
+			WHERE		(
+							assistent_stock.deleted = 0
+					OR		(	
+								assistent_stock.deleted = 1
+						AND		DATEDIFF(NOW(), assistent_stock.delay) > 21
+							)
+						)
+			LIMIT		0,1"
+	);
+	$resultCheck = $mb->query($stockCheck);
+	$rowCheck = $mb->fetch_assoc($resultCheck);
+	
+	if($rowCheck['stockID'] > 0)
+	{
+		if	(
+				$rowCheck['deleted'] == 0
+				|| $rowCheck['deleted'] == 1 && $rowCheck['delay'] != "0000-00-00"
+			)
+		{
+			header("location: /assistent/?module=stock&stockID=" . $rowCheck['stockID']);
+			exit;
+		}
+	}
+	
 	$data = $mb->_runFunction("workorders", "view", array(1, "", "workorders.expiration_date ASC, workorders.priority DESC, workorders.date_added ASC", "0,100"));
 	
 	$workorderID = 0;
@@ -243,6 +310,10 @@ switch($_GET['module'])
 	break;
 	
 	case "calendar":
+		$color = "white";
+	break;
+		
+	case "stock":
 		$color = "white";
 	break;
 }
@@ -409,7 +480,7 @@ switch($_GET['module'])
 			else if(isset($_GET['module']) && $_GET['module'] == "order")
 			{
 				$order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
-				
+				checkStock($order);
 				?>
 				<div class="save-button calendar" orderID="<?= intval($_GET['orderID']) ?>">
 					<span class="fa fa-calendar"></span>
@@ -610,7 +681,7 @@ switch($_GET['module'])
 			else if(isset($_GET['module']) && $_GET['module'] == "pickup")
 			{
 				$order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
-				
+				checkStock($order);
 				?>
 				<form method="post" id="post" action="/extensions/assistent/library/php/ready.php">
 					<input type="hidden" name="orderID" id="orderID" value="<?= intval($_GET['orderID']) ?>" />
@@ -876,6 +947,86 @@ switch($_GET['module'])
 							}
 							
 							print "<br/><br/>" . $review['description'];
+							?>
+						</center>
+					</div>
+				</form>
+				<?php
+			}
+			else if(isset($_GET['module']) && $_GET['module'] == "stock")
+			{		
+				$queryStock = sprintf(
+					"	SELECT		assistent_stock.*
+						FROM		assistent_stock
+						WHERE		assistent_stock.stockID = %d",
+					intval($_GET['stockID'])
+				);
+				$resultStock = $mb->query($queryStock);
+				$rowStock = $mb->fetch_assoc($resultStock);
+				
+				$data = $mb->_runFunction("products", "load", array($rowStock['productID']));
+				?>
+				<form method="post" id="post" action="">
+					<input type="hidden" name="stockID" id="stockID" value="<?= intval($_GET['stockID']) ?>" />
+					
+					<div class="save-button post" form-action="/extensions/assistent/library/php/stock_delete.php">
+						<span class="fa fa-trash"></span>
+					</div>
+					
+					<div class="save-button second post" form-action="/extensions/assistent/library/php/stock_delay.php">
+						<span class="fa fa-refresh"></span>
+					</div>
+					
+					<h1>Verkocht artikel bestellen</h1>
+					
+					<div class="content-assistent flexible first">
+						<center>
+							<?php
+							$thumb = "https://haringstweewielers.com/library/media/no-image.png";
+
+							foreach($data['images'] AS $media)
+							{
+								if($media['thumb'])
+								{
+									$thumb = "https://merchant.justinharings.nl/library/media/products/" . $media['productMediaID'] . ".png";
+								}
+							}
+							?>
+							
+							<img height="300" itemprop="image" src="<?= $thumb ?>" /><br/>
+							<Br/>
+							<span style="font-weight: bold;"><?= $data['name'] ?></span><br/><br/><br/>
+							
+							<?php
+							$data_locations = $mb->_runFunction("stock", "viewLocations", array(1, "", "locations.name", "0,50"));
+
+							foreach($data_locations AS $location)
+							{
+								$stock = $mb->_runFunction("stock", "getStock", array($_GET['dataID'], $location['locationID']));
+								?>
+
+								<div class="form-content">
+									Voorraden &#187; <?= $location['name'] ?><br/>
+									<br/>
+									<table>
+										<tr>
+											<td width="130">Voorraad:</td>
+											<td><?= $stock['stock'] ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
+										</tr>
+
+										<tr>
+											<td><span style="font-weight: bold;">Gereserveerd:</span></td>
+											<td><?= $stock['reserved'] ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
+										</tr>
+
+										<tr>
+											<td>Economisch:</td>
+											<td><?= ($stock['stock']-$stock['reserved']) ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
+										</tr>
+									</table>
+								</div>
+								<?php
+							}
 							?>
 						</center>
 					</div>

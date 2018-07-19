@@ -20,6 +20,8 @@ foreach($data['shipments'] AS $shipment)
 	
 	$cnt++;
 }
+
+$country_code = $mb->_countryCodes($data['customer']['country']);
 ?>
 
 <ul class="breadcrumbs">
@@ -479,6 +481,16 @@ foreach($data['shipments'] AS $shipment)
 				<a href="/modules/verkoop/print-label.php?orderID=<?= intval($_GET['dataID']) ?>" target="_blank"><img src="/library/media/verzendlabel.png" /></a>
 				&nbsp;
 				<a href="/extensions/shipment/postnl/label.php?orderID=<?= ($_GET['dataID']) ?>" target="_blank"><img src="/library/media/postnl-print.png" /></a>
+				
+				<?php
+				if($country_code == "NL")
+				{
+					?>
+					&nbsp;
+					<a href="/extensions/shipment/postnl/envelope.php?orderID=<?= ($_GET['dataID']) ?>" target="_blank"><img src="/library/media/enveloppe.png" /></a>
+					<?php
+				}
+				?>
 			</div>
 		</div>
 		
