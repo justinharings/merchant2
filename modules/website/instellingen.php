@@ -34,7 +34,7 @@ $data = $mb->_runFunction("website", "load", array($_SESSION['merchantID']));
 				<?= $mb->_translateReturn("forms", "legend-options") ?>
 			</div>
 			
-			<input type="checkbox" <?= isset($data['show_shipment']) && $data['show_shipment'] == 1 ? "checked=\"checked\"" : "" ?> name="show_shipment" id="show_shipment" value="1" holder="<?= $mb->_translateReturn("forms", "form-website-shipment") ?>" />
+			<input type="checkbox" <?= isset($data['show_shipment']) && $data['show_shipment'] == 1 ? "checked=\"checked\"" : "" ?> name="show_shipment" id="show_shipment" value="1" holder="<?= $mb->_translateReturn("forms", "form-website-shipment") ?>" question="Gebruikt uw webshop niets met 'verzenden'? Wordt bijvoorbeeld alles afgehaald bij u in de winkel? Zet dan dit vinkje uit. De webshop toont dan nergens iets wat met verzendkosten te maken heeft." />
 		</div>
 		
 		<div class="form-content">
@@ -43,7 +43,7 @@ $data = $mb->_runFunction("website", "load", array($_SESSION['merchantID']));
 				<?= $mb->_translateReturn("forms", "legend-others") ?>
 			</div>
 			
-			<input type="text" name="minimum_order_amount" id="minimum_order_amount" value="<?= $data['minimum_order_amount'] ? $data['minimum_order_amount'] : 0 ?>" class="width-150" icon="fa-euro" holder="<?= $mb->_translateReturn("forms", "form-website-minimum") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-website-minimum-eg") ?>" />
+			<input type="text" name="minimum_order_amount" id="minimum_order_amount" value="<?= $data['minimum_order_amount'] ? $data['minimum_order_amount'] : 0 ?>" class="width-150" icon="fa-euro" holder="<?= $mb->_translateReturn("forms", "form-website-minimum") ?>" question="Hanteert u een minimaal order bedrag op uw webshop? Vul dit dan hier in. Uw klant kan dan niet doorgaan met de bestelling wanneer het minimale bedrag niet gehaald is. Heeft u dit niet? Vul dan 0 (nul) in." />
 		</div>
 	</div>
 </form>

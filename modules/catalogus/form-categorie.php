@@ -59,25 +59,32 @@ if(isset($_GET['dataID']))
 				
 				<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-categories-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-categories-name-eg") ?>" validation-required="true" validation-type="text" />
 				
-				<div class="languages width-300">
-					<span class="fa fa-chevron-circle-down"></span>
-					
-					<?php
-					$_lang = $mb->_allLanguages();
-					
-					foreach($_lang AS $value)
-					{
-						?>
-						<fieldset>
-							<legend><?= $value['language'] ?></legend>
-							<input type="text" name="<?= $value['code'] ?>_name" id="<?= $value['code'] ?>_name" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_name'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
-						</fieldset>
-						<?php
-					}
-					?>
-				</div>
+				<?php
+				$_lang = $mb->_allLanguages();
 				
-				<select name="parentID" id="parentID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-categories-parent") ?>">
+				if($mb->num_rows($_lang) > 0)
+				{
+					?>
+					<div class="languages width-300">
+						<span class="fa fa-chevron-circle-down"></span>
+						
+						<?php
+						foreach($_lang AS $value)
+						{
+							?>
+							<fieldset>
+								<legend><?= $value['language'] ?></legend>
+								<input type="text" name="<?= $value['code'] ?>_name" id="<?= $value['code'] ?>_name" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_name'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
+							</fieldset>
+							<?php
+						}
+						?>
+					</div>
+					<?php
+				}
+				?>
+				
+				<select name="parentID" id="parentID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-categories-parent") ?>" question="Bovenliggende categorie. U kunt tot drie niveau's diep een boom aanmaken.">
 					<option value=""></option>
 					
 					<?php
@@ -101,7 +108,7 @@ if(isset($_GET['dataID']))
 					?>
 				</select>
 				
-				<select name="stock_type" id="stock_type" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-categories-stock-type") ?>">
+				<select name="stock_type" id="stock_type" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-categories-stock-type") ?>" question="De manier waarop voorraad getoond wordt bij de producten onder deze categorie. Liever actueel, slechts beperkt/voorraad of een stoplicht systeem.">
 					<?php
 					$data_stock = $mb->_runFunction("stock", "viewStockType", array());
 					

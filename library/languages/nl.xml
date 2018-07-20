@@ -267,7 +267,7 @@
 		<legend-invoice-extra>Extra factuur tekst</legend-invoice-extra>
 		<legend-pictures>Foto('s) beheren</legend-pictures>
 		<legend-seo>SEO Instellingen</legend-seo>
-		<legend-notes>Notities</legend-notes>
+		<legend-notes>Notities (niet voor de klant)</legend-notes>
 		<legend-placed-orders>Geplaatste bestellingen</legend-placed-orders>
 		<legend-workorder-history>Reparatie geschiedenis</legend-workorder-history>
 		<legend-new-email>Nieuwe e-mail versturen</legend-new-email>
@@ -370,7 +370,7 @@
 		<form-products-properties-language>Taal</form-products-properties-language>
 		<form-products-properties-key>Sleutel</form-products-properties-key>
 		<form-products-properties-value>Waarde</form-products-properties-value>
-		<form-products-pricecheck-website>Website</form-products-pricecheck-website>
+		<form-products-pricecheck-website>Website ten behoeven van pricecheck</form-products-pricecheck-website>
 		<form-products-pricecheck-key></form-products-pricecheck-key>
 		<form-products-filters-language>Taal</form-products-filters-language>
 		<form-products-filters-key>Filter</form-products-filters-key>
@@ -388,7 +388,7 @@
 		<!-- Manage catalog > Categories > Form -->
 		<form-categories-name>Naam</form-categories-name>
 		<form-categories-name-eg>Ook voor de klant zichtbaar.</form-categories-name-eg>
-		<form-categories-parent>Behoord tot bovenliggende</form-categories-parent>
+		<form-categories-parent>Tot bovenliggende</form-categories-parent>
 		<form-categories-stock-type>Voorraadnotatie</form-categories-stock-type>
 		<form-categories-active>Categorie actief</form-categories-active>
 		<form-categories-filters-name>Filter omschrijving</form-categories-filters-name>
@@ -454,7 +454,7 @@
 		<form-banners-tag>Banner TAG</form-banners-tag>
 		<form-banners-tag-eg>Opgegeven door de webbouwer.</form-banners-tag-eg>
 		<form-banners-url>Pagina URL</form-banners-url>
-		<form-banners-url-eg>Mag ook leeg zijn.</form-banners-url-eg>
+		<form-banners-url-eg>Mag ook leeg zijn. Zonder /[taal]/.</form-banners-url-eg>
 		<form-banners-image>Afbeeldingen</form-banners-image>
 		<form-banners-image-eg>Alleen PNG extensies.</form-banners-image-eg>
 		<form-banners-language>Taalkeuze</form-banners-language>
@@ -495,7 +495,7 @@
 		
 		<!-- CMS > Invoice texts -->
 		<form-cms-invoices-invoice>Factuur tekst</form-cms-invoices-invoice>
-		<form-cms-invoices-invoice-eg>Rechts bovenin het factuur.</form-cms-invoices-invoice-eg>
+		<form-cms-invoices-invoice-eg>Rechts bovenin het factuur. Maximaal 11 regels hoog!</form-cms-invoices-invoice-eg>
 		<form-cms-invoices-receipt>Kassabon tekst</form-cms-invoices-receipt>
 		<form-cms-invoices-invoice-extra>Extra factuur tekst</form-cms-invoices-invoice-extra>
 		<form-cms-invoices-invoice-extra-eg>Grote tekst middenin het factuur.</form-cms-invoices-invoice-extra-eg>
@@ -563,7 +563,7 @@
 		<!-- Settings -> Payment Methods -> Form -->
 		<form-payments-name>Naam</form-payments-name>
 		<form-payments-name-eg>Ook voor de klant zichtbaar.</form-payments-name-eg>
-		<form-payments-maximum-amount>Maximaal bestelbedrag</form-payments-maximum-amount>
+		<form-payments-maximum-amount>Maximaal bedrag</form-payments-maximum-amount>
 		<form-payments-webshop>Webshop</form-payments-webshop>
 		<form-payments-pos>Point of sale</form-payments-pos>
 		<form-payments-cash>Contant</form-payments-cash>

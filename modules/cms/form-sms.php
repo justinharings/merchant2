@@ -44,7 +44,7 @@ if(isset($_GET['dataID']))
 			
 			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-sms-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-sms-name-eg") ?>" validation-required="true" validation-type="text" />
 					
-			<select name="typeID" id="typeID" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-sms-type") ?>" validation-required="true" validation-type="int">
+			<select name="typeID" id="typeID" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-sms-type") ?>" validation-required="true" validation-type="int" question="Geef hier aan om wat voor een SMS het gaat. Doe voorzichtig met SMS berichten gezien veel klanten dit als irritant beschouwen.">>
 				<option value="-"></option>
 				
 				<?php

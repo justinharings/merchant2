@@ -13,7 +13,8 @@ $form = "/form-email/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
-	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-plus-circle first" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-question-circle" title="Merchant is een centraal punt van communicatie met uw klanten. Via e-mail sjablonen kunt u berichten vooraf opmaken die gebruikt gaan worden voor communicatie. Bijvoorbeeld bij een nieuwe order, een betaling of zelfs X dagen na levering."></div>
 </div>
 
 <table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">

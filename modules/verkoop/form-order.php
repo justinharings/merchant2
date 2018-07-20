@@ -160,7 +160,7 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 				
 				<br/><br/>
 				
-				<select name="statusID" id="statusID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-orders-status") ?>">
+				<select name="statusID" id="statusID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-orders-status") ?>" question="Pas hier de status van de bestelling aan. Na het opslaan worden eventuele voorraad wijzigingen doorgevoerd.">
 					<?php
 					$data_status = $mb->_runFunction("order_statuses", "view", array($_SESSION['merchantID'], "", "order_statuses.name", "0,50"));
 					
@@ -173,7 +173,7 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 					?>
 				</select>
 				
-				<input type="checkbox" name="omboeken" id="omboeken" value="1" holder="<?= $mb->_translateReturn("forms", "form-orders-omboeken") ?>" />
+				<input type="checkbox" name="omboeken" id="omboeken" value="1" holder="<?= $mb->_translateReturn("forms", "form-orders-omboeken") ?>" question="U kunt deze bestelling omboeken naar vandaag. De datum van de bestelling wordt dan aangepast. Zo kunt u in uw statistieken deze order terug laten komen op de huidige datum in plaats van de datum waarop deze origineel geplaatst is." />
 			</div>
 			
 			<?php
@@ -478,9 +478,18 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 				
 				<br/>
 				
-				<a href="/modules/verkoop/print-label.php?orderID=<?= intval($_GET['dataID']) ?>" target="_blank"><img src="/library/media/verzendlabel.png" /></a>
-				&nbsp;
-				<a href="/extensions/shipment/postnl/label.php?orderID=<?= ($_GET['dataID']) ?>" target="_blank"><img src="/library/media/postnl-print.png" /></a>
+				<?php
+				$data = $mb->_runFunction("postnl", "load", array($_SESSION['merchantID']));		
+				
+				if(isset($data['api_key']) && $data['api_key'] != "")
+				{
+					?>
+					<a href="/modules/verkoop/print-label.php?orderID=<?= intval($_GET['dataID']) ?>" target="_blank"><img src="/library/media/verzendlabel.png" /></a>
+					&nbsp;
+					<a href="/extensions/shipment/postnl/label.php?orderID=<?= ($_GET['dataID']) ?>" target="_blank"><img src="/library/media/postnl-print.png" /></a>
+					<?php
+				}
+				?>
 				
 				<?php
 				if($country_code == "NL")
@@ -654,7 +663,7 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 					
 					<input type="text" name="email_sender" id="email_sender" value="" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-customers-email-sender") ?>" />
 					
-					<select name="email_template" id="email_template" class="width-300 margin email-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-email-template") ?>">
+					<select name="email_template" id="email_template" class="width-300 margin email-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-email-template") ?>" question="Heeft u e-mail sjablonen die op type 'handmatig' staan? Dan komen deze hier tevoorschijn. Zo kunt u HTML-Rich sjablonen versturen vanuit dit overzicht zonder enige moeite te hoeven doen.">
 						<option value=""></option>
 						
 						<?php
@@ -698,7 +707,7 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 					<input type="hidden" name="sms_orderID" id="sms_orderID" value="<?= $_GET['dataID'] ?>" />
 					<input type="hidden" name="sms_receiver" id="sms_receiver" value="<?= $data['customer']['mobile_phone'] ?>" />
 					
-					<select name="sms_template" id="sms_template" class="width-300 double-margin sms-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-sms-template") ?>">
+					<select name="sms_template" id="sms_template" class="width-300 double-margin sms-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-sms-template") ?>" question="Dit is een sjabloon keuze. U kunt sjablonen aanmaken via 'Teksten en pagina beheer' > 'SMS Sjablonen'. Deze worden vervolgens hier zichtbaar.">
 						<option value=""></option>
 						
 						<?php

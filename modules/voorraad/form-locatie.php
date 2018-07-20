@@ -43,9 +43,9 @@ if(isset($_GET['dataID']))
 			</div>
 			
 			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-locations-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-locations-name-eg") ?>" validation-required="true" validation-type="text" />
-			<input type="text" name="pos_card" id="pos_card" value="<?= isset($_GET['dataID']) ? $data['pos_card'] : "" ?>" class="width-150 double-margin" icon="fa-barcode" holder="<?= $mb->_translateReturn("forms", "form-locations-code") ?>" validation-required="true" validation-type="int" />
+			<input type="text" name="pos_card" id="pos_card" value="<?= isset($_GET['dataID']) ? $data['pos_card'] : "" ?>" class="width-150 double-margin" icon="fa-barcode" holder="<?= $mb->_translateReturn("forms", "form-locations-code") ?>" validation-required="true" validation-type="int" question="Scan hier uw Merchant kaart voor deze locatie. De Merchant kaart ontvangt u van ons wanneer u ons kassasysteem gaat gebruiken. Alleen met uw Merchant kaart kunt u inloggen op uw POS. Iedere locatie heeft een unieke pas met unieke barcode." />
 			
-			<input type="checkbox" <?= isset($_GET['dataID']) && $data['webshop'] == 1 ? "checked=\"checked\"" : "" ?> name="webshop" id="webshop" value="1" holder="<?= $mb->_translateReturn("forms", "form-locations-webshop") ?>" />
+			<input type="checkbox" <?= isset($_GET['dataID']) && $data['webshop'] == 1 ? "checked=\"checked\"" : "" ?> name="webshop" id="webshop" value="1" holder="<?= $mb->_translateReturn("forms", "form-locations-webshop") ?>" question="Wordt er in de webshop vanuit deze locatie verkocht? Zet deze vink dan op 'ja'. Alle webshop orders zullen worden afgehandeld via de voorraad van deze locatie." />
 		</div>
 	</div>
 </form>

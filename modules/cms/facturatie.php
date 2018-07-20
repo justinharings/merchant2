@@ -28,24 +28,31 @@ $data = $mb->_runFunction("cms", "loadInvoiceText", array($_SESSION['merchantID'
 			
 			<textarea name="invoice_text" id="invoice_text" class="width-100-percent margin" holder="<?= $mb->_translateReturn("forms", "form-cms-invoices-invoice") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-cms-invoices-invoice-eg") ?>"><?= (isset($data['invoice_text']) ? $data['invoice_text'] : "") ?></textarea>
 			
-			<div class="languages width-400 no-margin">
-				<span class="fa fa-chevron-circle-down"></span>
-				
-				<?php
-				$_lang = $mb->_allLanguages();
-				
-				foreach($_lang AS $value)
-				{
-					?>
-					<fieldset>
-						<legend><?= $value['language'] ?></legend>
-						
-						<textarea name="<?= $value['code'] ?>_invoice_text" id="<?= $value['code'] ?>_invoice_text" class="width-100-percent"><?= (isset($data[$value['code'] . '_invoice_text']) ? $data[$value['code'] . '_invoice_text'] : "") ?></textarea>
-					</fieldset>
-					<?php
-				}
+			<?php
+			$_lang = $mb->_allLanguages();
+			
+			if(count($_lang) > 1)
+			{
 				?>
-			</div>
+				<div class="languages width-400 no-margin">
+					<span class="fa fa-chevron-circle-down"></span>
+					
+					<?php
+					foreach($_lang AS $value)
+					{
+						?>
+						<fieldset>
+							<legend><?= $value['language'] ?></legend>
+							
+							<textarea name="<?= $value['code'] ?>_invoice_text" id="<?= $value['code'] ?>_invoice_text" class="width-100-percent"><?= (isset($data[$value['code'] . '_invoice_text']) ? $data[$value['code'] . '_invoice_text'] : "") ?></textarea>
+						</fieldset>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+			}
+			?>
 		</div>
 		
 		<div class="form-content">
@@ -56,24 +63,31 @@ $data = $mb->_runFunction("cms", "loadInvoiceText", array($_SESSION['merchantID'
 			
 			<textarea name="receipt_text" id="receipt_text" class="width-100-percent margin" holder="<?= $mb->_translateReturn("forms", "form-cms-invoices-receipt") ?>"><?= (isset($data['receipt_text']) ? $data['receipt_text'] : "") ?></textarea>
 			
-			<div class="languages width-400 no-margin">
-				<span class="fa fa-chevron-circle-down"></span>
-				
-				<?php
-				$_lang = $mb->_allLanguages();
-				
-				foreach($_lang AS $value)
-				{
-					?>
-					<fieldset>
-						<legend><?= $value['language'] ?></legend>
-						
-						<textarea name="<?= $value['code'] ?>_receipt_text" id="<?= $value['code'] ?>_receipt_text" class="width-100-percent"><?= (isset($data[$value['code'] . '_receipt_text']) ? $data[$value['code'] . '_receipt_text'] : "") ?></textarea>
-					</fieldset>
-					<?php
-				}
+			<?php
+			$_lang = $mb->_allLanguages();
+			
+			if(count($_lang) > 1)
+			{
 				?>
-			</div>
+				<div class="languages width-400 no-margin">
+					<span class="fa fa-chevron-circle-down"></span>
+					
+					<?php
+					foreach($_lang AS $value)
+					{
+						?>
+						<fieldset>
+							<legend><?= $value['language'] ?></legend>
+							
+							<textarea name="<?= $value['code'] ?>_receipt_text" id="<?= $value['code'] ?>_receipt_text" class="width-100-percent"><?= (isset($data[$value['code'] . '_receipt_text']) ? $data[$value['code'] . '_receipt_text'] : "") ?></textarea>
+						</fieldset>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+			}
+			?>
 		</div>
 		
 		<div class="form-content">
@@ -84,24 +98,31 @@ $data = $mb->_runFunction("cms", "loadInvoiceText", array($_SESSION['merchantID'
 			
 			<textarea name="invoice_extra" id="invoice_extra" class="width-100-percent margin" holder="<?= $mb->_translateReturn("forms", "form-cms-invoices-invoice-extra") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-cms-invoices-invoice-extra-eg") ?>"><?= (isset($data['invoice_extra']) ? $data['invoice_extra'] : "") ?></textarea>
 			
-			<div class="languages width-400 no-margin">
-				<span class="fa fa-chevron-circle-down"></span>
-				
-				<?php
-				$_lang = $mb->_allLanguages();
-				
-				foreach($_lang AS $value)
-				{
-					?>
-					<fieldset>
-						<legend><?= $value['language'] ?></legend>
-						
-						<textarea name="<?= $value['code'] ?>_invoice_extra" id="<?= $value['code'] ?>_invoice_extra" class="width-100-percent"><?= (isset($data[$value['code'] . '_invoice_extra']) ? $data[$value['code'] . '_invoice_extra'] : "") ?></textarea>
-					</fieldset>
-					<?php
-				}
+			<?php
+			$_lang = $mb->_allLanguages();
+			
+			if(count($_lang) > 1)
+			{
 				?>
-			</div>
+				<div class="languages width-400 no-margin">
+					<span class="fa fa-chevron-circle-down"></span>
+					
+					<?php
+					foreach($_lang AS $value)
+					{
+						?>
+						<fieldset>
+							<legend><?= $value['language'] ?></legend>
+							
+							<textarea name="<?= $value['code'] ?>_invoice_extra" id="<?= $value['code'] ?>_invoice_extra" class="width-100-percent"><?= (isset($data[$value['code'] . '_invoice_extra']) ? $data[$value['code'] . '_invoice_extra'] : "") ?></textarea>
+						</fieldset>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 </form>

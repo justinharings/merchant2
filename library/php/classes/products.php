@@ -176,6 +176,31 @@ class products extends motherboard
 		{
 			$return = parent::fetch_assoc($result);
 			
+			$query3 = sprintf(
+				"	SELECT		promotions_products.*
+					FROM		promotions_products
+					WHERE		promotions_products.productID = %d
+					LIMIT		0,1",
+				$return['productID']
+			);
+			$result3 = $this->query($query3);
+			
+			if($this->num_rows($result3))
+			{
+				$row3 = $this->fetch_assoc($result3);
+				
+				if($row3['discount_type'] == 1 && $row3['discount'] > 0 && $row3['discount'] < 100)
+				{
+					$return['price'] = $row2['price'] - number_format(($row2['price']/100*$row3['discount']), 2);
+				}
+				else if($row3['discount_type'] == 2 && ($row2['price']-$row3['discount']) > 0)
+				{
+					$return['price'] = $row2['price']-$row3['discount'];
+				}
+				
+				$return['price'] = number_format($row2['price'], 2);
+			}
+			
 			$query = sprintf(
 				"	SELECT		categories.name,
 								categories.categoryID

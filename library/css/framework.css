@@ -439,6 +439,16 @@ body div.content
 			
 			cursor: pointer;
 		}
+		body div.content div.view-options div.button.fa-question-circle
+		{
+			background-color: #000 !important;
+			border: 1px solid #000 !important;
+		}
+		
+		body div.content div.view-options div.button.first
+		{
+			margin: 0px 0px 0px 5px;
+		}
 			
 	body div.content div.table-holder
 	{

@@ -82,25 +82,32 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 				
 				<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-products-name") ?>" <?= $_SESSION['merchantID'] == 1 ? 'holder-eg="[INCH] [BRAND] [TYPE] [GEARS] [ELECTRIC] [COLOR] [SEX] [SIZE]"' : "" ?> validation-required="true" validation-type="text" />
 				
-				<div class="languages width-300">
-					<span class="fa fa-chevron-circle-down"></span>
-					
-					<?php
-					$_lang = $mb->_allLanguages();
-					
-					foreach($_lang AS $value)
-					{
-						?>
-						<fieldset>
-							<legend><?= $value['language'] ?></legend>
-							<input type="text" name="<?= $value['code'] ?>_name" id="<?= $value['code'] ?>_name" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_name'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
-						</fieldset>
-						<?php
-					}
-					?>
-				</div>
+				<?php
+				$_lang = $mb->_allLanguages();
 				
-				<select name="description-template" id="description-template" class="width-200 margin" holder="Description template">
+				if($mb->num_rows($_lang) > 0)
+				{
+					?>
+					<div class="languages width-300">
+						<span class="fa fa-chevron-circle-down"></span>
+						
+						<?php
+						foreach($_lang AS $value)
+						{
+							?>
+							<fieldset>
+								<legend><?= $value['language'] ?></legend>
+								<input type="text" name="<?= $value['code'] ?>_name" id="<?= $value['code'] ?>_name" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_name'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
+							</fieldset>
+							<?php
+						}
+						?>
+					</div>
+					<?php
+				}
+				?>
+				
+				<select name="description-template" id="description-template" class="width-200 margin" holder="Description template" question="U kunt onder 'Catalogus beheer' > 'Omschrijving templates' vooraf templates instellen en hier uitkiezen. Op deze manier hoeft u niet steeds te copy/pasten of dergelijke en kunt u sneller werken.">
 					<option value=""></option>
 					
 					<?php
@@ -127,7 +134,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					<?= $mb->_translateReturn("forms", "legend-shipment-and-weights") ?>
 				</div>
 				
-				<select name="shipmentID" id="shipmentID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-shipment") ?>">
+				<select name="shipmentID" id="shipmentID" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-products-shipment") ?>" question="Dit is de verzendmethode die bij dit artikel hoort. Vooraf scannen we de winkelwagen en kijken we welke artikelen samen verzonden kunnen worden en welke apart moeten. Ook kunnen we kleinere artikelen samenvoegen met grotere artikelen die per grotere verzendmethode gaan. Bijvoorneeld een luchtenveloppe bij een normaal pakket in.">
 					<option value=""></option>
 					
 					<?php
@@ -151,7 +158,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					<?= $mb->_translateReturn("forms", "legend-others") ?>
 				</div>
 				
-				<input type="text" name="maximum" id="maximum" value="<?= isset($_GET['dataID']) ? $data['maximum'] : "" ?>" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-maximum") ?>" />
+				<input type="text" name="maximum" id="maximum" value="<?= isset($_GET['dataID']) ? $data['maximum'] : "" ?>" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-maximum") ?>" question="Een klant kan niet meer dan het maximum toevoegen aan zijn of haar winkelwagen. Bijvoorbeeld voor artikelen met een messcherpe voordeelprijs." />
 				
 				<select name="brandID" id="brandID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-brand") ?>">
 					<option value=""></option>
@@ -183,15 +190,15 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					?>
 				</select>
 				
-				<select name="visibility" id="visibility" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-visibility") ?>">
+				<select name="visibility" id="visibility" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-visibility") ?>" question="U kunt instellen of dit artikel alleen zichtbaar moet zijn in de kassa of ook in de webwinkel. Zo kunt u kassa-specifieke artikelen uit de webshop houden.">
 					<option <?= isset($_GET['dataID']) && $data['visibility'] == 1 ? "selected=\"selected\"" : "" ?> value="1">Kassa</option>
 					<option <?= isset($_GET['dataID']) && $data['visibility'] == 2 ? "selected=\"selected\"" : "" ?> value="2">Webwinkel</option>
 					<option <?= isset($_GET['dataID']) && $data['visibility'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Kassa, Webwinkel</option>
 				</select>
 				
-				<input type="checkbox" <?= isset($_GET['dataID']) && $data['bookmarks'] == 1 ? "checked=\"checked\"" : "" ?> name="bookmark" id="bookmark" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-products-bookmark") ?>" />
-				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_products'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_products" id="workorders_products" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-products-parts") ?>" />
-				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_manhours'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_manhours" id="workorders_manhours" value="1" holder="<?= $mb->_translateReturn("forms", "form-products-manhours") ?>" />
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['bookmarks'] == 1 ? "checked=\"checked\"" : "" ?> name="bookmark" id="bookmark" value="1" class="double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-bookmark") ?>" question="Zet dit artikel in de favorieten van uw POS. Zo kunt u bepaalde artikelen (plastic tassen, vaste diensten etcetera) onder de bookmark van uw POS zetten." />
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_products'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_products" id="workorders_products" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-products-parts") ?>" question="Gebruik dit artikel als 'product' vanuit de werkorders." />
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_manhours'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_manhours" id="workorders_manhours" value="1" holder="<?= $mb->_translateReturn("forms", "form-products-manhours") ?>" question="Gebruik dit artikel als 'manuren/laag percentage' vanuit de werkorders." />
 			</div>
 		</div>
 		
@@ -204,7 +211,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 				
 				<input type="text" name="price" id="price" value="<?= isset($_GET['dataID']) ? $data['price'] : "" ?>" class="width-150 margin" holder="<?= $mb->_translateReturn("forms", "form-products-price") ?>" icon="fa-euro" validation-required="true" validation-type="int" />
 				
-				<input type="text" name="price_adviced" id="price_adviced" value="<?= isset($_GET['dataID']) ? $data['price_adviced'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-price-adviced") ?>" icon="fa-euro" />
+				<input type="text" name="price_adviced" id="price_adviced" value="<?= isset($_GET['dataID']) ? $data['price_adviced'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-price-adviced") ?>" icon="fa-euro" question="Deze prijs komt doorgestreept bij de producten te staan. Dit komt eruit te zien als een van-voor prijs." />
 				
 				<input type="text" name="price_purchase" id="price_purchase" value="<?= isset($_GET['dataID']) ? $data['price_purchase'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-price-purchase") ?>"holder-eg="<?= $mb->_translateReturn("forms", "form-products-purchase-eg") ?>" icon="fa-euro" />
 				
@@ -656,14 +663,14 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					<?= $mb->_translateReturn("forms", "legend-stock-settings") ?>
 				</div>
 				
-				<select name="status" id="status" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-products-status") ?>">
+				<select name="status" id="status" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-products-status") ?>" question="Producten die staan op 'uitverkoop' worden automatisch naar 'uitverkocht' gezet wanneer de voorraad op 0 staat. Deze controle loopt ieder uur.">
 					<option <?= isset($_GET['dataID']) && $data['status'] == 1 ? "selected=\"selected\"" : "" ?> value="1">Artikel draait volledig mee</option>
 					<option <?= isset($_GET['dataID']) && $data['status'] == 2 ? "selected=\"selected\"" : "" ?> value="2">Uitverkoop, laatste varianten</option>
 					<option <?= isset($_GET['dataID']) && $data['status'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Tijdelijk uitverkocht, komt nog terug</option>
 					<option <?= isset($_GET['dataID']) && $data['status'] == 4 ? "selected=\"selected\"" : "" ?> value="4">Uitverkocht, komt niet terug in de voorraad</option>
 				</select>
 				
-				<select name="stock_type" id="stock_type" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-default-stock-type") ?>">
+				<select name="stock_type" id="stock_type" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-default-stock-type") ?>" question="Wanneer een artikel niet via een categorie wordt benadert (bijvoorbeeld via zoeken) dan gaat het systeem over op deze voorraad.">
 					<option value=""></option>
 					
 					<?php
@@ -678,16 +685,16 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					?>
 				</select>
 				
-				<select name="externalStockID" id="externalStockID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-supplier") ?>">
+				<select name="externalStockID" id="externalStockID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-supplier") ?>" question="Merchant is gekoppeld met een aantal leveranciers. Het koppelen gebeurt op basis van een barcode (EAN code). Indien de barcode bij dit artikel is ingevuld en u het artikel koppelt aan een geldige leverancier zou het artikel op uw webwinkel verschijnen met 'artikel is op voorraad bij de leverancier'.">
 					<option value=""></option>
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 1 ? "selected=\"selected\"" : "" ?> value="1">Popal Fietsen Nederland</option>
 					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 2 ? "selected=\"selected\"" : "" ?> value="2">Juncker Bikeparts</option>
-					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Batavus, Sparta en Loekie</option>
-					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 4 ? "selected=\"selected\"" : "" ?> value="4">Hoop Fietsen</option>
-					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 5 ? "selected=\"selected\"" : "" ?> value="5">Union Fietsen</option>
+					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Accell Fietsen Nederland</option>
+					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 4 ? "selected=\"selected\"" : "" ?> value="4">Hoop Fietsen Nederland</option>
+					<option <?= isset($_GET['dataID']) && $data['externalStockID'] == 5 ? "selected=\"selected\"" : "" ?> value="5">Union Fietsen Nederland</option>
 				</select>
 				
-				<select name="delivery_days" id="delivery_days" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-delivery-days") ?>">
+				<select name="delivery_days" id="delivery_days" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-delivery-days") ?>" question="Indien het artikel niet bij u op voorraad is maar wel bij de leverancier dan kunt u uw klanten vertellen hoe lang het duurt voordat het artikel bij hem of haar is.">
 					<option value=""></option>
 					
 					<?php

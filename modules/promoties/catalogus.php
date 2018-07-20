@@ -13,7 +13,8 @@ $form = "/form-catalogus/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
-	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-plus-circle first" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-question-circle" title="Wilt u een aanbieding instellen op een bepaald artikel voor een bepaalde periode? Gebruik dan een catalogus aanbieding. Zolang de periode actief is kunt u een percentage of een vast bedrag aan korting instellen. Zodra de periode is afgelopen gaat de prijs automatisch terug naar de standaard."></div>
 </div>
 
 <table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">

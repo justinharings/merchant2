@@ -12,6 +12,7 @@ $form = "/form-betaallink/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
+	<div class="button fa fa-question-circle" title="Dit overzicht bevat alle uitgaande e-mails en SMS berichten verstuurd vanuit Merchant. Indien er een bijlage is meegestuurd staat er een paperclip vóór het onderwerp. Het groene bolletje achteraan betekent dat het bericht is verstuurd, een rood bolletje betekent dat het versturen is mislukt."></div>
 </div>
 
 <table class="view">

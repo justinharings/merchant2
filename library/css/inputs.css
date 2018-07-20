@@ -3,6 +3,33 @@
 **	and checkboxes and textarea's.
 */
 
+.ui-tooltip, .arrow:after 
+{
+	background: #000;
+	border: 1px solid #9e0101;
+	
+	font-family: 'Raleway';
+	font-size: 5px !important;
+	color: #fff !important;
+}
+
+.ui-tooltip 
+{
+	padding: 15px;
+	
+	background-color: #000 !important;
+	border: 1px solid #9e0101;
+	
+	font-family: 'Raleway';
+	color: #fff !important;
+	
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    -moz-opacity: 1.0;
+    -khtml-opacity: 1.0;
+    opacity: 1.0;
+}
+
 div.languages
 {
 	height: 1px;
@@ -409,7 +436,7 @@ textarea.width-400
 span.input-holder
 {
 	margin: 0px 0px 5px 0px;
-	display: block;
+	display: table;
 	
 	font-family: 'Raleway', 'Tahoma';
 	font-size: 11px;
@@ -417,14 +444,45 @@ span.input-holder
 	color: #666666;
 }
 
-	span.input-holder span
+	span.input-holder span.text
 	{
-		margin: 0px 0px 0px 6px;
+		float: left;
+		
+		font-size: 12px;
+	}
+
+	span.input-holder span.eg
+	{
+		margin: 1px 0px 0px 6px;
+		float: left;
 		
 		font-family: 'Raleway', 'Tahoma';
 		font-size: 11px;
 		color: #999999;
 		text-transform: none;
+	}
+	
+	span.input-holder strong
+	{
+		width: 16px;
+		height: 14px;
+		
+		margin: -2px 0px 0px 7px;
+		padding: 2px 0px 0px 0px;
+		float: left;
+		
+		background-color: #000;
+		
+		font-size: 10px !important;
+		color: #fff;
+		text-align: center;
+		
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		-khtml-border-radius: 8px;
+		border-radius: 8px;
+		
+		cursor: pointer;
 	}
 	
 div.icon-input-holder

@@ -12,7 +12,8 @@ $form = "/form-categorie/";
 </ul>
 
 <div class="view-options">
-	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-plus-circle first" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-question-circle" title="Dit zijn uw webwinkel categorieën. Ze zijn opgebouwd in dezelfde boom die zichtbaar is op uw webshop. De producten onder de categorie hebben een voorraadwijze. Deze wijze bepaald wat uw bezoekers wel of niet zien van uw voorraden."></div>
 </div>
 
 <?php

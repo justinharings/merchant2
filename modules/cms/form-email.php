@@ -44,7 +44,7 @@ if(isset($_GET['dataID']))
 			
 			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-email-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-email-name-eg") ?>" validation-required="true" validation-type="text" />
 					
-			<select name="typeID" id="typeID" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-email-type") ?>" validation-required="true" validation-type="int">
+			<select name="typeID" id="typeID" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-email-type") ?>" validation-required="true" validation-type="int" question="Geef hier aan om wat voor een e-mail het gaat. Pauze e-mails worden na het aantal aangegeven pauze dagen pas verstuurd. Let op, dit betreft orders die op 'afgerond' staan!">
 				<option value="-"></option>
 				
 				<?php
@@ -79,7 +79,7 @@ if(isset($_GET['dataID']))
 				?>
 			</select>
 			
-			<select name="groupID" id="groupID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-email-salesgroup") ?>">
+			<select name="groupID" id="groupID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-email-salesgroup") ?>" question="Heeft de klant iets gekocht uit deze verkoopgroep? Dan pas verstuurt het systeem de e-mail. Dit kan handig zijn als extra validatie omdat u bijvoorbeeld bij verkoopgroep X geen e-mails wilt versturen en bij Y wel. Dit veld mag ook leeg zijn!">
 				<option value=""></option>
 				
 				<?php

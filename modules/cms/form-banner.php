@@ -43,7 +43,7 @@ if(isset($_GET['dataID']))
 			</div>
 			
 			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-banners-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-banners-name-eg") ?>" validation-required="true" validation-type="text" />
-			<input type="text" name="tag" id="tag" value="<?= isset($_GET['dataID']) ? $data['tag'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-banners-tag") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-banners-tag-eg") ?>" validation-required="true" validation-type="text" />
+			<input type="text" name="tag" id="tag" value="<?= isset($_GET['dataID']) ? $data['tag'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-banners-tag") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-banners-tag-eg") ?>" validation-required="true" validation-type="text" question="Deze TAG is opgegeven door de webbouwer. Op basis van deze code weet het systeem over welke banner we het hebben." />
 			<input type="text" name="url" id="url" value="<?= isset($_GET['dataID']) ? $data['url'] : "" ?>" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-banners-url") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-banners-url-eg") ?>" />
 			
 			<select name="language_code" id="language_code" class="width-200" holder="<?= $mb->_translateReturn("forms", "form-banners-language") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-banners-language-eg") ?>">

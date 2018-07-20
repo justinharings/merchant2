@@ -6,6 +6,8 @@
 $(document).ready(
 	function()
 	{
+		$( document ).tooltip();
+		
 		/*
 		**	When the delete button is pressed, add a input
 		** (hidden) inside the form with delete = val 1.
@@ -607,12 +609,19 @@ function systemChanges(elm)
 	
 	if(elm.is('[holder]'))
 	{
-		$('<span class="input-holder">' + elm.attr("holder") + '</span>').insertBefore(elm);
+		var question = '';
+		
+		if(elm.is('[question]'))
+		{
+			question = '<strong class="question" title="' + elm.attr("question") + '">?</strong>';
+		}
+		
+		$('<span class="input-holder"><span class="text">' + elm.attr("holder") + '</span>' + question +'</span>').insertBefore(elm);
 	}
 	
 	if(elm.is('[holder-eg]'))
 	{
-		elm.prev("span").append('<span>' + elm.attr("holder-eg") + '</span>');
+		elm.prev("span").append('<span class="eg">' + elm.attr("holder-eg") + '</span>');
 	}
 	
 	if(elm.is('[icon]'))

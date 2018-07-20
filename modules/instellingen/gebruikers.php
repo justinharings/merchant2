@@ -14,7 +14,8 @@ $form = "/form-gebruiker/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
-	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-plus-circle first" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-question-circle" title="Dit zijn de systeemgebruikers. U kunt gebruikers beheren en aangeven welk deel van Merchant ze wel of niet mogen gebruiken. U kunt, bijvoorbeeld, gebruikers aanmaken die alleen bestellingen mogen verwerken."></div>
 </div>
 
 <table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">

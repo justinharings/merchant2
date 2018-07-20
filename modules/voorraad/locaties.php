@@ -13,7 +13,8 @@ $form = "/form-locatie/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
-	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-plus-circle first" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-question-circle" title="Locaties, oftewel verstigingen, zijn handig wanneer u op meerdere plekken verkoopt. Vestigingen verschijnen in uw POS, op uw webwinkel, ze hebben allemaal verschillende vooraad en er is de mogelijkheid om tussen de vestigingen te schuiven met voorraden."></div>
 </div>
 
 <table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">

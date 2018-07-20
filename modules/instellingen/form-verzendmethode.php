@@ -44,26 +44,33 @@ if(isset($_GET['dataID']))
 			
 			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-shipment-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-shipment-name-eg") ?>" validation-required="true" validation-type="text" />
 			
-			<div class="languages width-300">
-				<span class="fa fa-chevron-circle-down"></span>
-							
-				<?php
-				$_lang = $mb->_allLanguages();
-				
-				foreach($_lang AS $value)
-				{
-					?>
-					<fieldset>
-						<legend><?= $value['language'] ?></legend>
-						<input type="text" name="<?= $value['code'] ?>_name" id="<?= $value['code'] ?>_name" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_name'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
-					</fieldset>
-					<?php
-				}
-				?>
-			</div>
+			<?php
+			$_lang = $mb->_allLanguages();
 			
-			<input type="text" name="courier" id="courier" value="<?= isset($_GET['dataID']) ? $data['courier'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-shipment-courier") ?>" validation-type="text" />
-			<input type="text" name="maximum" id="maximum" value="<?= isset($_GET['dataID']) ? $data['maximum'] : "" ?>" class="width-200" holder="<?= $mb->_translateReturn("forms", "form-shipment-max") ?>" validation-required="true" validation-type="int" />
+			if($mb->num_rows($_lang))
+			{
+				?>
+				<div class="languages width-300">
+					<span class="fa fa-chevron-circle-down"></span>
+								
+					<?php
+					foreach($_lang AS $value)
+					{
+						?>
+						<fieldset>
+							<legend><?= $value['language'] ?></legend>
+							<input type="text" name="<?= $value['code'] ?>_name" id="<?= $value['code'] ?>_name" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_name'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
+						</fieldset>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+			}
+			?>
+			
+			<input type="text" name="courier" id="courier" value="<?= isset($_GET['dataID']) ? $data['courier'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-shipment-courier") ?>" validation-type="text" question="Dit bedrijf is ter administratie. Het verschijnt onder de orders en blijft daar ook staan, ook wanneer je hem hier verandert. Verandert het bedrijf door de jaren heen dan kunt u bij oude orders nog terugvinden met welke transporteur u de bestelling verzonden heeft." />
+			<input type="text" name="maximum" id="maximum" value="<?= isset($_GET['dataID']) ? $data['maximum'] : "" ?>" class="width-200" holder="<?= $mb->_translateReturn("forms", "form-shipment-max") ?>" validation-required="true" validation-type="int" question="Dit is het maximale aantal wat hierop kan openstaan. Heeft uw verzend- of afhaalmethode een limiet aan wat die aan kan? Dan kunt u hier dat limiet invullen." />
 		</div>
 		
 		<div class="form-content">
@@ -154,9 +161,9 @@ if(isset($_GET['dataID']))
 				<?= $mb->_translateReturn("forms", "legend-options") ?>
 			</div>
 			
-			<input type="checkbox" <?= isset($_GET['dataID']) && $data['free_choice'] ? "checked=\"checked\"" : "" ?> name="free_choice" id="free_choice" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-shipment-free-choice") ?>" />
-			<input type="checkbox" <?= isset($_GET['dataID']) && $data['combine'] ? "checked=\"checked\"" : "" ?> name="combine" id="combine" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-shipment-combine") ?>" />
-			<input type="checkbox" <?= isset($_GET['dataID']) && $data['pay_once'] ? "checked=\"checked\"" : "" ?> name="pay_once" id="pay_once" value="1" holder="<?= $mb->_translateReturn("forms", "form-shipment-pay") ?>" />
+			<input type="checkbox" <?= isset($_GET['dataID']) && $data['free_choice'] ? "checked=\"checked\"" : "" ?> name="free_choice" id="free_choice" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-shipment-free-choice") ?>" question="De klant kan deze verzend- of afhaaloptie vrij kiezen in de webwinkel. Als dit uit staat dan wordt deze alleen actief wanneer hij ingevult is bij een product dat de klant heeft uitgekozen. Zie hiervoor het formulier van een product." />
+			<input type="checkbox" <?= isset($_GET['dataID']) && $data['combine'] ? "checked=\"checked\"" : "" ?> name="combine" id="combine" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-shipment-combine") ?>" question="Indien dit een 'kleiner pakket' is wat kan worden samengevoegd met een groter pakket, zet dan dit vinkje aan. Koopt de klant iets kleins én iets groots? Dan voegt het systeem automatisch alle kleine producten (met dit vinkje aan) samen met de grote pakketten. Zo betaald de klant maar één keer." />
+			<input type="checkbox" <?= isset($_GET['dataID']) && $data['pay_once'] ? "checked=\"checked\"" : "" ?> name="pay_once" id="pay_once" value="1" holder="<?= $mb->_translateReturn("forms", "form-shipment-pay") ?>" question="Koopt de klant meerdere producten met deze verzendmethode? Dan kunt u kiezen voor 'eenmalig afrekenen'. Zo betaald de klant maar eenmalig." />
 		</div>
 	</div>
 </form>

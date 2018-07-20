@@ -11,6 +11,9 @@ $form = "/form-review/";
 	<li><?= $mb->_translateReturn("menu", "reviews-management") ?></li>
 </ul>
 
+<div class="view-options">
+	<div class="button fa fa-question-circle" title="Dit zijn de recensies van uw klanten. U kunt zelf bepalen welke recensies er zichtbaar zijn en welke niet. Recensies verschijnen onder de product details, in de overzichten en worden ook meegegeven naar Google Shopping."></div>
+</div>
 
 <table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">
 	<thead>

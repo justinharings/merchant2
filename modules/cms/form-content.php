@@ -56,9 +56,9 @@ if(isset($_GET['dataID']))
 			</div>
 			
 			<input type="text" name="seo_url" id="seo_url" value="<?= isset($_GET['dataID']) ? $data['seo_url'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-content-seo-url") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-content-seo-url-eg") ?>" validation-required="true" validation-type="text" />
-			<input type="text" name="seo_keywords" id="seo_keywords" value="<?= isset($_GET['dataID']) ? $data['seo_keywords'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-content-seo-keywords") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-content-seo-keywords-eg") ?>" />
+			<input type="text" name="seo_keywords" id="seo_keywords" value="<?= isset($_GET['dataID']) ? $data['seo_keywords'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-content-seo-keywords") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-content-seo-keywords-eg") ?>" question="Vul hier de zoekwoorden in die zoekmachine gebruikers invullen om bij deze pagina tekst te komen. Maximaal vijf en komma gescheiden. Deze zoekwoorden zijn essentieel om er voor te zorgen dat zoekers bij u terecht komen!" />
 			
-			<textarea name="seo_description" id="seo_description" class="width-400" holder="<?= $mb->_translateReturn("forms", "form-content-seo-description") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-content-seo-description-eg") ?>" max-characters="250"><?= (isset($data['seo_description']) ? $data['seo_description'] : "") ?></textarea>
+			<textarea name="seo_description" id="seo_description" class="width-400" holder="<?= $mb->_translateReturn("forms", "form-content-seo-description") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-content-seo-description-eg") ?>" max-characters="250" question="Heeft iemand u gevonden op een zoekmachine? Dan zien ze deze korte samenvatting van de pagina eerst. Deze samenvatting kan iemand overhalen om naar uw website te gaan, dus vul hem duidelijk in. Kort maar krachtig!"><?= (isset($data['seo_description']) ? $data['seo_description'] : "") ?></textarea>
 		</div>
 		
 		<div class="form-content">

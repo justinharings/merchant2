@@ -11,6 +11,10 @@ $form = "/form-mutatie/";
 	<li><?= $mb->_translateReturn("menu", "low-stock") ?></li>
 </ul>
 
+<div class="view-options">
+	<div class="button fa fa-question-circle" title="Wilt u graag grip houden op uw voorraden en artikelen zoveel mogelijk in huis hebben? Dan kunt u gebruik maken van dit overzicht. De top 500 artikelen met een lage voorraad verschijnen hier, van laag naar hoog."></div>
+</div>
+
 <table class="view">
 	<thead>
 		<tr>

@@ -13,7 +13,8 @@ $form = "/form-mutatie/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
-	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-plus-circle first" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>
+	<div class="button fa fa-question-circle" title="Zoek op een artikel. Als u doorklikt kunt u, per vestiging, een voorraad mutatie doorvoeren. Dit is een snellere weg dan via de product details, hier verschijnt alleen de optie tot voorraadmutatie en verder niets."></div>
 </div>
 
 <table class="view <?= count($data) ? "hoverable" : "" ?>">

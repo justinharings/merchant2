@@ -1,5 +1,5 @@
 $(document).ready(function()
-{$("input#delete-item").on("click",function()
+{$(document).tooltip();$("input#delete-item").on("click",function()
 {var elm=$(this);setTimeout(function()
 {var msg="Are you sure mate?";if(confirm(msg))
 {var input='<input type="hidden" name="delete" id="delete" value="1" />';elm.closest("form").append(input);elm.closest("form").submit()}
@@ -104,9 +104,11 @@ if(elm.attr("type")=="radio")
 if(elm.attr("icon")=="fa-globe")
 {return!1}
 if(elm.is('[holder]'))
-{$('<span class="input-holder">'+elm.attr("holder")+'</span>').insertBefore(elm)}
+{var question='';if(elm.is('[question]'))
+{question='<strong class="question" title="'+elm.attr("question")+'">?</strong>'}
+$('<span class="input-holder"><span class="text">'+elm.attr("holder")+'</span>'+question+'</span>').insertBefore(elm)}
 if(elm.is('[holder-eg]'))
-{elm.prev("span").append('<span>'+elm.attr("holder-eg")+'</span>')}
+{elm.prev("span").append('<span class="eg">'+elm.attr("holder-eg")+'</span>')}
 if(elm.is('[icon]'))
 {$('<div class="icon-input-holder"></div>').insertBefore(elm).append('<span class="icon fa '+elm.attr("icon")+'"></span>').append(elm).css("width",elm.css("width"))}
 if(elm.is('[icon-img]'))

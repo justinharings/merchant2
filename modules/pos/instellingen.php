@@ -26,7 +26,7 @@ $data = $mb->_runFunction("pos", "loadGeneralSettings", array($_SESSION['merchan
 				<?= $mb->_translateReturn("forms", "legend-standard-data") ?>
 			</div>
 			
-			<select name="shipmentID" id="shipmentID" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-shipment") ?>">
+			<select name="shipmentID" id="shipmentID" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-shipment") ?>" question="Dit is de standaard verzendmethode voor kassa verkopen (zonder klant). Meestal is dit iets als 'Afhalen in de winkel'.">
 				<option value=""></option>
 				
 				<?php
@@ -41,7 +41,7 @@ $data = $mb->_runFunction("pos", "loadGeneralSettings", array($_SESSION['merchan
 				?>
 			</select>
 			
-			<select name="statusID" id="statusID" class="width-300" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-orderstatus") ?>">
+			<select name="statusID" id="statusID" class="width-300" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-orderstatus") ?>" question="Deze methode wordt gebruikt voor alle orders die (zonder gekoppelde klant) in het systeem gezet worden. Doorgaans is dit gewoon iets dergelijks als 'bestelling afgerond'.">
 				<option value=""></option>
 				
 				<?php
@@ -64,7 +64,7 @@ $data = $mb->_runFunction("pos", "loadGeneralSettings", array($_SESSION['merchan
 			</div>
 		
 			<input type="checkbox" <?= isset($data['shipment_required']) && $data['shipment_required'] == 1 ? "checked=\"checked\"" : "" ?> name="shipment_required" id="shipment_required" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-shipment-required") ?>" />
-			<input type="checkbox" <?= isset($data['send_emails']) && $data['send_emails'] == 1 ? "checked=\"checked\"" : "" ?> name="send_emails" id="send_emails" value="1" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-send-emails") ?>" />
+			<input type="checkbox" <?= isset($data['send_emails']) && $data['send_emails'] == 1 ? "checked=\"checked\"" : "" ?> name="send_emails" id="send_emails" value="1" holder="<?= $mb->_translateReturn("forms", "form-pos-settings-send-emails") ?>" question="Indien dit vinkje aanstaat stuurt het systeem ook e-mails met betrekking tot nieuwe orders en/of verzenden en dergelijke vanuit het kassasysteem." />
 		</div>
 	</div>
 </form>

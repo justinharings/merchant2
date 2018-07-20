@@ -11,6 +11,10 @@ $form = "/form-mutatie/";
 	<li><?= $mb->_translateReturn("menu", "reserved-articles") ?></li>
 </ul>
 
+<div class="view-options">
+	<div class="button fa fa-question-circle" title="Wilt u lokaal reserveren op basis van gereserveerde artikelen? Maak dan gebruik van dit overzicht. Heeft u een artikel apart gezet/gelegd? Dan kunt u het rode vinkje omzetten voor uw eigen duidelijkheid."></div>
+</div>
+
 <table class="view">
 	<thead>
 		<tr>

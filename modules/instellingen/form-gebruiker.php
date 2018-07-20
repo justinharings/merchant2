@@ -50,7 +50,7 @@ if(isset($_GET['dataID']))
 			if($_SESSION['administrator'] == 1)
 			{
 				?>
-				<input type="checkbox" <?= isset($_GET['dataID']) && intval($_GET['dataID']) == $_SESSION['userID'] ? "disabled=\"disabled\"" : "" ?> <?= isset($_GET['dataID']) && $data['admin'] == 1 ? "checked=\"checked\"" : "" ?> name="administrator" id="administrator" value="1" class="double-margin" holder="<?= $mb->_translateReturn("forms", "form-users-admin") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-users-admin-eg") ?>" />
+				<input type="checkbox" <?= isset($_GET['dataID']) && intval($_GET['dataID']) == $_SESSION['userID'] ? "disabled=\"disabled\"" : "" ?> <?= isset($_GET['dataID']) && $data['admin'] == 1 ? "checked=\"checked\"" : "" ?> name="administrator" id="administrator" value="1" class="double-margin" holder="<?= $mb->_translateReturn("forms", "form-users-admin") ?>" question="Indien dit vinkje aanstaat krijgt deze gebruiker de mogelijkheid om de autorisaties van zichzelf of anderen aan te passen. Zo kun je iemand aanmaken die wel gebruikers mag beheren maar niet mag bepalen wie-wat ziet." />
 				<?php
 			}
 			?>
@@ -72,7 +72,7 @@ if(isset($_GET['dataID']))
 				<?= $mb->_translateReturn("forms", "legend-autorisations") ?>
 			</div>
 			
-			<select name="start_page" id="start_page" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-users-startpage") ?>">
+			<select name="start_page" id="start_page" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-users-startpage") ?>" question="Na het inloggen komt deze gebruiker hier terecht. U kunt dit aanpassen omdat u bijvoorbeeld niet wilt dat klanten in de winkel kunnen meekijken op uw dashboard wanneer u inlogt.">
 				<?php
 				if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "DAS", 0)))
 				{

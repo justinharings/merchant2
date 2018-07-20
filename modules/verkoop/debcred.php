@@ -13,6 +13,7 @@ $form = "/form-order/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
+	<div class="button fa fa-question-circle" title="In dit overzicht staan bestellingen die afgerond zijn (producten zijn afgeboekt van de voorraad) maar nog niet betaald. Ook staan er bestellingen in waar een teveel betaling openstaat (crediteuren)."></div>
 </div>
 
 <table class="view <?= $mb->num_rows($data) ? "hoverable" : "" ?>">

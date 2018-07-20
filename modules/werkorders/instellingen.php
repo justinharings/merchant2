@@ -25,7 +25,7 @@ $data = $mb->_runFunction("workorders", "loadSettings", array($_SESSION['merchan
 				<?= $mb->_translateReturn("forms", "legend-manage-content") ?>
 			</div>
 			
-			<textarea name="receipt_content" id="receipt_content" class="width-400" holder="<?= $mb->_translateReturn("forms", "form-workorders-receipt-content") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-workorders-receipt-content-eg") ?>"><?= (isset($data['receipt_content']) ? $data['receipt_content'] : "") ?></textarea>
+			<textarea name="receipt_content" id="receipt_content" class="width-400" holder="<?= $mb->_translateReturn("forms", "form-workorders-receipt-content") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-workorders-receipt-content-eg") ?>" question="Dit is de tekst die u kunt weergeven op het afhaalbewijs van uw werkorders. U kunt barcodes weergeven op deze afhaalbewijzen zodat u de werkorder gemakkelijk kunt terugvinden wanneer de klant u het afhaalbewijs geeft."><?= (isset($data['receipt_content']) ? $data['receipt_content'] : "") ?></textarea>
 		</div>
 		
 		<div class="form-content">
@@ -34,8 +34,8 @@ $data = $mb->_runFunction("workorders", "loadSettings", array($_SESSION['merchan
 				<?= $mb->_translateReturn("forms", "legend-options") ?>
 			</div>
 			
-			<input type="checkbox" <?= isset($data['radio']) && $data['radio'] == 1 ? "checked=\"checked\"" : "" ?> name="radio" id="radio" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-workorders-radio") ?>" />
-			<input type="checkbox" <?= isset($data['unique_identifier']) && $data['unique_identifier'] == 1 ? "checked=\"checked\"" : "" ?> name="unique_identifier" id="unique_identifier" value="1" holder="<?= $mb->_translateReturn("forms", "form-workorders-unique-identifier") ?>" />
+			<input type="checkbox" <?= isset($data['radio']) && $data['radio'] == 1 ? "checked=\"checked\"" : "" ?> name="radio" id="radio" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-workorders-radio") ?>" question="Wilt u dat er in het werkorder scherm de muziek optie beschikbaar is? Zet dan dit vinkje aan." />
+			<input type="checkbox" <?= isset($data['unique_identifier']) && $data['unique_identifier'] == 1 ? "checked=\"checked\"" : "" ?> name="unique_identifier" id="unique_identifier" value="1" holder="<?= $mb->_translateReturn("forms", "form-workorders-unique-identifier") ?>" question="Gebruikt u sleutelnummers of andere identificatie nummers? Dan kunt u er voor zorgen dat het systeem erop controleert dat u unieke nummers gebruikt ter indentificatie." />
 		</div>
 	</div>
 </form>

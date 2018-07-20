@@ -13,6 +13,7 @@ $form = "/form-order/";
 
 <div class="view-options">
 	<input type="text" name="search" id="search" value="<?= (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : "") ?>" class="width-200" icon="fa-search" />
+	<div class="button fa fa-question-circle" title="Dit is het overzicht met openstaande bestellingen. Verschillende bestelstatus benamingen kunnen worden ingesteld onder 'instellingen'. Als een bestelnummer blauw is en er een blauw icoontje voor verschijnt dan is dit een internet bestelling. Alle andere orders komen uit het POS systeem. De producten in deze bestellingen zijn gereserveerd, maar niet afgeboekt van de voorraad."></div>
 	
 	<!--
 	<div class="button fa fa-plus-circle" click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form ?>"></div>

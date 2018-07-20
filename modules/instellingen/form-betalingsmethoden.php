@@ -45,29 +45,39 @@ if(isset($_GET['dataID']))
 			<input type="text" name="name" id="name" value="<?= isset($_GET['dataID']) ? $data['name'] : "" ?>" class="width-300 double-margin" holder="<?= $mb->_translateReturn("forms", "form-payments-name") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-name-eg") ?>" validation-required="true" validation-type="text" />
 			<input type="text" name="description" id="description" value="<?= isset($_GET['dataID']) ? $data['description'] : "" ?>" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-payments-description") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-description-eg") ?>" validation-required="true" validation-type="text" />
 			
-			<div class="languages width-300">
-				<span class="fa fa-chevron-circle-down"></span>
-				
-				<?php
-				$_lang = $mb->_allLanguages();
-				
-				foreach($_lang AS $value)
-				{
-					?>
-					<fieldset>
-						<legend><?= $value['language'] ?></legend>
-						<input type="text" name="<?= $value['code'] ?>_description" id="<?= $value['code'] ?>_description" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_description'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
-					</fieldset>
-					<?php
-				}
-				?>
-			</div>
+			<?php
+			$_lang = $mb->_allLanguages();
 			
-			<input type="text" name="maximum_amount" id="maximum_amount" value="<?= isset($_GET['dataID']) ? $data['maximum_amount'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-payments-maximum-amount") ?>" validation-required="false" validation-type="int" icon="fa-euro" />
+			if($mb->num_rows($_lang))
+			{
+				?>
+				<div class="languages width-300">
+					<span class="fa fa-chevron-circle-down"></span>
+					
+					<?php
+					foreach($_lang AS $value)
+					{
+						?>
+						<fieldset>
+							<legend><?= $value['language'] ?></legend>
+							<input type="text" name="<?= $value['code'] ?>_description" id="<?= $value['code'] ?>_description" value="<?= isset($_GET['dataID']) ? $data[$value['code'] . '_description'] : "" ?>" class="width-100-percent" validation-required="true" validation-type="text" icon="fa-globe" />
+						</fieldset>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+			}
+			?>
+			
+			<input type="text" name="maximum_amount" id="maximum_amount" value="<?= isset($_GET['dataID']) ? $data['maximum_amount'] : "" ?>" class="width-150 double-margin" holder="<?= $mb->_translateReturn("forms", "form-payments-maximum-amount") ?>" validation-required="false" validation-type="int" icon="fa-euro" question="Indien deze betaalmethode in de webshop uitgeschakeld moet worden wanneer er een bepaald bedrag bereikt is, vul dan dat maximale bedrag hier in." />
 			
 			<input type="checkbox" <?= isset($_GET['dataID']) && $data['webshop'] == 1 ? "checked=\"checked\"" : "" ?> name="webshop" id="webshop" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-payments-webshop") ?>" />
 			<input type="checkbox" <?= isset($_GET['dataID']) && $data['pos'] == 1 ? "checked=\"checked\"" : "" ?> name="pos" id="pos" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-payments-pos") ?>" />
-			<input type="checkbox" <?= isset($_GET['dataID']) && $data['cash'] == 1 ? "checked=\"checked\"" : "" ?> name="cash" id="cash" value="1" holder="<?= $mb->_translateReturn("forms", "form-payments-cash") ?>" />
+			
+			<!--
+			<input type="checkbox" <?= isset($_GET['dataID']) && $data['cash'] == 1 ? "checked=\"checked\"" : "" ?> name="cash" id="cash" value="1" holder="<?= $mb->_translateReturn("forms", "form-payments-cash") ?>" question="" />
+			-->
 		</div>	
 			
 		<div class="form-content">
@@ -76,7 +86,7 @@ if(isset($_GET['dataID']))
 				<?= $mb->_translateReturn("forms", "legend-payment-module") ?>
 			</div>
 			
-			<select name="module" id="module" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-payments-module") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-module-eg") ?>" validation-required="false" validation-type="text" />
+			<select name="module" id="module" class="width-300 margin" holder="<?= $mb->_translateReturn("forms", "form-payments-module") ?>" holder-eg="<?= $mb->_translateReturn("forms", "form-payments-module-eg") ?>" validation-required="false" validation-type="text" question="Kies hier een eventuele betalingsmodule uit. Deze module wordt actief wanneer de klant hiervoor gekozen heeft in de webshop en gaat afrekenen. De betaling verschijnt onder het tabblad 'betalingen' bij de order." />
 				<option value=""></option>
 				
 				<?php

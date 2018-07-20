@@ -81,7 +81,7 @@ if(isset($_GET['dataID']))
 					<?= $mb->_translateReturn("forms", "legend-customer-card") ?>
 				</div>
 				
-				<input type="text" name="customer_code" id="customer_code" value="<?= isset($_GET['dataID']) ? $data['customer_code'] : "" ?>" class="width-300" />
+				<input type="text" name="customer_code" id="customer_code" value="<?= isset($_GET['dataID']) ? $data['customer_code'] : "" ?>" class="width-300" holder="Barcode" question="Heeft u klantenpassen? Dan kunt u deze hier invullen voor deze klant. Zoekt u in uw POS met deze barcode (scannen) dan kunt u de klant terugvinden zonder zelf te moeten typen en zoeken." />
 			</div>
 			
 			<div class="form-content">
@@ -294,7 +294,7 @@ if(isset($_GET['dataID']))
 						
 						<input type="text" name="email_sender" id="email_sender" value="" class="width-200 double-margin" holder="<?= $mb->_translateReturn("forms", "form-customers-email-sender") ?>" />
 						
-						<select name="email_template" id="email_template" class="width-300 double-margin email-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-email-template") ?>">
+						<select name="email_template" id="email_template" class="width-300 double-margin email-template-choice" holder="<?= $mb->_translateReturn("forms", "form-customers-email-template") ?>" question="Heeft u e-mail sjablonen die op type 'handmatig' staan? Dan komen deze hier tevoorschijn. Zo kunt u HTML-Rich sjablonen versturen vanuit dit overzicht zonder enige moeite te hoeven doen.">
 							<option value=""></option>
 							
 							<?php
