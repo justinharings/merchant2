@@ -31,7 +31,7 @@
 			</div>
 			
 			<div class="extra">
-				<?= $percentage ?>% van dezelfde maand in <?= $last_year ?>
+				<?= $percentage ?>% van dezelfde maand in <?= date("Y")-1 ?>
 			</div>
 			
 			<div class="progress-container">
@@ -64,7 +64,7 @@
 			</div>
 			
 			<div class="extra">
-				<?= $percentage ?>% van de totale omzet in <?= $last_year ?>
+				<?= $percentage ?>% van de totale omzet in <?= date("Y")-1 ?>
 			</div>
 			
 			<div class="progress-container">
