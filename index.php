@@ -202,7 +202,15 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 
 		<script type="text/javascript" src="/library/js/jquery.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		<script type="text/javascript" src="/library/js/motherboard.minified.js"></script>
+		
+		<script type="text/javascript" src="/library/js/dashboard.minified.js"></script>
+		<script type="text/javascript" src="/library/js/datepicker.minified.js"></script>
+		<script type="text/javascript" src="/library/js/emails.minified.js"></script>
+		<script type="text/javascript" src="/library/js/framework.minified.js"></script>
+		<script type="text/javascript" src="/library/js/input.minified.js"></script>
+		<script type="text/javascript" src="/library/js/multiselect.minified.js"></script>
+		<script type="text/javascript" src="/library/js/notes.minified.js"></script>
+		<script type="text/javascript" src="/library/js/sms.minified.js"></script>
 	</head>
 
 	<body>
