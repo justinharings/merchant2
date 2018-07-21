@@ -85,7 +85,7 @@ if(isset($_SESSION['terminal']) && $_GET['module'] == "register")
 		<link rel="stylesheet" type="text/css" href="/library/css/motherboard.minified.css" />
 		<link rel="stylesheet" type="text/css" href="/library/css/pos.css" />
 
-		<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+		<script type="text/javascript" src="/library/js/jquery.js"></script>
 		<script type="text/javascript" src="/library/js/motherboard.minified.js"></script>
 		<script type="text/javascript" src="/library/js/pos.js"></script>
 	</head>

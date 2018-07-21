@@ -200,7 +200,7 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 		<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 		<link rel="stylesheet" type="text/css" href="/library/css/motherboard.minified.css" />
 
-		<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+		<script type="text/javascript" src="/library/js/jquery.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script type="text/javascript" src="/library/js/motherboard.minified.js"></script>
 	</head>

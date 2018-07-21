@@ -479,9 +479,9 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 				<br/>
 				
 				<?php
-				$data = $mb->_runFunction("postnl", "load", array($_SESSION['merchantID']));		
+				$postNL = $mb->_runFunction("postnl", "load", array($_SESSION['merchantID']));		
 				
-				if(isset($data['api_key']) && $data['api_key'] != "")
+				if(isset($postNL['api_key']) && $postNL['api_key'] != "")
 				{
 					?>
 					<a href="/modules/verkoop/print-label.php?orderID=<?= intval($_GET['dataID']) ?>" target="_blank"><img src="/library/media/verzendlabel.png" /></a>
@@ -518,7 +518,7 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 					<tbody>
 						<?php
 						$data_payments = $mb->_runFunction("payment_methods", "view", array($_SESSION['merchantID'], "", "payment_methods.name", "0,50"));
-							
+						
 						if(count($data['payments']) > 0)
 						{
 							foreach($data['payments'] AS $payment)
