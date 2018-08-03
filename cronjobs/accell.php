@@ -26,7 +26,6 @@ while(($line = fgetcsv($file)) !== FALSE)
 fclose($file);
 
 
-
 $query = sprintf(
 	"	UPDATE		products
 		SET			products.externalStock = 0,
@@ -54,6 +53,16 @@ while($row = $db->fetch_assoc($result))
 	if($row['barcode'] != "")
 	{
 		$row['supplier_code'] = $row['barcode'];
+	}
+	else if($row['barcode'] == "" && strlen($row['supplier_code']) > 8)
+	{
+		$query = sprintf(
+			"	UPDATE		products
+				SET			products.barcode = products.supplier_code
+				WHERE		products.productID = %d",
+			$row['productID']
+		);
+		$db->query($query);
 	}
 	
 	if($row['supplier_code'] != "" && isset($products[$row['supplier_code']]))
@@ -89,7 +98,7 @@ while($row = $db->fetch_assoc($result))
 					{
 						$query = sprintf(
 							"	UPDATE		products
-								SET			products.status = 4
+								SET			products.deleted = 1
 								WHERE		products.productID = %d",
 							$row['productID']
 						);
@@ -113,7 +122,7 @@ while($row = $db->fetch_assoc($result))
 	{
 		$query = sprintf(
 			"	UPDATE		products
-				SET			products.status = 4
+				SET			products.deleted = 1
 				WHERE		products.productID = %d",
 			$row['productID']
 		);

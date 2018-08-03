@@ -2,7 +2,8 @@
 // Instagram accounts
 $accounts = array(
 	"harings2wielers",
-	"haringsvuurwerk"
+	"haringsvuurwerk",
+	"kingmadieren"
 );
 
 foreach($accounts AS $account)
@@ -23,7 +24,8 @@ foreach($accounts AS $account)
 // Facebook accounts
 $accounts = array(
 	"harings2wielers",
-	"haringsvuurwerk"
+	"haringsvuurwerk",
+	"kingmadieren"
 );
 
 foreach($accounts AS $account)
