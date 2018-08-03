@@ -43,16 +43,13 @@ if(isset($_GET['image']))
 	
 	copy($_GET['image'], $file);
 	
-	$square_size = 900;
-	$quality = 900;
-	
 	//get original image attributes
 	list($width, $height, $type, $attr) = getimagesize($file);
 	
 	$thumb = imagecreatefromjpeg($file);
 	$thumb_p = imagecreatetruecolor($square_size, $square_size);
 	
-	imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $square_size, $square_size, $width, $height);
+	imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, 900, 900, $width, $height);
 	
 	//save the file
 	imagejpeg($thumb_p, $file, 100);
@@ -588,12 +585,14 @@ function translateColor($color, $lang)
 						<?php
 						$num = 0;
 
-						foreach($filter AS $f)
+						foreach($filter AS $key => $value)
 						{
 							?>
-							<input type="hidden" name="filter_language[]" id="filter_language_<?= $num ?>" value="<?= $f[0] ?>" />
-							<input type="hidden" name="filter_key[]" id="filter_key_<?= $num ?>" value="<?= $f[1] ?>" />
-							<input type="hidden" name="filter_value[]" id="filter_value_<?= $num ?>" value="<?= $f[2] ?>" />
+							
+							<input type="hidden" name="filter_language[]" id="filter_language_<?= $num ?>" value="<?= $value['filter_language'] ?>" />
+							<input type="hidden" name="filter_key[]" id="filter_key_<?= $num ?>" value="<?= $value['filter_key'] ?>" />
+							<input type="hidden" name="filter_value[]" id="filter_value_<?= $num ?>" value="<?= $value['filter_value'] ?>" />
+							
 							<?php
 							$num++;
 						}
