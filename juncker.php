@@ -487,35 +487,53 @@ function translateColor($color, $lang)
 								"filter_key" => "Kleur",
 								"filter_value" => $products[$i][19]
 							),
+							
+							2 => array(
+								"filter_language" => "nl",
+								"filter_key" => "Type",
+								"filter_value" => "Bel"
+							),
 
 
 							// Engels
 
-							2 => array(
+							3 => array(
 								"filter_language" => "EN",
 								"filter_key" => "Order unity",
 								"filter_value" => $products[$i][4] . " piece(s)"
 							),
 
-							3 => array(
+							4 => array(
 								"filter_language" => "EN",
 								"filter_key" => "Color",
 								"filter_value" => translateColor($products[$i][19], "EN")
+							),
+							
+							5 => array(
+								"filter_language" => "EN",
+								"filter_key" => "Type",
+								"filter_value" => "Bell"
 							),
 
 
 							// Duits
 
-							4 => array(
+							6 => array(
 								"filter_language" => "DE",
 								"filter_key" => "Bestelleinheit",
 								"filter_value" => $products[$i][4] . " Stück(e)"
 							),
 
-							5 => array(
+							7 => array(
 								"filter_language" => "DE",
 								"filter_key" => "Farbe",
 								"filter_value" => translateColor($products[$i][19], "DE")
+							),
+							
+							8 => array(
+								"filter_language" => "DE",
+								"filter_key" => "Farbe",
+								"filter_value" => "Klingel"
 							)
 						);
 					break;
