@@ -533,6 +533,7 @@
 		<form-website-minimum>Minimale bedrag</form-website-minimum>
 		<form-website-minimum-eg>0 is geen</form-website-minimum-eg>
 		<form-website-shipment>Verzending tonen</form-website-shipment>
+		<form-website-reviews>Reviews verbergen</form-website-reviews>
 		
 		<!-- Settings -> Users -> Form -->
 		<form-users-name>Voornaam</form-users-name>

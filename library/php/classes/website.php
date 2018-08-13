@@ -32,10 +32,12 @@ class website extends motherboard
 				SET					website_settings.merchantID = %d,
 									website_settings.note_content = '%s',
 									website_settings.show_shipment = %d,
+									website_settings.hide_reviews = %d,
 									website_settings.minimum_order_amount = '%.2f'",
 			$data[0],
 			$data[1]['note_content'],
 			$data[1]['show_shipment'],
+			$data[1]['hide_reviews'],
 			$data[1]['minimum_order_amount']
 		);
 		parent::query($query);

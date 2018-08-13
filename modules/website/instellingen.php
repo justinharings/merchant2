@@ -34,7 +34,8 @@ $data = $mb->_runFunction("website", "load", array($_SESSION['merchantID']));
 				<?= $mb->_translateReturn("forms", "legend-options") ?>
 			</div>
 			
-			<input type="checkbox" <?= isset($data['show_shipment']) && $data['show_shipment'] == 1 ? "checked=\"checked\"" : "" ?> name="show_shipment" id="show_shipment" value="1" holder="<?= $mb->_translateReturn("forms", "form-website-shipment") ?>" question="Gebruikt uw webshop niets met 'verzenden'? Wordt bijvoorbeeld alles afgehaald bij u in de winkel? Zet dan dit vinkje uit. De webshop toont dan nergens iets wat met verzendkosten te maken heeft." />
+			<input type="checkbox" <?= isset($data['show_shipment']) && $data['show_shipment'] == 1 ? "checked=\"checked\"" : "" ?> name="show_shipment" id="show_shipment" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-website-shipment") ?>" question="Gebruikt uw webshop niets met 'verzenden'? Wordt bijvoorbeeld alles afgehaald bij u in de winkel? Zet dan dit vinkje uit. De webshop toont dan nergens iets wat met verzendkosten te maken heeft." />
+			<input type="checkbox" <?= isset($data['hide_reviews']) && $data['hide_reviews'] == 1 ? "checked=\"checked\"" : "" ?> name="hide_reviews" id="hide_reviews" value="1" holder="<?= $mb->_translateReturn("forms", "form-website-reviews") ?>" />
 		</div>
 		
 		<div class="form-content">
