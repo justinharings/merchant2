@@ -108,7 +108,7 @@ if(isset($_GET['dataID']))
 					<tr class="new-row">
 						<td><input type="file" name="image[]" id="image_+" value="" class="width-200" validation-type="image" image-extension="png" /></td>
 						<td><input type="checkbox" name="thumb[]" id="thumb_+" value="1" class="width-200" validation-required="true" validation-type="int" /></td>
-						<td><input type="text" name="tags[]" id="tags_+" value="" class="width-200" validation-required="true" validation-type="text" /></td>
+						<td><input type="text" name="tags[]" id="tags_+" value="" class="width-200" /></td>
 						<td colspan="2">&nbsp;</td>
 					</tr>
 				</tbody>
