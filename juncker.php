@@ -5,6 +5,8 @@ ini_set('display_errors', true);
 ini_set("error_log", "php-error.log");
 
 define("_DEVELOPMENT_ENVIRONMENT", true);
+define("_MERCHANT_ID", 1);
+define("_LANGUAGE_PACK", "nl");
 
 if(!isset($_SESSION))
 {
@@ -16,47 +18,9 @@ $_SESSION['merchantID'] = 1;
 require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/php/classes/database.php");
 $db = new database();
 
-if(isset($_GET['image']))
-{
-	$query = sprintf(
-		"	SELECT		products.productID
-			FROM		products
-			WHERE		products.barcode = '%s'",
-		$_GET['barcode']
-	);
-	$result = $db->query($query);
-	$row = $db->fetch_assoc($result);
-	
-	$query = sprintf(
-		"	INSERT INTO		products_media
-			SET				products_media.productID = %d,
-							products_media.type = 'image',
-							products_media.youtube_url = '',
-							products_media.thumb = 1",
-		$row['productID']
-	);
-	$result = $db->query($query);
-	$insert_id = $db->insert_id($result);
-	
-	$ext = substr($_GET['image'], -3);
-	$file = $_SERVER['DOCUMENT_ROOT'] . '/library/media/products/' . $insert_id . ".png";
-	
-	copy($_GET['image'], $file);
-	
-	//get original image attributes
-	list($width, $height, $type, $attr) = getimagesize($file);
-	
-	$thumb = imagecreatefromjpeg($file);
-	$thumb_p = imagecreatetruecolor($square_size, $square_size);
-	
-	imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, 900, 900, $width, $height);
-	
-	//save the file
-	imagejpeg($thumb_p, $file, 100);
-	
-	header("location: /juncker.php?kernwoord=" . $_GET['kernwoord']);
-	exit;
-}
+require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/php/classes/motherboard.php");
+$mb = new motherboard();
+
 
 function getNewArticleCode()
 {
@@ -303,6 +267,147 @@ function translateColor($color, $lang)
 			}
 		break;
 	}
+}
+
+function createThumbnail($newWidth, $newHeight, $path)
+{	
+    $mime = getimagesize($path);
+
+    if($mime['mime']=='image/png'){ $src_img = imagecreatefrompng($path); }
+    if($mime['mime']=='image/jpg'){ $src_img = imagecreatefromjpeg($path); }
+    if($mime['mime']=='image/jpeg'){ $src_img = imagecreatefromjpeg($path); }
+    if($mime['mime']=='image/pjpeg'){ $src_img = imagecreatefromjpeg($path); }
+
+    $old_x = imageSX($src_img);
+    $old_y = imageSY($src_img);
+
+    if($old_x > $old_y)
+    {
+        $thumb_w    =   $newWidth;
+        $thumb_h    =   $old_y/$old_x*$newWidth;
+    }
+
+    if($old_x < $old_y)
+    {
+        $thumb_w    =   $old_x/$old_y*$newHeight;
+        $thumb_h    =   $newHeight;
+    }
+
+    if($old_x == $old_y)
+    {
+        $thumb_w    =   $newWidth;
+        $thumb_h    =   $newHeight;
+    }
+
+    $dst_img        =   ImageCreateTrueColor($thumb_w,$thumb_h);
+
+    imagecopyresampled($dst_img,$src_img,0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y);
+
+
+    // New save location
+    if($mime['mime']=='image/png'){ $result = imagepng($dst_img,$path,8); }
+    if($mime['mime']=='image/jpg'){ $result = imagejpeg($dst_img,$path,80); }
+    if($mime['mime']=='image/jpeg'){ $result = imagejpeg($dst_img,$path,80); }
+    if($mime['mime']=='image/pjpeg'){ $result = imagejpeg($dst_img,$path,80); }
+
+    imagedestroy($dst_img);
+    imagedestroy($src_img);
+    
+    return $result;
+}
+
+
+if(isset($_GET['image']))
+{
+	$query = sprintf(
+		"	SELECT		products.productID
+			FROM		products
+			WHERE		products.barcode = '%s'
+				AND		products.deleted = 0",
+		$_GET['barcode']
+	);
+	$result = $db->query($query);
+	$row = $db->fetch_assoc($result);
+	
+	$data = $mb->_runFunction("products", "load", array($row['productID']));
+	
+	foreach($data['categories'] AS $key => $value)
+	{
+		$filter_values = $data['categories'][$key]['filters']['filters'];
+		
+		if(is_array($filter_values) && count($filter_values) == 0)
+		{
+			continue;
+		}
+		
+		foreach($filter_values AS $key => $filter)
+		{
+			$query = sprintf(
+				"	SELECT		products_properties.value
+					FROM		products_properties
+					WHERE		products_properties.productID = %d
+						AND		products_properties.key = '%s'",
+				$row['productID'],
+				$filter['name']
+			);
+			$result = $db->query($query);
+			$row2 = $db->fetch_assoc($result);
+			
+			$langauges = array("NL", "EN", "DE");
+			
+			if($row2['value'] != "")
+			{
+				foreach($langauges AS $lang)
+				{
+					$query = sprintf(
+						"	INSERT INTO		products_filters
+							SET				products_filters.productID = %d,
+											products_filters.filterID = %d,
+											products_filters.language = '%s',
+											products_filters.value = '%s'",
+						$row['productID'],
+						$filter['filterID'],
+						$lang,
+						(strtolower($filter['name']) == "kleur" && $lang != "NL" ? translateColor($row2['value'], $lang) : $row2['value'])
+					);
+					$db->query($query);
+				}
+			}
+		}
+	}
+	
+	$query = sprintf(
+		"	INSERT INTO		products_media
+			SET				products_media.productID = %d,
+							products_media.type = 'image',
+							products_media.youtube_url = '',
+							products_media.thumb = 1",
+		$row['productID']
+	);
+	$result = $db->query($query);
+	$insert_id = $db->insert_id($result);
+	
+	$file = $_SERVER['DOCUMENT_ROOT'] . '/library/media/products/' . $insert_id . ".png";
+	
+	copy($_GET['image'], $file);
+	
+	// First create smaller image.
+	createThumbnail(600, 600, $file);
+	
+	//get original image attributes
+	list($width, $height, $type, $attr) = getimagesize($file);
+	print $width;
+	print $height;
+	$thumb = imagecreatefromjpeg($file);
+	$thumb_p = imagecreatetruecolor(900, 900);
+	
+	imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, 900, 900, $width, $height);
+	
+	//save the file
+	imagejpeg($thumb_p, $file, 100);
+	
+	//header("location: /juncker.php?kernwoord=" . $_GET['kernwoord']);
+	exit;
 }
 ?>
 <html>

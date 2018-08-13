@@ -30,7 +30,8 @@ $query = sprintf(
 	"	UPDATE		products
 		SET			products.externalStock = 0,
 					products.status = 1
-		WHERE		products.externalStockID = 2"
+		WHERE		products.externalStockID = 2
+			AND		products.deleted = 0"
 );
 $db->query($query);
 
@@ -98,7 +99,8 @@ while($row = $db->fetch_assoc($result))
 					{
 						$query = sprintf(
 							"	UPDATE		products
-								SET			products.deleted = 1
+								SET			products.deleted = 1,
+											products.status = 4
 								WHERE		products.productID = %d",
 							$row['productID']
 						);
@@ -122,7 +124,8 @@ while($row = $db->fetch_assoc($result))
 	{
 		$query = sprintf(
 			"	UPDATE		products
-				SET			products.deleted = 1
+				SET			products.deleted = 1,
+							products.status = 4
 				WHERE		products.productID = %d",
 			$row['productID']
 		);
