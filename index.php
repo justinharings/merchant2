@@ -808,6 +808,19 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 										<?php
 									}
 									
+									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP_WA", 0)))
+									{
+										?>
+										<li class="menu-item" rel="/rapportages/week/">
+											<div class="text"><?= $mb->_translateReturn("menu", "week-register") ?></div>
+											
+											<div class="icon">
+												<span class="textual"><?= $mb->_translateReturn("menu", "week-register-abbr") ?></span>
+											</div>
+										</li>
+										<?php
+									}
+									
 									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP_VB", 0)))
 									{
 										?>

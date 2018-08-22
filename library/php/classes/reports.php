@@ -1,11 +1,24 @@
 <?php
 class reports extends motherboard
 {
+	function getWeekData($week, $year)
+	{	
+		$dto = new DateTime();
+
+		$dto->setISODate($year, $week);
+		$ret[0] = $dto->format('Y-m-d');
+		$dto->modify('+6 days');
+		$ret[1] = $dto->format('Y-m-d');
+		
+		return $ret;
+	}
+	
 	public function closeRegister($data)
 	{
 		parent::_checkInputValues($data, 2);
 		
 		$today = date("Y-m-d");
+		$period = false;
 		
 		$date  = new DateTime($today);
 		
@@ -14,16 +27,26 @@ class reports extends motherboard
 			$interval = new DateInterval('P1D');
 			$date->sub($interval); 
 		}
+		else if(strpos($data[1], "week_") !== false)
+		{
+			$period = true;
+			
+			$week = str_replace("week_", "", $data[1]);
+			$year = $date->format('Y');
+			
+			$periods = $this->getWeekData($week, $year);
+		}
 		
 		$query = sprintf(
 			"	SELECT		orders_payment.amount,
-							payment_methods.name
+							payment_methods.name,
+							orders_payment.date
 				FROM		orders_payment
 				INNER JOIN	payment_methods ON payment_methods.paymentID = orders_payment.paymentID
 				WHERE		payment_methods.merchantID = %d
-					AND		orders_payment.date = '%s'",
+					AND		%s",
 			$data[0],
-			$date->format("Y-m-d")
+			($period == false ? "orders_payment.date = '" . $date->format("Y-m-d") . "'" : "orders_payment.date BETWEEN '" . $periods[0] . "' AND '" . $periods[1] . "'")
 		);
 		$result = parent::query($query);
 		
