@@ -82,7 +82,7 @@ else
 					$("#form").submit(
 						function(event)
 						{
-							if(posted == false)
+							if(posted == false && $(".cash").val() == 0)
 							{
 								event.preventDefault();
 								
