@@ -6,6 +6,19 @@
     -ms-user-select: none; /* IE10+ */
 }
 
+.atm-image
+{
+	width: 100%;
+	height: 10px;
+	
+	display: none;
+}
+
+	.atm-image img
+	{
+		width: 100%;
+	}
+
 body.popup h1
 {
 	width: 100%;
