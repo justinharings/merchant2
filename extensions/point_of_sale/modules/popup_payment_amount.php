@@ -72,10 +72,53 @@ else
 		<script type="text/javascript" src="/library/js/sms.minified.js"></script>
 		
 		<script type="text/javascript" src="/library/js/pos.js"></script>
+		
+		<script type="text/javascript">
+			$(document).ready(
+				function()
+				{
+					var posted = false;
+					
+					$("#form").submit(
+						function(event)
+						{
+							if(posted == false)
+							{
+								event.preventDefault();
+								
+								var form = $(this);
+								
+								form.hide();
+								
+								$("div.popup-container", parent.document)
+									.css("width", "600px")
+									.css("height", "388px")
+									.css("margin-top", "-194px")
+									.css("margin-left", "-300px");
+									
+								$("div.atm-image").css("display", "table");
+								
+								setTimeout(
+									function() 
+									{ 
+										posted = true;
+										form.submit();
+									}, 7000
+								);
+							}
+						}
+					);
+				}
+			);
+		</script>
 	</head>
 
 	<body class="popup">
-		<form method="post" action="/extensions/point_of_sale/library/php/posts/payment.php">
+		<div class="atm-image">
+			<img src="/library/media/pinautomaat.gif" />
+		</div>
+		
+		<form id="form" name="form" method="post" action="/extensions/point_of_sale/library/php/posts/payment.php">
 			<h1>Betaling: <?= $payment['name'] ?></h1>
 			<input type="text" name="to_pay" id="to_pay" value="<?= _frontend_float($to_pay) ?>" class="width-100-percent margin large text-center" holder="Totaal te betalen" holder-eg="Het (restant) totaalbedrag." />
 			<input type="text" name="value" id="value" value="<?= _frontend_float($to_pay) ?>" class="width-100-percent margin large text-center popup-keyboard-output remove-default" holder="Klant betaald" holder-eg="Type het bedrag dat je ontvangt." />
