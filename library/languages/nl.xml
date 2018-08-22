@@ -127,6 +127,8 @@
 		<payment-book-abbr>GU</payment-book-abbr>
 		<calculate-stock>Voorraad berekenen</calculate-stock>
 		<calculate-stock-abbr>VB</calculate-stock-abbr>
+		<week-register>Week kasboek afslaan</week-register>
+		<week-register-abbr>WA</week-register-abbr>
 		
 		<settings>Overige instellingen</settings>
 		<settings-eg>Gebruikers, verzending en meer</settings-eg>
@@ -300,6 +302,7 @@
 		<!-- Reports > Form -->
 		<form-repports-month>Boekingsmaand</form-repports-month>
 		<form-repports-year>Boekingsjaar</form-repports-year>
+		<form-repports-week>Weeknummer</form-repports-week>
 		<form-reports-table-group>Omzetgroep</form-reports-table-group>
 		<form-reports-table-grand_total>Totaalbedrag</form-reports-table-grand_total>
 		<form-reports-table-quantity>Aantallen</form-reports-table-quantity>
