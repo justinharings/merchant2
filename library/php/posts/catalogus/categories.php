@@ -10,11 +10,18 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php")
 
 $mb = new motherboard();
 
+$merchantID = $_SESSION['merchantID'];
+
+if(isset($_POST['merchantID']))
+{
+	$merchantID = $_POST['merchantID'];
+}
+
 $return = $mb->_runFunction(
 	"categories",
 	"save",
 	array(
-		$_SESSION['merchantID'],
+		$merchantID,
 		$_POST
 	)
 );
