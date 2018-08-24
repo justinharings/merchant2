@@ -9,7 +9,7 @@ $accounts = array(
 foreach($accounts AS $account)
 {
 	$raw = file_get_contents('https://www.instagram.com/' . $account);
-	preg_match('/\"followed_by\"\:\s?\{\"count\"\:\s?([0-9]+)/', $raw, $m);
+	preg_match('/\"edge_followed_by\"\:\s?\{\"count\"\:\s?([0-9]+)/', $raw, $m);
 	
 	try
 	{
@@ -25,7 +25,8 @@ foreach($accounts AS $account)
 $accounts = array(
 	"harings2wielers",
 	"haringsvuurwerk",
-	"kingmadieren"
+	"kingmadieren",
+	"Shirtcollection.nl"
 );
 
 foreach($accounts AS $account)
