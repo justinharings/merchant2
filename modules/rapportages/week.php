@@ -28,9 +28,9 @@ $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], 
 					
 				for($i = 1; $i < 53; $i++)
 				{
-					if($i > $current)
+					if($i > ($current+1))
 					{
-						continue;;
+						continue;
 					}
 					
 					?>
