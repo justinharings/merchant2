@@ -238,7 +238,7 @@ if(file_exists($file))
 		$payments_row .= '
 			<tr>
 				<td>' . $payment['date'] . '</td>
-				<td>&euro;&nbsp;' . $sign . "&nbsp;" . _frontend_float(($payment['amount']*$target), $currency) . '</td>
+				<td>' . $sign . "&nbsp;" . _frontend_float(($payment['amount']*$target), $currency) . '</td>
 			</tr>
 		';
 	}
