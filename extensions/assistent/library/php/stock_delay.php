@@ -12,8 +12,7 @@ $mb = new motherboard();
 
 $query = sprintf(
 	"	UPDATE			assistent_stock
-		SET				assistent_stock.deleted = 1,
-						assistent_stock.delay = NOW()
+		SET				assistent_stock.delay = NOW()
 		WHERE			assistent_stock.stockID = %d",
 	intval($_POST['stockID'])
 );

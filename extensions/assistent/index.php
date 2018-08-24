@@ -58,39 +58,78 @@ function checkStock($order)
 
 	$mb = new motherboard();
 	
-	$stockCheck = sprintf(
-		"	SELECT		COUNT(assistent_stock.stockID) AS cnt
-			FROM		assistent_stock
-			WHERE		assistent_stock.orderID = %d",
-		intval($order['orderID'])
+	$query = sprintf(
+		"	SELECT		COUNT(assistent_stock_orders.orderID) AS num
+			FROM		assistent_stock_orders
+			WHERE		assistent_stock_orders.orderID = %d",
+		$order['orderID']
 	);
-	$resultCheck = $mb->query($stockCheck);
-	$rowCheck = $mb->fetch_assoc($resultCheck);
+	$result = $mb->query($query);
+	$row = $mb->fetch_assoc($result);
 	
-	if($rowCheck['cnt'] == 0)
+	if($row['num'] != 0)
 	{
-		if(count($order['products']) > 0)
+		return false;
+	}
+	
+	$query = sprintf(
+		"	INSERT INTO		assistent_stock_orders
+			SET				assistent_stock_orders.orderID = %d",
+		$order['orderID']
+	);
+	$mb->query($query);
+	
+	if(count($order['products']) > 0)
+	{
+		foreach($order['products'] AS $product)
 		{
-			foreach($order['products'] AS $product)
+			if	(
+					$product['productID'] == 132 
+					|| $product['productID'] == 131 
+					|| $product['productID'] == 134 
+					|| $product['productID'] == 135 
+					|| $product['productID'] == 138
+					|| $product['productID'] == 2125
+				)
 			{
-				if($product['productID'] == 132 || $product['productID'] == 131 || $product['productID'] == 134)
-				{
-					continue;
-				}
-				
-				$queryAddStock = sprintf(
-					"	INSERT INTO		assistent_stock
-						SET				assistent_stock.orderID = %d,
-										assistent_stock.productID = %d",
-					intval($order['orderID']),
-					$product['productID']
-				);
-				$mb->query($queryAddStock);
+				continue;
 			}
+			
+			$queryHold = sprintf(
+				"	SELECT		COUNT(assistent_stock.stockID) AS num
+					FROM		assistent_stock
+					WHERE		assistent_stock.productID = %d",
+				$product['productID']
+			);
+			$result = $mb->query($queryHold);
+			$row = $mb->fetch_assoc($result);
+			
+			if($row['num'] != 0)
+			{
+				continue;
+			}
+			
+			$queryAddStock = sprintf(
+				"	INSERT INTO		assistent_stock
+					SET				assistent_stock.productID = %d",
+				$product['productID']
+			);
+			$mb->query($queryAddStock);
 		}
 	}
 }
 
+
+$data = $mb->_runFunction("orders", "view", array(1, "", "orders.date_added DESC", "0,100", 2));
+
+if($mb->num_rows($data))
+{
+	foreach($data AS $value)
+	{
+		$order = $mb->_runFunction("orders", "load", array(intval($value['orderID'])));
+		checkStock($order);
+	}
+}
 
 
 /*
@@ -206,13 +245,8 @@ if(!isset($_GET['module']))
 	$stockCheck = sprintf(
 		"	SELECT		assistent_stock.*
 			FROM		assistent_stock
-			WHERE		(
-							assistent_stock.deleted = 0
-					OR		(	
-								assistent_stock.deleted = 1
-						AND		DATEDIFF(NOW(), assistent_stock.delay) > 21
-							)
-						)
+			WHERE		DATEDIFF(NOW(), assistent_stock.delay) > 21
+				OR		assistent_stock.delay = '0000-00-00'
 			LIMIT		0,1"
 	);
 	$resultCheck = $mb->query($stockCheck);
@@ -220,13 +254,48 @@ if(!isset($_GET['module']))
 	
 	if($rowCheck['stockID'] > 0)
 	{
-		if	(
-				$rowCheck['deleted'] == 0
-				|| $rowCheck['deleted'] == 1 && $rowCheck['delay'] != "0000-00-00"
-			)
+		header("location: /assistent/?module=stock&stockID=" . $rowCheck['stockID']);
+		exit;
+	}
+	
+	$stockCheck = sprintf(
+		"	SELECT		assistent_stock_watchlist.*
+			FROM		assistent_stock_watchlist"
+	);
+	$resultCheck = $mb->query($stockCheck);
+	
+	if($mb->num_rows($resultCheck))
+	{
+		$data_locations = $mb->_runFunction("stock", "viewLocations", array(1, "", "locations.name", "0,50"));
+		
+		while($rowCheck = $mb->fetch_assoc($resultCheck))
 		{
-			header("location: /assistent/?module=stock&stockID=" . $rowCheck['stockID']);
-			exit;
+			foreach($data_locations AS $location)
+			{
+				$stock = $mb->_runFunction("stock", "getStock", array($rowCheck['productID'], $location['locationID']));
+				$eco = ($stock['stock']-$stock['reserved']);
+			}
+			
+			if($eco > 0)
+			{
+				$queryAddStock = sprintf(
+					"	INSERT INTO		assistent_stock
+						SET				assistent_stock.productID = %d",
+					$rowCheck['productID']
+				);
+				$result = $mb->query($queryAddStock);
+				$stockID = $mb->insert_id($result);
+				
+				$query = sprintf(
+					"	DELETE FROM		assistent_stock_watchlist
+						WHERE			assistent_stock_watchlist.productID = %d",
+					intval($rowCheck['productID'])
+				);
+				$mb->query($query);
+				
+				header("location: /assistent/?module=stock&watchlist=true&stockID=" . $stockID);
+				exit;
+			}
 		}
 	}
 	
@@ -489,7 +558,6 @@ switch($_GET['module'])
 			else if(isset($_GET['module']) && $_GET['module'] == "order")
 			{
 				$order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
-				checkStock($order);
 				?>
 				<div class="save-button calendar" orderID="<?= intval($_GET['orderID']) ?>">
 					<span class="fa fa-calendar"></span>
@@ -690,7 +758,6 @@ switch($_GET['module'])
 			else if(isset($_GET['module']) && $_GET['module'] == "pickup")
 			{
 				$order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
-				checkStock($order);
 				?>
 				<form method="post" id="post" action="/extensions/assistent/library/php/ready.php">
 					<input type="hidden" name="orderID" id="orderID" value="<?= intval($_GET['orderID']) ?>" />
@@ -974,71 +1041,194 @@ switch($_GET['module'])
 				$rowStock = $mb->fetch_assoc($resultStock);
 				
 				$data = $mb->_runFunction("products", "load", array($rowStock['productID']));
+				$data_locations = $mb->_runFunction("stock", "viewLocations", array(1, "", "locations.name", "0,50"));
+				
+				$type = "";
+				
+				foreach($data_locations AS $location)
+				{
+					$stock = $mb->_runFunction("stock", "getStock", array($rowStock['productID'], $location['locationID']));
+					$eco = ($stock['stock']-$stock['reserved']);
+					
+					if($stock['stock'] < 0)
+					{
+						$type = "error";
+					}
+					else if($eco > 0)
+					{
+						$type = "workshop";
+					}
+					else
+					{
+						$type = "order";
+					}
+				}
 				?>
 				<form method="post" id="post" action="">
 					<input type="hidden" name="stockID" id="stockID" value="<?= intval($_GET['stockID']) ?>" />
-					
-					<div class="save-button post" form-action="/extensions/assistent/library/php/stock_delete.php">
-						<span class="fa fa-trash"></span>
-					</div>
-					
-					<div class="save-button second post" form-action="/extensions/assistent/library/php/stock_delay.php">
-						<span class="fa fa-refresh"></span>
-					</div>
-					
-					<h1>Verkocht artikel bestellen</h1>
-					
-					<div class="content-assistent flexible first">
-						<center>
-							<?php
-							$thumb = "https://haringstweewielers.com/library/media/no-image.png";
-
-							foreach($data['images'] AS $media)
-							{
-								if($media['thumb'])
-								{
-									$thumb = "https://merchant.justinharings.nl/library/media/products/" . $media['productMediaID'] . ".png";
-								}
-							}
-							?>
-							
-							<img height="300" itemprop="image" src="<?= $thumb ?>" /><br/>
-							<Br/>
-							<span style="font-weight: bold;"><?= $data['name'] ?></span><br/><br/><br/>
-							
-							<?php
-							$data_locations = $mb->_runFunction("stock", "viewLocations", array(1, "", "locations.name", "0,50"));
-
-							foreach($data_locations AS $location)
-							{
-								$stock = $mb->_runFunction("stock", "getStock", array($_GET['dataID'], $location['locationID']));
-								?>
-
-								<div class="form-content">
-									Voorraden &#187; <?= $location['name'] ?><br/>
-									<br/>
-									<table>
-										<tr>
-											<td width="130">Voorraad:</td>
-											<td><?= $stock['stock'] ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
-										</tr>
-
-										<tr>
-											<td><span style="font-weight: bold;">Gereserveerd:</span></td>
-											<td><?= $stock['reserved'] ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
-										</tr>
-
-										<tr>
-											<td>Economisch:</td>
-											<td><?= ($stock['stock']-$stock['reserved']) ?> <?= $mb->_translateReturn("forms", "legend-stocks-inline") ?></td>
-										</tr>
-									</table>
-								</div>
+					<input type="hidden" name="productID" id="productID" value="<?= intval($rowStock['productID']) ?>" />
+				
+					<?php
+					if($type == "error")
+					{
+						?>
+						<h1>Voorraad fout bijwerken</h1>
+						
+						<div class="content-assistent flexible first">
+							<center>
 								<?php
-							}
+								$thumb = "https://haringstweewielers.com/library/media/no-image.png";
+
+								foreach($data['images'] AS $media)
+								{
+									if($media['thumb'])
+									{
+										$thumb = "https://merchant.justinharings.nl/library/media/products/" . $media['productMediaID'] . ".png";
+									}
+								}
+								?>
+								
+								<img height="300" itemprop="image" src="<?= $thumb ?>" /><br/>
+								<Br/>
+								<span style="font-size: 20px; font-weight: bold;"><?= $data['article_code'] . " - " . $data['name'] ?></span><br/>
+								
+								<?php
+								$data_locations = $mb->_runFunction("stock", "viewLocations", array(1, "", "locations.name", "0,50"));
+
+								foreach($data_locations AS $location)
+								{
+									$stock = $mb->_runFunction("stock", "getStock", array($rowStock['productID'], $location['locationID']));
+									?>
+									De voorraad van dit artikel staat op <span style="font-size: 20px; font-weight: bold;"><?= $stock['stock'] ?></span>. Balansen noodzakelijk!
+									<?php
+								}
+								?>
+							</center>
+						</div>
+						<?php
+					}
+					else if($type == "workshop")
+					{
+						?>
+						<h1>Voorraad aanvullen en bijbestellen</h1>
+						
+						<div class="save-button post" form-action="/extensions/assistent/library/php/stock_delay.php">
+							<span class="fa fa-refresh"></span>
+						</div>
+						
+						<div class="save-button second post" form-action="/extensions/assistent/library/php/stock_delete.php">
+							<span class="fa fa-trash"></span>
+						</div>
+						
+						<div class="content-assistent flexible first">
+							<center>
+								<?php
+								if(isset($_GET['watchlist']))
+								{
+									?>
+									<div style="width: 50px; height: 50px; position: absolute; top: 50%; left: 50%; z-index: 999; margin: 40px 0px 0px -150px; background-color: blue; -moz-border-radius: 50px; -webkit-border-radius: 50px; -khtml-border-radius: 50px; border-radius: 50px;">
+										<span style="width: 100%; margin: 12px 0px 0px 1px; font-size: 25px; color: #fff; text-align: center;" class="fa fa-user-secret"></span>
+									</div>
+									<?php
+								}
+								
+								$thumb = "https://haringstweewielers.com/library/media/no-image.png";
+
+								foreach($data['images'] AS $media)
+								{
+									if($media['thumb'])
+									{
+										$thumb = "https://merchant.justinharings.nl/library/media/products/" . $media['productMediaID'] . ".png";
+									}
+								}
+								?>
+								
+								<img height="300" itemprop="image" src="<?= $thumb ?>" /><br/>
+								<Br/>
+								<span style="font-size: 20px; font-weight: bold;"><?= $data['article_code'] . " - " . $data['name'] ?></span><br/>
+								
+								<?php
+								$data_locations = $mb->_runFunction("stock", "viewLocations", array(1, "", "locations.name", "0,50"));
+
+								foreach($data_locations AS $location)
+								{
+									$stock = $mb->_runFunction("stock", "getStock", array($rowStock['productID'], $location['locationID']));
+									?>
+									Nog <span style="font-size: 20px; font-weight: bold;"><?= $stock['stock'] ?></span> artikel(en) op voorraad waarvan <span style="font-size: 20px; font-weight: bold;"><?= $eco ?></span> economisch.<br/>
+									<?php
+								}
+								?>
+							</center>
+						</div>
+						<?php
+					}
+					else if($type == "order")
+					{
+						?>
+						<h1>Voorraad aanvullen</h1>
+						
+						<div class="save-button post" form-action="/extensions/assistent/library/php/stock_delay.php">
+							<span class="fa fa-refresh"></span>
+						</div>
+						
+						<div class="save-button second post" form-action="/extensions/assistent/library/php/stock_delete.php">
+							<span class="fa fa-trash"></span>
+						</div>
+						
+						<?php
+						if(!isset($_GET['watchlist']))
+						{
 							?>
-						</center>
-					</div>
+							<div class="save-button third post" form-action="/extensions/assistent/library/php/stock_watchlist.php">
+								<span class="fa fa-user-secret"></span>
+							</div>
+							<?php
+						}
+						?>
+						
+						<div class="content-assistent flexible first">
+							<center>
+								<?php
+								if(isset($_GET['watchlist']))
+								{
+									?>
+									<div style="width: 50px; height: 50px; position: absolute; top: 50%; left: 50%; z-index: 999; margin: 40px 0px 0px -150px; background-color: blue; -moz-border-radius: 50px; -webkit-border-radius: 50px; -khtml-border-radius: 50px; border-radius: 50px;">
+										<span style="width: 100%; margin: 12px 0px 0px 1px; font-size: 25px; color: #fff; text-align: center;" class="fa fa-user-secret"></span>
+									</div>
+									<?php
+								}
+									
+								$thumb = "https://haringstweewielers.com/library/media/no-image.png";
+
+								foreach($data['images'] AS $media)
+								{
+									if($media['thumb'])
+									{
+										$thumb = "https://merchant.justinharings.nl/library/media/products/" . $media['productMediaID'] . ".png";
+									}
+								}
+								?>
+								
+								<img height="300" itemprop="image" src="<?= $thumb ?>" /><br/>
+								<Br/>
+								<span style="font-size: 20px; font-weight: bold;"><?= $data['article_code'] . " - " . $data['name'] ?></span><br/>
+								
+								<?php
+								$data_locations = $mb->_runFunction("stock", "viewLocations", array(1, "", "locations.name", "0,50"));
+
+								foreach($data_locations AS $location)
+								{
+									$stock = $mb->_runFunction("stock", "getStock", array($rowStock['productID'], $location['locationID']));
+									?>
+									Nog <span style="font-size: 20px; font-weight: bold;"><?= $stock['stock'] ?></span> artikel(en) op voorraad maar <span style="font-size: 20px; font-weight: bold;"><?= $eco ?></span> economisch.
+									<?php
+								}
+								?>
+							</center>
+						</div>
+						<?php
+					}
+					?>
 				</form>
 				<?php
 			}
