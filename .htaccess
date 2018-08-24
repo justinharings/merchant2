@@ -36,6 +36,9 @@ RewriteRule ^pos/modules/([^/]*)/search/([^/]*)/$ /extensions/point_of_sale/inde
 # Point of sale + focus
 RewriteRule ^pos/modules/([^/]*)/focus/([^/]*)/$ /extensions/point_of_sale/index.php?module=$1&focus=$2 [L]
 
+# Point of sale + search + focus
+RewriteRule ^pos/modules/([^/]*)/search/([^/]*)/focus/([^/]*)/$ /extensions/point_of_sale/index.php?module=$1&search_string=$2&focus=$3 [L]
+
 # Point of sale + focus + price
 RewriteRule ^pos/modules/([^/]*)/focus/([^/]*)/price/$ /extensions/point_of_sale/index.php?module=$1&focus=$2&price=true [L]
 

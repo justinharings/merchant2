@@ -553,6 +553,14 @@ div.register-screen.table-grid
 			{
 				color: #788195;
 			}
+			div.select-control.extra-margin span
+			{
+				margin-top: 6px;
+			}
+			div.select-control.extra-margin-double span
+			{
+				margin-top: 7px !important;
+			}
 			
 		div.register-screen div.table-control.down
 		{

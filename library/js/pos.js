@@ -398,6 +398,18 @@ $(document).ready(
 			}
 		);
 		
+		$("#new_stock").on("click",
+			function()
+			{
+				var key = getKey();
+				
+				if(key)
+				{
+					popup(400, 140, "/extensions/point_of_sale/modules/popup_stock.php?key=" + key + "&search=" + $("input#search").val());
+				}
+			}
+		);
+		
 		$("#use_parked").on("click",
 			function()
 			{
@@ -737,6 +749,30 @@ $(document).ready(
 						selectAndScrollToOption(select, opt);
 					}
 
+				}
+				else if($(this).hasClass("minus"))
+				{
+					var val = $("input[type='text']").val();
+					
+					if(val)
+					{
+						val = parseInt(val);
+						val = val - 1;
+						
+						$("input[type='text']").val(val);
+					}
+				}
+				else if($(this).hasClass("plus"))
+				{
+					var val = $("input[type='text']").val();
+					
+					if(val)
+					{
+						val = parseInt(val);
+						val = val + 1;
+						
+						$("input[type='text']").val(val);
+					}
 				}
 			}
 		);

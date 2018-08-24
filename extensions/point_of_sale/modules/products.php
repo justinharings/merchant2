@@ -1,5 +1,5 @@
 <div class="register-screen table-grid">
-	<input type="text" name="search" id="search" value="" class="width-200 double-margin" icon="fa-search" />
+	<input type="text" name="search" id="search" value="<?= $_GET['search_string'] ?>" class="width-200 double-margin" icon="fa-search" />
 	
 	<div class="table-control up">
 		<span class="fa fa-caret-up"></span>
@@ -66,4 +66,5 @@
 	<input type="button" name="use_product" id="use_product" value="Product gebruiken" class="red" />
 	<div class="spacer"></div>
 	<input type="button" name="scan_barcode" id="scan_barcode" value="Nieuwe barcode scannen" />
+	<input type="button" name="new_stock" id="new_stock" value="Voorraad aanpassen" />
 </div>

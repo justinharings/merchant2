@@ -199,6 +199,11 @@ input[type="submit"]
 **	form element.
 */
 
+input.center
+{
+	text-align: center;
+}
+
 input.margin,
 select.margin,
 textarea.margin
