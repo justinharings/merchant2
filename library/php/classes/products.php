@@ -783,7 +783,7 @@ class products extends motherboard
 									products_properties.key = '%s',
 									products_properties.value = '%s'",
 				$data[1]['productID'],
-				$data[1]['filter_language'][$key],
+				($data[1]['filter_language'][$key] == "NL" ? strtolower($data[1]['filter_language'][$key]) : $data[1]['filter_language'][$key]),
 				parent::real_escape_string($data[1]['filter_key'][$key]),
 				parent::real_escape_string($data[1]['filter_value'][$key])
 			);
@@ -811,7 +811,6 @@ class products extends motherboard
 			);
 			parent::query($query);
 		}
-		
 		
 		
 		/*
