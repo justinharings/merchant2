@@ -1122,7 +1122,7 @@ class products extends motherboard
 					AND		products.deleted = 0
 				GROUP BY	reviews.productID
                 ORDER BY 	SUM(reviews.stars) DESC, products.name ASC
-				LIMIT		0,5",
+				LIMIT		0,9",
 			$languages,
 			$data[0]
 		);
@@ -1132,7 +1132,7 @@ class products extends motherboard
 		
 		while($row = parent::fetch_assoc($result))
 		{
-			$row['image'] = "https://" . (_DEVELOPMENT_ENVIRONMENT ? "dev" : "merchant") . ".justinharings.nl/library/media/products/" . $row['productMediaID'] . ".png";
+			$row['image'] = "https://merchant.justinharings.nl/library/media/products/" . $row['productMediaID'] . ".png";
 			$return[] = $row;
 		}
 		
