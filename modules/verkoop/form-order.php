@@ -204,7 +204,7 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 								break;
 								
 								case "postnl":
-									$url = "https://jouw.postnl.nl/?L=NL&B=" . $track['track_code'] . "&P=" . $data['customer']['zip_code'] . "&D=NL&T=C#!/overzicht";
+									$url = "https://jouw.postnl.nl/#!/track-en-trace/" . $track['track_code'] . "/NL/" . $data['customer']['zip_code'];
 								break;
 							}
 							?>
