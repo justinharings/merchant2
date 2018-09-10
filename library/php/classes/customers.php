@@ -121,7 +121,7 @@ class customers extends motherboard
 					FROM		workorders
 					LEFT JOIN	pos_employees ON pos_employees.employeeID = workorders.employeeID
 					WHERE		workorders.customerID = %d
-					ORDER BY	workorders.expiration_date ASC",
+					ORDER BY	workorders.expiration_date DESC",
 				$data[0]
 			);
 			$result = parent::query($query);
@@ -145,7 +145,7 @@ class customers extends motherboard
 					INNER JOIN	batteries ON batteries.batteryID = batteries_test.batteryID
 					LEFT JOIN	pos_employees ON pos_employees.employeeID = batteries_test.employeeID
 					WHERE		batteries.customerID = %d
-					ORDER BY	batteries_test.date_added ASC",
+					ORDER BY	batteries_test.date_added DESC",
 				$data[0]
 			);
 			$result = parent::query($query);
@@ -495,7 +495,7 @@ class customers extends motherboard
 				FROM		customers
 				WHERE		customers.customer_code = '%s'
 					AND		customers.zip_code = '%s'",
-			$data[1],
+			parent::real_escape_string($data[1]),
 			parent::real_escape_string($data[0])
 		);
 		$result = parent::query($query);
