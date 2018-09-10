@@ -21,23 +21,20 @@ class dashboard extends motherboard
 		
 		if($data[2] != "" && intval($data[2]) > 0)
 		{
-			$month = "AND MONTH(orders.date_added) = " . intval($data[2]);
+			$month = "AND MONTH(orders_payment.date) = " . intval($data[2]);
 		}
 		
 		if($data[3] != "" && intval($data[3]) > 0)
 		{
-			$day = "AND DAY(orders.date_added) = " . intval($data[3]);
+			$day = "AND DAY(orders_payment.date) = " . intval($data[3]);
 		}
 		
 		$query = sprintf(
 			"	SELECT		SUM(orders_payment.amount) AS amnt
 				FROM		orders_payment
 				INNER JOIN	orders ON orders.orderID = orders_payment.orderID
-				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
 				WHERE		orders.merchantID = %d
-					AND		order_statuses.finished = 1
-					AND		order_statuses.declined = 0
-					AND		YEAR(orders.date_added) = %d
+					AND		YEAR(orders_payment.date) = %d
 					%s
 					%s",	
 			$data[0],
@@ -244,20 +241,11 @@ class dashboard extends motherboard
 		
 		for($i = 1; $i <= 12; $i++)
 		{
-			$value = $this->_runFunction("reports", "viewArticleGroups", array($data[0], $i, $data[1]));
+			$val = $this->profit(array($data[0], $data[1], $i, ""));
 			
-			$cnt = 0;
-			
-			foreach($value AS $key => $value)
+			//if($val > 0)
 			{
-				$cnt += $value['grand_total'];
-			}
-			
-			$value = $cnt;
-			
-			if($value > 0)
-			{
-				$return .= $value . ($i == 12 ? "" : "|");
+				$return .= $val . ($i == 12 ? "" : "|");
 			}
 		}
 		

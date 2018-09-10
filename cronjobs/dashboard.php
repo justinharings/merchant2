@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Europe/Amsterdam');
+
 if(!isset($_SESSION))
 {
 	session_start();
@@ -7,9 +9,9 @@ if(!isset($_SESSION))
 
 define("_LANGUAGE_PACK", "nl");
 
-$_SERVER['DOCUMENT_ROOT'] = "/var/www/vhosts/justinharings.nl/dev.justinharings.nl";
+$_SERVER['DOCUMENT_ROOT'] = "/var/www/vhosts/justinharings.nl/merchant.justinharings.nl";
 
-require_once("/var/www/vhosts/justinharings.nl/dev.justinharings.nl/library/php/classes/motherboard.php");
+require_once("/var/www/vhosts/justinharings.nl/merchant.justinharings.nl/library/php/classes/motherboard.php");
 
 $mb = new motherboard();
 
@@ -67,28 +69,8 @@ foreach($_merchants AS $merchantID)
 	$last_month = date("m");
 	$last_year = date("Y") - 1;
 	
-	$profit_current = $mb->_runFunction("reports", "viewArticleGroups", array($merchantID, date("m"), date("Y")));
-	$profit_last = $mb->_runFunction("reports", "viewArticleGroups", array($merchantID, $last_month, $last_year));
-	
-	$cnt = 0;
-	
-	foreach($profit_current AS $key => $value)
-	{
-		$cnt += $value['grand_total'];
-	}
-	
-	$profit_current = $cnt;
-	
-	
-	$cnt = 0;
-	
-	foreach($profit_last AS $key => $value)
-	{
-		$cnt += $value['grand_total'];
-	}
-	
-	$profit_last = $cnt;
-	
+	$profit_current = $mb->_runFunction("dashboard", "profit", array($merchantID, date("Y"), date("m"), ""));
+	$profit_last = $mb->_runFunction("dashboard", "profit", array($merchantID, $last_year, $last_month, ""));
 	
 	$percentage = ceil((($profit_current/$profit_last)*100));
 	
@@ -96,7 +78,7 @@ foreach($_merchants AS $merchantID)
 		"	UPDATE		dashboard
 			SET			dashboard.monthly_profit = '%s'
 			WHERE		dashboard.merchantID = %d",
-		serialize(array("profit_current" => $profit_current, "percentage" => $percentage, "last_year" => $last_year)),
+		serialize(array("profit_current" => $profit_current, "percentage" => $percentage, "last_year" => $profit_last)),
 		$merchantID
 	);	
 	$mb->query($query);
@@ -110,27 +92,8 @@ foreach($_merchants AS $merchantID)
 	
 	$last_year = date("Y") - 1;
 		
-	$profit_current = $mb->_runFunction("reports", "viewArticleGroups", array($merchantID, "", date("Y")));
-	$profit_last = $mb->_runFunction("reports", "viewArticleGroups", array($merchantID, "", $last_year));
-	
-	$cnt = 0;
-	
-	foreach($profit_current AS $key => $value)
-	{
-		$cnt += $value['grand_total'];
-	}
-	
-	$profit_current = $cnt;
-	
-	
-	$cnt = 0;
-	
-	foreach($profit_last AS $key => $value)
-	{
-		$cnt += $value['grand_total'];
-	}
-	
-	$profit_last = $cnt;
+	$profit_current = $mb->_runFunction("dashboard", "profit", array($merchantID, date("Y"), "", ""));
+	$profit_last = $mb->_runFunction("dashboard", "profit", array($merchantID, $last_year, "", ""));
 	
 	$percentage = ceil((($profit_current/$profit_last)*100));
 	
@@ -138,7 +101,7 @@ foreach($_merchants AS $merchantID)
 		"	UPDATE		dashboard
 			SET			dashboard.yearly_profit = '%s'
 			WHERE		dashboard.merchantID = %d",
-		serialize(array("profit_current" => $profit_current, "percentage" => $percentage, "last_year" => $last_year)),
+		serialize(array("profit_current" => $profit_current, "percentage" => $percentage, "last_year" => $profit_last)),
 		$merchantID
 	);	
 	$mb->query($query);
