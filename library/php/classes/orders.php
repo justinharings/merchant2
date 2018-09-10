@@ -629,7 +629,7 @@ class orders extends motherboard
 			
 			$status = $this->_runFunction("order_statuses", "load", array($data[1]['statusID']));
 			
-			if($status['shipment_email'])
+			if($status['shipment_email'] && ($data[1]['statusID'] != $currentStatus))
 			{
 				$customerData = $this->_runFunction("customers", "load", array($current['customerID']));
 				
@@ -1140,7 +1140,8 @@ class orders extends motherboard
 		{
 			$query = sprintf(
 				"	DELETE FROM		orders_payment
-					WHERE			orders_payment.orderID = %d",
+					WHERE			orders_payment.orderID = %d
+						AND			orders_payment.amount = 0",
 				$orderID
 			);
 			parent::query($query);
