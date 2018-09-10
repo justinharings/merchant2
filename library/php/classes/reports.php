@@ -31,10 +31,27 @@ class reports extends motherboard
 		{
 			$period = true;
 			
-			$week = str_replace("week_", "", $data[1]);
-			$year = $date->format('Y');
+			$dates = str_replace("week_", "", $data[1]);
+			$dates = explode("_", $dates);
+			
+			$year = $dates[1];
+			$week = $dates[0];
 			
 			$periods = $this->getWeekData($week, $year);
+		}
+		else if(strpos($data[1], "month_") !== false)
+		{
+			$period = true;
+			
+			$dates = str_replace("month_", "", $data[1]);
+			$dates = explode("_", $dates);
+			
+			$year = $dates[1];
+			$month = $dates[0];
+			
+			$periods = $this->getWeekData($week, $year);
+			$periods[0] = $year . "-" . $month . "-01";
+			$periods[1] = $year . "-" . $month . "-31";
 		}
 		
 		$query = sprintf(

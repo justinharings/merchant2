@@ -54,7 +54,7 @@ $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], 
 			<br/>
 			
 			<input type="submit" name="start" id="start" class="red" value="Starten" />&nbsp;
-			<input type="button" name="reset" id="reset" value="Huidige vorige week genereren" onclick="document.location.href = document.location.href;" />
+			<input type="button" name="reset" id="reset" value="Vorige week genereren" onclick="document.location.href = document.location.href;" />
 		</div>
 		
 		<div class="form-content">
@@ -74,7 +74,7 @@ $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], 
 				
 				<tbody>
 					<?php
-					$data = $mb->_runFunction("reports", "closeRegister", array($_SESSION['merchantID'], "week_" . (isset($_POST['week']) ? intval($_POST['week']) : $current)));
+					$data = $mb->_runFunction("reports", "closeRegister", array($_SESSION['merchantID'], "week_" . (isset($_POST['week']) ? (intval($_POST['week']) . "_" . intval($_POST['year'])) : ($current . "_" . date("Y")))));
 					
 					$total = 0;
 					

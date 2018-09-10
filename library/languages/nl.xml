@@ -129,6 +129,8 @@
 		<calculate-stock-abbr>VB</calculate-stock-abbr>
 		<week-register>Week kasboek afslaan</week-register>
 		<week-register-abbr>WA</week-register-abbr>
+		<month-register>Maand kasboek afslaan</month-register>
+		<month-register-abbr>MA</month-register-abbr>
 		
 		<settings>Overige instellingen</settings>
 		<settings-eg>Gebruikers, verzending en meer</settings-eg>

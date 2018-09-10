@@ -152,6 +152,7 @@ if(isset($_GET['dataID']))
 						"RAP_GU" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "payment-book"),
 						"RAP_VB" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "calculate-stock"),
 						"RAP_WA" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "week-register"),
+						"RAP_MA" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "month-register"),
 						"SET" => $mb->_translateReturn("menu", "settings"),
 						"SET_GB" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "manage-users"),
 						"SET_BB" => "&nbsp;&nbsp;&nbsp;&nbsp;>&nbsp;" . $mb->_translateReturn("menu", "order-statuses"),
