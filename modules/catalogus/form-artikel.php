@@ -164,7 +164,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					<option value=""></option>
 					
 					<?php
-					$data_brands = $mb->_runFunction("brands", "view", array($_SESSION['merchantID'], "", "brands.name", "0,50"));
+					$data_brands = $mb->_runFunction("brands", "view", array($_SESSION['merchantID'], "", "brands.name", "0,99999"));
 					
 					foreach($data_brands AS $values)
 					{
