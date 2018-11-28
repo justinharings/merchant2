@@ -13,6 +13,8 @@ if(!isset($_SESSION))
 
 define("_LANGUAGE_PACK", "nl");
 
+$_SESSION['merchantID'] = 1;
+
 
 
 /*
@@ -959,6 +961,11 @@ switch($_GET['module'])
 						</tr>
 					</table>
 				</div>
+				
+				<div class="content-assistent flexible" style="margin-bottom: 45px;">
+					<input type="button" name="picklist" id="picklist" value="Pakbon afdrukken" style="width: 100%; font-size: 20px; margin-bottom: 10px;" onclick="window.open('https://dev.justinharings.nl/extensions/printserver/index.php?type=picklist&action=print&orderID=<?= intval($_GET['orderID']) ?>/');" />
+					<input type="button" name="invoice" id="invoice" value="Factuur afdrukken" style="width: 100%; font-size: 20px;" onclick="window.open('https://dev.justinharings.nl/extensions/printserver/index.php?type=invoice&action=print&orderID=<?= intval($_GET['orderID']) ?>/');" />
+				</div>
 				</form>
 				<?php
 			}
@@ -1419,6 +1426,7 @@ switch($_GET['module'])
 				<div class="scroll down fa fa-caret-down"></div>
 				
 				<div class="refresh fa fa-refresh" onclick="document.location.href = '/assistent/';"></div>
+				<div class="fireworks fa fa-fire" onclick="document.location.href = '/vwass/';"></div>
 			</div>
 			<?php
 		}

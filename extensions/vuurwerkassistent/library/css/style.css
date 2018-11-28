@@ -1,0 +1,166 @@
+@import url("normalize.css");
+@import url("//use.fontawesome.com/releases/v5.5.0/css/all.css");
+@import url("//fonts.googleapis.com/css?family=Raleway:400");
+
+body
+{
+	background-color: #f1F1F1;
+}
+
+	body div.container
+	{
+		position: absolute;
+		top: 80px;
+		right: 50px;
+		bottom: 50px;
+		left: 50px;
+		
+		background-color: #fff;
+	}
+	
+		body div.container h1
+		{
+			position: absolute;
+			top: -50px;
+			right: 0px;
+			left: 0px;
+			
+			margin: 0px;
+			padding: 0px;
+			
+			font-family: 'Raleway';
+		}
+	
+		body div.container div.buttons
+		{
+			height: 80px;
+			
+			position: absolute;
+			top: -25px;
+			right: 25px;
+			left: 25px;
+		}
+		
+			body div.container div.buttons div.button
+			{
+				width: 80px;
+				height: 56px;
+				
+				margin: 0px 0px 0px 5px;
+				padding: 24px 0px 0px 0px;
+				float: right;
+				
+				background-color: #000;
+				
+				font-size: 35px;
+				color: #fff;
+				text-align: center;
+				
+				-moz-border-radius: 50px;
+				-webkit-border-radius: 50px;
+				-khtml-border-radius: 50px;
+				border-radius: 50px;
+			}
+			body div.container div.buttons div.button.red
+			{
+				background-color: #d00000;
+			}
+			body div.container div.buttons div.button.blue
+			{
+				background-color: #007fd0;
+			}
+			body div.container div.buttons div.button.green
+			{
+				background-color: #00d049;
+			}
+		
+		body div.container div.content
+		{
+			position: absolute;
+			top: 50px;
+			right: 25px;
+			bottom: 100px;
+			left: 25px;
+		}
+		
+			body div.container div.content div.product-image
+			{
+				width: 350px;
+				height: 350px;
+				
+				margin: 0px auto;
+			}
+			
+				body div.container div.content div.product-image img
+				{
+					width: 100%;
+				}
+				
+			body div.container div.content div.center-text
+			{
+				width: 100%;
+				
+				font-family: 'Raleway';
+				font-size: 25px;
+				text-align: center;
+			}
+			
+			body div.container div.content div.spacer
+			{
+				width: 100%;
+				height: 15px;
+			}
+			
+		body div.container div.footer
+		{
+			height: 50px;
+			
+			position: absolute;
+			right: 25px;
+			bottom: 25px;
+			left: 25px;
+		}
+		
+			body div.container div.footer div.counter
+			{
+				width: auto;
+				height: 38px;
+				
+				margin: 0px 0px 0px 5px;
+				padding: 9px 0px 0px 0px;
+				float: left;
+				
+				font-family: 'Raleway';
+				font-size: 25px;
+			}
+		
+			body div.container div.footer div.spacer
+			{
+				width: 10px;
+				height: 38px;
+				
+				margin: 0px 0px 0px 5px;
+				padding: 12px 0px 0px 0px;
+				float: right;
+			}
+		
+			body div.container div.footer div.button
+			{
+				width: 50px;
+				height: 38px;
+				
+				margin: 0px 0px 0px 5px;
+				padding: 12px 0px 0px 0px;
+				float: right;
+				
+				background-color: #000;
+				
+				font-size: 25px;
+				color: #fff;
+				text-align: center;
+				
+				-moz-border-radius: 50px;
+				-webkit-border-radius: 50px;
+				-khtml-border-radius: 50px;
+				border-radius: 50px;
+			}

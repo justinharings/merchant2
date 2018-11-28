@@ -52,5 +52,5 @@ $query = sprintf(
 );
 $mb->query($query);
 
-header("location: /assistent/");
+header("location: /assistent/?module=cleanup");
 ?>
