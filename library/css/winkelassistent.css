@@ -148,6 +148,22 @@ body div.timeblock
 		text-align: right;
 	}
 	
+	body div.timeblock div.fireworks
+	{
+		width: 58px;
+		height: 58px;
+		
+		position: absolute;
+		top: 50%;
+		right: 600px;
+		
+		margin-top: -22px;
+		
+		font-size: 45px;
+		color: #fff;
+		text-align: right;
+	}
+	
 	body div.timeblock div.scroll.up
 	{
 		width: 58px;
