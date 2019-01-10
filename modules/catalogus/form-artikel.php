@@ -142,6 +142,11 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					
 					foreach($data_shipments AS $values)
 					{
+						if($data['shipmentID'] == $values['shipmentID'])
+						{
+							$shipment_price = $values['price'];
+						}
+						
 						?>
 						<option <?= isset($_GET['dataID']) && $data['shipmentID'] == $values['shipmentID'] ? "selected=\"selected\"" : "" ?> value="<?= $values['shipmentID'] ?>"><?= $values['name'] ?> (&euro;&nbsp;<?= number_format($values['price'], 2, ",", ".") ?>)</option>
 						<?php
@@ -196,6 +201,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 					<option <?= isset($_GET['dataID']) && $data['visibility'] == 3 ? "selected=\"selected\"" : "" ?> value="3">Kassa, Webwinkel</option>
 				</select>
 				
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['core_product'] == 1 ? "checked=\"checked\"" : "" ?> name="core_product" id="core_product" value="1" class="double-margin" holder="Kerncollectie" question="Kerncollectie artikelen hebben een speciale gouden balk op de website en krijgen een extra kenmerk in de assistent." />
 				<input type="checkbox" <?= isset($_GET['dataID']) && $data['bookmarks'] == 1 ? "checked=\"checked\"" : "" ?> name="bookmark" id="bookmark" value="1" class="double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-bookmark") ?>" question="Zet dit artikel in de favorieten van uw POS. Zo kunt u bepaalde artikelen (plastic tassen, vaste diensten etcetera) onder de bookmark van uw POS zetten." />
 				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_products'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_products" id="workorders_products" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-products-parts") ?>" question="Gebruik dit artikel als 'product' vanuit de werkorders." />
 				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_manhours'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_manhours" id="workorders_manhours" value="1" holder="<?= $mb->_translateReturn("forms", "form-products-manhours") ?>" question="Gebruik dit artikel als 'manuren/laag percentage' vanuit de werkorders." />
@@ -720,6 +726,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 								<span class="fa fa-question-circle question" title="Bij het toevoegen van deze pricecheck kun je kiezen voor 'Gratis verzending'. Als dit aan staat houd de pricecheck er rekening mee dat die ingecalculeert moet worden in de prijs van de aanbieder."></span>
 							</td>
 							<td>Prijs</td>
+							<td>Verzendstaatje</td>
 							<td>Update</td>
 							<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
 						</tr>
@@ -776,6 +783,38 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 											<span class="fa fa-spin fa-spinner"></span> ...
 											<?php
 										}
+										else if($value['price'] > 0)
+										{
+											if($value['free_shipment'])
+											{
+												print _frontend_float($value['price'])
+													. "-"
+													. _frontend_float($shipment_price)
+													. " = &euro;<strong>"
+													. _frontend_float($value['price'] - $shipment_price)
+													. "</strong>";
+											}
+											else
+											{
+												print "n.v.t.";
+											}
+										}
+										else
+										{
+											print "Onbereikbaar";
+										}
+										?>
+									</td>
+									
+									<td>
+										<?php
+										if($value['date_update'] == "n.v.t.")
+										{
+											?>
+											<span class="fa fa-search"></span>
+											<span class="fa fa-spin fa-spinner"></span> ...
+											<?php
+										}
 										else
 										{
 											print $value['date_update'] . " uur";
@@ -815,7 +854,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 			</div>
 			
 			<div class="form-content" style="<?= $found == false ? "display: none;" : "" ?>">
-				<input type="text" name="profit" id="profit" value="<?= $profit ?>" holder="Minimale winst" class="width-100" icon="fa-euro" validation-required="true" validation-type="int" question="Bij het toevoegen van deze pricecheck kun je een minimaal winstbedrag opgeven. De pricecheck zal dan niet lager gaan dan inkoop + BTW + dit winstbedrag. Als het winstbedrag op 0,00 (nul) euro staat, zal er als minimale prijs inkoop + BTW gerekent worden." />
+				<input type="text" name="profit" id="profit" value="<?= $profit ?>" holder="Minimale winst" class="width-100" icon="fa-euro" question="Bij het toevoegen van deze pricecheck kun je een minimaal winstbedrag opgeven. De pricecheck zal dan niet lager gaan dan inkoop + BTW + dit winstbedrag. Als het winstbedrag op 0,00 (nul) euro staat, zal er als minimale prijs inkoop + BTW gerekent worden." />
 			</div>
 		</div>
 	</div>

@@ -51,13 +51,11 @@ while($row = $mb->fetch_assoc($result))
 	
 	$value = 0;
 	
-	/*
 	if(isset($had[$row['website']]))
 	{
 		$value = $had[$row['website']];
 	}
 	else
-	*/
 	{
 		/*
 		**	Strip de website en haal de prijs eruit.
@@ -144,12 +142,16 @@ while($row = $mb->fetch_assoc($result))
 				$had[$row['website']] = $value[0] . $value[1] . "." . $value[2];
 			}
 			
+			$errono = ($row['errors']+1);
+			
 			$query = sprintf(
 				"	UPDATE		products_pricecheck
 					SET			products_pricecheck.price = '%.2f',
-								products_pricecheck.date_update = NOW()
+								products_pricecheck.date_update = NOW(),
+								products_pricecheck.errors = %d
 					WHERE		products_pricecheck.website = '%s'",
 				$had[$row['website']],
+				($had[$row['website']] == 0 ? $errono : 0),
 				$row['website']
 			);
 			$mb->query($query);
@@ -231,9 +233,9 @@ foreach($products AS $productID => $values)
 	
 	foreach($values AS $data)
 	{
-		if($sRow['price'] > 0 && $data['free_shipment'] == 0 && $data['price'] > 0)
+		if($sRow['price'] > 0 && $data['free_shipment'] == 1 && $data['price'] > 0)
 		{
-			$data['price'] += $sRow['price'];
+			$data['price'] -= $sRow['price'];
 		}
 		
 		$prices[] = $data['price'];
@@ -259,32 +261,30 @@ foreach($products AS $productID => $values)
 	**	OK: Geen bijzonderheden. Winstgevend verwerkt.
 	**	W1: Waarschuwing. De concurrent gaat lager dan de minimale winst.
 	**	W2: Waarschuwing. De concurrent gaat lager dan de inkoopsprijs.
-	**	W3: Waarschuwing. Dit artikel heeft geen inkoopsprijs. Artikel overgeslagen.
 	**	E1: Fout. Domeinnaam kent geen prijzen. Artikel overgeslagen.
-	**	E2: Fout. Domeinnaam kent geen prijzen. Artikel overgeslagen. Voor de tweede keer geen resultaat.
-	**	E3: Fout. Domeinnaam is verwijdert uit de pricecheck. Derde keer geen resultaat.
+	**	E2: Waarschuwing. Dit artikel heeft geen inkoopsprijs. Artikel overgeslagen.
 	*/
 	
 	$process = true;
 	$status = "OK";
 	$color = "green";
 	$new_price = $lowest;
-	$note = "Product is aangepast naar de eventuele nieuwe prijs.";
+	$note = "";
 	
 	if($new_price == 0)
 	{
 		$status = "E1";
 		$new_price = "0.00";
 		$color = "red";
-		$note = "Domeinnaam niet geschikt voor de prijscontrole. Vergelijken is niet mogelijk.";
+		$note = "Vergelijken is niet mogelijk.";
 		$process = false;
 	}
 	else if($row3['price_purchase'] == 0)
 	{
-		$status = "E4";
+		$status = "E2";
 		$new_price = "0.00";
 		$color = "red";
-		$note = "Geen inkoopprijs gevonden. Vergelijken is niet mogelijk.";
+		$note = "Vergelijken is niet mogelijk.";
 		$process = false;
 	}
 	else if($lowest < $row3['price_purchase'])
@@ -292,14 +292,14 @@ foreach($products AS $productID => $values)
 		$status = "W2";
 		$new_price = $minimum_price;
 		$color = "orange";
-		$note = "De concurrent gaat lager dan de inkoopsprijs. Minimale winst aangehouden.";
+		$note = "Minimale winst is &euro;" . $values[0]['profit'] . ".";
 	}
 	else if($lowest < $minimum_price)
 	{
 		$status = "W1";
 		$new_price = $minimum_price;
 		$color = "orange";
-		$note = "Inkoop + winst is lager dan de prijs van de concurrent. Minimale winst is &euro;" . $values[0]['profit'] . ".";
+		$note = "Minimale winst is &euro;" . $values[0]['profit'] . ".";
 	}
 	
 	
@@ -317,15 +317,18 @@ foreach($products AS $productID => $values)
 	
 	$new_price = ceil($new_price);
 	
-	$html_table .= "<tr>
-		<td class='" . $color . "'>" . $status . "</td>
-		<td class='" . ($color == "red" ? "error" : "") . "'>" . sprintf("%05d", $row3['article_code']) . "</td>
-		<td class='" . ($color == "red" ? "error" : "") . "'>" . substr($row3['name'], 0, 50) . " ...</td>
-		<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($row3['price_purchase'], 2) . " euro</td>
-		<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($lowest, 2) . " euro</td>
-		<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($new_price, 2) . " euro</td>
-		<td>" . $note . "</td>
-	</tr>";
+	if(($new_price != $row3['price']) || $process == false)
+	{
+		$html_table .= "<tr>
+			<td class='" . $color . "'>" . $status . "</td>
+			<td class='" . ($color == "red" ? "error" : "") . "'>" . sprintf("%05d", $row3['article_code']) . "</td>
+			<td class='" . ($color == "red" ? "error" : "") . "'>" . substr($row3['name'], 0, 15) . " ...</td>
+			<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($row3['price_purchase'], 2) . " euro</td>
+			<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($lowest, 2) . " euro</td>
+			<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($new_price, 2) . " euro</td>
+			<td>" . $note . "</td>
+		</tr>";
+	}
 	
 	
 	/*
@@ -345,10 +348,20 @@ foreach($products AS $productID => $values)
 	}
 }
 
+
+$query = sprintf(
+	"	DELETE FROM		products_pricecheck
+		WHERE			products_pricecheck.errors > 2"
+);
+$mb->query($query);
+
+
 $content = file_get_contents(__DIR__ . "/pricecheck/template.html");
 $content = str_replace("{{table}}", $html_table, $content);
 
+
 print $content;
+
 
 if($content != "")
 {

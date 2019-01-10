@@ -329,6 +329,20 @@ if(!isset($_GET['module']))
 		{
 			?>
 			<div class="filler"></div>
+			
+			<script type="text/javascript">
+				$(document).ready(
+					function($)
+					{
+						setTimeout(
+							function()
+							{
+								document.location.reload();
+							}, 30000
+						);
+					}
+				);
+			</script>
 			<?php
 		}
 		?>

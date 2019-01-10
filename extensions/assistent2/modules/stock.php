@@ -62,6 +62,15 @@ $sold = $row['sold'];
 			?>
 			
 			<div class="center">
+				<?php
+				if($product['core_product'] == 1)
+				{
+					?>
+					<div class="core-product fa fa-bullseye"></div>
+					<?php
+				}
+				?>
+				
 				<img class="product" src="<?= $image ?>" /><br/>
 				<h2><?= $product['article_code'] . " - " . $product['name'] ?></h2>
 				Nog <strong><?= $product['stock'] ?></strong> op voorraad, <strong><?= $eco ?></strong> economisch.<br/>

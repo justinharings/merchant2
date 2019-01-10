@@ -100,12 +100,5 @@ $(document).ready(
 				document.location.href = '/assistent2/?module=calendar';
 			}
 		);
-		
-		setTimeout(
-			function()
-			{
-				document.location.reload();
-			}, 30000
-		);
 	}
 );

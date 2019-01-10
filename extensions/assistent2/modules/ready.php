@@ -112,7 +112,7 @@ $order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
 			
 			<table width="100%">
 				<tr>
-					<td valign="top" width="40%">
+					<td valign="top" width="30%">
 						<div class="table more-padding">
 							<table>
 								<tr>
@@ -199,7 +199,7 @@ $order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
 					
 					<td width="2%"></td>
 					
-					<td class="58%;" valign="top">
+					<td class="68%;" valign="top">
 						<div class="table">
 							<table>
 								<thead>
