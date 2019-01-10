@@ -11,6 +11,7 @@ RewriteRule ^vwass/$ /extensions/vuurwerkassistent/index.php [L]
 
 # Assistent
 RewriteRule ^assistent/$ /extensions/assistent/index.php [L]
+RewriteRule ^assistent2/$ /extensions/assistent2/index.php [L]
 
 # Assistent + module
 RewriteRule ^assistent/modules/([^/]*)/$ /extensions/assistent/index.php?module=$1 [L]

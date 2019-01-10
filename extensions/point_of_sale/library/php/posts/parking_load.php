@@ -11,9 +11,10 @@ if(isset($_GET['parkingID']))
 	$mb = new motherboard();
 	$item = $mb->_runFunction("pos", "loadParked", array($_GET['parkingID'], true));
 	
-	require_once(__DIR__ . "/cart_reset.php");
-	
-	$_SESSION = unserialize($item['sessions']);
+	foreach(unserialize($item['sessions']) AS $key => $value)
+	{
+		$_SESSION[$key] = $value;
+	}
 }
 
 header("location: /pos/modules/register/");

@@ -714,9 +714,13 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 				<table class="form-table">
 					<thead>
 						<tr>
-							<td><?= $mb->_translateReturn("forms", "form-products-pricecheck-website") ?></td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
+							<td width="375"><?= $mb->_translateReturn("forms", "form-products-pricecheck-website") ?></td>
+							<td>
+								Verzendkosten
+								<span class="fa fa-question-circle question" title="Bij het toevoegen van deze pricecheck kun je kiezen voor 'Gratis verzending'. Als dit aan staat houd de pricecheck er rekening mee dat die ingecalculeert moet worden in de prijs van de aanbieder."></span>
+							</td>
+							<td>Prijs</td>
+							<td>Update</td>
 							<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
 						</tr>
 					</thead>
@@ -725,30 +729,60 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 						<?php
 						if(!isset($_GET['duplicate']))
 						{
+							$found = false;
+							
 							foreach($data['pricecheck'] AS $value)
 							{
+								$profit = $value['profit'];
+								$found = true;
 								?>
 								<tr>
 									<td>
 										<input type="text" name="pricecheck_website_234" id="pricecheck_website" value="<?= $value['website'] ?>" class="width-300" />
-											&nbsp;
-											<a href="<?= $value['website'] ?>" target="_blank" style="color: inherit;">
-												<small><span class="fa fa-external-link"></span></small>
-											</a>
+										&nbsp;
+										<a href="<?= $value['website'] ?>" target="_blank" style="color: inherit;">
+											<small><span class="fa fa-external-link"></span></small>
+										</a>
 									</td>
+									
+									<td><?= $value['free_shipment'] == 1 ? "Gratis verzending" : "Betaalde verzending" ?></td>
+									
 									<td>
 										<?php
-										if($value['price'] == 0)
+										if($value['date_update'] == "n.v.t.")
 										{
-											print "Mislukt";
+											?>
+											<span class="fa fa-search"></span>
+											<span class="fa fa-spin fa-spinner"></span> ...
+											<?php
 										}
-										else
+										else if($value['price'] > 0)
 										{
 											print "&euro;&nbsp;". _frontend_float($value['price']);
 										}
+										else
+										{
+											print "Onbereikbaar";
+										}
 										?>
 									</td>
-									<td><?= $value['date_update'] ?></td>
+									
+									<td>
+										<?php
+										if($value['date_update'] == "n.v.t.")
+										{
+											?>
+											<span class="fa fa-search"></span>
+											<span class="fa fa-spin fa-spinner"></span> ...
+											<?php
+										}
+										else
+										{
+											print $value['date_update'] . " uur";
+										}
+										?>
+									</td>
+									
 									<td>
 										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_pricewatch.php?productWebsiteID=<?= $value['productWebsiteID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" .$_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
 									</td>
@@ -773,10 +807,15 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 						
 						<tr class="new-row">
 							<td><input type="text" name="pricecheck_website[]" id="pricecheck_website_+" value="" class="width-300" validation-required="true" validation-type="text" /></td>
+							<td><input type="checkbox" name="free_shipment[]" id="free_shipment_+" value="1" /></td>
 							<td colspan="3">&nbsp;</td>
 						</tr>
 					</tbody>
 				</table>
+			</div>
+			
+			<div class="form-content" style="<?= $found == false ? "display: none;" : "" ?>">
+				<input type="text" name="profit" id="profit" value="<?= $profit ?>" holder="Minimale winst" class="width-100" icon="fa-euro" validation-required="true" validation-type="int" question="Bij het toevoegen van deze pricecheck kun je een minimaal winstbedrag opgeven. De pricecheck zal dan niet lager gaan dan inkoop + BTW + dit winstbedrag. Als het winstbedrag op 0,00 (nul) euro staat, zal er als minimale prijs inkoop + BTW gerekent worden." />
 			</div>
 		</div>
 	</div>

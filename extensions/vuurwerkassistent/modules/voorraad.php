@@ -44,6 +44,6 @@ $dflt = ($dflt == 0 ? 1 : $dflt);
 		<?= intval($_GET['sold']) ?> stuks verkocht<br/>
 		<?= intval($data['stock'] - $_GET['reserved']) ?> economisch <small><?= intval($data['stock']) ?> op voorraad</small>
 		<div class="spacer"></div>
-		<small style="font-size: 60%;">Aangeraden wordt er meer dan <?= $dflt ?> op voorraad te hebben.</small>
+		<small style="font-size: 60%;">Aangeraden wordt er <?= $dflt ?> of meer op voorraad te hebben.</small>
 	</div>
 </div>

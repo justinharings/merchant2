@@ -26,7 +26,10 @@ $products = array();
 
 while($row = $mb->fetch_assoc($result))
 {
-	// Verwijder de strings van fietsenwinkel.nl voor de zekerheid.
+	/*
+	**	Verwijder de strings van fietsenwinkel.nl voor de zekerheid.
+	*/
+	
 	if(strpos($row['website'], "?sqr=") !== false)
 	{
 		$website = $row['website'];
@@ -45,14 +48,23 @@ while($row = $mb->fetch_assoc($result))
 		$row['website'] = $website;
 	}
 	
+	
 	$value = 0;
 	
+	/*
 	if(isset($had[$row['website']]))
 	{
 		$value = $had[$row['website']];
 	}
 	else
+	*/
 	{
+		/*
+		**	Strip de website en haal de prijs eruit.
+		**	De prijs komt uit een serie van velden waar die
+		**	vermoedelijk in staat.
+		*/
+		
 		$content = file_get_contents($row['website']);
 		
 		if($content != "")
@@ -63,6 +75,8 @@ while($row = $mb->fetch_assoc($result))
 				$explode = explode('"', $explode[1]);
 				
 				$value = $explode[0];
+				$value = preg_replace("/[^0-9,.]/", "", $value);
+				
 				$value = str_replace(",", ".", $value);
 			}
 			else if(strpos($content, '<meta property="product:price" content="') !== false)
@@ -71,6 +85,8 @@ while($row = $mb->fetch_assoc($result))
 				$explode = explode('"', $explode[1]);
 				
 				$value = $explode[0];
+				$value = preg_replace("/[^0-9,.]/", "", $value);
+				
 				$value = str_replace(",", ".", $value);
 			}
 			else if(strpos($content, '<meta property="price" content="') !== false)
@@ -79,6 +95,8 @@ while($row = $mb->fetch_assoc($result))
 				$explode = explode('"', $explode[1]);
 				
 				$value = $explode[0];
+				$value = preg_replace("/[^0-9,.]/", "", $value);
+				
 				$value = str_replace(",", ".", $value);
 			}
 			else if(strpos($content, '<meta itemprop="price" content="') !== false)
@@ -87,12 +105,22 @@ while($row = $mb->fetch_assoc($result))
 				$explode = explode('"', $explode[1]);
 				
 				$value = $explode[0];
+				$value = preg_replace("/[^0-9,.]/", "", $value);
+				
+				$value = str_replace(",", ".", $value);
+			}
+			else if(strpos($content, '"productPrice":') !== false)
+			{
+				$explode = explode('"productPrice":', $content);
+				$explode = explode(',', $explode[1]);
+				
+				$value = $explode[0];
+				$value = preg_replace("/[^0-9,.]/", "", $value);
+				
 				$value = str_replace(",", ".", $value);
 			}
 			else if(strpos($content, '<div class="price-info">') !== false)
 			{
-				// Special for fietsenwinkel.nl
-				
 				$explode = explode('<div class="price-info">', $content);
 				$explode = explode('<span class="price">', $explode[1]);
 				$explode = explode('</span>', $explode[1]);
@@ -125,8 +153,6 @@ while($row = $mb->fetch_assoc($result))
 				$row['website']
 			);
 			$mb->query($query);
-			
-			//print $row['productID'] . "<br/>" . $row['website'] . "<br/>" . $had[$row['website']] . "<br/><br/>";
 		}
 	}
 	
@@ -137,104 +163,201 @@ while($row = $mb->fetch_assoc($result))
 			$products[$row['productID']] = array();
 		}
 		
-		$products[$row['productID']][] = number_format($had[$row['website']], 2, ".", "");
+		$num = count($products[$row['productID']]);
+		
+		$products[$row['productID']][$num]['price'] = number_format($had[$row['website']], 2, ".", "");
+		$products[$row['productID']][$num]['website'] = $row['website'];
+		$products[$row['productID']][$num]['free_shipment'] = $row['free_shipment'];
+		$products[$row['productID']][$num]['profit'] = $row['profit'];
 	}
 }
 
-$content = "";
+
+/*
+**	Stel een e-mail op om de admin's te laten
+**	weten dat er een pricecheck is geweest.
+*/
+
+$html_table = "";
 
 foreach($products AS $productID => $values)
 {
+	/*
+	**	Collect the current product data.
+	*/
+	
 	$query3 = sprintf(
-		"	SELECT		products.name,
+		"	SELECT		products.article_code,
+						products.name,
 						products.price,
-						products.price_purchase
+						products.price_purchase,
+						taxes.percentage
 			FROM		products
+			INNER JOIN	taxes ON taxes.taxesID = products.taxesID
 			WHERE		products.productID = %d",
 		$productID
 	);
 	$result3 = $mb->query($query3);
-	$row3 = $mb->fetch_assoc($result3);	
+	$row3 = $mb->fetch_assoc($result3);
 	
-	// print $row3['name'] . " (" . $productID . "):<br/>";
+	$row3['price_purchase'] += ($row3['price_purchase']*($row3['percentage']/100));
 	
-	// print "Inkoop: " . $row3['price_purchase'] . "<br/>";
-	// print "Onze prijs: " . $row3['price'] . "<br/>";
+	$minimum_price = $row3['price_purchase'] + $values[0]['profit'];
 	
-	// print "<br/>Gevonden prijzen:<br/>";
 	
-	$lowest = 0;
+	/*
+	**	Find the shipping costs and add them in the loop below.
+	*/
 	
-	foreach($values AS $price)
+	$sQuery = sprintf(
+		"	SELECT		shipment_methods.price
+			FROM		products
+			INNER JOIN	shipment_methods ON shipment_methods.shipmentID = products.shipmentID
+			WHERE		products.productID = %d",
+		$productID
+	);
+	$sResult = $mb->query($sQuery);
+	$sRow = $mb->fetch_assoc($sResult);
+	
+	
+	/*
+	**	Find the cheapest row that the others
+	**	are giving us and use this one. If there's a
+	**	non-working check but there's another above it,
+	**	use the one that works.
+	*/
+	
+	$prices = array();
+	
+	foreach($values AS $data)
 	{
-		if($lowest == 0 || $price < $lowest)
+		if($sRow['price'] > 0 && $data['free_shipment'] == 0 && $data['price'] > 0)
 		{
-			$lowest = $price;
+			$data['price'] += $sRow['price'];
 		}
 		
-		// print $price . "<br/>";
+		$prices[] = $data['price'];
 	}
 	
-	// print "<br/>Laagste: " . $lowest . "<br/>";
+	$lowest = 0;
+	sort($values);
 	
-	if($lowest != $row3['price'])
+	foreach($prices AS $price)
 	{
-		$content .= $row3['name'] . "<br/>";
-		
-		$inkoop = $row3['price_purchase'];
-		$inkoop = ($inkoop + (($inkoop/100)*21));
-		$inkoop = number_format($inkoop, 2, ".", "");
-		
-		// print "Inkoop + BTW: " . $inkoop . "<br/>";
-		
-		$minimum = number_format(ceil(($inkoop + 20)), 2, ".", "");
-		// print "Minimale winst: " . $minimum . "<br/>";
-		
-		$nieuwe_prijs = $lowest;
-		
-		// print "Nieuwe prijs: " . $nieuwe_prijs;
-		
-		$notice = "";
-		
-		if($lowest < $minimum)
+		if($price == 0)
 		{
-			$nieuwe_prijs = $minimum;
-			$notice = "<br/>De concurent heeft een lagere prijs van onze inkoop.";
-			// print "!!!!";
+			continue;
 		}
 		
-		$content .= "van ". $row3['price'] . " euro naar " . $nieuwe_prijs . " euro." . $notice . "<br/><br/>";
-		
+		$lowest = $price;
+		break;
+	}
+	
+	
+	/*
+	**	Status bepalen van deze aanpassing
+	**	OK: Geen bijzonderheden. Winstgevend verwerkt.
+	**	W1: Waarschuwing. De concurrent gaat lager dan de minimale winst.
+	**	W2: Waarschuwing. De concurrent gaat lager dan de inkoopsprijs.
+	**	W3: Waarschuwing. Dit artikel heeft geen inkoopsprijs. Artikel overgeslagen.
+	**	E1: Fout. Domeinnaam kent geen prijzen. Artikel overgeslagen.
+	**	E2: Fout. Domeinnaam kent geen prijzen. Artikel overgeslagen. Voor de tweede keer geen resultaat.
+	**	E3: Fout. Domeinnaam is verwijdert uit de pricecheck. Derde keer geen resultaat.
+	*/
+	
+	$process = true;
+	$status = "OK";
+	$color = "green";
+	$new_price = $lowest;
+	$note = "Product is aangepast naar de eventuele nieuwe prijs.";
+	
+	if($new_price == 0)
+	{
+		$status = "E1";
+		$new_price = "0.00";
+		$color = "red";
+		$note = "Domeinnaam niet geschikt voor de prijscontrole. Vergelijken is niet mogelijk.";
+		$process = false;
+	}
+	else if($row3['price_purchase'] == 0)
+	{
+		$status = "E4";
+		$new_price = "0.00";
+		$color = "red";
+		$note = "Geen inkoopprijs gevonden. Vergelijken is niet mogelijk.";
+		$process = false;
+	}
+	else if($lowest < $row3['price_purchase'])
+	{
+		$status = "W2";
+		$new_price = $minimum_price;
+		$color = "orange";
+		$note = "De concurrent gaat lager dan de inkoopsprijs. Minimale winst aangehouden.";
+	}
+	else if($lowest < $minimum_price)
+	{
+		$status = "W1";
+		$new_price = $minimum_price;
+		$color = "orange";
+		$note = "Inkoop + winst is lager dan de prijs van de concurrent. Minimale winst is &euro;" . $values[0]['profit'] . ".";
+	}
+	
+	
+	
+	/*
+	**	Create the table that's shown in the e-mail.
+	**	Column 1: Status
+	**	Column 2: Article code
+	**	Column 3: Article name
+	**	Column 4: Purchase price INCL VAT
+	**	Column 5: Cheepest price online
+	**	Column 6: The new price
+	**	Column 7: Notes
+	*/
+	
+	$new_price = ceil($new_price);
+	
+	$html_table .= "<tr>
+		<td class='" . $color . "'>" . $status . "</td>
+		<td class='" . ($color == "red" ? "error" : "") . "'>" . sprintf("%05d", $row3['article_code']) . "</td>
+		<td class='" . ($color == "red" ? "error" : "") . "'>" . substr($row3['name'], 0, 50) . " ...</td>
+		<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($row3['price_purchase'], 2) . " euro</td>
+		<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($lowest, 2) . " euro</td>
+		<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($new_price, 2) . " euro</td>
+		<td>" . $note . "</td>
+	</tr>";
+	
+	
+	/*
+	**	Voeg de nieuwe gegevens toe aan de database
+	*/
+	
+	if($process == true)
+	{
 		$queryU = sprintf(
 			"	UPDATE		products
 				SET			products.price = '%.2f'
 				WHERE		products.productID = %d",
-			$nieuwe_prijs,
+			$new_price,
 			$productID
 		);
 		$mb->query($queryU);
-		
-		// print "<br/>";
 	}
-	else
-	{
-		// print "Prijzen zijn gelijk.<Br/>";
-	}
-	
-	// print "<br/><br/>";
 }
+
+$content = file_get_contents(__DIR__ . "/pricecheck/template.html");
+$content = str_replace("{{table}}", $html_table, $content);
 
 print $content;
 
 if($content != "")
 {
-	$content = str_replace("<br/>", "\n", $content);
-	
 	$to      = 'info@haringstweewielers.nl';
 	$subject = 'Prijsaanpassingen';
 	$message = $content;
 	$headers = 'From: info@haringstweewielers.nl' . "\r\n" .
 	    'Reply-To: info@haringstweewielers.nl' . "\r\n" .
+	    'Content-type:text/html;charset=UTF-8' . "\r\n" .
 	    'X-Mailer: PHP/' . phpversion();
 	
 	mail($to, $subject, $message, $headers);

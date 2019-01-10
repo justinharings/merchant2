@@ -125,7 +125,7 @@ if(!isset($_GET['module']))
 		$dflt = ceil($data['sold']/5);
 		$dflt = ($dflt == 0 ? 1 : $dflt);
 		
-		if(($data['stock'] - $data['reserved']) <= $dflt)
+		if(($data['stock'] - $data['reserved']) < $dflt)
 		{
 			header("location: /vwass/?module=voorraad&productID=" . $productID . "&sold=" . $data['sold'] . "&stock=" . $data['stock'] . "&reserved=" . $data['reserved']);
 			exit;

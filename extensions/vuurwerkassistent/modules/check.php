@@ -12,8 +12,12 @@ $dflt = ($dflt == 0 ? 1 : $dflt);
 		<div class="button fa fa-trash red"></div>
 	</a>
 	
+	<a href="/extensions/vuurwerkassistent/library/php/timeout.php?productID=<?= intval($_GET['productID']) ?>">
+		<div class="button fa fa-clock blue"></div>
+	</a>
+	
 	<a href="/extensions/vuurwerkassistent/library/php/zerostock.php?productID=<?= intval($_GET['productID']) ?>">
-		<div class="button fa fa-history blue"></div>
+		<div class="button fa fa-history green"></div>
 	</a>
 </div>
 

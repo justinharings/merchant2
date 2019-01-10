@@ -1,67 +1,43 @@
 <?php
-if(!isset($_SESSION))
+if(isset($_GET['dataID']))
 {
-	session_start();
+	$data = $mb->_runFunction("categories", "loadDescription", array($_GET['dataID']));
 }
-
-define("_LANGUAGE_PACK", $_SESSION['_LANGUAGE_PACK']);
-
-require_once($_SERVER['DOCUMENT_ROOT'] . "/library/php/classes/motherboard.php");
-
-$mb = new motherboard();
-
-$data = $mb->_runFunction("products", "view", array($_SESSION['merchantID'], "export", "LPAD(products.article_code, 5, 0)", "0,9999"));
-
-
-$array = Array(
-	0 => Array(
-	        0 => "Product #",
-	        1 => "Artikelcode",
-	        2 => "Leverancier code",
-	        3 => "Barcode",
-	        4 => "Naam",
-	        5 => "Prijs",
-	        6 => "Adviesprijs",
-	        7 => "Inkoopsprijs",
-	        8 => "Voorraad",
-	        9 => "Zichtbaar"
-	)
-);
-
-$num = 1;
-
-foreach($data AS $product)
-{
-	$pArray = array(
-		0 => $product['productID'],
-		1 => $product['article_code'],
-		2 => $product['supplier_code'],
-		3 => $product['barcode'],
-		4 => strip_tags($product['name']),
-		5 => $product['price'],
-		6 => $product['price_adviced'],
-		7 => $product['price_purchase'],
-		8 => $product['stock'],
-		9 => $mb->_runFunction("products", "translateVisibility", array($product['visibility']))
-	);
-	
-	$pArray = array($num => $pArray);
-	
-	$array = array_merge($array, $pArray);
-	$num++;
-}
-
-header("Content-Disposition: attachment; filename=\"export.xls\"");
-header("Content-Type: application/vnd.ms-excel;");
-header("Pragma: no-cache");
-header("Expires: 0");
-
-$out = fopen("php://output", 'w');
-
-foreach ($array as $data)
-{
-    fputcsv($out, $data,"\t");
-}
-
-fclose($out);
 ?>
+
+<ul class="breadcrumbs">
+	<li>Merchant</li>
+	<li><?= $mb->_translateReturn("menu", "catalog") ?></li>
+	<li><?= $mb->_translateReturn("menu", "article-export") ?></li>
+</ul>
+
+<form method="post" id="form" action="/library/php/posts/catalogus/export.php">
+	<br/><br/>
+	<div class="simple-form">
+		<div class="form-content">
+			<div class="content-header">
+				<span class="fa fa-pencil-square-o"></span>
+				Verkoopgroep keuze
+			</div>
+			
+			<select name="groupID" id="groupID" class="width-200 margin" holder="<?= $mb->_translateReturn("forms", "form-products-group") ?>">
+				<option value="0">Alle verkoopgroepen</option>
+				
+				<?php
+				$data_groups = $mb->_runFunction("groups", "view", array($_SESSION['merchantID'], "", "groups.name", "0,50"));
+				
+				foreach($data_groups AS $values)
+				{
+					?>
+					<option <?= isset($_GET['dataID']) && $data['groupID'] == $values['groupID'] ? "selected=\"selected\"" : "" ?> value="<?= $values['groupID'] ?>"><?= $values['name'] ?></option>
+					<?php
+				}
+				?>
+			</select>
+			
+			<br/>
+			
+			<input type="submit" name="start" id="start" class="red" value="Starten met exporteren" />&nbsp;
+		</div>
+	</div>
+</form>

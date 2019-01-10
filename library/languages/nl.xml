@@ -106,8 +106,8 @@
 		<pos-printers>Printer instellingen</pos-printers>
 		<pos-printers-abbr>PI</pos-printers-abbr>
 		
-		<workorders>Werkorders instellingen</workorders>
-		<workorders-eg>Instellingen voor werkorders</workorders-eg>
+		<workorders>Werkorders</workorders>
+		<workorders-eg>Gegevens wijzigen voor werkorders</workorders-eg>
 		
 		<website>Website instellingen</website>
 		<website-eg>Instellingen voor de website</website-eg>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="nl">
+	<head>
+		<title>Pricecheck Merchant</title>
+		
+		<style type="text/css">
+			body
+			{
+				padding: 20px;
+				
+				background-color: #f9f9f9;
+			}
+			
+			table
+			{
+				background-color: #fff;
+			}
+			
+			thead td
+			{
+				padding: 10px;
+				
+				border-bottom: 1px solid #eee;
+				
+				font-family: Tahoma;
+				font-size: 13px;
+				font-weight: bold;
+			}
+			
+			tbody td
+			{
+				padding: 10px;
+				
+				border-bottom: 1px solid #eee;
+				
+				font-family: Tahoma;
+				font-size: 13px;
+			}
+			tbody td.error
+			{
+				text-decoration: line-through;
+			}
+			tbody td.red
+			{
+				color: red;
+			}
+			tbody td.orange
+			{
+				color: orange;
+			}
+			tbody td.green
+			{
+				color: green;
+			}
+		</style>
+	</head>
+
+	<body>
+		<table width="100%">
+			<thead>
+				<tr>
+					<td>Status</td>
+					<td>AC</td>
+					<td>Product</td>
+					<td>Inkoop (incl.)</td>
+					<td>Goedkoopst</td>
+					<td>Nieuwe prijs</td>
+					<td>Opmerkingen</td>
+				</tr>
+			</thead>
+			
+			<tbody>
+				{{table}}
+			</tbody>
+		</table>
+		
+		<br/><br/>
+		
+		<table width="700">
+			<thead>
+				<tr>
+					<td>Status</td>
+					<td>Omschrijving</td>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr>
+					<td>OK</td>
+					<td>Geen bijzonderheden. Winstgevend verwerkt.</td>
+				</tr>
+				
+				<tr>
+					<td>W1</td>
+					<td>Waarschuwing. De concurrent gaat lager dan de minimale winst.</td>
+				</tr>
+				
+				<tr>
+					<td>W2</td>
+					<td>Waarschuwing. De concurrent gaat lager dan de inkoopsprijs.</td>
+				</tr>
+				
+				<tr>
+					<td>E1</td>
+					<td>Fout. Domeinnaam kent geen prijzen. Artikel overgeslagen.</td>
+				</tr>
+				
+				<tr>
+					<td>E2</td>
+					<td>Fout. Domeinnaam kent geen prijzen. Artikel overgeslagen. Voor de tweede keer geen resultaat.</td>
+				</tr>
+				
+				<tr>
+					<td>E3</td>
+					<td>Fout. Domeinnaam is verwijdert uit de pricecheck. Derde keer geen resultaat.</td>
+				</tr>
+				
+				<tr>
+					<td>E4</td>
+					<td>Fout. Dit artikel heeft geen inkoopsprijs. Artikel overgeslagen.</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>	

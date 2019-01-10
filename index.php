@@ -373,15 +373,13 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 											</div>
 										</li>
 										
-										<a href="/modules/catalogus/export.php">
-											<li class="menu-item">
-												<div class="text"><?= $mb->_translateReturn("menu", "article-export") ?></div>
-												
-												<div class="icon">
-													<span class="textual"><?= $mb->_translateReturn("menu", "article-export-abbr") ?></span>
-												</div>
-											</li>
-										</a>
+										<li class="menu-item" rel="/catalogus/export/">
+											<div class="text"><?= $mb->_translateReturn("menu", "article-export") ?></div>
+											
+											<div class="icon">
+												<span class="textual"><?= $mb->_translateReturn("menu", "article-export-abbr") ?></span>
+											</div>
+										</li>
 										
 										<li class="menu-item" rel="/catalogus/specificaties/">
 											<div class="text"><?= $mb->_translateReturn("menu", "specification-table") ?></div>
@@ -729,13 +727,33 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 						if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "WOR", 0)))
 						{
 							?>
-							<li class="menu-item" rel="/werkorders/instellingen/">
+							<li class="parent menu-item">
 								<div class="text"><?= $mb->_translateReturn("menu", "workorders") ?></div>
 								<div class="sub"><?= $mb->_translateReturn("menu", "workorders-eg") ?></div>
 								
 								<div class="icon">
 									<span class="fa fa-wrench"></span>
 								</div>
+							</li>
+							
+							<li class="submenu">
+								<ul>
+									<li class="menu-item" rel="/werkorders/instellingen/">
+										<div class="text">Werkorder instellingen</div>
+										
+										<div class="icon">
+											<span class="textual">WI</span>
+										</div>
+									</li>
+									
+									<li class="menu-item" rel="/werkorders/bulk-sms/">
+										<div class="text">Bulk SMS sturen</div>
+										
+										<div class="icon">
+											<span class="textual">BS</span>
+										</div>
+									</li>
+								</ul>
 							</li>
 							<?php
 						}

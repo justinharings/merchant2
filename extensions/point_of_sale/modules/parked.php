@@ -28,10 +28,17 @@
 					$sessions = unserialize($value['sessions']);
 					
 					$employee = $mb->_runFunction("pos", "loadEmployee", array($sessions['employeeID']));
+					$employee = $employee['name'];
+					
+					if($employee == "")
+					{
+						$employee = $sessions['name_code'];
+					}
+					
 					$customer = $mb->_runFunction("customers", "load", array($sessions['customer']));
 					?>
 					<tr key="<?= $value['parkingID'] ?>">
-						<td><?= $employee['name'] ?></td>
+						<td><?= $employee ?></td>
 						<td><?= $customer['name'] != "" ? $customer['name'] : "n.v.t." ?></td>
 						<td><?= count($sessions['cart']) ?> <?= $mb->_translateReturn("table-headers", "products-inline") ?></td>
 						<td><?= $value['date_added'] ?></td>

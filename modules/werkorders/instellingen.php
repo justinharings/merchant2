@@ -5,7 +5,7 @@ $data = $mb->_runFunction("workorders", "loadSettings", array($_SESSION['merchan
 
 <ul class="breadcrumbs">
 	<li>Merchant</li>
-	<li><?= $mb->_translateReturn("menu", "workorders") ?></li>
+	<li>Werkorder instellingen</li>
 </ul>
 
 <form method="post" id="form" action="/library/php/posts/werkorders/instellingen.php">
@@ -13,7 +13,7 @@ $data = $mb->_runFunction("workorders", "loadSettings", array($_SESSION['merchan
 	
 	<div class="simple-form">
 		<div class="form-header">
-			<h1><?= $mb->_translateReturn("menu", "workorders") ?></h1>
+			<h1>Werkorder instellingen</h1>
 			
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			<input type="submit" name="save" id="save" value="<?= $mb->_translateReturn("forms", "button-save") ?>" class="red show-load validate-form" />

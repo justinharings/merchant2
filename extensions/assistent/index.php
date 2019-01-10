@@ -1,4 +1,7 @@
 <?php
+header("location: /assistent2/");
+exit;
+
 // Start session
 
 if(!isset($_SESSION))

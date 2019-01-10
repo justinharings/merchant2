@@ -9,7 +9,7 @@ $_SERVER['DOCUMENT_ROOT'] = "/var/www/vhosts/justinharings.nl/merchant.justinhar
 
 $files = array();
 
-if($handle = opendir(__DIR__ . '/banners/nl/homepage/')) 
+if($handle = opendir(__DIR__ . '/banners/homepage/')) 
 {
 	while (false !== ($entry = readdir($handle))) 
 	{
@@ -29,14 +29,14 @@ $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/102.jpg';
 $image = array_rand($files);
 $image = $files[$image];
 
-$file = __DIR__ . '/banners/nl/homepage/' . $image;
+$file = __DIR__ . '/banners/homepage/' . $image;
 
 if(file_get_contents($oldfile) == file_get_contents($file))
 {
 	$image = array_rand($files);
 	$image = $files[$image];
 	
-	$file = __DIR__ . '/banners/nl/homepage/' . $image;
+	$file = __DIR__ . '/banners/homepage/' . $image;
 }
 
 $url = str_replace(".jpg", "", $image);
@@ -61,7 +61,7 @@ file_put_contents($oldfile, $content);
 
 $files = array();
 
-if($handle = opendir(__DIR__ . '/banners/en/homepage/')) 
+if($handle = opendir(__DIR__ . '/banners/homepage/')) 
 {
 	while (false !== ($entry = readdir($handle))) 
 	{
@@ -81,14 +81,14 @@ $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/87.jpg';
 $image = array_rand($files);
 $image = $files[$image];
 
-$file = __DIR__ . '/banners/en/homepage/' . $image;
+$file = __DIR__ . '/banners/homepage/' . $image;
 
 if(file_get_contents($oldfile) == file_get_contents($file))
 {
 	$image = array_rand($files);
 	$image = $files[$image];
 	
-	$file = __DIR__ . '/banners/en/homepage/' . $image;
+	$file = __DIR__ . '/banners/homepage/' . $image;
 }
 
 $url = str_replace(".jpg", "", $image);
@@ -112,7 +112,7 @@ file_put_contents($oldfile, $content);
 
 $files = array();
 
-if($handle = opendir(__DIR__ . '/banners/nl/quick_links/')) 
+if($handle = opendir(__DIR__ . '/banners/quick_links/')) 
 {
 	while (false !== ($entry = readdir($handle))) 
 	{
@@ -159,7 +159,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/nl/quick_links/' . $image1;
+$file = __DIR__ . '/banners/quick_links/' . $image1;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/4.jpg';
 
 $content = file_get_contents($file);
@@ -178,7 +178,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/nl/quick_links/' . $image2;
+$file = __DIR__ . '/banners/quick_links/' . $image2;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/5.jpg';
 
 $content = file_get_contents($file);
@@ -197,7 +197,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/nl/quick_links/' . $image3;
+$file = __DIR__ . '/banners/quick_links/' . $image3;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/6.jpg';
 
 $content = file_get_contents($file);
@@ -216,7 +216,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/nl/quick_links/' . $image4;
+$file = __DIR__ . '/banners/quick_links/' . $image4;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/7.jpg';
 
 $content = file_get_contents($file);
@@ -228,7 +228,7 @@ file_put_contents($oldfile, $content);
 
 $files = array();
 
-if($handle = opendir(__DIR__ . '/banners/en/quick_links/')) 
+if($handle = opendir(__DIR__ . '/banners/quick_links/')) 
 {
 	while (false !== ($entry = readdir($handle))) 
 	{
@@ -275,7 +275,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/en/quick_links/' . $image1;
+$file = __DIR__ . '/banners/quick_links/' . $image1;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/88.jpg';
 
 $content = file_get_contents($file);
@@ -294,7 +294,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/en/quick_links/' . $image2;
+$file = __DIR__ . '/banners/quick_links/' . $image2;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/90.jpg';
 
 $content = file_get_contents($file);
@@ -313,7 +313,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/en/quick_links/' . $image3;
+$file = __DIR__ . '/banners/quick_links/' . $image3;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/89.jpg';
 
 $content = file_get_contents($file);
@@ -332,7 +332,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/en/quick_links/' . $image4;
+$file = __DIR__ . '/banners/quick_links/' . $image4;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/91.jpg';
 
 $content = file_get_contents($file);
@@ -344,7 +344,7 @@ file_put_contents($oldfile, $content);
 
 $files = array();
 
-if($handle = opendir(__DIR__ . '/banners/nl/fietsen_1/')) 
+if($handle = opendir(__DIR__ . '/banners/fietsen_1/')) 
 {
 	while (false !== ($entry = readdir($handle))) 
 	{
@@ -364,14 +364,14 @@ $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/41.jpg';
 $image = array_rand($files);
 $image = $files[$image];
 
-$file = __DIR__ . '/banners/nl/fietsen_1/' . $image;
+$file = __DIR__ . '/banners/fietsen_1/' . $image;
 
 if(file_get_contents($oldfile) == file_get_contents($file))
 {
 	$image = array_rand($files);
 	$image = $files[$image];
 	
-	$file = __DIR__ . '/banners/nl/fietsen_1/' . $image;
+	$file = __DIR__ . '/banners/fietsen_1/' . $image;
 }
 
 $url = str_replace(".jpg", "", $image);
@@ -395,7 +395,7 @@ file_put_contents($oldfile, $content);
 
 $files = array();
 
-if($handle = opendir(__DIR__ . '/banners/en/fietsen_1/')) 
+if($handle = opendir(__DIR__ . '/banners/fietsen_1/')) 
 {
 	while (false !== ($entry = readdir($handle))) 
 	{
@@ -415,14 +415,14 @@ $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/93.jpg';
 $image = array_rand($files);
 $image = $files[$image];
 
-$file = __DIR__ . '/banners/en/fietsen_1/' . $image;
+$file = __DIR__ . '/banners/fietsen_1/' . $image;
 
 if(file_get_contents($oldfile) == file_get_contents($file))
 {
 	$image = array_rand($files);
 	$image = $files[$image];
 	
-	$file = __DIR__ . '/banners/en/fietsen_1/' . $image;
+	$file = __DIR__ . '/banners/fietsen_1/' . $image;
 }
 
 $url = str_replace(".jpg", "", $image);
@@ -446,7 +446,7 @@ file_put_contents($oldfile, $content);
 
 $files = array();
 
-if($handle = opendir(__DIR__ . '/banners/nl/fietsen_2/')) 
+if($handle = opendir(__DIR__ . '/banners/fietsen_2/')) 
 {
 	while (false !== ($entry = readdir($handle))) 
 	{
@@ -483,7 +483,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/nl/fietsen_2/' . $image1;
+$file = __DIR__ . '/banners/fietsen_2/' . $image1;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/42.jpg';
 
 $content = file_get_contents($file);
@@ -502,7 +502,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/nl/fietsen_2/' . $image2;
+$file = __DIR__ . '/banners/fietsen_2/' . $image2;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/43.jpg';
 
 $content = file_get_contents($file);
@@ -514,7 +514,7 @@ file_put_contents($oldfile, $content);
 
 $files = array();
 
-if($handle = opendir(__DIR__ . '/banners/en/fietsen_2/')) 
+if($handle = opendir(__DIR__ . '/banners/fietsen_2/')) 
 {
 	while (false !== ($entry = readdir($handle))) 
 	{
@@ -551,7 +551,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/en/fietsen_2/' . $image1;
+$file = __DIR__ . '/banners/fietsen_2/' . $image1;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/94.jpg';
 
 $content = file_get_contents($file);
@@ -570,7 +570,7 @@ $query = sprintf(
 );
 $db->query($query);
 
-$file = __DIR__ . '/banners/en/fietsen_2/' . $image2;
+$file = __DIR__ . '/banners/fietsen_2/' . $image2;
 $oldfile = $_SERVER['DOCUMENT_ROOT'] . '/library/media/banners/95.jpg';
 
 $content = file_get_contents($file);

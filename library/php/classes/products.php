@@ -771,7 +771,7 @@ class products extends motherboard
 		
 		foreach($data[1]['filter_key'] AS $key => $filter_key)
 		{
-			if($filter_key == "")
+			if($filter_key == "" || $data[1]['filter_value'][$key] == "")
 			{
 				continue;
 			}
@@ -842,12 +842,23 @@ class products extends motherboard
 			$query = sprintf(
 				"	INSERT INTO		products_pricecheck
 					SET				products_pricecheck.productID = %d,
-									products_pricecheck.website = '%s'",
+									products_pricecheck.website = '%s',
+									products_pricecheck.free_shipment = %d,
+									products_pricecheck.profit = '%.2f'",
 				$data[1]['productID'],
-				parent::real_escape_string($data[1]['pricecheck_website'][$key])
+				parent::real_escape_string($data[1]['pricecheck_website'][$key]),
+				intval($data[1]['free_shipment'][$key]),
+				$data[1]['profit']
 			);
 			parent::query($query);
 		}
+		
+		$query = sprintf(
+			"	UPDATE		products_pricecheck
+				SET			products_pricecheck.profit = '%.2f'",
+			$data[1]['profit']
+		);
+		parent::query($query);
 		
 		return $data[1]['productID'];
 	}
@@ -1120,6 +1131,7 @@ class products extends motherboard
 				INNER JOIN	products ON products.productID = reviews.productID
 				WHERE		reviews.merchantID = %d
 					AND		products.deleted = 0
+					AND		products.price > 0
 				GROUP BY	reviews.productID
                 ORDER BY 	SUM(reviews.stars) DESC, products.name ASC
 				LIMIT		0,9",

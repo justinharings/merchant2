@@ -160,6 +160,35 @@ class orders extends motherboard
 				);
 			}
 			
+			
+			$query = sprintf(
+				"	SELECT		customers.*
+					FROM		customers
+					INNER JOIN	orders ON orders.customerID = customers.customerID
+					WHERE		orders.orderID = %d",
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['customer'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$row = parent::fetch_assoc($result);
+				
+				$row['street'] = "";
+				$row['housenumber'] = "";
+				
+				if(preg_match('/(?P<address>[^\d]+) (?P<number>\d+.?)/', $row['address'], $matches))
+				{
+					$row['street'] = $matches['address'];
+					$row['housenumber'] = $matches['number'];
+				}
+				
+				$return['customer'] = $row;
+			}
+			
+			
 			$query = sprintf(
 				"	SELECT		%s
 								orders_product.*,
@@ -188,17 +217,31 @@ class orders extends motherboard
 								shipment_methods.price AS normal_price
 					FROM		orders_shipment
 					INNER JOIN	shipment_methods ON shipment_methods.shipmentID = orders_shipment.shipmentID
-					WHERE		orders_shipment.orderID = %d",
+					WHERE		orders_shipment.orderID = %d
+					ORDER BY	orders_shipment.orderShipmentID DESC",
 				$data[0]
 			);
 			$result = parent::query($query);
 			
 			$return['shipments'] = array();
+			$last_barcode = "";
 			
 			if(parent::num_rows($result))
 			{
 				$return['shipments'] = parent::fetch_array($result);
+				
+				while($sRow = parent::fetch_assoc($result))
+				{
+					if($sRow['courier'] == "PostNL")
+					{
+						$last_barcode = "https://jouw.postnl.nl/#!/track-en-trace/" . $sRow['track_code'] . "/NL/" . $return['customer']['zip_code'];
+					}
+					
+					break;
+				}
 			}
+			
+			$return['last_barcode'] = $last_barcode;
 			
 			$query = sprintf(
 				"	SELECT		orders_invoice_rules.*
@@ -235,34 +278,6 @@ class orders extends motherboard
 			if(parent::num_rows($result))
 			{
 				$return['payments'] = parent::fetch_array($result);
-			}
-			
-			
-			$query = sprintf(
-				"	SELECT		customers.*
-					FROM		customers
-					INNER JOIN	orders ON orders.customerID = customers.customerID
-					WHERE		orders.orderID = %d",
-				$data[0]
-			);
-			$result = parent::query($query);
-			
-			$return['customer'] = array();
-			
-			if(parent::num_rows($result))
-			{
-				$row = parent::fetch_assoc($result);
-				
-				$row['street'] = "";
-				$row['housenumber'] = "";
-				
-				if(preg_match('/(?P<address>[^\d]+) (?P<number>\d+.?)/', $row['address'], $matches))
-				{
-					$row['street'] = $matches['address'];
-					$row['housenumber'] = $matches['number'];
-				}
-				
-				$return['customer'] = $row;
 			}
 			
 			

@@ -157,17 +157,19 @@ if(file_exists($file))
 	$content = str_replace("[[orderID]]", $order['order_reference'], $content);
 	$content = str_replace("[[orderDate]]", $order['date_added'], $content);
 	$content = str_replace("[[barcode]]", '<img src="' . $actual_link . '/library/third-party/barcode-image/barcode.php?code=' . $order['orderID'] . '" />', $content);
-	$content = str_replace("[[shipping]]", $order['date_added'], $content);
 	$content = str_replace("[[total]]", $sign . "&nbsp;" . _frontend_float(($order['grand_total']*$target), $currency), $content);
 	$content = str_replace("[[total_taxes]]", $sign . "&nbsp;" . _frontend_float(($order['vat_total']*$target), $currency), $content);
 	
 	$shipment_costs = 0;
+	$shipping = "";
 	
 	foreach($order['shipments'] AS $shipment)
 	{
 		$shipment_costs += $shipment['price'];
+		$shipping .= $shipment['method'] . "<br/>";
 	}
 	
+	$content = str_replace("[[shipping]]", $shipping, $content);
 	$content = str_replace("[[shipping_costs]]", $sign . "&nbsp;" . _frontend_float(($shipment_costs*$target), $currency), $content);
 	$content = str_replace("[[subtotal]]", $sign . "&nbsp;" . _frontend_float((($order['grand_total']-$shipment_costs)*$target), $currency), $content);
 	

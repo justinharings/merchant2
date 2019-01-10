@@ -221,21 +221,23 @@ class stock extends motherboard
 		}
 		
 		$query = sprintf(
-			"	SELECT		products_stock.stock,
+			"	SELECT		IF(products_stock.stock IS NOT NULL, products_stock.stock, 0) AS stock,
 							(
 								SELECT		SUM(orders_product.quantity)
 								FROM		orders_product
 								INNER JOIN	orders ON orders.orderID = orders_product.orderID
 								INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
-								WHERE		orders_product.productID = products_stock.productID
+								WHERE		orders_product.productID = %d
 									AND		order_statuses.finished = 0
 									AND 	order_statuses.declined = 0
 							) AS reserved
-				FROM		products_stock
-				WHERE		products_stock.productID = %d
-					%s",
+				FROM		products
+				LEFT JOIN	products_stock ON products_stock.productID = products.productID
+					%s
+				WHERE		products.productID = %d",
 			$data[0],
-			$location
+			$location,
+			$data[0]
 		);
 		$result = parent::query($query);
 		$row = parent::fetch_assoc($result);

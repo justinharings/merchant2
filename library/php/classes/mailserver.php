@@ -516,6 +516,33 @@ class mailserver extends motherboard
 			
 			$content = str_replace("[order-ID]", $order_info['order_reference'], $content);
 			$content = str_replace("[order-GRANDTOTAL]", $order_info['grand_total'], $content);
+			$content = str_replace("[order-PAYLINK]", base64_encode($order_info['orderID']), $content);
+			
+			foreach($order_info['shipments'] AS $shipment)
+			{
+				if($shipment['track_code'] != "")
+				{
+					switch(strtolower($shipment['courier']))
+					{
+						default:
+							continue;
+						break;
+						
+						case "postnl":
+							$url = "https://jouw.postnl.nl/#!/track-en-trace/" . $shipment['track_code'] . "/NL/" . $order_info['customer']['zip_code'];
+						break;
+					}
+					
+					if($url != "")
+					{
+						$content = str_replace("[order-TRACKANDTRACE]", $url, $content);
+					}
+					else
+					{
+						$content = str_replace("[order-TRACKANDTRACE]", "", $content);
+					}
+				}
+			}
 		}
 		
 		if($workorderID > 0)
