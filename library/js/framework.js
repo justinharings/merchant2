@@ -447,16 +447,28 @@ $(document).ready(
 		**	to the form table. 
 		*/
 		
-		var cnt = 0;
+		var cnt;
 		
 		$("span.add-row").on("click",
 			function()
 			{
-				cnt += 1;
+				var tbody = $(this).closest("table").find("tbody");
+				
+				cnt = tbody.find("tr.new-row").attr("cnt");
+				
+				if(typeof cnt !== typeof undefined && cnt !== false) 
+				{
+					cnt = parseInt(tbody.find("tr.new-row").attr("cnt")) + 1;
+					tbody.find("tr.new-row").attr("cnt", cnt);
+				}
+				else
+				{
+					cnt = 0;
+					tbody.find("tr.new-row").attr("cnt", "0");
+				}
 				
 				console.log(cnt);
-				
-				var tbody = $(this).closest("table").find("tbody");
+
 				var clone = tbody.find("tr.new-row").clone();
 				
 				clone.find("input, select").each(
@@ -470,7 +482,7 @@ $(document).ready(
 							$(this).attr("id", replaced);
 						}
 						
-						if($(this).attr("checked") == "checked" && cnt > 1)
+						if($(this).attr("checked") == "checked" && cnt > 0)
 						{
 							$(this).removeAttr("checked");
 						}
@@ -544,11 +556,9 @@ $(document).ready(
 							{
 								$(".add-specification").trigger("click");
 								
-								var add_key = (i+1);
-								
-								$("#filter_language_"+add_key).val(data[i]['language']);
-								$("#filter_key_"+add_key).val(data[i]['key']);
-								$("#filter_value_"+add_key).val(data[i]['value']);
+								$("#filter_language_"+i).val(data[i]['language']);
+								$("#filter_key_"+i).val(data[i]['key']);
+								$("#filter_value_"+i).val(data[i]['value']);
 							}
 						}
 					}
@@ -714,6 +724,8 @@ $(document).ready(
 								
 								var tr = elm.parent().parent().parent();
 								var productID = data['productID'];
+								
+								var addonID = '<input type="hidden" name="addonID[]" id="addonID" value="'+productID+'" />';
 								productID = '<input type="hidden" name="productID[]" id="productID" value="'+productID+'" />';
 								
 								tr.find("td.searched-p-name").html(data['name']);
@@ -721,6 +733,7 @@ $(document).ready(
 								tr.find("td.searched-p-article-code").html(data['article_code']);
 								tr.find("td.searched-p-price").html("&euro;&nbsp;" + data['price']);
 								tr.find("td.searched-p-productID").html(productID);
+								tr.find("td.searched-p-addonID").html(addonID);
 								
 								tr.find("input.searched-p-price").val(data['price']);
 								tr.find("input.searched-p-name").val(data['name']);

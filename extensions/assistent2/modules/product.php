@@ -104,6 +104,8 @@ $sold = $row['sold'];
 			<div class="spacer"></div>
 			
 			<div class="button calendar fa fa-calendar"></div>
+			<div class="button core_products fa fa-bullseye"></div>
+			<div class="button cleanup fa fa-trash"></div>
 		</div>
 	</div>
 </div>

@@ -36,6 +36,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 	  		$current_color = explode(" ", $current_color);
 	  		$current_color = $current_color[(count($current_color)-1)];
 	  	}
+	  	else if(strpos($row['name'], "unisex") !== false)
+  		{
+	  		$current_color = explode(" unisex", $row['name']);
+	  		$current_color = $current_color[0];
+	  		$current_color = explode(" ", $current_color);
+	  		$current_color = $current_color[(count($current_color)-1)];
+	  	}
 	  	
 	  	$names[$current_color] = $_POST['color_nl'];
   		
@@ -203,8 +210,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 		}
 		
 		$query = sprintf(
-			"	INSERT INTO		products_pricecheck (productID, website)
-				SELECT			%d, products_pricecheck.website
+			"	INSERT INTO		products_pricecheck (productID, website, free_shipment, profit)
+				SELECT			%d, products_pricecheck.website, products_pricecheck.free_shipment, products_pricecheck.profit
 				FROM			products_pricecheck
 				WHERE			products_pricecheck.productID = %d",
 			$productID,

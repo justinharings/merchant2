@@ -84,6 +84,35 @@ $mb->_requireThirdParty("minify-master");
 $mb->_requireThirdParty("path-converter");
 
 
+$register_date = "";
+
+for($i = 1; $i < 30; $i++)
+{
+	$query = sprintf(
+		"	SELECT			COUNT(register_close.closeID) AS cnt
+			FROM			register_close
+			WHERE			register_close.date = DATE(NOW()) - INTERVAL %d DAY",
+		$i
+	);
+	$result = $mb->query($query);
+	$row = $mb->fetch_assoc($result);
+	
+	if($row['cnt'] == 0)
+	{
+		$date = new DateTime();
+		$date->modify('-' . $i . ' day');
+		
+		$start = new DateTime('2019-01-30');
+		
+		if($date > $start)
+		{
+			$register_date = $date->format('d-m-Y');
+			break;
+		}
+	}
+}
+
+
 
 /*
 **	If requested by the administrator (using the querystring /?minify),
@@ -318,12 +347,24 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 									
 									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "VER_DC", 0)))
 									{
+										$cnt = $mb->_runFunction("orders", "view", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "orders.date_added DESC", "0,50", 4));
+										$cnt = $mb->num_rows($cnt);
+										
 										?>
 										<li class="menu-item" rel="/verkoop/debcred/">
 											<div class="text"><?= $mb->_translateReturn("menu", "debi-credi") ?></div>
 											
 											<div class="icon">
 												<span class="textual"><?= $mb->_translateReturn("menu", "debi-credi-abbr") ?></span>
+												
+												<?php
+												if($_GET['file'] != "debcred/")
+												{
+													?>
+													<span class="counter"><?= $cnt ?></span>
+													<?php
+												}
+												?>
 											</div>
 										</li>
 										<?php
@@ -453,32 +494,6 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 											
 											<div class="icon">
 												<span class="textual"><?= $mb->_translateReturn("menu", "manage-locations-abbr") ?></span>
-											</div>
-										</li>
-										<?php
-									}
-									
-									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "VRB_LV", 0)))
-									{
-										?>
-										<li class="menu-item" rel="/voorraad/laag/">
-											<div class="text"><?= $mb->_translateReturn("menu", "low-stock") ?></div>
-											
-											<div class="icon">
-												<span class="textual"><?= $mb->_translateReturn("menu", "low-stock-abbr") ?></span>
-											</div>
-										</li>
-										<?php
-									}
-									
-									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "VRB_GA", 0)))
-									{
-										?>
-										<li class="menu-item" rel="/voorraad/gereserveerd/">
-											<div class="text"><?= $mb->_translateReturn("menu", "reserved-articles") ?></div>
-											
-											<div class="icon">
-												<span class="textual"><?= $mb->_translateReturn("menu", "reserved-articles-abbr") ?></span>
 											</div>
 										</li>
 										<?php
@@ -813,19 +828,6 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 										<?php
 									}
 									
-									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP_GU", 0)))
-									{
-										?>
-										<li class="menu-item" rel="/rapportages/grootboek/">
-											<div class="text"><?= $mb->_translateReturn("menu", "payment-book") ?></div>
-											
-											<div class="icon">
-												<span class="textual"><?= $mb->_translateReturn("menu", "payment-book-abbr") ?></span>
-											</div>
-										</li>
-										<?php
-									}
-									
 									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP_WA", 0)))
 									{
 										?>
@@ -847,6 +849,32 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 											
 											<div class="icon">
 												<span class="textual"><?= $mb->_translateReturn("menu", "month-register-abbr") ?></span>
+											</div>
+										</li>
+										<?php
+									}
+									
+									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP_KC", 0)))
+									{
+										?>
+										<li class="menu-item" rel="/rapportages/kascontrole/">
+											<div class="text"><?= $mb->_translateReturn("menu", "register-check") ?></div>
+											
+											<div class="icon">
+												<span class="textual"><?= $mb->_translateReturn("menu", "register-check-abbr") ?></span>
+											</div>
+										</li>
+										<?php
+									}
+									
+									if($mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "RAP_GU", 0)))
+									{
+										?>
+										<li class="menu-item" rel="/rapportages/grootboek/">
+											<div class="text"><?= $mb->_translateReturn("menu", "payment-book") ?></div>
+											
+											<div class="icon">
+												<span class="textual"><?= $mb->_translateReturn("menu", "payment-book-abbr") ?></span>
 											</div>
 										</li>
 										<?php
@@ -1029,6 +1057,15 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 			</div>
 			
 			<div class="top">
+				<?php
+				if($register_date != "")
+				{
+					?>
+					<span class="fa fa-lock close-register" onclick="document.location.href = '/<?= _LANGUAGE_PACK ?>/modules/rapportages/kascontrole/date/<?= $register_date ?>/';"></span>
+					<?php
+				}
+				?>
+				
 				<span class="fa fa-power-off logout-button"></span>
 				<span class="fa fa-history previous-button"></span>
 			</div>

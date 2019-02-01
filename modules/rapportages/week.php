@@ -89,6 +89,29 @@ $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], 
 							
 						$total += $amount;
 					}
+					
+					$dataChanges = $mb->_runFunction("reports", "loadRegisterChanges", array($_SESSION['merchantID'], "week_" . (isset($_POST['week']) ? (intval($_POST['week']) . "_" . intval($_POST['year'])) : ($current . "_" . date("Y")))));
+					
+					foreach($dataChanges AS $value)
+					{
+						?>
+						<tr style="background-color: #f9f9f9;">
+							<td>
+								<small>
+									&nbsp;&nbsp;&nbsp;Kasverschil <?= $value['payment_method'] ?>
+								</small>
+								
+							</td>
+							<td>
+								<small>
+									&nbsp;&nbsp;&nbsp;&euro;&nbsp;<?= _frontend_float($value['amount']) ?>
+								</small>
+							</td>
+						</tr>
+						<?php
+						
+						$total += $value['amount'];
+					}
 					?>
 					
 					<tr>

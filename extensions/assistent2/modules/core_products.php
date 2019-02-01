@@ -1,5 +1,35 @@
 <?php
-$product = $mb->_runFunction("products", "load", array(intval($_GET['productID'])));
+$query = sprintf(
+	"	SELECT		products.productID
+		FROM		products
+		LEFT JOIN	products_stock ON products_stock.productID = products.productID
+		LEFT JOIN	ass2_stock_alert ON ass2_stock_alert.productID = products.productID
+		LEFT JOIN	ass2_stock_watchlist ON ass2_stock_watchlist.productID = products.productID
+		WHERE		products.merchantID = 1
+			AND		products.core_product = 1
+			AND		ass2_stock_alert.productID IS NULL
+			AND		ass2_stock_watchlist.productID IS NULL
+			AND		(
+						products_stock.stock <= 0
+				OR		products_stock.stock IS NULL
+					)
+			AND		products.status = 1
+		LIMIT		0,1"
+);
+$result = $mb->query($query);
+$row = $mb->fetch_assoc($result);
+			
+if(intval($row['productID']) == 0)
+{
+	?>
+	<script type="text/javascript">
+		alert("Er is hier niets om weer te geven.");
+		document.location.href = '/assistent/';
+	</script>
+	<?php
+}
+	
+$product = $mb->_runFunction("products", "load", array(intval($row['productID'])));
 $data_locations = $mb->_runFunction("stock", "viewLocations", array(1, "", "locations.name", "0,50"));
 
 $type = "";
@@ -27,22 +57,32 @@ $row = $mb->fetch_assoc($result);
 $sold = $row['sold'];
 ?>
 
-<div class="container blush">
+<div class="container cornsilk">
 	<div class="inner-container">
 		<div class="title fa fa-tags"></div>
 		<div class="menu-button fa fa-bars"></div>
 		
 		<div class="menu">
 			<ul>
-				<li browse="/extensions/assistent2/">
-					<span class="fa fa-thumbs-up"></span>
-					Gezien en doorgaan
+				<li browse="/extensions/assistent2/library/php/stock_alert.php?productID=<?= intval($_GET['productID']) ?>&orderProductID=<?= intval($_GET['orderProductID']) ?>">
+					<span class="fa fa-bullhorn"></span>
+					Voorraad alert instellen
+				</li>
+				
+				<li browse="/extensions/assistent2/library/php/stock_watchlist.php?productID=<?= intval($_GET['productID']) ?>&orderProductID=<?= intval($_GET['orderProductID']) ?>">
+					<span class="fa fa-user-secret"></span>
+					Op de watchlist zetten
+				</li>
+				
+				<li browse="/extensions/assistent2/library/php/soldout.php?productID=<?= intval($_GET['productID']) ?>&orderProductID=<?= intval($_GET['orderProductID']) ?>">
+					<span class="fa fa-trash"></span>
+					Dit product is uitverkocht
 				</li>
 			</ul>
 		</div>
 		
 		<div class="content">
-			<h1>Opgeslagen voorraad notificatie</h1>
+			<h1>Kerncollectie zonder voorraad</h1>
 			
 			<?php
 			if(count($product['images']) == 0)

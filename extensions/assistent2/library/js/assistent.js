@@ -1,6 +1,35 @@
 $(document).ready(
 	function($)
 	{
+		$("div.fa-sms")
+			.fadeIn(200)
+			.fadeOut(200)
+			.fadeIn(200)
+			.fadeOut(200)
+			.fadeIn(200)
+			.fadeIn(200)
+			.fadeOut(200)
+			.fadeIn(200)
+			.fadeOut(200)
+			.fadeIn(200)
+			.fadeIn(200)
+			.fadeOut(200)
+			.fadeIn(200)
+			.fadeOut(200)
+			.fadeIn(200)
+			.fadeIn(200)
+			.fadeOut(200)
+			.fadeIn(200)
+			.fadeOut(200)
+			.fadeIn(200);
+		
+		setTimeout(
+			function()
+			{
+				$("div.fa-sms").removeClass("fa-sms").addClass("fa-check");
+			}, 5000
+		);
+		
 		$("div.filler").on("click",
 			function()
 			{
@@ -99,6 +128,29 @@ $(document).ready(
 			{
 				document.location.href = '/assistent2/?module=calendar';
 			}
+		);
+		
+		$("div.button.core_products").on("click",
+			function()
+			{
+				document.location.href = '/assistent2/?module=core_products';
+			}
+		);
+		
+		$("div.button.cleanup").on("click",
+			function()
+			{
+				// document.location.href = '/assistent2/?module=cleanup';
+				alert("Deze functie bestaat nog niet.");
+				document.location.reload();
+			}
+		);
+		
+		setTimeout(
+			function()
+			{
+				document.location.reload();
+			}, 30000
 		);
 	}
 );

@@ -20,17 +20,20 @@ class products extends motherboard
 			if($data[1] != " " && $data[1] != "bookmarks" && $data[1] != "export")
 			{
 				$split = explode(" ", $data[1]);
+				$strsrch = false;
 				
 				foreach($split AS $string)
 				{
-					if(intval($string) == 0)
+					if(intval($string) == 0 || $strsrch == true)
 					{
+						$strsrch = true;
+						
 						$search .= sprintf(
 							"	AND		products.name LIKE ('%%%s%%')",
 							parent::real_escape_string($string)
 						);
 					}
-					else
+					else if($strsrch == false)
 					{
 						$search .= sprintf(
 							"	AND		(
@@ -224,6 +227,42 @@ class products extends motherboard
 				{
 					$return['categories'][$cnt] = $category;
 					$return['categories'][$cnt]['filters'] = parent::_runFunction("categories", "load", array($category['categoryID']));
+					
+					$cnt++;
+				}
+			}
+			
+			
+			$query = sprintf(
+				"	SELECT		products_addons.productAddonID,
+								products_addons.addonID,
+								products_addons.productID,
+								products.name,
+								products.article_code,
+								products.price
+					FROM		products_addons
+					INNER JOIN	products ON products.productID = products_addons.addonID
+					WHERE		products_addons.productID = %d",
+				$data[0]
+			);
+			$result = parent::query($query);
+			
+			$return['addons'] = array();
+			
+			if(parent::num_rows($result))
+			{
+				$addons = parent::fetch_array($result);
+				
+				$cnt = 0;
+				
+				foreach($addons AS $addon)
+				{
+					$return['addons'][$cnt]['productAddonID'] = $addon['productAddonID'];
+					$return['addons'][$cnt]['addonID'] = $addon['addonID'];
+					$return['addons'][$cnt]['productID'] = $addon['productID'];
+					$return['addons'][$cnt]['name'] = $addon['name'];
+					$return['addons'][$cnt]['price'] = $addon['price'];
+					$return['addons'][$cnt]['article_code'] = $addon['article_code'];
 					
 					$cnt++;
 				}
@@ -485,6 +524,7 @@ class products extends motherboard
 			return $this->delete($data);
 		}
 		
+		/*
 		if($data[1]['workorders_manhours'] == 1)
 		{
 			$query = sprintf(
@@ -502,6 +542,7 @@ class products extends motherboard
 			);
 			parent::query($query);
 		}
+		*/
 		
 		if(isset($data[1]['productID']) && $data[1]['productID'] != 0)
 		{
@@ -513,8 +554,6 @@ class products extends motherboard
 								products.brandID = %d,
 								products.externalStockID = %d,
 								products.deleted = 0,
-								products.workorders_products = %d,
-								products.workorders_manhours = %d,
 								products.bookmarks = %d,
 								products.core_product = %d,
 								products.delivery_days = %d,
@@ -538,8 +577,6 @@ class products extends motherboard
 				$data[1]['groupID'],
 				$data[1]['brandID'],
 				$data[1]['externalStockID'],
-				$data[1]['workorders_products'],
-				$data[1]['workorders_manhours'],
 				$data[1]['bookmark'],
 				$data[1]['core_product'],
 				$data[1]['delivery_days'],
@@ -585,8 +622,6 @@ class products extends motherboard
 									products.brandID = %d,
 									products.externalStockID = %d,
 									products.deleted = 0,
-									products.workorders_products = %d,
-									products.workorders_manhours = %d,
 									products.bookmarks = %d,
 									products.core_product = %d,
 									products.delivery_days = %d,
@@ -610,8 +645,6 @@ class products extends motherboard
 				$data[1]['groupID'],
 				$data[1]['brandID'],
 				$data[1]['externalStockID'],
-				$data[1]['workorders_products'],
-				$data[1]['workorders_manhours'],
 				$data[1]['bookmark'],
 				$data[1]['core_product'],
 				$data[1]['delivery_days'],
@@ -664,6 +697,31 @@ class products extends motherboard
 			parent::query($query);
 		}
 		
+		
+		$query = sprintf(
+			"	DELETE FROM		products_addons
+				WHERE			products_addons.productID = %d",
+			intval($data[1]['productID'])
+		);
+		parent::query($query);
+		
+		
+		foreach($data[1]['addonID'] AS $addonID)
+		{
+			if($addonID == 0)
+			{
+				continue;
+			}
+			
+			$query = sprintf(
+				"	INSERT INTO		products_addons
+					SET				products_addons.productID = %d,
+									products_addons.addonID = %d",
+				intval($data[1]['productID']),
+				$addonID
+			);
+			parent::query($query);
+		}
 		
 		
 		/*
@@ -859,8 +917,10 @@ class products extends motherboard
 		
 		$query = sprintf(
 			"	UPDATE		products_pricecheck
-				SET			products_pricecheck.profit = '%.2f'",
-			$data[1]['profit']
+				SET			products_pricecheck.profit = '%.2f'
+				WHERE		products_pricecheck.productID = %d",
+			$data[1]['profit'],
+			$data[1]['productID']
 		);
 		parent::query($query);
 		
@@ -909,6 +969,21 @@ class products extends motherboard
 		parent::query($query);
 		
 		return 0;
+	}
+	
+	
+	public function deleteAddon($data)
+	{
+		parent::_checkInputValues($data, 2);
+		
+		$query = sprintf(
+			"	DELETE FROM		products_addons
+				WHERE			products_addons.productAddonID = %d",
+			$data[1]['productAddonID']
+		);
+		parent::query($query);
+		
+		return true;
 	}
 	
 	
@@ -1174,26 +1249,35 @@ class products extends motherboard
 		
 		if($data[2] != "")
 		{
-			$integer = "";
-			
-			if(intval($data[2]) > 0)
+			if($data[2] != " ")
 			{
-				$integer = sprintf(
-					"	OR		products_cache.article_code = %d
-						OR		products_cache.barcode = %d",
-					intval($data[2]),
-					intval($data[2])
-				);
+				$split = explode(" ", $data[2]);
+				$strsrch = false;
+				
+				foreach($split AS $string)
+				{
+					if(intval($string) == 0 || $strsrch == true)
+					{
+						$strsrch = true;
+						
+						$search .= sprintf(
+							"	AND		products_cache.name LIKE ('%%%s%%')",
+							parent::real_escape_string($string)
+						);
+					}
+					else if($strsrch == false)
+					{
+						$search .= sprintf(
+							"	AND		(
+											products_cache.article_code = %d
+									OR		products_cache.barcode = %d
+										)",
+							intval($string),
+							intval($string)
+						);
+					}
+				}
 			}
-			
-			$search = sprintf(
-				" AND 	(
-							products_cache.name LIKE ('%%%s%%')
-					%s
-						)",
-				parent::real_escape_string($data[2]),
-				$integer
-			);
 		}
 		
 		if($search == "")
@@ -1220,7 +1304,10 @@ class products extends motherboard
 			$category,
 			$search
 		);
+		
 		$result = parent::query($query);
+		
+		// print "<pre>" . $query . "</pre>";
 		
 		return parent::fetch_array($result);
 	}

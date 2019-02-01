@@ -39,9 +39,15 @@ $form = "/form-artikel/";
 				<tr click="<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . trim($_GET['file'], "/") . $form . $value['productID'] ?>">
 					<td><?= $value['article_code'] ?></td>
 					<td class="hide-mobile"><?= $value['supplier_code'] ?></td>
-					<td><?= $value['name'] ?></td>
+					<td>
+						<?= $value['status'] == 2 ? '<span class="fa fa-trash"></span>&nbsp;' : '' ?>
+						<?= $value['name'] ?>
+					</td>
 					<td class="hide-mobile"><?= $mb->_runFunction("products", "translateVisibility", array($value['visibility'])) ?></td>
-					<td><?= $value['promo'] == true ? '<span class="fa fa-star"></span>' : '' ?>&nbsp;&euro;&nbsp;<?= number_format($value['price'], 2, ",", ".") ?></td>
+					<td>
+						<?= $value['promo'] == true ? '<span class="fa fa-star"></span>&nbsp;' : '' ?>
+						&euro;&nbsp;<?= number_format($value['price'], 2, ",", ".") ?>
+					</td>
 					<td class="hide-mobile"><?= $value['date_added'] ?></td>
 				</tr>
 				<?php

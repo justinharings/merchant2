@@ -1,6 +1,5 @@
 <?php
 $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "SET_BP", 1));
-$data = $mb->_runFunction("reports", "viewArticleGroups", array($_SESSION['merchantID'], (isset($_POST['month']) ? $_POST['month'] : date("m")), (isset($_POST['year']) ? $_POST['year'] : date("Y"))));
 ?>
 
 <ul class="breadcrumbs">
@@ -69,21 +68,84 @@ $data = $mb->_runFunction("reports", "viewArticleGroups", array($_SESSION['merch
 				
 				<tbody>
 					<?php
+					$data = $mb->_runFunction("reports", "viewArticleGroups", array($_SESSION['merchantID'], (isset($_POST['month']) ? $_POST['month'] : date("m")), (isset($_POST['year']) ? $_POST['year'] : date("Y"))));
+					
+					$print = array();
+					
+					$unknown = array();
+					$unknownNum = 0;
+					
+					foreach($data AS $value)
+					{
+						if(!isset($print[$value['group']]))
+						{
+							$print[$value['group']] = array();
+							$print[$value['group']]['grand_total'] = $value['grand_total'];
+							$print[$value['group']]['quantity'] = $value['quantity'];
+						}
+						else
+						{
+							$print[$value['group']]['grand_total'] += $value['grand_total'];
+							$print[$value['group']]['quantity'] += $value['quantity'];
+						}
+						
+						if($value['group'] == "")
+						{
+							$unknown[$unknownNum]['name'] = $value['name'];
+							$unknown[$unknownNum]['productID'] = $value['productID'];
+							
+							$unknownNum++;
+						}
+					}
+					
 					$total = 0;
 					$quantity = 0;
-						
-					foreach($data AS $value)
+					
+					krsort($print);
+					
+					foreach($print AS $group => $value)
 					{
 						$total += $value['grand_total'];
 						$quantity += $value['quantity'];
 						
 						?>
 						<tr>
-							<td><?= $value['group'] ?></td>
+							<td><?= ($group == "" ? 'Onbekende groep <span class="fa fa-question-circle" title="Deze artikelen zijn niet toegewezen aan een omzetgroep en kunnen derhalve niet geplaatst worden. Verander het veld omzetgroep onder dit artikel."></span>' : $group) ?></td>
 							<td>&euro;&nbsp;<?= _frontend_float($value['grand_total']) ?></td>
-							<td><?= $value['quantity'] ?> <?= $mb->_translateReturn("forms", "form-reports-table-quantity-inline") ?></td>
+							<td>
+								<?php
+								if($group == "")
+								{
+									$value['quantity'] = count($unknown);
+								}
+									
+								if($value['quantity'] > 0)
+								{
+									?>
+									<?= $value['quantity'] ?> <?= $mb->_translateReturn("forms", "form-reports-table-quantity-inline") ?>
+									<?php
+								}
+								?>
+							</td>
 						</tr>
 						<?php
+							
+						if($group == "")
+						{
+							foreach($unknown AS $key => $value)
+							{
+								?>
+								<tr>
+									<td colspan="3">
+										&nbsp;&nbsp;&nbsp;-&nbsp;
+										<a href="/<?= _LANGUAGE_PACK ?>/modules/catalogus/artikelen/form-artikel/<?= $value['productID'] ?>/">
+											<?= $value['name'] ?>
+										</a>
+									</td>
+								</tr>
+								<?php
+							}
+						}
 					}
 					?>
 					

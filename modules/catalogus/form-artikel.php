@@ -58,6 +58,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 			<div class="fa fa-youtube-play"></div>
 			<div class="fa fa-list"></div>
 			<div class="fa fa-filter"></div>
+			<div class="fa fa-plus-square"></div>
 			<div class="fa fa-exchange"></div>
 			<div class="fa fa-search"></div>
 		</div>
@@ -203,8 +204,6 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 				
 				<input type="checkbox" <?= isset($_GET['dataID']) && $data['core_product'] == 1 ? "checked=\"checked\"" : "" ?> name="core_product" id="core_product" value="1" class="double-margin" holder="Kerncollectie" question="Kerncollectie artikelen hebben een speciale gouden balk op de website en krijgen een extra kenmerk in de assistent." />
 				<input type="checkbox" <?= isset($_GET['dataID']) && $data['bookmarks'] == 1 ? "checked=\"checked\"" : "" ?> name="bookmark" id="bookmark" value="1" class="double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-bookmark") ?>" question="Zet dit artikel in de favorieten van uw POS. Zo kunt u bepaalde artikelen (plastic tassen, vaste diensten etcetera) onder de bookmark van uw POS zetten." />
-				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_products'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_products" id="workorders_products" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-products-parts") ?>" question="Gebruik dit artikel als 'product' vanuit de werkorders." />
-				<input type="checkbox" <?= isset($_GET['dataID']) && $data['workorders_manhours'] == 1 ? "checked=\"checked\"" : "" ?> name="workorders_manhours" id="workorders_manhours" value="1" holder="<?= $mb->_translateReturn("forms", "form-products-manhours") ?>" question="Gebruik dit artikel als 'manuren/laag percentage' vanuit de werkorders." />
 			</div>
 		</div>
 		
@@ -618,6 +617,54 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 		</div>
 		
 		<div class="tab tab-8">
+			<div class="form-content">
+				<table class="form-table">
+					<thead>
+						<tr>
+							<td><?= $mb->_translateReturn("table-headers", "ac") ?></td>
+							<td><?= $mb->_translateReturn("table-headers", "product") ?></td>
+							<td><?= $mb->_translateReturn("table-headers", "price") ?></td>
+							<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<?php
+						if(count($data['addons']) > 0)
+						{
+							foreach($data['addons'] AS $addon)
+							{
+								?>
+								<tr id="<?= $addon['productAddonID'] ?>">
+									<td>
+										<?= $addon['article_code'] ?>
+										<input type="hidden" name="addonID[]" id="addonID_<?= $addon['productAddonID'] ?>" value="<?= $addon['addonID'] ?>" />
+									</td>
+									<td title="<?= strip_tags($addon['name']) ?>"><?= _chopString($addon['name'], 30) ?></td>
+									<td>&euro;&nbsp;<?= number_format($addon['price'], 2, ",", ".") ?></td>
+									<td>
+										<span class="remove-row fa fa-remove" post="/library/php/posts/catalogus/verwijder_addon.php?productAddonID=<?= $addon['productAddonID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+									</td>
+								</tr>
+								<?php
+							}
+						}
+						?>
+						
+						<tr class="new-row">
+							<td class="searched-p-article-code"><input type="text" name="article_code_srch[]" id="article_code_srch_+" value="" class="width-75 product-search" icon="fa-search" validation-type="int" validation-required="true" /></td>
+							<td class="searched-p-name"></td>
+							<td class="searched-p-price"></td>
+							<td class="searched-p-addonID">
+								<input type="hidden" name="addonID[]" id="addonID_+" value="0" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<div class="tab tab-9">
 			<?php
 			$data_locations = $mb->_runFunction("stock", "viewLocations", array($_SESSION['merchantID'], "", "locations.name", "0,50"));
 			
@@ -715,14 +762,14 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 			</div>
 		</div>
 		
-		<div class="tab tab-9">
+		<div class="tab tab-10">
 			<div class="form-content">
 				<table class="form-table">
 					<thead>
 						<tr>
 							<td width="375"><?= $mb->_translateReturn("forms", "form-products-pricecheck-website") ?></td>
 							<td>
-								Verzendkosten
+								Gratis verzending
 								<span class="fa fa-question-circle question" title="Bij het toevoegen van deze pricecheck kun je kiezen voor 'Gratis verzending'. Als dit aan staat houd de pricecheck er rekening mee dat die ingecalculeert moet worden in de prijs van de aanbieder."></span>
 							</td>
 							<td>Prijs</td>
@@ -785,7 +832,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 										}
 										else if($value['price'] > 0)
 										{
-											if($value['free_shipment'])
+											if($value['free_shipment'] && $shipment_price > 0)
 											{
 												print _frontend_float($value['price'])
 													. "-"
@@ -829,19 +876,6 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 								<?php
 							}
 						}
-						else
-						{
-							foreach($data['pricecheck'] AS $value)
-							{
-								$cnt = 1;
-								?>
-								<tr>
-									<td><input type="text" name="pricecheck_website[]" id="pricecheck_website_<?= $cnt ?>" value="<?= $value['website'] ?>" class="width-300" validation-required="true" validation-type="text" /></td>
-									<td colspan="3">&nbsp;</td>
-								</tr>
-								<?php	
-							}
-						}
 						?>
 						
 						<tr class="new-row">
@@ -851,10 +885,6 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 						</tr>
 					</tbody>
 				</table>
-			</div>
-			
-			<div class="form-content" style="<?= $found == false ? "display: none;" : "" ?>">
-				<input type="text" name="profit" id="profit" value="<?= $profit ?>" holder="Minimale winst" class="width-100" icon="fa-euro" question="Bij het toevoegen van deze pricecheck kun je een minimaal winstbedrag opgeven. De pricecheck zal dan niet lager gaan dan inkoop + BTW + dit winstbedrag. Als het winstbedrag op 0,00 (nul) euro staat, zal er als minimale prijs inkoop + BTW gerekent worden." />
 			</div>
 		</div>
 	</div>

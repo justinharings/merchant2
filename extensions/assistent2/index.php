@@ -316,7 +316,7 @@ if(!isset($_GET['module']))
 
 		<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		<script type="text/javascript" src="/extensions/assistent2/library/js/assistent.js"></script>
+		<script type="text/javascript" src="/extensions/assistent2/library/js/assistent.js?timer=<?= time() ?>"></script>
 	</head>
 
 	<body>
@@ -329,20 +329,6 @@ if(!isset($_GET['module']))
 		{
 			?>
 			<div class="filler"></div>
-			
-			<script type="text/javascript">
-				$(document).ready(
-					function($)
-					{
-						setTimeout(
-							function()
-							{
-								document.location.reload();
-							}, 30000
-						);
-					}
-				);
-			</script>
 			<?php
 		}
 		?>

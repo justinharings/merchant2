@@ -16,8 +16,15 @@
 			while($row = $mb->fetch_assoc($result))
 			{
 				$order = $mb->_runFunction("orders", "load", array(intval($row['orderID'])));
+				
+				$url = "/assistent2/?module=order&orderID=" . $row['orderID'];
+				
+				if($row['ready'])
+				{
+					$url = "/assistent2/?module=ready&orderID=" . $row['orderID'];
+				}
 				?>
-				<div class="table" browse="/assistent2/?module=order&orderID=<?= $row['orderID'] ?>">
+				<div class="table" browse="<?= $url ?>">
 					<table>
 						<tr>
 							<td>
@@ -91,6 +98,8 @@
 			<div class="spacer"></div>
 			
 			<div class="button calendar fa fa-calendar"></div>
+			<div class="button core_products fa fa-bullseye"></div>
+			<div class="button cleanup fa fa-trash"></div>
 		</div>
 	</div>
 </div>

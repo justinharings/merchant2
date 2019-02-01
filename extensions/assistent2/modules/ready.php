@@ -3,7 +3,8 @@ $order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
 ?>
 <div class="container mint-green">
 	<div class="inner-container">
-		<div class="title fa fa-check"></div>
+		<div class="title fa fa-<?= isset($_GET['sms']) ? "sms" : "check" ?>"></div>
+		
 		<div class="menu-button fa fa-bars"></div>
 		
 		<div class="menu">
@@ -12,6 +13,18 @@ $order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
 					<span class="fa fa-check"></span>
 					Bestelling staat klaar
 				</li>
+				
+				<?php
+				if($order['customer']['mobile_phone'] != "" && !isset($_GET['sms']))
+				{
+					?>
+					<li browse="/extensions/assistent2/library/php/ready_sms.php?orderID=<?= intval($_GET['orderID']) ?>&phone=<?= $order['customer']['mobile_phone'] ?>&customerID=<?= intval($order['customer']['customerID']) ?>">
+						<span class="fa fa-comments"></span>
+						Stuur de klant een SMS
+					</li>
+					<?php
+				}
+				?>
 				
 				<li class="datepicker">
 					<span class="fa fa-calendar"></span>
@@ -257,6 +270,8 @@ $order = $mb->_runFunction("orders", "load", array(intval($_GET['orderID'])));
 			<div class="spacer"></div>
 			
 			<div class="button calendar fa fa-calendar"></div>
+			<div class="button core_products fa fa-bullseye"></div>
+			<div class="button cleanup fa fa-trash"></div>
 		</div>
 	</div>
 </div>

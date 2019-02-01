@@ -37,5 +37,15 @@ $data = $mb->_runFunction("workorders", "loadSettings", array($_SESSION['merchan
 			<input type="checkbox" <?= isset($data['radio']) && $data['radio'] == 1 ? "checked=\"checked\"" : "" ?> name="radio" id="radio" value="1" class="margin" holder="<?= $mb->_translateReturn("forms", "form-workorders-radio") ?>" question="Wilt u dat er in het werkorder scherm de muziek optie beschikbaar is? Zet dan dit vinkje aan." />
 			<input type="checkbox" <?= isset($data['unique_identifier']) && $data['unique_identifier'] == 1 ? "checked=\"checked\"" : "" ?> name="unique_identifier" id="unique_identifier" value="1" holder="<?= $mb->_translateReturn("forms", "form-workorders-unique-identifier") ?>" question="Gebruikt u sleutelnummers of andere identificatie nummers? Dan kunt u er voor zorgen dat het systeem erop controleert dat u unieke nummers gebruikt ter indentificatie." />
 		</div>
+		
+		<div class="form-content">
+			<div class="content-header">
+				<span class="fa fa-pencil-square-o"></span>
+				Werkorder artikel koppeling
+			</div>
+			
+			<input type="text" name="workorders_manhours" id="workorders_manhours" value="<?= $data['workorders_manhours'] ?>" class="width-100 margin" icon="fa-hand-stop-o" holder="Arbeidsloon" question="Vul het artikelnummer in van het product dat u wilt gebruiken als arbeidsloon voor werkorders." />
+			<input type="text" name="workorders_products" id="workorders_products" value="<?= $data['workorders_products'] ?>" class="width-100" icon="fa-tags" holder="Producten" question="Vul het artikelnummer in voor het product dat u wilt gebruiken als producten voor werkorders." />
+		</div>
 	</div>
 </form>

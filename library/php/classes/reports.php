@@ -13,6 +13,101 @@ class reports extends motherboard
 		return $ret;
 	}
 	
+	public function saveRegister($data)
+	{
+		$query = sprintf(
+			"	INSERT INTO		register
+				SET				register.merchantID = %d,
+								register.paymentID = %d,
+								register.date = '%s',
+								register.amount = '%.2f'",
+			$data[0],
+			$data[1]['paymentID'],
+			parent::datevalue($data[1]['date']),
+			$data[1]['amount']
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
+	public function loadRegisterChanges($data)
+	{
+		$period = false;
+		
+		if(strpos($data[1], "week_") !== false)
+		{
+			$period = true;
+			
+			$dates = str_replace("week_", "", $data[1]);
+			$dates = explode("_", $dates);
+			
+			$year = $dates[1];
+			$week = $dates[0];
+			
+			$periods = $this->getWeekData($week, $year);
+		}
+		else if(strpos($data[1], "month_") !== false)
+		{
+			$period = true;
+			
+			$dates = str_replace("month_", "", $data[1]);
+			$dates = explode("_", $dates);
+			
+			$year = $dates[1];
+			$month = $dates[0];
+			
+			$periods = $this->getWeekData($week, $year);
+			$periods[0] = $year . "-" . $month . "-01";
+			$periods[1] = $year . "-" . $month . "-31";
+		}
+
+		
+		$query = sprintf(
+			"	SELECT		register.*,
+							payment_methods.name AS payment_method
+				FROM		register
+				INNER JOIN	payment_methods ON payment_methods.paymentID = register.paymentID
+				WHERE		register.merchantID = %d
+					AND		%s",
+			$data[0],
+			($period == false ? "register.date = '" . parent::datevalue($data[1]) . "'" : "register.date BETWEEN '" . $periods[0] . "' AND '" . $periods[1] . "'")
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_array($result);
+	}
+	
+	public function findComplete($data)
+	{
+		$query = sprintf(
+			"	SELECT		register_close.closeID
+				FROM		register_close
+				WHERE		register_close.merchantID = %d
+					AND		register_close.date = '%s'",
+			$data[0],
+			parent::datevalue($data[1])
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		return $row['closeID'];
+	}
+	
+	public function completeRegister($data)
+	{
+		$query = sprintf(
+			"	INSERT INTO		register_close
+				SET				register_close.merchantID = %d,
+								register_close.date = '%s'",
+			$data[0],
+			parent::datevalue($data[1]['date'])
+		);
+		parent::query($query);
+		
+		return true;
+	}
+	
 	public function closeRegister($data)
 	{
 		parent::_checkInputValues($data, 2);
@@ -52,6 +147,20 @@ class reports extends motherboard
 			$periods = $this->getWeekData($week, $year);
 			$periods[0] = $year . "-" . $month . "-01";
 			$periods[1] = $year . "-" . $month . "-31";
+		}
+		else if(strpos($data[1], "day_") !== false)
+		{
+			$period = false;
+			
+			$date = str_replace("day_", "", $data[1]);
+			
+			$date = explode("-", $date);
+			
+			$year = $date[2];
+			$month = $date[1];
+			$day = $date[0];
+			
+			$date  = new DateTime($year . "-" . $month . "-" . $day);
 		}
 		
 		$query = sprintf(
@@ -137,10 +246,225 @@ class reports extends motherboard
 	{
 		parent::_checkInputValues($data, 3);
 		
-		$groups = $this->_runFunction("groups", "view", array($data[0], "", "groups.name", "0,9999"));
+		$query = sprintf(
+			"	SELECT		orders_payment.*,
+							orders.grand_total,
+							orders.payed
+				FROM		orders_payment
+				INNER JOIN	orders ON orders.orderID = orders_payment.orderID
+				WHERE		orders.merchantID = %d
+					AND		MONTH(orders_payment.date) = %d
+					AND		YEAR(orders_payment.date) = %d",
+			$data[0],
+			$data[1],
+			$data[2]
+		);
+		$result = parent::query($query);
 		
 		$return = array();
 		$num = 0;
+		
+		while($row = parent::fetch_assoc($result))
+		{
+			$calc_items = array();
+			$calc_num = 0;
+			
+			$queryProducts = sprintf(
+				"	SELECT		orders_product.*,
+								groups.name AS groupName
+					FROM		orders_product
+					INNER JOIN	products ON products.productID = orders_product.productID
+					LEFT JOIN	groups ON groups.groupID = products.groupID
+					WHERE		orders_product.orderID = %d",
+				$row['orderID']
+			);
+			$resultProducts = parent::query($queryProducts);
+			
+			while($rowProducts = parent::fetch_assoc($resultProducts))
+			{
+				$price = ($rowProducts['quantity']*$rowProducts['price']);
+				
+				$calc_items[$calc_num]['name'] = $rowProducts['name'];
+				$calc_items[$calc_num]['productID'] = $rowProducts['productID'];
+				$calc_items[$calc_num]['group'] = $rowProducts['groupName'];
+				$calc_items[$calc_num]['price'] = $price;
+				$calc_items[$calc_num]['quantity'] = 0;
+				
+				$calc_num++;
+			}
+			
+			
+			
+			$queryShipments = sprintf(
+				"	SELECT		orders_shipment.*
+					FROM		orders_shipment
+					WHERE		orders_shipment.orderID = %d",
+				$row['orderID']
+			);
+			$resultShipments = parent::query($queryShipments);
+			
+			while($rowShipments = parent::fetch_assoc($resultShipments))
+			{
+				$price = $rowShipments['price'];
+				
+				if($price > 0)
+				{
+					$calc_items[$calc_num]['name'] = "Verzendkosten";
+					$calc_items[$calc_num]['productID'] = 0;
+					$calc_items[$calc_num]['group'] = "Verzendkosten";
+					$calc_items[$calc_num]['price'] = $price;
+					$calc_items[$calc_num]['quantity'] = 0;
+					
+					$calc_num++;
+				}
+			}
+			
+			
+			
+			foreach($calc_items AS $key => $value)
+			{
+				$percentage = $row['grand_total'] / 100;
+				$percentage = $value['price'] / $percentage;
+				
+				$return[$num]['name'] = $value['name'];
+				$return[$num]['productID'] = $value['productID'];
+				$return[$num]['group'] = $value['group'];
+				$return[$num]['grand_total'] = (($row['amount']/100)*$percentage);
+				$return[$num]['quantity'] = $value['quantity'];
+				
+				$num++;
+			}
+		}
+		
+		$groups = $this->_runFunction("groups", "view", array($data[0], "", "groups.name", "0,9999"));
+		$quantity = array();
+		
+		foreach($groups AS $group)
+		{
+			$query = sprintf(
+				"	SELECT		SUM(orders_product.quantity) AS cnt
+					FROM		orders_product
+					INNER JOIN	products ON products.productID = orders_product.productID
+					INNER JOIN	orders ON orders.orderID = orders_product.orderID
+					INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+					WHERE		products.groupID = %d
+						AND		orders.merchantID = %d
+						AND		order_statuses.finished = 1
+						AND		order_statuses.declined = 0
+						AND 	MONTH(orders.date_added) = %d
+						AND		YEAR(orders.date_added) = %d",	
+				$group['groupID'],
+				$data[0],
+				$data[1],
+				$data[2]
+			);
+			$result = parent::query($query);
+			$row = parent::fetch_assoc($result);
+			
+			$quantity[$group['name']] = $row['cnt'];
+		}
+		
+		
+		
+		$query = sprintf(
+			"	SELECT		COUNT(orders_shipment.orderID) AS cnt
+				FROM		orders_shipment
+				INNER JOIN	orders ON orders.orderID = orders_shipment.orderID
+				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				WHERE		orders.merchantID = %d
+					AND		order_statuses.finished = 1
+					AND		order_statuses.declined = 0
+					AND 	MONTH(orders.date_added) = %d
+					AND		YEAR(orders.date_added) = %d
+					AND		orders_shipment.price > 0",
+			$data[0],
+			$data[1],
+			$data[2]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$quantity["Verzendkosten"] = $row['cnt'];
+		
+		
+		
+		$had = array();
+		
+		foreach($return AS $key => $value)
+		{
+			if(!in_array($value['group'], $had))
+			{
+				$return[$key]['quantity'] = $quantity[$value['group']];
+				$had[] = $value['group'];
+			}
+		}
+		
+		return $return;
+		
+		
+		
+		/*
+		// $groups = $this->_runFunction("groups", "view", array($data[0], "", "groups.name", "0,9999"));
+		
+		$return = array();
+		$num = 0;
+		
+		
+		$query = sprintf(
+			"	SELECT		orders_product.quantity,
+							orders_product.price,
+							products.groupID,
+							groups.name AS group_name
+				FROM		orders_product
+				INNER JOIN	products ON products.productID = orders_product.productID
+				INNER JOIN	orders ON orders.orderID = orders_product.orderID
+				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				LEFT JOIN	groups ON groups.groupID = products.groupID
+				WHERE		orders.merchantID = %d
+					AND		order_statuses.finished = 1
+					AND		order_statuses.declined = 0
+					AND 	MONTH(orders.date_added) = %d
+					AND		YEAR(orders.date_added) = %d
+				ORDER BY	products.groupID",
+			$data[0],
+			$data[1],
+			$data[2]
+		);
+		$result = parent::query($query);
+		
+		while($row = parent::fetch_assoc($result))
+		{
+			$return[$num]['group'] = $row['group_name'];
+			$return[$num]['grand_total'] = ($row['quantity']*$row['price']);
+			$return[$num]['quantity'] = $row['quantity'];
+			
+			$num++;
+		}
+		
+		$query = sprintf(
+			"	SELECT		SUM(orders_shipment.price) AS total
+				FROM		orders_shipment
+				INNER JOIN	orders ON orders.orderID = orders_shipment.orderID
+				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				WHERE		orders.merchantID = %d
+					AND		order_statuses.finished = 1
+					AND		order_statuses.declined = 0
+					AND 	MONTH(orders.date_added) = %d
+					AND		YEAR(orders.date_added) = %d",
+			$data[0],
+			$data[1],
+			$data[2]
+		);
+		$result = parent::query($query);
+		
+		if(parent::num_rows($result))
+		{
+			$row = parent::fetch_assoc($result);
+			
+			$return[$num]['group'] = "Verzendkosten";
+			$return[$num]['grand_total'] = $row['total'];
+			$return[$num]['quantity'] = $row['quantity'];
+		}
 		
 		foreach($groups AS $group)
 		{
@@ -154,12 +478,15 @@ class reports extends motherboard
 					WHERE		products.groupID = %d
 						AND		order_statuses.finished = 1
 						AND		order_statuses.declined = 0
-						%s
+						AND 	MONTH(orders.date_added) = %d
 						AND		YEAR(orders.date_added) = %d",	
 				$group['groupID'],
-				($data[1] != "" ? 'AND MONTH(orders.date_added) = ' . $data[1] : ""),
+				$data[1],
 				$data[2]
 			);
+			
+			//print "<pre>" . $query . "</pre>";
+			
 			$result = parent::query($query);
 			$row = parent::fetch_assoc($result);
 			
@@ -170,7 +497,28 @@ class reports extends motherboard
 			$num++;
 		}
 		
-		return $return;
+		$query = sprintf(
+			"	SELECT		SUM(orders_product.quantity) AS cnt,
+							SUM(orders_product.price) AS amnt
+				FROM		orders_product
+				INNER JOIN	products ON products.productID = orders_product.productID
+				INNER JOIN	orders ON orders.orderID = orders_product.orderID
+				INNER JOIN	order_statuses ON order_statuses.statusID = orders.statusID
+				WHERE		products.groupID = 0
+					AND		order_statuses.finished = 1
+					AND		order_statuses.declined = 0
+					AND 	MONTH(orders.date_added) = %d
+					AND		YEAR(orders.date_added) = %d",	
+			$data[1],
+			$data[2]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$return[$num]['group'] = "Overige / Niet bepaald";
+		$return[$num]['grand_total'] = $row['amnt'];
+		$return[$num]['quantity'] = ($row['cnt'] > 0 ? $row['cnt'] : 0);
+		*/
 	}
 	
 	

@@ -110,12 +110,39 @@ class workorders extends motherboard
 		);
 		$result = parent::query($query);
 
+		$return = array();
+
 		if(parent::num_rows($result))
 		{
-			return parent::fetch_assoc($result);
+			$return = parent::fetch_assoc($result);
 		}
+
+		$query = sprintf(
+			"	SELECT		products.article_code
+				FROM		products
+				WHERE		products.workorders_manhours = 1
+					AND		products.merchantID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
 		
-		return array();
+		$return['workorders_manhours'] = $row['article_code'];
+		
+		
+		$query = sprintf(
+			"	SELECT		products.article_code
+				FROM		products
+				WHERE		products.workorders_products = 1
+					AND		products.merchantID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$return['workorders_products'] = $row['article_code'];
+		
+		return $return;
 	}
 	
 	
@@ -232,6 +259,31 @@ class workorders extends motherboard
 			);
 			parent::query($query);
 		}
+		
+		$query = sprintf(
+			"	UPDATE		products
+				SET			products.workorders_manhours = 0,
+							products.workorders_products = 0
+				WHERE		products.merchantID = %d",
+			$data[0]
+		);
+		parent::query($query);
+		
+		$query = sprintf(
+			"	UPDATE		products
+				SET			products.workorders_manhours = 1
+				WHERE		products.article_code = %d",
+			intval($data[1]['workorders_manhours'])
+		);
+		parent::query($query);
+		
+		$query = sprintf(
+			"	UPDATE		products
+				SET			products.workorders_products = 1
+				WHERE		products.article_code = %d",
+			intval($data[1]['workorders_products'])
+		);
+		parent::query($query);
 		
 		return true;
 	}

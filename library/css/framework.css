@@ -332,6 +332,20 @@ body div.top
 		color: #272b36;
 	}
 	
+	body div.top span.close-register
+	{
+		width: 25px;
+		height: 25px;
+		
+		position: absolute;
+		top: 18px;
+		right: 50px;
+		z-index: 990;
+		
+		font-size: 28px;
+		color: #272b36;
+	}
+	
 	body div.top span.previous-button
 	{
 		visibility: hidden;

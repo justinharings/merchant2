@@ -42,6 +42,7 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 			
 			<input type="button" name="return" id="return" value="<?= $mb->_translateReturn("forms", "button-cancel") ?>" class="show-load" />
 			<input type="button" name="print" id="print" value="<?= $mb->_translateReturn("forms", "button-print") ?>" class="pulldown" menu="print" />
+			<input type="button" name="download" id="download" value="<?= $mb->_translateReturn("forms", "button-download") ?>" class="pulldown" menu="download" />
 			<input type="submit" name="save" id="save" value="<?= $mb->_translateReturn("forms", "button-save") ?>" class="red show-load validate-form" />
 			
 			<div class="pulldown print">
@@ -54,6 +55,20 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 				</div>
 				
 				<div class="item" window="/extensions/printserver/index.php?type=tender&action=print&orderID=<?= $_GET['dataID'] ?>">
+					<?= $mb->_translateReturn("forms", "button-tender") ?>
+				</div>
+			</div>
+			
+			<div class="pulldown download">
+				<div class="item" window="/extensions/printserver/index.php?type=invoice&action=download&orderID=<?= $_GET['dataID'] ?>">
+					<?= $mb->_translateReturn("forms", "button-invoice") ?>
+				</div>
+				
+				<div class="item" window="/extensions/printserver/index.php?type=picklist&action=download&orderID=<?= $_GET['dataID'] ?>">
+					<?= $mb->_translateReturn("forms", "button-picklist") ?>
+				</div>
+				
+				<div class="item" window="/extensions/printserver/index.php?type=tender&action=download&orderID=<?= $_GET['dataID'] ?>">
 					<?= $mb->_translateReturn("forms", "button-tender") ?>
 				</div>
 			</div>
@@ -328,7 +343,16 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 							<td><?= $mb->_translateReturn("table-headers", "price") ?></td>
 							<td><?= $mb->_translateReturn("table-headers", "grand_total") ?></td>
 							<td><?= $mb->_translateReturn("table-headers", "price_ex_tax") ?></td>
-							<td width="1"><span class="add-row fa fa-plus-circle"></span></td>
+							<?php
+							if(count($data['payments']) == 0)
+							{
+								?>
+								<td width="1">
+									<span class="add-row fa fa-plus-circle"></span>
+								</td>
+								<?php
+							}
+							?>
 						</tr>
 					</thead>
 					
@@ -352,13 +376,13 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 										<input type="hidden" name="taxrate[]" id="taxrate_<?= $product['orderProductID'] ?>" value="<?= $product['taxrate'] ?>" />
 										<input type="hidden" name="name[]" id="name_<?= $product['orderProductID'] ?>" value="<?= $product['name'] ?>" />
 									</td>
-									<td><?= ($product['barcode'] != "" ? $product['barcode'] : "Onbekend") ?></td>
+									<td <?= $product['deleted'] ? 'style="text-decoration: line-through;"' : '' ?>><?= ($product['barcode'] != "" ? $product['barcode'] : "Onbekend") ?></td>
 									<td>
-										<input type="text" name="quantity[]" id="quantity_<?= $product['orderProductID'] ?>" value="<?= $product['quantity'] ?>" class="width-40 text-center calc-main-quantity" validation-type="int" validation-required="true" />
+										<input type="text" <?= count($data['payments']) > 0 ? 'readonly="readonly"' : '' ?> name="quantity[]" id="quantity_<?= $product['orderProductID'] ?>" value="<?= $product['quantity'] ?>" class="width-40 text-center calc-main-quantity" validation-type="int" validation-required="true" />
 									</td>
-									<td title="<?= strip_tags($product['name']) ?>"><?= _chopString($product['name'], 30) ?></td>
+									<td <?= $product['deleted'] ? 'style="text-decoration: line-through;"' : '' ?> title="<?= strip_tags($product['name']) ?>"><?= _chopString($product['name'], 30) ?></td>
 									<td>
-										<input type="text" name="price[]" id="price_<?= $product['orderProductID'] ?>" value="<?= $product['price'] ?>" class="width-75 text-center calc-main-price" icon="fa-euro" validation-type="int" validation-required="true" />
+										<input type="text" <?= count($data['payments']) > 0 ? 'readonly="readonly"' : '' ?> name="price[]" id="price_<?= $product['orderProductID'] ?>" value="<?= $product['price'] ?>" class="width-75 text-center calc-main-price" icon="fa-euro" validation-type="int" validation-required="true" />
 									</td>
 									<td>
 										<input type="text" disabled="disabled" name="total_<?= $product['orderProductID'] ?>" id="total_<?= $product['orderProductID'] ?>" value="<?= _frontend_float($product['quantity']*$product['price']) ?>" class="width-75 text-center calc-total-price" icon="fa-euro" />
@@ -366,9 +390,17 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 									<td>
 										<input type="text" disabled="disabled" name="excl_<?= $product['orderProductID'] ?>" id="excl_<?= $product['orderProductID'] ?>" value="<?= _frontend_float($product['price_ex_vat']) ?>" class="width-75 text-center calc-excl-price" icon="fa-euro" />
 									</td>
-									<td>
-										<span class="remove-row fa fa-remove" post="/library/php/posts/verkoop/verwijder_product.php?itemID=<?= $product['orderProductID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
-									</td>
+									
+									<?php
+									if(count($data['payments']) == 0)
+									{
+										?>
+										<td>
+											<span class="remove-row fa fa-remove" post="/library/php/posts/verkoop/verwijder_product.php?itemID=<?= $product['orderProductID'] ?>&returnURL=<?= "/" . _LANGUAGE_PACK . "/modules/" . $_GET['module'] . "/" . $_GET['file'] . "/" . $_GET['form'] . "/" . $_GET['dataID'] ?>"></span>
+										</td>
+										<?php
+									}
+									?>
 								</tr>
 								<?php
 							}

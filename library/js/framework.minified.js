@@ -56,12 +56,15 @@ document.location.href="/"+prefix+"/modules"+$(this).attr("rel")})}});var cnt=0;
 {document.location.href=link})}});$("div.button").each(function()
 {if($(this).attr("click")!=""&&typeof $(this).attr("click")!=="undefined")
 {var link=$(this).attr("click");$(this).bind("click",function()
-{document.location.href=link})}});var cnt=0;$("span.add-row").on("click",function()
-{cnt+=1;console.log(cnt);var tbody=$(this).closest("table").find("tbody");var clone=tbody.find("tr.new-row").clone();clone.find("input, select").each(function()
+{document.location.href=link})}});var cnt;$("span.add-row").on("click",function()
+{var tbody=$(this).closest("table").find("tbody");cnt=tbody.find("tr.new-row").attr("cnt");if(typeof cnt!==typeof undefined&&cnt!==!1)
+{cnt=parseInt(tbody.find("tr.new-row").attr("cnt"))+1;tbody.find("tr.new-row").attr("cnt",cnt)}
+else{cnt=0;tbody.find("tr.new-row").attr("cnt","0")}
+console.log(cnt);var clone=tbody.find("tr.new-row").clone();clone.find("input, select").each(function()
 {var str=$(this).attr("id");if(str.indexOf("_+")>=0)
 {var replaced=str.replace("_+","_"+cnt)
 $(this).attr("id",replaced)}
-if($(this).attr("checked")=="checked"&&cnt>1)
+if($(this).attr("checked")=="checked"&&cnt>0)
 {$(this).removeAttr("checked")}
 $(this).removeClass("hasDatepicker")});clone.appendTo(tbody).removeClass("new-row").show();$("input, select, textarea").each(function()
 {if($(this).parents('tr.new-row').length)
@@ -73,7 +76,7 @@ systemChanges($(this))});checkboxHandler();findProduct()});$("span.remove-row").
 {$.post("/library/php/posts/catalogus/return_specifications.php",{specificationID:$("#specificationID").val()}).done(function(data)
 {data=$.parseJSON(data);if(data.length>0)
 {for(var i=0;i<data.length;i++)
-{$(".add-specification").trigger("click");var add_key=(i+1);$("#filter_language_"+add_key).val(data[i].language);$("#filter_key_"+add_key).val(data[i].key);$("#filter_value_"+add_key).val(data[i].value)}}})});function addslashes(str)
+{$(".add-specification").trigger("click");$("#filter_language_"+i).val(data[i].language);$("#filter_key_"+i).val(data[i].key);$("#filter_value_"+i).val(data[i].value)}}})});function addslashes(str)
 {return(str+'').replace(/[\\"']/g,'\\$&').replace(/\u0000/g,'\\0')}
 $(".fa-refresh").on("click",function()
 {$(this).addClass("fa-spin");var array=new Array();$(".prop_keys").each(function()
@@ -94,7 +97,7 @@ $(this).removeClass("fa-spin")});$(".trash-properties").on("click",function()
 {e.preventDefault();elm.prev("span.fa").removeClass("fa-search").addClass("fa-circle-o-notch").addClass("fa-spin");$.post("/library/php/posts/catalogus/return_product.php",{article_code:elm.val()}).done(function(data)
 {if(data=="null")
 {elm.val("");elm.css("border","1px solid #d00000");elm.prev("span.fa").addClass("fa-search").removeClass("fa-circle-o-notch").removeClass("fa-spin")}
-else{data=$.parseJSON(data);var tr=elm.parent().parent().parent();var productID=data.productID;productID='<input type="hidden" name="productID[]" id="productID" value="'+productID+'" />';tr.find("td.searched-p-name").html(data.name);tr.find("td.searched-p-barcode").html(data.barcode);tr.find("td.searched-p-article-code").html(data.article_code);tr.find("td.searched-p-price").html("&euro;&nbsp;"+data.price);tr.find("td.searched-p-productID").html(productID);tr.find("input.searched-p-price").val(data.price);tr.find("input.searched-p-name").val(data.name);tr.find("input.searched-p-taxrate").val(data.taxrate)}})}});$(document).on("change",'select.shipment-search',function(e)
+else{data=$.parseJSON(data);var tr=elm.parent().parent().parent();var productID=data.productID;var addonID='<input type="hidden" name="addonID[]" id="addonID" value="'+productID+'" />';productID='<input type="hidden" name="productID[]" id="productID" value="'+productID+'" />';tr.find("td.searched-p-name").html(data.name);tr.find("td.searched-p-barcode").html(data.barcode);tr.find("td.searched-p-article-code").html(data.article_code);tr.find("td.searched-p-price").html("&euro;&nbsp;"+data.price);tr.find("td.searched-p-productID").html(productID);tr.find("td.searched-p-addonID").html(addonID);tr.find("input.searched-p-price").val(data.price);tr.find("input.searched-p-name").val(data.name);tr.find("input.searched-p-taxrate").val(data.taxrate)}})}});$(document).on("change",'select.shipment-search',function(e)
 {var elm=$(this);$.post("/library/php/posts/catalogus/return_shipment.php",{shipmentID:elm.val()}).done(function(data)
 {data=$.parseJSON(data);var tr=elm.parent().parent().parent();tr.find("td.searched-s-price").html(data.price);tr.find("td.searched-s-courier").html(data.courier);tr.find("input.searched-s-price").val(data.price);tr.find("input.searched-s-courier").val(data.courier)})})});jQuery.fn.selectText=function()
 {this.find('input').each(function()

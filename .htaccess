@@ -52,6 +52,9 @@ RewriteRule ^([^/]*)/$ /index.php?language_pack=$1 [L]
 # Module
 RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/$ /index.php?language_pack=$1&module=$2&file=$3/ [L]
 
+# Module + date
+RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/date/([^/]*)/$ /index.php?language_pack=$1&module=$2&file=$3&date=$4/ [L]
+
 # Module + search
 RewriteRule ^([^/]*)/modules/([^/]*)/([^/]*)/search/([^/]*)/$ /index.php?language_pack=$1&module=$2&file=$3&search_string=$4/ [L]
 
