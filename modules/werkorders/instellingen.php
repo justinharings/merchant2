@@ -45,7 +45,8 @@ $data = $mb->_runFunction("workorders", "loadSettings", array($_SESSION['merchan
 			</div>
 			
 			<input type="text" name="workorders_manhours" id="workorders_manhours" value="<?= $data['workorders_manhours'] ?>" class="width-100 margin" icon="fa-hand-stop-o" holder="Arbeidsloon" question="Vul het artikelnummer in van het product dat u wilt gebruiken als arbeidsloon voor werkorders." />
-			<input type="text" name="workorders_products" id="workorders_products" value="<?= $data['workorders_products'] ?>" class="width-100" icon="fa-tags" holder="Producten" question="Vul het artikelnummer in voor het product dat u wilt gebruiken als producten voor werkorders." />
+			<input type="text" name="workorders_products" id="workorders_products" value="<?= $data['workorders_products'] ?>" class="width-100 margin" icon="fa-tags" holder="Producten" question="Vul het artikelnummer in voor het product dat u wilt gebruiken als producten voor werkorders." />
+			<input type="text" name="workorders_used_products" id="workorders_used_products" value="<?= $data['workorders_used_products'] ?>" class="width-100" icon="fa-exchange" holder="Tweedehands" question="Vul het artikelnummer in voor het product dat u wilt gebruiken als producten voor tweedehands." />
 		</div>
 	</div>
 </form>

@@ -145,6 +145,12 @@ $mb = new motherboard();
 							</div>
 						</li>
 						
+						<li class="menu-item workshop" rel="/used/">
+							<div class="icon">
+								<span class="fa fa-tags correction"></span>
+							</div>
+						</li>
+						
 						<li class="menu-item workshop battery-test">
 							<div class="icon">
 								<span class="fa fa-plug correction"></span>

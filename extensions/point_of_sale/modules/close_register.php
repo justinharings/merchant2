@@ -92,6 +92,23 @@ if($_GET['period'] == "yesterday")
 					
 				$total += $amount;
 			}
+			
+			$dataChanges = $mb->_runFunction("reports", "loadRegisterChanges", array($_SESSION['merchantID'], $date->format('d-m-Y')));
+			
+			foreach($dataChanges AS $value)
+			{
+				?>
+				<small>
+					Kasverschil <?= $value['payment_method'] ?>
+				</small><br/>
+				<small>
+					&euro;&nbsp;<?= _frontend_float($value['amount']) ?>
+				</small>
+				<br/><br/>
+				<?php
+				
+				$total += $value['amount'];
+			}
 			?>
 			
 			<strong>Totaal bedrag</strong><br/>

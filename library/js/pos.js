@@ -471,6 +471,18 @@ $(document).ready(
 			}
 		);
 		
+		$("#print_receipt_total").on("click",
+			function()
+			{
+				var key = getKey();
+				
+				if(key)
+				{
+					window.open('/extensions/printserver/index.php?type=receipt_total&action=print&orderID=' + key);
+				}
+			}
+		);
+		
 		$("#new_customer").on("click",
 			function()
 			{

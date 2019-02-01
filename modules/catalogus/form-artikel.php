@@ -108,6 +108,8 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 				}
 				?>
 				
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['name_change'] == 1 ? "checked=\"checked\"" : "" ?> name="name_change" id="name_change" value="1" class="double-margin" holder="Naam veranderen" question="Bij het inladen van dit artikel in de POS wordt het verplicht om de naam aan te passen." />
+				
 				<select name="description-template" id="description-template" class="width-200 margin" holder="Description template" question="U kunt onder 'Catalogus beheer' > 'Omschrijving templates' vooraf templates instellen en hier uitkiezen. Op deze manier hoeft u niet steeds te copy/pasten of dergelijke en kunt u sneller werken.">
 					<option value=""></option>
 					
@@ -204,6 +206,7 @@ if(isset($_GET['dataID']) && $_GET['dataID'] > 0)
 				
 				<input type="checkbox" <?= isset($_GET['dataID']) && $data['core_product'] == 1 ? "checked=\"checked\"" : "" ?> name="core_product" id="core_product" value="1" class="double-margin" holder="Kerncollectie" question="Kerncollectie artikelen hebben een speciale gouden balk op de website en krijgen een extra kenmerk in de assistent." />
 				<input type="checkbox" <?= isset($_GET['dataID']) && $data['bookmarks'] == 1 ? "checked=\"checked\"" : "" ?> name="bookmark" id="bookmark" value="1" class="double-margin" holder="<?= $mb->_translateReturn("forms", "form-products-bookmark") ?>" question="Zet dit artikel in de favorieten van uw POS. Zo kunt u bepaalde artikelen (plastic tassen, vaste diensten etcetera) onder de bookmark van uw POS zetten." />
+				<input type="checkbox" <?= isset($_GET['dataID']) && $data['used_product'] == 1 ? "checked=\"checked\"" : "" ?> name="used_product" id="used_product" value="1" class="double-margin" holder="Inkoop artikel" question="Koop je dit artikel in? Zet dan dit vinkje aan. Zo wordt dit artikel doorgezet naar het werkorder systeem om op te pakken als tweedehands artikel." />
 			</div>
 		</div>
 		

@@ -43,6 +43,14 @@ require_once("/var/www/vhosts/justinharings.nl/" . (_DEVELOPMENT_ENVIRONMENT ? "
 
 $mb = new motherboard();
 
+$only_totals = false;
+
+if($_GET['type'] == "receipt_total")
+{
+	$only_totals = true;
+	$_GET['type'] = "receipt";
+}
+
 $order = $mb->_runFunction("orders", "load", array($_GET['orderID']));
 $workorder = $mb->_runFunction("workorders", "loadWorkorder", array($_GET['workorderID']));
 
@@ -177,21 +185,21 @@ if(file_exists($file))
 	$product_row = "";
 	$articles_count = 0;
 	
+	
+	
 	foreach($order['products'] AS $product)
 	{
 		$articles_count += $product['quantity'];
 		$font_size = (count($order['products']) > 20 ? "font-size: 10px;" : "");
 		
-		if($template_suffix != "" && $product[strtoupper($template_suffix) . '_name'] != "")
+		if($product['name'] == $product['original_name'])
 		{
-			$product['name'] = $product[strtoupper($template_suffix) . '_name'];
+			if($template_suffix != "" && $product[strtoupper($template_suffix) . '_name'] != "")
+			{
+				$product['name'] = $product[strtoupper($template_suffix) . '_name'];
+			}
 		}
-		
-		if($template_suffix != "" && $product[strtoupper($template_suffix) . '_price'] != "")
-		{
-			$product['price'] = $product[strtoupper($template_suffix) . '_price'];
-		}
-		
+				
 		$product_row .= '
 			<tr>
 				<td style="padding: 5px 0px 5px 10px; ' . $font_size . '">
@@ -216,14 +224,31 @@ if(file_exists($file))
 		$articles_count += $product['quantity'];
 		$font_size = (count($order['products']) > 20 ? "font-size: 10px;" : "");
 		
+		if($only_totals == false)
+		{
+			$receipt_row .= '
+				<tr>
+					<td style="font-weight: bold; ' . $font_size . '">' . $product['quantity'] . 'x</td>
+					<td style="font-weight: bold; ' . $font_size . '">' . $product['name'] . '</td>
+				</tr>
+				
+				<tr>
+					<td colspan="2" style="padding: 0px 0px 10px 0px; ' . $font_size . '">' . $sign . "&nbsp;" . _frontend_float(($product['price']*$target), $currency) . '</td>
+				</tr>
+			';
+		}
+	}
+	
+	if($only_totals == true)
+	{
 		$receipt_row .= '
 			<tr>
-				<td style="font-weight: bold; ' . $font_size . '">' . $product['quantity'] . 'x</td>
-				<td style="font-weight: bold; ' . $font_size . '">' . $product['name'] . '</td>
+				<td style="font-weight: bold; ' . $font_size . '">1x</td>
+				<td style="font-weight: bold; ' . $font_size . '">Verkoop</td>
 			</tr>
 			
 			<tr>
-				<td colspan="2" style="padding: 0px 0px 10px 0px; ' . $font_size . '">' . $sign . "&nbsp;" . _frontend_float(($product['price']*$target), $currency) . '</td>
+				<td colspan="2" style="padding: 0px 0px 10px 0px; ' . $font_size . '">' . $sign . "&nbsp;" . _frontend_float(($order['grand_total']), $currency) . '</td>
 			</tr>
 		';
 	}

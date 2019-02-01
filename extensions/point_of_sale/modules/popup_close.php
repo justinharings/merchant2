@@ -65,7 +65,20 @@ $mb = new motherboard();
 			}
 			?>
 			
-			parent.document.location.href = <?= $url ?>;
+			var price = $("tr.focus",parent.document).attr("price");
+			
+			var url = <?= $url ?>;
+			
+			if(price > 0)
+			{
+				url = url.replace("/name", "");
+			}
+			else
+			{
+				url = url.replace("/name", "/price");
+			}
+			
+			parent.document.location.href = url;
 		</script>
 	</body>
 </html>	

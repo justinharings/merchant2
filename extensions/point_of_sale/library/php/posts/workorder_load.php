@@ -13,7 +13,10 @@ $workorder = $mb->_runFunction("workorders", "loadWorkorder", array($_GET['worko
 $card = $mb->_runFunction("workorders", "loadWorkorderCard", array($_GET['workorderID']));
 $defaults = $mb->_runFunction("workorders", "defaultProductCodes", array($_SESSION['merchantID']));
 
-$_SESSION['key_number'] = $workorder['key_number'];
+if($workorder['used_product'] == 0)
+{
+	$_SESSION['key_number'] = $workorder['key_number'];
+}
 
 if($workorder['customerID'] > 0)
 {
@@ -40,6 +43,17 @@ if($defaults['products'] > 0 && $defaults['manhours'] > 0)
 		$cart[$nmbr]['quantity'] = 1;
 		
 		$nmbr++;
+	}
+	
+	if($workorder['used_product_price'])
+	{
+		$productID = $defaults['used_product'];
+		$product = $mb->_runFunction("products", "load", array($productID));
+		
+		$cart[$nmbr]['code'] = $productID;
+		$cart[$nmbr]['price'] = $workorder['used_product_price'];
+		$cart[$nmbr]['name'] = $product['name'];
+		$cart[$nmbr]['quantity'] = 1;
 	}
 	
 	$_SESSION['cart'] = $cart;

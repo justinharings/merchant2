@@ -7,7 +7,7 @@ if($mb->num_rows($data))
 	
 	foreach($data AS $value)
 	{
-		if($value['status'] != 2)
+		if($value['status'] != 2 || $value['used_product'] == 1)
 		{
 			continue;
 		}

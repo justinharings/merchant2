@@ -1141,6 +1141,24 @@ class orders extends motherboard
 				intval($product['quantity'])
 			);
 			parent::query($query);
+			
+			if($productData['used_product'])
+			{
+				$workorder = array();
+				$workorder[0] = $data[0];
+				$workorder[1]['used_product'] = 1;
+				$workorder[1]['used_product_price'] = abs(parent::floatvalue($product['price']));
+				$workorder[1]['customerID'] = 0;
+				$workorder[1]['status'] = 0;
+				$workorder[1]['priority'] = 0;
+				$workorder[1]['expiration_date'] = date('d-m-Y');
+				$workorder[1]['key_number'] = 0;
+				$workorder[1]['phone_number'] = '';
+				$workorder[1]['workorder'] = parent::real_escape_string($product['name']) . ", ingeruild voor &euro;&nbsp;" . number_format($product['price'], 2, ',', '.');
+				$workorder[1]['note'] = 'Gebruikt product ingeschoten vanaf order #' . $orderID;
+				
+				$this->_runFunction("workorders", "saveWorkorder", $workorder);
+			}
 		}
 		
 		

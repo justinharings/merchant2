@@ -69,4 +69,5 @@
 	<div class="spacer"></div>
 	<input type="button" name="print_tender" id="print_tender" value="Offerte afdrukken" />
 	<input type="button" name="print_picklist" id="print_picklist" value="Pakbon afdrukken" />
+	<input type="button" name="print_receipt_total" id="print_receipt_total" value="Kassabon met totalen" />
 </div>

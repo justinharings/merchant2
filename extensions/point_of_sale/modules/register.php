@@ -97,7 +97,7 @@
 					}
 					?>
 					
-					<tr class="<?= $focus ?>" key="<?= $key ?>">
+					<tr class="<?= $focus ?>" key="<?= $key ?>" price="<?= $cart['price'] ?>">
 						<td><?= $product['article_code_long'] ?></td>
 						<td><?= $cart['name'] ?></td>
 						<td>&euro;&nbsp;<?= _frontend_float($cart['price']) ?></td>

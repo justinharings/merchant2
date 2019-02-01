@@ -11,11 +11,18 @@ $_POST['workorderID'] = $_GET['workorderID'];
 $_POST['status'] = 0;
 	
 $mb = new motherboard();
+
+$workorder = $mb->_runFunction("workorders", "loadWorkorder", array($_POST['workorderID']));
+
 $mb->_runFunction("workorders", "saveWorkorderStatus", array($_SESSION['merchantID'], $_POST));
 
 $return = "hold";
 
-if(isset($_GET['return_closed']))
+if($workorder['used_product'])
+{
+	$return = "used";
+}
+else if(isset($_GET['return_closed']))
 {
 	$return = "done";
 }

@@ -44,6 +44,20 @@
 				function()
 				{
 					document.location.href = '/extensions/printserver/router.php?<?= $_SERVER['QUERY_STRING'] ?>';
+					
+					<?php
+					if($_GET['action'] == "download")
+					{
+						?>
+						setTimeout(
+							function()
+							{
+								window.close();
+							}, 5000
+						);
+						<?php
+					}
+					?>
 				}, 1000
 			);
 		</script>

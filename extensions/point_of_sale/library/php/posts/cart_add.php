@@ -71,7 +71,11 @@ else
 		$cart[$nmbr]['name'] = $product['name'];
 		$cart[$nmbr]['quantity'] = 1;
 		
-		if($product['price'] == 0)
+		if($product['name_change'] == 1)
+		{
+			$price = "name/";
+		}
+		else if($product['price'] == 0)
 		{
 			$price = "price/";
 		}

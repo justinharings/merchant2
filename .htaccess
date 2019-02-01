@@ -46,6 +46,9 @@ RewriteRule ^pos/modules/([^/]*)/search/([^/]*)/focus/([^/]*)/$ /extensions/poin
 # Point of sale + focus + price
 RewriteRule ^pos/modules/([^/]*)/focus/([^/]*)/price/$ /extensions/point_of_sale/index.php?module=$1&focus=$2&price=true [L]
 
+# Point of sale + focus + name
+RewriteRule ^pos/modules/([^/]*)/focus/([^/]*)/name/$ /extensions/point_of_sale/index.php?module=$1&focus=$2&name=true [L]
+
 # Rewrite language packs
 RewriteRule ^([^/]*)/$ /index.php?language_pack=$1 [L]
 

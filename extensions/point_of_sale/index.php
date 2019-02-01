@@ -256,7 +256,7 @@ if(isset($_SESSION['terminal']) && $_GET['module'] == "register")
 			require_once($_SERVER['DOCUMENT_ROOT'] . "/modules/authorization/login_pos.php");
 		}
 		
-		if(isset($_SESSION['print_auto_active']) || isset($_GET['price']))
+		if(isset($_SESSION['print_auto_active']) || isset($_GET['price']) || isset($_GET['name']))
 		{
 			$settings = $mb->_runFunction("pos", "loadPrinterSettings", array($_SESSION['merchantID']));
 			?>
@@ -284,7 +284,18 @@ if(isset($_SESSION['terminal']) && $_GET['module'] == "register")
 					<?php
 				}
 				
-				if(isset($_GET['price']))
+				if(isset($_GET['name']))
+				{
+					?>
+					setTimeout(
+						function()
+						{
+							$(".pos-button.fa-pencil").trigger("click");
+						}, 500
+					);
+					<?php
+				}
+				else if(isset($_GET['price']))
 				{
 					?>
 					setTimeout(

@@ -27,6 +27,11 @@
 			{
 				foreach($data AS $value)
 				{
+					if($value['used_product'] == 1 && !isset($_GET['search_string']))
+					{
+						continue;
+					}
+					
 					?>
 					<tr key="<?= $value['workorderID'] ?>">
 						<td>

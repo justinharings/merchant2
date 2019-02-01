@@ -74,6 +74,8 @@ $data_workorder = $mb->_runFunction("workorders", "loadSettings", array($_SESSIO
 			<input type="hidden" name="workorderID" id="workorderID" value="<?= isset($_GET['key']) ? $_GET['key'] : 0 ?>" />
 			<input type="hidden" name="customerID" id="customerID" value="<?= isset($_GET['key']) && $data['customerID'] ? $data['customerID'] : 0 ?>" />
 			<input type="hidden" name="workorder_unique_code" id="workorder_unique_code" value="<?= $data_workorder['unique_identifier'] ?>" />
+			<input type="hidden" name="used_product" id="used_product" value="<?= intval($data['used_product']) ?>" />
+			<input type="hidden" name="used_product_price" id="used_product_price" value="<?= intval($data['used_product_price']) ?>" />
 			<input type="hidden" name="key_number_current" id="key_number_current" value="<?= isset($_GET['key']) ? $data['key_number'] : "" ?>" />
 			
 			<div style="width: 210px; position: relative; padding: 0px 10px 0px 0px; float: left; border-right: 1px solid #ccc;">

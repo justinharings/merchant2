@@ -1,7 +1,10 @@
 <?php
 $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "SET_BP", 1));
 
-$_REQUEST['date'] = str_replace("/", "", $_REQUEST['date']);
+if(isset($_REQUEST['date']))
+{
+	$_REQUEST['date'] = str_replace("/", "", $_REQUEST['date']);
+}
 ?>
 
 <ul class="breadcrumbs">

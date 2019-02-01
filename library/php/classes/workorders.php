@@ -142,6 +142,19 @@ class workorders extends motherboard
 		
 		$return['workorders_products'] = $row['article_code'];
 		
+		
+		$query = sprintf(
+			"	SELECT		products.article_code
+				FROM		products
+				WHERE		products.workorders_used_product = 1
+					AND		products.merchantID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$return['workorders_used_products'] = $row['article_code'];
+		
 		return $return;
 	}
 	
@@ -263,7 +276,8 @@ class workorders extends motherboard
 		$query = sprintf(
 			"	UPDATE		products
 				SET			products.workorders_manhours = 0,
-							products.workorders_products = 0
+							products.workorders_products = 0,
+							products.workorders_used_product = 0
 				WHERE		products.merchantID = %d",
 			$data[0]
 		);
@@ -282,6 +296,14 @@ class workorders extends motherboard
 				SET			products.workorders_products = 1
 				WHERE		products.article_code = %d",
 			intval($data[1]['workorders_products'])
+		);
+		parent::query($query);
+		
+		$query = sprintf(
+			"	UPDATE		products
+				SET			products.workorders_used_product = 1
+				WHERE		products.article_code = %d",
+			intval($data[1]['workorders_used_products'])
 		);
 		parent::query($query);
 		
@@ -532,6 +554,8 @@ class workorders extends motherboard
 					SET			workorders.customerID = %d,
 								workorders.status = %d,
 								workorders.priority = %d,
+								workorders.used_product = %d,
+								workorders.used_product_price = '%.2f',
 								workorders.removed = 0,
 								workorders.expiration_date = '%s',
 								workorders.key_number = %d,
@@ -543,6 +567,8 @@ class workorders extends motherboard
 				$data[1]['customerID'],
 				$data[1]['status'],
 				$data[1]['priority'],
+				(isset($data[1]['used_product']) ? intval($data[1]['used_product']) : 0),
+				(isset($data[1]['used_product_price']) ? parent::floatvalue($data[1]['used_product_price']) : 0),
 				parent::datevalue($data[1]['expiration_date']),
 				$data[1]['key_number'],
 				parent::real_escape_string($data[1]['phone_number']),
@@ -562,6 +588,8 @@ class workorders extends motherboard
 									workorders.customerID = %d,
 									workorders.status = %d,
 									workorders.priority = %d,
+									workorders.used_product = %d,
+									workorders.used_product_price = '%.2f',
 									workorders.removed = 0,
 									workorders.expiration_date = '%s',
 									workorders.key_number = %d,
@@ -573,6 +601,8 @@ class workorders extends motherboard
 				$data[1]['customerID'],
 				$data[1]['status'],
 				$data[1]['priority'],
+				(isset($data[1]['used_product']) ? intval($data[1]['used_product']) : 0),
+				(isset($data[1]['used_product_price']) ? parent::floatvalue($data[1]['used_product_price']) : 0),
 				parent::datevalue($data[1]['expiration_date']),
 				$data[1]['key_number'],
 				parent::real_escape_string($data[1]['phone_number']),
@@ -702,6 +732,18 @@ class workorders extends motherboard
 		$row = parent::fetch_assoc($result);
 		
 		$return['manhours'] = $row['productID'];
+		
+		$query = sprintf(
+			"	SELECT		products.productID
+				FROM		products
+				WHERE		products.workorders_used_product = 1
+					AND		products.merchantID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		$row = parent::fetch_assoc($result);
+		
+		$return['used_product'] = $row['productID'];
 		
 		return $return;
 	}
