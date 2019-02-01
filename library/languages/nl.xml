@@ -131,6 +131,8 @@
 		<week-register-abbr>WA</week-register-abbr>
 		<month-register>Maand kasboek afslaan</month-register>
 		<month-register-abbr>MA</month-register-abbr>
+		<register-check>Kas controle module</register-check>
+		<register-check-abbr>KC</register-check-abbr>
 		
 		<settings>Overige instellingen</settings>
 		<settings-eg>Gebruikers, verzending en meer</settings-eg>
@@ -244,6 +246,7 @@
 		<button-cancel>Annuleren en terug</button-cancel>
 		<button-delete>Verwijderen</button-delete>
 		<button-print>Afdrukken</button-print>
+		<button-download>Downloaden</button-download>
 		<button-generate-paylink>Betaallink genereren</button-generate-paylink>
 		<button-invoice>Factuur</button-invoice>
 		<button-tender>Offerte</button-tender>
