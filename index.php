@@ -104,7 +104,16 @@ for($i = 1; $i < 30; $i++)
 		
 		$start = new DateTime('2019-01-30');
 		
-		if($date > $start)
+		$query = sprintf(
+			"	SELECT		SUM(orders_payment.amount) AS cnt
+				FROM		orders_payment
+				WHERE		orders_payment.date = '%s'",
+			$date->format('Y-m-d')
+		);
+		$result = $mb->query($query);
+		$row = $mb->fetch_assoc($result);
+		
+		if(($date > $start) && $row['cnt'] > 0)
 		{
 			$register_date = $date->format('d-m-Y');
 			break;

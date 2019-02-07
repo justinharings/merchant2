@@ -75,42 +75,53 @@ $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], 
 				<tbody>
 					<?php
 					$data = $mb->_runFunction("reports", "closeRegister", array($_SESSION['merchantID'], "week_" . (isset($_POST['week']) ? (intval($_POST['week']) . "_" . intval($_POST['year'])) : ($current . "_" . date("Y")))));
-					
+					$dataChanges = $mb->_runFunction("reports", "loadRegisterChanges", array($_SESSION['merchantID'], "week_" . (isset($_POST['week']) ? (intval($_POST['week']) . "_" . intval($_POST['year'])) : ($current . "_" . date("Y")))));
+				
 					$total = 0;
 					
 					foreach($data[0] AS $name => $amount)
 					{
+						$kasverschil = 0;
+						
+						foreach($dataChanges AS $value)
+						{
+							if($value['payment_method'] != $name)
+							{
+								continue;
+							}
+							else
+							{
+								$kasverschil += $value['amount'];
+							}
+						}
+						
 						?>
 						<tr>
 							<td><?= $name ?></td>
-							<td>&euro;&nbsp;<?= _frontend_float($amount) ?></td>
+							<td>&euro;&nbsp;<?= _frontend_float($amount + $kasverschil) ?></td>
 						</tr>
-						<?php
-							
-						$total += $amount;
-					}
-					
-					$dataChanges = $mb->_runFunction("reports", "loadRegisterChanges", array($_SESSION['merchantID'], "week_" . (isset($_POST['week']) ? (intval($_POST['week']) . "_" . intval($_POST['year'])) : ($current . "_" . date("Y")))));
-					
-					foreach($dataChanges AS $value)
-					{
-						?>
-						<tr style="background-color: #f9f9f9;">
-							<td>
-								<small>
-									&nbsp;&nbsp;&nbsp;Kasverschil <?= $value['payment_method'] ?>
-								</small>
-								
-							</td>
-							<td>
-								<small>
-									&nbsp;&nbsp;&nbsp;&euro;&nbsp;<?= _frontend_float($value['amount']) ?>
-								</small>
-							</td>
-						</tr>
-						<?php
 						
-						$total += $value['amount'];
+						<?php
+						if($kasverschil > 0)
+						{
+							?>
+							<tr style="background-color: #f9f9f9;">
+								<td>
+									<small>
+										&nbsp;&nbsp;&nbsp;Inbegrepen kasverschil
+									</small>
+									
+								</td>
+								<td>
+									<small>
+										&nbsp;&nbsp;&nbsp;&euro;&nbsp;<?= _frontend_float($kasverschil) ?>
+									</small>
+								</td>
+							</tr>
+							<?php
+						}
+						
+						$total += ($amount + $kasverschil);
 					}
 					?>
 					

@@ -109,7 +109,7 @@ if(elm.is('[holder]'))
 $('<span class="input-holder"><span class="text">'+elm.attr("holder")+'</span>'+question+'</span>').insertBefore(elm)}
 if(elm.is('[holder-eg]'))
 {elm.prev("span").append('<span class="eg">'+elm.attr("holder-eg")+'</span>')}
-if(elm.is('[icon]'))
+if(elm.is('[icon]')&&elm.attr("type")!="hidden")
 {$('<div class="icon-input-holder"></div>').insertBefore(elm).append('<span class="icon fa '+elm.attr("icon")+'"></span>').append(elm).css("width",elm.css("width"))}
 if(elm.is('[icon-img]'))
 {$('<div class="icon-input-holder large-padding"></div>').insertBefore(elm).append('<img src="'+elm.attr("icon-img")+'" />').append(elm).css("width",elm.css("width"))}

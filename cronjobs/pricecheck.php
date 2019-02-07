@@ -4,14 +4,79 @@ if(!isset($_SESSION))
 	session_start();
 }
 
+$start = time();
+
+$_debug = false;
+$max = 9999999999;
+$cnt = 0;
 
 define("_LANGUAGE_PACK", "nl");
 
 $_SERVER['DOCUMENT_ROOT'] = "/var/www/vhosts/justinharings.nl/dev.justinharings.nl";
 
 require_once("/var/www/vhosts/justinharings.nl/dev.justinharings.nl/library/php/classes/motherboard.php");
+require_once("/var/www/vhosts/justinharings.nl/dev.justinharings.nl/library/third-party/simple-html-dom/simple_html_dom.php");
+
+
+
+function scraping($url) 
+{
+	$html = file_get_html($url);
+	
+	if(!$html)
+	{
+		return 0;
+	}
+	
+    $price = $html->find('meta[itemprop="price"]', 0)->content;
+    
+    if($price == "")
+    {
+		$price = $html->find('meta[property="product:price"]', 0)->content;
+	}
+    
+    if($price == "")
+    {
+		$price = $html->find('meta[property="product:price:amount"]', 0)->content;
+	}
+    
+    if($price == "")
+    {
+		$price = $html->find('span[itemprop="price"]', 0)->innertext;
+	}
+    
+    if($price == "")
+    {
+		$price = $html->find('span[class="price"]', 0)->innertext;
+	}
+    
+    $html->clear();
+    unset($html);
+
+	if($price != "")
+	{
+		$price = preg_replace("/[^0-9,.]/", "", $price);
+		$price = str_replace(",", ".", $price);
+	}
+	else
+	{
+		return 0;
+	}
+	
+    return number_format($price, 2, ".", "");
+}
+
+
 
 $mb = new motherboard();
+
+$query = sprintf(
+	"	DELETE 		products_pricecheck
+		FROM		products_pricecheck
+		INNER JOIN	products ON products.productID = products_pricecheck.productID
+		WHERE		products.deleted = 1"	
+);
+$result = $mb->query($query);
 
 $query = sprintf(
 	"	SELECT		products_pricecheck.*
@@ -20,12 +85,26 @@ $query = sprintf(
 		WHERE		products.deleted = 0"
 );
 $result = $mb->query($query);
+		
 
 $had = array();
 $products = array();
 
 while($row = $mb->fetch_assoc($result))
 {
+	if($cnt == $max)
+	{
+		break;
+	}
+	
+	$queryUpdate = sprintf(
+		"	UPDATE		products_pricecheck
+			SET			products_pricecheck.price = '0.00'
+			WHERE		products_pricecheck.productWebsiteID = %d",
+		$row['productWebsiteID']
+	);
+	$mb->query($queryUpdate);
+	
 	/*
 	**	Verwijder de strings van fietsenwinkel.nl voor de zekerheid.
 	*/
@@ -48,12 +127,38 @@ while($row = $mb->fetch_assoc($result))
 		$row['website'] = $website;
 	}
 	
+	if($_debug == true)
+	{
+		echo "Ripping website " . $row['website'] . "<br/>";
+	}
+	
 	
 	$value = 0;
 	
 	if(isset($had[$row['website']]))
 	{
 		$value = $had[$row['website']];
+		
+		if($_debug == true)
+		{
+			echo "Already had this website.<br/>";
+		}
+		
+		$query = sprintf(
+			"	UPDATE		products_pricecheck
+				SET			products_pricecheck.price = '%.2f',
+							products_pricecheck.date_update = NOW(),
+							products_pricecheck.errors = 0
+				WHERE		products_pricecheck.website = '%s'",
+			$had[$row['website']],
+			$row['website']
+		);
+		$mb->query($query);
+		
+		if($_debug == true)
+		{
+			echo "Query: " . $query . "<br/>";
+		}
 	}
 	else
 	{
@@ -63,98 +168,63 @@ while($row = $mb->fetch_assoc($result))
 		**	vermoedelijk in staat.
 		*/
 		
-		$content = file_get_contents($row['website']);
+		$value = scraping($row['website']);
 		
-		if($content != "")
+		if($value != 0)
 		{
-			if(strpos($content, '<meta property="product:price:amount" content="') !== false)
-			{
-				$explode = explode('<meta property="product:price:amount" content="', $content);
-				$explode = explode('"', $explode[1]);
-				
-				$value = $explode[0];
-				$value = preg_replace("/[^0-9,.]/", "", $value);
-				
-				$value = str_replace(",", ".", $value);
-			}
-			else if(strpos($content, '<meta property="product:price" content="') !== false)
-			{
-				$explode = explode('<meta property="product:price" content="', $content);
-				$explode = explode('"', $explode[1]);
-				
-				$value = $explode[0];
-				$value = preg_replace("/[^0-9,.]/", "", $value);
-				
-				$value = str_replace(",", ".", $value);
-			}
-			else if(strpos($content, '<meta property="price" content="') !== false)
-			{
-				$explode = explode('<meta property="price" content="', $content);
-				$explode = explode('"', $explode[1]);
-				
-				$value = $explode[0];
-				$value = preg_replace("/[^0-9,.]/", "", $value);
-				
-				$value = str_replace(",", ".", $value);
-			}
-			else if(strpos($content, '<meta itemprop="price" content="') !== false)
-			{
-				$explode = explode('<meta itemprop="price" content="', $content);
-				$explode = explode('"', $explode[1]);
-				
-				$value = $explode[0];
-				$value = preg_replace("/[^0-9,.]/", "", $value);
-				
-				$value = str_replace(",", ".", $value);
-			}
-			else if(strpos($content, '"productPrice":') !== false)
-			{
-				$explode = explode('"productPrice":', $content);
-				$explode = explode(',', $explode[1]);
-				
-				$value = $explode[0];
-				$value = preg_replace("/[^0-9,.]/", "", $value);
-				
-				$value = str_replace(",", ".", $value);
-			}
-			else if(strpos($content, '<div class="price-info">') !== false)
-			{
-				$explode = explode('<div class="price-info">', $content);
-				$explode = explode('<span class="price">', $explode[1]);
-				$explode = explode('</span>', $explode[1]);
-				
-				$value = $explode[0];
-				$value = str_replace("&euro;", "", $value);
-				$value = str_replace("€", "", $value);
-				$value = str_replace(" ", "", $value);
-				$value = str_replace("&nbsp;", "", $value);
-				$value = str_replace(".-", "", $value);
-				$value = str_replace(",-", "", $value);
-				$value = str_replace(",", ".", $value);
-			}
+			$had[$row['website']] = number_format(($value > 0 ? $value : 0), 2, ".", "");
 			
-			$had[$row['website']] = ($value > 0 ? $value : 0);
-			
-			$value = explode(".", $had[$row['website']]);
-			
-			if(count($value) > 2)
+			if($_debug == true)
 			{
-				$had[$row['website']] = $value[0] . $value[1] . "." . $value[2];
+				echo "Price found: " . $had[$row['website']] . "<br/>";
 			}
-			
-			$errono = ($row['errors']+1);
 			
 			$query = sprintf(
 				"	UPDATE		products_pricecheck
 					SET			products_pricecheck.price = '%.2f',
 								products_pricecheck.date_update = NOW(),
-								products_pricecheck.errors = %d
+								products_pricecheck.errors = 0
 					WHERE		products_pricecheck.website = '%s'",
 				$had[$row['website']],
+				$row['website']
+			);
+			$mb->query($query);
+			
+			if($_debug == true)
+			{
+				echo "Query: " . $query . "<br/>";
+			}
+		}
+		else
+		{
+			$errono = ($row['errors']+1);
+			
+			$query = sprintf(
+				"	UPDATE		products_pricecheck
+					SET			products_pricecheck.price = '0.00',
+								products_pricecheck.date_update = NOW(),
+								products_pricecheck.errors = %d
+					WHERE		products_pricecheck.website = '%s'",
 				($had[$row['website']] == 0 ? $errono : 0),
 				$row['website']
 			);
 			$mb->query($query);
+			
+			if($_debug == true)
+			{
+				echo "No price found.<br/>";
+			}
+		}
+		
+		$timer1 = time();
+		
+		sleep(1);
+		
+		$timer2 = time();
+		
+		if($_debug == true)
+		{
+			echo "Slept for " . ($timer2 - $timer1) . " seconds.<br/>";
 		}
 	}
 	
@@ -171,9 +241,27 @@ while($row = $mb->fetch_assoc($result))
 		$products[$row['productID']][$num]['website'] = $row['website'];
 		$products[$row['productID']][$num]['free_shipment'] = $row['free_shipment'];
 		$products[$row['productID']][$num]['profit'] = $row['profit'];
+		
+		if($_debug == true)
+		{
+			echo "Added this value to the array.<br/>";
+		}
 	}
+	
+	if($_debug == true)
+	{
+		echo "Current script time is " . (time() - $start) . " seconds.<br/>";
+		
+		echo "<br/><br/>";
+	}
+	
+	$cnt++;
 }
 
+if($_debug == true)
+{
+	echo "<br/><br/><br/><br/>";
+}
 
 /*
 **	Stel een e-mail op om de admin's te laten
@@ -184,6 +272,11 @@ $html_table = "";
 
 foreach($products AS $productID => $values)
 {
+	if($_debug == true)
+	{
+		echo "Starting with productID " . $productID . "<br/>";
+	}
+	
 	/*
 	**	Collect the current product data.
 	*/
@@ -193,6 +286,7 @@ foreach($products AS $productID => $values)
 						products.name,
 						products.price,
 						products.price_purchase,
+						products.price_adviced
 						taxes.percentage
 			FROM		products
 			INNER JOIN	taxes ON taxes.taxesID = products.taxesID
@@ -202,9 +296,16 @@ foreach($products AS $productID => $values)
 	$result3 = $mb->query($query3);
 	$row3 = $mb->fetch_assoc($result3);
 	
-	$row3['price_purchase'] += ($row3['price_purchase']*($row3['percentage']/100));
+	$row3['price_purchase'] += number_format(($row3['price_purchase']*($row3['percentage']/100)), 2, ".", "");
 	
-	$minimum_price = $row3['price_purchase'] + $values[0]['profit'];
+	$minimum_price = (number_format($row3['price_adviced'], 2, ".", "")/100)*10;
+	$minimum_price = number_format($row3['price_purchase'], 2, ".", "") + $minimum_price;
+	$minimum_price = number_format($minimum_price, 2, ".", "");
+	
+	if($_debug == true)
+	{
+		echo "The minimum price is " . $minimum_price . " (" . number_format($row3['price_purchase'], 2, ".", "") . ")<br/>";
+	}
 	
 	
 	/*
@@ -220,6 +321,11 @@ foreach($products AS $productID => $values)
 	);
 	$sResult = $mb->query($sQuery);
 	$sRow = $mb->fetch_assoc($sResult);
+	
+	if($_debug == true)
+	{
+		echo "Shipment price is " . $sRow['price'] . "<br/>";
+	}
 	
 	
 	/*
@@ -241,8 +347,13 @@ foreach($products AS $productID => $values)
 		$prices[] = $data['price'];
 	}
 	
+	if($_debug == true)
+	{
+		echo "The found prices are " . implode(", ", $prices) . "<br/>";
+	}
+	
 	$lowest = 0;
-	sort($values);
+	sort($prices);
 	
 	foreach($prices AS $price)
 	{
@@ -255,6 +366,11 @@ foreach($products AS $productID => $values)
 		break;
 	}
 	
+	if($_debug == true)
+	{
+		echo "The lowest price is " . $lowest . "<br/>";
+	}
+	
 	
 	/*
 	**	Status bepalen van deze aanpassing
@@ -265,11 +381,10 @@ foreach($products AS $productID => $values)
 	**	E2: Waarschuwing. Dit artikel heeft geen inkoopsprijs. Artikel overgeslagen.
 	*/
 	
-	$process = true;
 	$status = "OK";
 	$color = "green";
 	$new_price = $lowest;
-	$note = "";
+	$note = "Geen opmerkingen.";
 	
 	if($new_price == 0)
 	{
@@ -277,7 +392,11 @@ foreach($products AS $productID => $values)
 		$new_price = "0.00";
 		$color = "red";
 		$note = "Vergelijken is niet mogelijk.";
-		$process = false;
+		
+		if($_debug == true)
+		{
+			echo "Comparing is not possible because there is no price.<br/>";
+		}
 	}
 	else if($row3['price_purchase'] == 0)
 	{
@@ -285,14 +404,23 @@ foreach($products AS $productID => $values)
 		$new_price = "0.00";
 		$color = "red";
 		$note = "Vergelijken is niet mogelijk.";
-		$process = false;
+		
+		if($_debug == true)
+		{
+			echo "Comparing is not possible because there is no purchase price set.<br/>";
+		}
 	}
 	else if($lowest < $row3['price_purchase'])
 	{
 		$status = "W2";
 		$new_price = $minimum_price;
 		$color = "orange";
-		$note = "Minimale winst is &euro;" . $values[0]['profit'] . ".";
+		$note = "Lager dan inkoop. Minimaal is &euro;" . $values[0]['profit'] . ".";
+		
+		if($_debug == true)
+		{
+			echo "The new price is lower then the purchase price.<br/>";
+		}
 	}
 	else if($lowest < $minimum_price)
 	{
@@ -300,6 +428,11 @@ foreach($products AS $productID => $values)
 		$new_price = $minimum_price;
 		$color = "orange";
 		$note = "Minimale winst is &euro;" . $values[0]['profit'] . ".";
+		
+		if($_debug == true)
+		{
+			echo "The new price is lower then the minimum price.<br/>";
+		}
 	}
 	
 	
@@ -317,41 +450,56 @@ foreach($products AS $productID => $values)
 	
 	$new_price = ceil($new_price);
 	
-	if(($new_price != $row3['price']) || $process == false)
+	if(($new_price != $row3['price']) || $status != "OK")
 	{
+		if($_debug == true)
+		{
+			echo "New row added to the table.<br/>";
+		}
+		
 		$html_table .= "<tr>
 			<td class='" . $color . "'>" . $status . "</td>
 			<td class='" . ($color == "red" ? "error" : "") . "'>" . sprintf("%05d", $row3['article_code']) . "</td>
-			<td class='" . ($color == "red" ? "error" : "") . "'>" . substr($row3['name'], 0, 15) . " ...</td>
+			<td title='" . $row3['name'] . "' class='" . ($color == "red" ? "error" : "") . "'>" . substr($row3['name'], 0, 25) . " ...</td>
 			<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($row3['price_purchase'], 2) . " euro</td>
 			<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($lowest, 2) . " euro</td>
 			<td class='" . ($color == "red" ? "error" : "") . "'>" . number_format($new_price, 2) . " euro</td>
-			<td>" . $note . "</td>
 		</tr>";
+		
+		/*
+		**	Voeg de nieuwe gegevens toe aan de database
+		*/
+		
+		if($process == true)
+		{
+			$queryU = sprintf(
+				"	UPDATE		products
+					SET			products.price = '%.2f'
+					WHERE		products.productID = %d",
+				$new_price,
+				$productID
+			);
+			$mb->query($queryU);
+			
+			if($_debug == true)
+			{
+				echo "Row added to the database.<br/><br/>";
+			}
+		}
 	}
-	
-	
-	/*
-	**	Voeg de nieuwe gegevens toe aan de database
-	*/
-	
-	if($process == true)
+	else
 	{
-		$queryU = sprintf(
-			"	UPDATE		products
-				SET			products.price = '%.2f'
-				WHERE		products.productID = %d",
-			$new_price,
-			$productID
-		);
-		$mb->query($queryU);
+		if($_debug == true)
+		{
+			echo "Prices are the same, do not add the row.<br/><br/>";
+		}
 	}
 }
 
 
 $query = sprintf(
 	"	DELETE FROM		products_pricecheck
-		WHERE			products_pricecheck.errors > 2"
+		WHERE			products_pricecheck.errors > 6"
 );
 $mb->query($query);
 

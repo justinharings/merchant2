@@ -45,7 +45,7 @@ if($defaults['products'] > 0 && $defaults['manhours'] > 0)
 		$nmbr++;
 	}
 	
-	if($workorder['used_product_price'])
+	if($workorder['used_product_price'] > 0)
 	{
 		$productID = $defaults['used_product'];
 		$product = $mb->_runFunction("products", "load", array($productID));

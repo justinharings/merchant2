@@ -601,6 +601,7 @@ body div.content
 		
 			body div.content div.simple-form div.form-header h1
 			{
+				margin: 18px 0px 0px 0px;
 				float: left;
 				
 				font-family: 'Raleway', 'Tahoma';

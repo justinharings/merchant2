@@ -624,7 +624,7 @@ function systemChanges(elm)
 		elm.prev("span").append('<span class="eg">' + elm.attr("holder-eg") + '</span>');
 	}
 	
-	if(elm.is('[icon]'))
+	if(elm.is('[icon]') && elm.attr("type") != "hidden")
 	{
 		$('<div class="icon-input-holder"></div>')
 			.insertBefore(elm)

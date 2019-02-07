@@ -91,6 +91,7 @@ $query = sprintf(
 	"	SELECT		products.productID,
 					products.supplier_code,
 					products.barcode,
+					products.status,
 					(
 						SELECT		SUM(products_stock.stock)
 						FROM		products_stock
@@ -150,13 +151,25 @@ while($row = $db->fetch_assoc($result))
 	}
 	else if($row['stock'] <= 0 && $row['barcode'] != "")
 	{
-		$query = sprintf(
-			"	UPDATE		products
-				SET			products.status = 4
-				WHERE		products.productID = %d",
-			$row['productID']
-		);
-		$db->query($query);
+		if($row['status'] == 4)
+		{
+			$query = sprintf(
+				"	DELETE FROM		products
+					WHERE			products.productID = %d",
+				$row['productID']
+			);
+			$db->query($query);
+		}
+		else
+		{
+			$query = sprintf(
+				"	UPDATE		products
+					SET			products.status = 4
+					WHERE		products.productID = %d",
+				$row['productID']
+			);
+			$db->query($query);
+		}
 	}
 }
 

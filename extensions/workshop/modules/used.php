@@ -124,21 +124,19 @@ if($mb->num_rows($data))
 						</td>
 						
 						<td class="info-block">
-							<small>Totaal</small><br/>
+							<small>Gebruikt</small><br/>
 							&euro;&nbsp;<?= _frontend_float($value['grand_total']) ?>
 						</td>
 						
-						<?php
-						if($value['used_product_price'] != 0)
-						{
-							?>
-							<td class="info-block">
-								<small>Inkoopprijs</small><br/>
-								&euro;&nbsp;<?= _frontend_float($value['used_product_price']) ?>
-							</td>
-							<?php
-						}
-						?>
+						<td class="info-block">
+							<small>Inkoopprijs</small><br/>
+							&euro;&nbsp;<?= _frontend_float($value['used_product_price']) ?>
+						</td>
+						
+						<td class="info-block">
+							<small>Totaal</small><br/>
+							&euro;&nbsp;<?= _frontend_float($value['grand_total']+$value['used_product_price']) ?>
+						</td>
 						
 						<td class="info-block">
 							<small>Prioriteit</small><br/>

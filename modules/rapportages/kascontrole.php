@@ -1,6 +1,13 @@
 <?php
 $mb->_runFunction("authorization", "userPermission", array($_SESSION['userID'], "SET_BP", 1));
 
+$closed = $mb->_runFunction("reports", "findComplete", array($_SESSION['merchantID'], isset($_REQUEST['date']) ? str_replace("/", "", $_REQUEST['date']) : date("d-m-Y")));
+
+if(isset($_REQUEST['findDate']))
+{
+	$_REQUEST['date'] = str_replace("/", "", $_REQUEST['findDate']);
+}
+
 if(isset($_REQUEST['date']))
 {
 	$_REQUEST['date'] = str_replace("/", "", $_REQUEST['date']);
@@ -16,25 +23,23 @@ if(isset($_REQUEST['date']))
 
 <br/><br/>
 <div class="simple-form">
-	<?php
-	$closed = $mb->_runFunction("reports", "findComplete", array($_SESSION['merchantID'], isset($_REQUEST['date']) ? str_replace("/", "", $_REQUEST['date']) : date("d-m-Y")));
+	<form method="post" id="form" action="/library/php/posts/reports/kassluiten.php">
+		<input type="hidden" name="returnURL" id="returnURL" value="/<?= _LANGUAGE_PACK ?>/modules/rapportages/kascontrole/date/<?= isset($_REQUEST['date']) ? $_REQUEST['date'] : date("d-m-Y") ?>/" />
+		<input type="hidden" name="date" id="date" value="<?= isset($_REQUEST['date']) ? $_REQUEST['date'] : date("d-m-Y") ?>" />
 		
-	if($closed == 0)
-	{
-		?>
-		<form method="post" id="form" action="/library/php/posts/reports/kassluiten.php">
-			<input type="hidden" name="returnURL" id="returnURL" value="/<?= _LANGUAGE_PACK ?>/modules/rapportages/kascontrole/date/<?= isset($_REQUEST['date']) ? $_REQUEST['date'] : date("d-m-Y") ?>/" />
-			<input type="hidden" name="date" id="date" value="<?= isset($_REQUEST['date']) ? $_REQUEST['date'] : date("d-m-Y") ?>" />
+		<div class="form-header">
+			<h1>Kas controle module voor datum <?= isset($_REQUEST['date']) ? str_replace("/", "", $_REQUEST['date']) : date("d-m-Y") ?></h1>
 			
-			<div class="form-header">
-				<h1>Kas controle module voor datum <?= isset($_REQUEST['date']) ? str_replace("/", "", $_REQUEST['date']) : date("d-m-Y") ?></h1>
-				
+			<?php
+			if($closed == 0)
+			{
+				?>
 				<input type="submit" name="save" id="save" value="Kasboek sluiten en doorgaan" class="red show-load validate-form" />
-			</div>
-		</form>
-		<?php
-	}
-	?>
+				<?php
+			}
+			?>
+		</div>
+	</form>
 	
 	<div class="form-content">
 		<form method="post" id="form" action="/<?= _LANGUAGE_PACK ?>/modules/rapportages/kascontrole/"> 
@@ -43,7 +48,7 @@ if(isset($_REQUEST['date']))
 				<?= $mb->_translateReturn("forms", "legend-report-settings") ?>
 			</div>
 			
-			<input type="text" name="date" id="date" value="<?= isset($_REQUEST['date']) ? str_replace("/", "", $_REQUEST['date']) : date("d-m-Y") ?>" class="width-100 datepicker margin" icon="fa-calendar" />
+			<input type="text" name="findDate" id="findDate" value="<?= isset($_REQUEST['date']) ? str_replace("/", "", $_REQUEST['date']) : date("d-m-Y") ?>" class="width-100 datepicker margin" icon="fa-calendar" />
 			
 			<input type="submit" name="start" id="start" class="red" value="Starten" />&nbsp;
 			<input type="button" name="reset" id="reset" value="Gisteren inzien" onclick="document.location.href = document.location.href;" />
@@ -68,42 +73,53 @@ if(isset($_REQUEST['date']))
 			<tbody>
 				<?php
 				$data = $mb->_runFunction("reports", "closeRegister", array($_SESSION['merchantID'], "day_" . (isset($_REQUEST['date']) ? $_REQUEST['date'] : date("d-m-Y"))));
+				$dataChanges = $mb->_runFunction("reports", "loadRegisterChanges", array($_SESSION['merchantID'], (isset($_REQUEST['date']) ? $_REQUEST['date'] : date("d-m-Y"))));
 				
 				$total = 0;
 				
 				foreach($data[0] AS $name => $amount)
 				{
+					$kasverschil = 0;
+					
+					foreach($dataChanges AS $value)
+					{
+						if($value['payment_method'] != $name)
+						{
+							continue;
+						}
+						else
+						{
+							$kasverschil += $value['amount'];
+						}
+					}
+					
 					?>
 					<tr>
 						<td><?= $name ?></td>
-						<td>&euro;&nbsp;<?= _frontend_float($amount) ?></td>
+						<td>&euro;&nbsp;<?= _frontend_float($amount + $kasverschil) ?></td>
 					</tr>
-					<?php
-						
-					$total += $amount;
-				}
-				
-				$dataChanges = $mb->_runFunction("reports", "loadRegisterChanges", array($_SESSION['merchantID'], (isset($_REQUEST['date']) ? $_REQUEST['date'] : date("d-m-Y"))));
-				
-				foreach($dataChanges AS $value)
-				{
-					?>
-					<tr style="background-color: #f9f9f9;">
-						<td>
-							<small>
-								&nbsp;&nbsp;&nbsp;Kasverschil <?= $value['payment_method'] ?>
-							</small>
-							
-						</td>
-						<td>
-							<small>
-								&nbsp;&nbsp;&nbsp;&euro;&nbsp;<?= _frontend_float($value['amount']) ?>
-							</small>
-						</td>
-					</tr>
-					<?php
 					
-					$total += $value['amount'];
+					<?php
+					if($kasverschil > 0)
+					{
+						?>
+						<tr style="background-color: #f9f9f9;">
+							<td>
+								<small>
+									&nbsp;&nbsp;&nbsp;Inbegrepen kasverschil
+								</small>
+								
+							</td>
+							<td>
+								<small>
+									&nbsp;&nbsp;&nbsp;&euro;&nbsp;<?= _frontend_float($kasverschil) ?>
+								</small>
+							</td>
+						</tr>
+						<?php
+					}
+					
+					$total += ($amount + $kasverschil);
 				}
 				?>
 				

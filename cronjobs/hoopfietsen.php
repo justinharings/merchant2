@@ -152,7 +152,7 @@ while($row = $db->fetch_assoc($result))
 			);
 			$db->query($query);
 		}
-		else if($values['stock'] == 2)
+		else if($values['stock'] == 2 && $row['stock'] <= 0)
 		{
 			$query = sprintf(
 				"	UPDATE		products
@@ -163,7 +163,7 @@ while($row = $db->fetch_assoc($result))
 			$db->query($query);
 		}
 	}
-	else
+	else if($row['stock'] <= 0)
 	{
 		$query = sprintf(
 			"	UPDATE		products

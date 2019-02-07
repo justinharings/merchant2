@@ -212,6 +212,8 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 						<?php
 						foreach($trackers AS $track)
 						{
+							$url = "";
+							
 							switch(strtolower($track['courier']))
 							{
 								default:
@@ -219,15 +221,34 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 								break;
 								
 								case "postnl":
-									$url = "https://jouw.postnl.nl/#!/track-en-trace/" . $track['track_code'] . "/NL/" . $data['customer']['zip_code'];
-								break;
+								if(strtolower($order_info['customer']['country']) != "netherlands")
+								{
+									$url = "https://www.internationalparceltracking.com/Main.aspx#/track/" . $shipment['track_code'] . "/" . strtoupper($this->_countryCodes($order_info['customer']['country'])) . "/" . $order_info['customer']['zip_code'];
+								}
+								else
+								{
+									$url = "https://jouw.postnl.nl/?D=NL&T=C#!/track-en-trace/" . $shipment['track_code'] . "/NL/" . $order_info['customer']['zip_code'];
+								}
+							break;
 							}
 							?>
+							
 							<tr>
-							<td style="padding: 0px 20px 0px 0px;">
-								<a href="<?= $url ?>" target="_blank"><?= $track['track_code'] ?></a>
-									&nbsp;<small><span class="fa fa-external-link"></span></small>
-							</td>
+								<td style="padding: 0px 20px 0px 0px;">
+									<?php
+									if($url != "")
+									{
+										?>
+										<a href="<?= $url ?>" target="_blank"><?= $track['track_code'] ?></a>
+										&nbsp;<small><span class="fa fa-external-link"></span></small>
+										<?php
+									}
+									else
+									{
+										print $track['track_code'];
+									}
+									?>
+								</td>
 							<td><?= $track['courier'] ?></td>
 						</tr>
 							<?php
@@ -378,17 +399,45 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 									</td>
 									<td <?= $product['deleted'] ? 'style="text-decoration: line-through;"' : '' ?>><?= ($product['barcode'] != "" ? $product['barcode'] : "Onbekend") ?></td>
 									<td>
-										<input type="text" <?= count($data['payments']) > 0 ? 'readonly="readonly"' : '' ?> name="quantity[]" id="quantity_<?= $product['orderProductID'] ?>" value="<?= $product['quantity'] ?>" class="width-40 text-center calc-main-quantity" validation-type="int" validation-required="true" />
+										<input type="<?= count($data['payments']) > 0 ? "hidden" : "text" ?>" name="quantity[]" id="quantity_<?= $product['orderProductID'] ?>" value="<?= $product['quantity'] ?>" class="width-40 text-center calc-main-quantity" validation-type="int" validation-required="true" />
+										
+										<?php
+										if(count($data['payments']))
+										{
+											print $product['quantity'] . " stuk(s)";
+										}
+										?>
 									</td>
 									<td <?= $product['deleted'] ? 'style="text-decoration: line-through;"' : '' ?> title="<?= strip_tags($product['name']) ?>"><?= _chopString($product['name'], 30) ?></td>
 									<td>
-										<input type="text" <?= count($data['payments']) > 0 ? 'readonly="readonly"' : '' ?> name="price[]" id="price_<?= $product['orderProductID'] ?>" value="<?= $product['price'] ?>" class="width-75 text-center calc-main-price" icon="fa-euro" validation-type="int" validation-required="true" />
+										<input type="<?= count($data['payments']) > 0 ? "hidden" : "text" ?>" name="price[]" id="price_<?= $product['orderProductID'] ?>" value="<?= $product['price'] ?>" class="width-75 text-center calc-main-price" icon="fa-euro" validation-type="int" validation-required="true" />
+										
+										<?php
+										if(count($data['payments']))
+										{
+											print "&euro;&nbsp;" . _frontend_float($product['price']);
+										}
+										?>
 									</td>
 									<td>
-										<input type="text" disabled="disabled" name="total_<?= $product['orderProductID'] ?>" id="total_<?= $product['orderProductID'] ?>" value="<?= _frontend_float($product['quantity']*$product['price']) ?>" class="width-75 text-center calc-total-price" icon="fa-euro" />
+										<input type="<?= count($data['payments']) > 0 ? "hidden" : "text" ?>" disabled="disabled" name="total_<?= $product['orderProductID'] ?>" id="total_<?= $product['orderProductID'] ?>" value="<?= _frontend_float($product['quantity']*$product['price']) ?>" class="width-75 text-center calc-total-price" icon="fa-euro" />
+										
+										<?php
+										if(count($data['payments']))
+										{
+											print "&euro;&nbsp;" . _frontend_float($product['quantity']*$product['price']);
+										}
+										?>
 									</td>
 									<td>
-										<input type="text" disabled="disabled" name="excl_<?= $product['orderProductID'] ?>" id="excl_<?= $product['orderProductID'] ?>" value="<?= _frontend_float($product['price_ex_vat']) ?>" class="width-75 text-center calc-excl-price" icon="fa-euro" />
+										<input type="<?= count($data['payments']) > 0 ? "hidden" : "text" ?>" disabled="disabled" name="excl_<?= $product['orderProductID'] ?>" id="excl_<?= $product['orderProductID'] ?>" value="<?= _frontend_float($product['price_ex_vat']) ?>" class="width-75 text-center calc-excl-price" icon="fa-euro" />
+										
+										<?php
+										if(count($data['payments']))
+										{
+											print "&euro;&nbsp;" . _frontend_float($product['price_ex_vat']);
+										}
+										?>
 									</td>
 									
 									<?php

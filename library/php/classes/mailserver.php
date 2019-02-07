@@ -256,6 +256,25 @@ class mailserver extends motherboard
 							$_skip = true;
 						}
 					}
+					
+					$query_workorder = sprintf(
+						"	SELECT		COUNT(orders_product.orderID) AS cnt
+							FROM		orders_product
+							INNER JOIN	products ON products.productID = orders_product.productID
+							WHERE		(
+											products.workorders_manhours = 1
+								OR			products.workorders_products = 1
+										)
+								AND		orders_product.orderID = %d",
+						$params[1]['orderID']
+					);
+					$result_workorder = parent::query($query_workorder);
+					$row_workorder = parent::fetch_assoc($result_workorder);
+					
+					if($row_workorder['cnt'] > 0)
+					{
+						$_skip = true;
+					}
 				}
 				
 				if($_skip == false)
@@ -529,20 +548,26 @@ class mailserver extends motherboard
 						break;
 						
 						case "postnl":
-							$url = "https://jouw.postnl.nl/#!/track-en-trace/" . $shipment['track_code'] . "/NL/" . $order_info['customer']['zip_code'];
+							if(strtolower($order_info['customer']['country']) != "netherlands")
+							{
+								$url = "https://www.internationalparceltracking.com/Main.aspx#/track/" . $shipment['track_code'] . "/" . strtoupper($this->_countryCodes($order_info['customer']['country'])) . "/" . $order_info['customer']['zip_code'];
+							}
+							else
+							{
+								$url = "https://jouw.postnl.nl/?D=NL&T=C#!/track-en-trace/" . $shipment['track_code'] . "/NL/" . $order_info['customer']['zip_code'];
+							}
 						break;
 					}
 					
 					if($url != "")
 					{
+						$url = '<a target="_blank" href="' . $url . '">Track&Trace</a>';
 						$content = str_replace("[order-TRACKANDTRACE]", $url, $content);
-					}
-					else
-					{
-						$content = str_replace("[order-TRACKANDTRACE]", "", $content);
 					}
 				}
 			}
+			
+			$content = str_replace("[order-TRACKANDTRACE]", "", $content);
 		}
 		
 		if($workorderID > 0)
