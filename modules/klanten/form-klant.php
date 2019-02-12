@@ -81,7 +81,25 @@ if(isset($_GET['dataID']))
 					<?= $mb->_translateReturn("forms", "legend-customer-card") ?>
 				</div>
 				
-				<input type="text" name="customer_code" id="customer_code" value="<?= isset($_GET['dataID']) ? $data['customer_code'] : "" ?>" class="width-300" holder="Barcode" question="Heeft u klantenpassen? Dan kunt u deze hier invullen voor deze klant. Zoekt u in uw POS met deze barcode (scannen) dan kunt u de klant terugvinden zonder zelf te moeten typen en zoeken." />
+				<input type="text" name="customer_code" id="customer_code" value="<?= isset($_GET['dataID']) ? $data['customer_code'] : "" ?>" class="width-300 margin" holder="Barcode" question="Heeft u klantenpassen? Dan kunt u deze hier invullen voor deze klant. Zoekt u in uw POS met deze barcode (scannen) dan kunt u de klant terugvinden zonder zelf te moeten typen en zoeken." />
+				
+				<select name="cardID" id="cardID" class="width-300" holder="Klantenkaart pakket">
+					<option value="0">Geen klantenkaart pakket instellen</option>
+					
+					<?php
+					$dataC = $mb->_runFunction("customers", "viewCards", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "cards.name", "0,50"));
+					
+					if($mb->num_rows($dataC))
+					{
+						foreach($dataC AS $value)
+						{
+							?>
+							<option <?= $data['cardID'] == $value['cardID'] ? "selected=\"selected\"" : "" ?> value="<?= $value['cardID'] ?>"><?= $value['name'] ?></option>
+							<?php
+						}
+					}
+					?>
+				</select>
 			</div>
 			
 			<div class="form-content">

@@ -55,7 +55,27 @@ $mb = new motherboard();
 	<body class="popup">
 		<form id="barcode-form" method="post" action="/extensions/point_of_sale/library/php/posts/customer_card.php">
 			<img src="/library/media/barcode.png" />
-			<input type="text" name="customer_code" id="customer_code" value="" class="width-100-percent text-center" />
+			
+			<select name="cardID" id="cardID" class="width-100-percent text-center margin" style="text-align-last: center;">
+				<option value="0">Geen klantenkaart pakket instellen</option>
+				
+				<?php
+				$data = $mb->_runFunction("customers", "viewCards", array($_SESSION['merchantID'], (isset($_GET['search_string']) ? trim($_GET['search_string'], "/") : ""), "cards.name", "0,50"));
+				
+				if($mb->num_rows($data))
+				{
+					foreach($data AS $value)
+					{
+						?>
+						<option value="<?= $value['cardID'] ?>"><?= $value['name'] ?></option>
+						<?php
+					}
+				}
+				?>
+			</select>
+			
+			<input type="text" name="customer_code" id="customer_code" value="" class="width-100-percent text-center" placeholder="Klantenkaart barcode" />
+			
 			<input type="hidden" name="customerID" id="customerID" value="<?= intval($_GET['key']) ?>" />
 		</form>
 		

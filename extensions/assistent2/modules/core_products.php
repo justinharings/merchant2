@@ -2,7 +2,6 @@
 $query = sprintf(
 	"	SELECT		products.productID
 		FROM		products
-		LEFT JOIN	products_stock ON products_stock.productID = products.productID
 		LEFT JOIN	ass2_stock_alert ON ass2_stock_alert.productID = products.productID
 		LEFT JOIN	ass2_stock_watchlist ON ass2_stock_watchlist.productID = products.productID
 		WHERE		products.merchantID = 1
@@ -10,9 +9,10 @@ $query = sprintf(
 			AND		ass2_stock_alert.productID IS NULL
 			AND		ass2_stock_watchlist.productID IS NULL
 			AND		(
-						products_stock.stock <= 0
-				OR		products_stock.stock IS NULL
-					)
+						SELECT		SUM(products_stock.stock)
+						FROM		products_stock
+						WHERE		products_stock.productID = products.productID
+					) <= 0
 			AND		products.status = 1
 		LIMIT		0,1"
 );

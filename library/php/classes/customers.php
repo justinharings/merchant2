@@ -60,6 +60,41 @@ class customers extends motherboard
 	
 	
 	
+	public function viewCards($data)
+	{
+		parent::_checkInputValues($data, 4);
+		
+		$search = "";
+		
+		if($data[1] != "")
+		{
+			$search = sprintf(
+				"	AND		(
+								cards.name LIKE ('%%%s%%')
+							)",
+				parent::real_escape_string($data[1])
+			);
+		}
+		
+		$query = sprintf(
+			"	SELECT		cards.*
+				FROM		cards
+				WHERE		cards.merchantID = %d
+					%s
+				ORDER BY	%s
+				LIMIT		%s",
+			$data[0],
+			$search,
+			$data[2],
+			$data[3]
+		);
+		$result = parent::query($query);
+		
+		return $result;
+	}
+	
+	
+	
 	/*
 	**	Load a certain percentage.
 	**	data[0]	=	taxesID.
@@ -159,6 +194,23 @@ class customers extends motherboard
 		}
 		
 		return $return;
+	}
+	
+	
+	
+	public function loadCard($data)
+	{
+		parent::_checkInputValues($data, 1);
+		
+		$query = sprintf(
+			"	SELECT		cards.*
+				FROM		cards
+				WHERE		cards.cardID = %d",
+			$data[0]
+		);
+		$result = parent::query($query);
+		
+		return parent::fetch_assoc($result);
 	}
 	
 	
@@ -326,6 +378,46 @@ class customers extends motherboard
 	
 	
 	
+	public function saveCard($data)
+	{
+		if($data[1]['cardID'] > 0)
+		{
+			$query = sprintf(
+				"	UPDATE		cards
+					SET			cards.name = '%s',
+								cards.price = '%.2f',
+								cards.monthly = %d
+					WHERE		cards.cardID = %d",
+				parent::real_escape_string($data[1]['name']),
+				parent::floatvalue($data[1]['price']),
+				intval($data[1]['monthly']),
+				$data[1]['cardID']
+			);
+			parent::query($query);
+			
+			$insertID = $data[1]['cardID'];
+		}
+		else
+		{
+			$query = sprintf(
+				"	INSERT INTO		cards
+					SET				cards.name = '%s',
+									cards.price = '%.2f',
+									cards.monthly = %d",
+				parent::real_escape_string($data[1]['name']),
+				parent::floatvalue($data[1]['price']),
+				intval($data[1]['monthly'])
+			);
+			$result = parent::query($query);
+			
+			$insertID = parent::insert_id($result);
+		}
+		
+		return $insertID;
+	}
+	
+	
+	
 	/*
 	**	Save or update a percentage. If 'delete' is set
 	**	in the post values, continue to the delete function.
@@ -356,6 +448,7 @@ class customers extends motherboard
 								customers.mobile_phone = '%s',
 								customers.email_address = '%s',
 								customers.customer_code = '%s',
+								customers.cardID = %d,
 								customers.date_update = NOW()
 					WHERE		customers.customerID = %d",
 				parent::real_escape_string($data[1]['name']),
@@ -368,6 +461,7 @@ class customers extends motherboard
 				parent::real_escape_string($data[1]['mobile_phone']),
 				parent::real_escape_string($data[1]['email_address']),
 				parent::real_escape_string($data[1]['customer_code']),
+				intval($data[1]['cardID']),
 				$data[1]['customerID']
 			);
 			parent::query($query);
@@ -387,6 +481,7 @@ class customers extends motherboard
 									customers.mobile_phone = '%s',
 									customers.email_address = '%s',
 									customers.customer_code = '%s',
+									customers.cardID = %d,
 									customers.date_added = NOW()",
 				$data[0],
 				parent::real_escape_string($data[1]['name']),
@@ -398,7 +493,8 @@ class customers extends motherboard
 				parent::real_escape_string($data[1]['phone']),
 				parent::real_escape_string($data[1]['mobile_phone']),
 				parent::real_escape_string($data[1]['email_address']),
-				parent::real_escape_string($data[1]['customer_code'])
+				parent::real_escape_string($data[1]['customer_code']),
+				intval($data[1]['cardID'])
 			);
 			$result = parent::query($query);
 			
@@ -446,9 +542,11 @@ class customers extends motherboard
 		$query = sprintf(
 			"	UPDATE		customers
 				SET			customers.customer_code = %d,
+							customers.cardID = %d,
 							customers.date_update = NOW()
 				WHERE		customers.customerID = %d",
 			intval($data[1]['customer_code']),
+			intval($data[1]['cardID']),
 			intval($data[1]['customerID'])
 		);
 		parent::query($query);

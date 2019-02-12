@@ -548,13 +548,20 @@ class mailserver extends motherboard
 						break;
 						
 						case "postnl":
-							if(strtolower($order_info['customer']['country']) != "netherlands")
+							$CC = strtoupper($mb->_countryCodes($order_info['customer']['country']));
+							
+							if($CC == "GB")
 							{
-								$url = "https://www.internationalparceltracking.com/Main.aspx#/track/" . $shipment['track_code'] . "/" . strtoupper($this->_countryCodes($order_info['customer']['country'])) . "/" . $order_info['customer']['zip_code'];
+								$CC = "US";
+							}
+							
+							if($CC == "NL")
+							{
+								$url = "https://jouw.postnl.nl/?D=NL&T=C#!/track-en-trace/" . $shipment['track_code'] . "/NL/" . $order_info['customer']['zip_code'];
 							}
 							else
 							{
-								$url = "https://jouw.postnl.nl/?D=NL&T=C#!/track-en-trace/" . $shipment['track_code'] . "/NL/" . $order_info['customer']['zip_code'];
+								$url = "https://www.internationalparceltracking.com/Main.aspx#/track/" . $shipment['track_code'] . "/" . $CC . "/" . $order_info['customer']['zip_code'];
 							}
 						break;
 					}
@@ -563,6 +570,10 @@ class mailserver extends motherboard
 					{
 						$url = '<a target="_blank" href="' . $url . '">Track&Trace</a>';
 						$content = str_replace("[order-TRACKANDTRACE]", $url, $content);
+					}
+					else if($shipment['track_code'] != "")
+					{
+						$content = str_replace("[order-TRACKANDTRACE]", $shipment['track_code'], $content);
 					}
 				}
 			}

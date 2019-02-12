@@ -221,15 +221,22 @@ $country_code = $mb->_countryCodes($data['customer']['country']);
 								break;
 								
 								case "postnl":
-								if(strtolower($order_info['customer']['country']) != "netherlands")
-								{
-									$url = "https://www.internationalparceltracking.com/Main.aspx#/track/" . $shipment['track_code'] . "/" . strtoupper($this->_countryCodes($order_info['customer']['country'])) . "/" . $order_info['customer']['zip_code'];
-								}
-								else
-								{
-									$url = "https://jouw.postnl.nl/?D=NL&T=C#!/track-en-trace/" . $shipment['track_code'] . "/NL/" . $order_info['customer']['zip_code'];
-								}
-							break;
+									$CC = strtoupper($mb->_countryCodes($data['customer']['country']));
+									
+									if($CC == "GB")
+									{
+										$CC = "US";
+									}
+									
+									if($CC == "NL")
+									{
+										$url = "https://jouw.postnl.nl/?D=NL&T=C#!/track-en-trace/" . $track['track_code'] . "/NL/" . $data['customer']['zip_code'];
+									}
+									else
+									{
+										$url = "https://www.internationalparceltracking.com/Main.aspx#/track/" . $track['track_code'] . "/" . $CC . "/" . $data['customer']['zip_code'];
+									}
+								break;
 							}
 							?>
 							

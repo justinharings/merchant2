@@ -105,10 +105,13 @@ for($i = 1; $i < 30; $i++)
 		$start = new DateTime('2019-01-30');
 		
 		$query = sprintf(
-			"	SELECT		SUM(orders_payment.amount) AS cnt
+			"	SELECT		COUNT(orders_payment.amount) AS cnt
 				FROM		orders_payment
-				WHERE		orders_payment.date = '%s'",
-			$date->format('Y-m-d')
+				INNER JOIN	orders ON orders.orderID = orders_payment.orderID
+				WHERE		orders_payment.date = '%s'
+					AND		orders.merchantID = %d",
+			$date->format('Y-m-d'),
+			$_SESSION['merchantID']
 		);
 		$result = $mb->query($query);
 		$row = $mb->fetch_assoc($result);
@@ -586,6 +589,15 @@ if(isset($_GET['minify']) || _DEVELOPMENT_ENVIRONMENT)
 								
 								<div class="icon">
 									<span class="fa fa-coffee"></span>
+								</div>
+							</li>
+							
+							<li class="menu-item" rel="/klanten/card/">
+								<div class="text">Klantenkaart opties</div>
+								<div class="sub">Beheer de opties voor klantenkaarten</div>
+								
+								<div class="icon">
+									<span class="fa fa-barcode"></span>
 								</div>
 							</li>
 							<?php

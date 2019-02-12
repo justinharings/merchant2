@@ -509,7 +509,7 @@ $(document).ready(
 				
 				if(key)
 				{
-					popup(400, 135, "/extensions/point_of_sale/modules/popup_customer_card.php?key=" + key);
+					popup(400, 180, "/extensions/point_of_sale/modules/popup_customer_card.php?key=" + key);
 				}
 			}
 		);

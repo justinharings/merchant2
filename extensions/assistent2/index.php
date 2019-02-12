@@ -255,7 +255,7 @@ if(!isset($_GET['module']))
 		{
 			if($workorderID == 0)
 			{
-				if($value['status'] == 2)
+				if($value['status'] == 2 || $value['used_product'] == 1)
 				{
 					continue;
 				}
